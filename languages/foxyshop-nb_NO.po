@@ -1,0 +1,2034 @@
+# Copyright (C) 2012 FoxyShop
+# This file is distributed under the same license as the FoxyShop package.
+msgid ""
+msgstr ""
+"Project-Id-Version: FoxyShop 4.1.2\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/foxyshop\n"
+"POT-Creation-Date: 2012-03-22 17:19:33+00:00\n"
+"PO-Revision-Date: 2012-04-03 09:27+0100\n"
+"Last-Translator: Kenneth <post@kktrend.no>\n"
+"Language-Team: NORWEGIAN <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: adminfunctions.php:501
+msgid "Connection Error"
+msgstr "Kontakt Feil"
+
+#: adminfunctions.php:621
+#: googleproductfeed.php:910
+#: googleproductfeed.php:922
+msgid "Delete"
+msgstr "Slett"
+
+#: adminfunctions.php:621
+#: customposttype.php:15
+#: customposttype.php:37
+#: customposttype.php:58
+#: subscriptions.php:274
+msgid "Edit"
+msgstr "Rediger"
+
+#: adminfunctions.php:625
+msgid "Add Attribute"
+msgstr "Legg til Attribut"
+
+#: bulkeditor.php:9
+msgid "Change To"
+msgstr "Forandre Til"
+
+#: bulkeditor.php:10
+msgid "Leave Unchanged"
+msgstr "Vær Uforandret"
+
+#: bulkeditor.php:16
+msgid "Set Values For Checked FoxyShop %s"
+msgstr "Sett Verdiene for Avkrysset FoxyShop produkter"
+
+#: bulkeditor.php:23
+msgid "FoxyCart Category"
+msgstr "FoxyCart Kategori"
+
+#: bulkeditor.php:30
+msgid "Default"
+msgstr "Standard"
+
+#: bulkeditor.php:58
+#: customposttype.php:509
+msgid "Sale Price"
+msgstr "Pris"
+
+#: bulkeditor.php:60
+msgid "Leave Unchanged, 'foxyshop'"
+msgstr "La den være uforandret, 'foxyshop'"
+
+#: bulkeditor.php:70
+msgid "Sale Start Date"
+msgstr "Salg Start"
+
+#: bulkeditor.php:82
+msgid "Sale End Date"
+msgstr "Salg Slutt"
+
+#: bulkeditor.php:94
+#: customposttype.php:344
+msgid "Base Price"
+msgstr "Veil Pris"
+
+#: bulkeditor.php:106
+#: customposttype.php:353
+msgid "Weight"
+msgstr "Vekt"
+
+#: bulkeditor.php:120
+msgid "Minimum Qty"
+msgstr "Minimum Ant"
+
+#: bulkeditor.php:131
+msgid "Maximum Qty"
+msgstr "Max Ant"
+
+#: bulkeditor.php:142
+msgid "Hide Quantity"
+msgstr "Skjul Ant"
+
+#: bulkeditor.php:146
+#: customposttype.php:367
+#: customposttype.php:368
+msgid "Hide Quantity Box"
+msgstr "Skjul Antall Boks"
+
+#: bulkeditor.php:148
+msgid "Show Quantity Box"
+msgstr "Vis Antall Boks"
+
+#: bulkeditor.php:154
+msgid "Hide From List View"
+msgstr "Skjul fra Liste Oversikt"
+
+#: bulkeditor.php:158
+msgid "Hide"
+msgstr "Skjul"
+
+#: bulkeditor.php:160
+msgid "Show"
+msgstr "Vis"
+
+#: bulkeditor.php:166
+msgid "Discount Qty $"
+msgstr "Rabatt Antall $"
+
+#: bulkeditor.php:172
+#: bulkeditor.php:184
+#: bulkeditor.php:196
+#: bulkeditor.php:208
+#: bulkeditor.php:221
+#: bulkeditor.php:233
+#: bulkeditor.php:245
+#: bulkeditor.php:268
+msgid "Reference"
+msgstr "Referanse"
+
+#: bulkeditor.php:178
+msgid "Discount Qty %"
+msgstr "Rabatt Antall %"
+
+#: bulkeditor.php:190
+msgid "Discount Price $"
+msgstr "Rabatt Pris $"
+
+#: bulkeditor.php:202
+msgid "Discount Price %"
+msgstr "Rabatt Pris %"
+
+#: bulkeditor.php:215
+msgid "Sub. Frequency"
+msgstr "Sub. Frekvens"
+
+#: bulkeditor.php:227
+msgid "Sub. Start Date"
+msgstr "Sub. Start Dato"
+
+#: bulkeditor.php:239
+msgid "Sub. End Date"
+msgstr "Sub. Slutt Dato"
+
+#: bulkeditor.php:286
+msgid "Related Products"
+msgstr "Relaterte Produkter"
+
+#: bulkeditor.php:300
+msgid "Bundled Products"
+msgstr "Samlede Produkter"
+
+#: bulkeditor.php:318
+msgid "Add-on Products"
+msgstr "Tilleggsprodukter"
+
+#: categorysorting.php:5
+msgid "Category Sorting"
+msgstr "Sortering Kategori"
+
+#: categorysorting.php:5
+msgid "Set Category Order"
+msgstr "Sett Kategori Rekkefølge"
+
+#: categorysorting.php:24
+msgid "Category order updated successfully."
+msgstr "Kategori Rekkefølgen Oppdatert"
+
+#: categorysorting.php:36
+msgid "Category order reset to alphabetical."
+msgstr "Kategorien satt tilbake til alfabetisk"
+
+#: categorysorting.php:56
+msgid "Set %s Category Order"
+msgstr "Sett %s Kategori Rekkefølge"
+
+#: categorysorting.php:75
+msgid "Select Sub-Category"
+msgstr "Velg Underkategori"
+
+#: categorysorting.php:86
+#: widgetcode.php:268
+msgid "Top Level Categories"
+msgstr "Topp Kategorier"
+
+#: categorysorting.php:95
+msgid "Drag categories to the preferred order and then click the Save button at the bottom of the page."
+msgstr "Dra kategoriene i ønsket rekkefølge og trykk lagre"
+
+#: categorysorting.php:96
+msgid "Current Sorting"
+msgstr "Nåværende Rekkefølge"
+
+#: categorysorting.php:96
+msgid "Custom"
+msgstr "Tilpasset"
+
+#: categorysorting.php:96
+msgid "Alphabetical"
+msgstr "Alfabetisk"
+
+#: categorysorting.php:114
+#: customsorting.php:112
+msgid "Save Custom Order"
+msgstr "Lagre tilpasset rekkefølge"
+
+#: categorysorting.php:115
+msgid "Reset to Alphabetical"
+msgstr "Nullstill til Alfabetisk"
+
+#: categorysorting.php:124
+msgid "No Sub-Categories Found."
+msgstr "Ingen underkategorier funnet."
+
+#: categorysorting.php:145
+msgid "Updating Category Order..."
+msgstr "Oppdaterer Kategori Rekkefølgen"
+
+#: customers.php:5
+msgid "Customer Management"
+msgstr "Kunde Behandling"
+
+#: customers.php:5
+msgid "Customers"
+msgstr "Kunder"
+
+#: customers.php:51
+msgid "Manage Customers"
+msgstr "Rediger Kunder"
+
+#: customers.php:60
+#: orders.php:163
+#: subscriptions.php:83
+msgid "Search Options"
+msgstr "Søkevalg"
+
+#: customers.php:64
+#: customers.php:120
+#: customers.php:130
+#: orders.php:245
+#: subscriptions.php:155
+msgid "Customer ID"
+msgstr "Kunde ID"
+
+#: customers.php:67
+#: orders.php:251
+#: subscriptions.php:161
+msgid "Customer First Name"
+msgstr "Kundens Fornavn"
+
+#: customers.php:70
+#: orders.php:254
+#: subscriptions.php:164
+msgid "Customer Last Name"
+msgstr "Kundens Etternavn"
+
+#: customers.php:74
+#: orders.php:230
+#: subscriptions.php:128
+msgid "Custom Field Name"
+msgstr "Navn på Tilpasset Felt"
+
+#: customers.php:75
+#: customposttype.php:900
+#: orders.php:225
+#: orders.php:231
+#: subscriptions.php:124
+#: subscriptions.php:129
+#: tools-page.php:539
+#: tools-page.php:827
+msgid "Value"
+msgstr "Verdi"
+
+#: customers.php:80
+#: orders.php:248
+#: subscriptions.php:158
+msgid "Customer Email"
+msgstr "Kundens Epost"
+
+#: customers.php:83
+#: orders.php:257
+msgid "Customer State"
+msgstr "Kundens Fylke"
+
+#: customers.php:87
+#: subscriptions.php:168
+msgid "Search Records Now"
+msgstr "Søk i oversikten nå"
+
+#: customers.php:88
+#: subscriptions.php:169
+msgid "Reset Form"
+msgstr "Nullstill Skjema"
+
+#: customers.php:121
+#: customers.php:131
+msgid "Last Name"
+msgstr "Etternavn"
+
+#: customers.php:122
+#: customers.php:132
+msgid "First Name"
+msgstr "Fornavn"
+
+#: customers.php:123
+#: customers.php:133
+#: googleproductfeed.php:565
+#: productfeed.php:287
+msgid "Email"
+msgstr "Epost"
+
+#: customers.php:124
+#: customers.php:134
+#: customers.php:156
+#: orders.php:91
+msgid "Orders"
+msgstr "Ordrer"
+
+#: customers.php:125
+#: customers.php:135
+#: customers.php:157
+#: subscriptions.php:5
+msgid "Subscriptions"
+msgstr "Abbonement"
+
+#: customers.php:165
+#: orders.php:488
+msgid "Customer Details"
+msgstr "Detaljer Kunde"
+
+#: customers.php:169
+#: customers.php:170
+#: orders.php:412
+msgid "Card"
+msgstr "Kort"
+
+#: customers.php:171
+#: orders.php:413
+msgid "Exp"
+msgstr "Utløp"
+
+#: customers.php:172
+msgid "Last Modified"
+msgstr "Sist Redigert"
+
+#: customers.php:180
+#: orders.php:441
+msgid "Customer Address"
+msgstr "Kundens Adresse"
+
+#: customers.php:194
+#: customers.php:210
+#: orders.php:455
+#: orders.php:471
+msgid "Shipping Details"
+msgstr "Frakt Detaljer"
+
+#: customposttype.php:11
+#: customposttype.php:14
+#: customposttype.php:19
+msgid "Categories"
+msgstr "Kategorier"
+
+#: customposttype.php:12
+#: customposttype.php:15
+#: customposttype.php:16
+#: customposttype.php:17
+#: customposttype.php:112
+#: widgetcode.php:86
+#: widgetcode.php:330
+msgid "Category"
+msgstr "Kategori"
+
+#: customposttype.php:13
+#: customposttype.php:35
+#: widgetcode.php:266
+msgid "Parent Category"
+msgstr "Tilhører Kategori"
+
+#: customposttype.php:14
+#: customposttype.php:36
+#: customsorting.php:66
+#: customsorting.php:87
+#: settings-page.php:345
+msgid "All"
+msgstr "Alle"
+
+#: customposttype.php:16
+#: customposttype.php:38
+#: inventory.php:82
+#: inventory.php:93
+msgid "Update"
+msgstr "Oppdater"
+
+#: customposttype.php:17
+#: customposttype.php:39
+#: customposttype.php:56
+#: customposttype.php:57
+msgid "Add New"
+msgstr "Legg til Ny"
+
+#: customposttype.php:18
+#: customposttype.php:40
+#: customposttype.php:59
+msgid "New"
+msgstr "Ny"
+
+#: customposttype.php:18
+msgid "Category Name"
+msgstr "Kategori Navn"
+
+#: customposttype.php:33
+#: customposttype.php:36
+#: customposttype.php:41
+msgid "Tags"
+msgstr "Tagger"
+
+#: customposttype.php:34
+#: customposttype.php:37
+#: customposttype.php:38
+#: customposttype.php:39
+msgid "Tag"
+msgstr "Tagg"
+
+#: customposttype.php:40
+msgid "Tag Name"
+msgstr "Navn på Tag"
+
+#: customposttype.php:60
+msgid "View"
+msgstr "Se"
+
+#: customposttype.php:61
+msgid "Manage"
+msgstr "Administrere"
+
+#: customposttype.php:63
+#: customposttype.php:64
+#: sso.php:149
+msgid "No"
+msgstr "Nei"
+
+#: customposttype.php:63
+msgid "Found"
+msgstr "Fant"
+
+#: customposttype.php:64
+msgid "Found in Trash"
+msgstr "Funnet i søppel"
+
+#: customposttype.php:65
+msgid "Search"
+msgstr "Søk"
+
+#: customposttype.php:107
+#: googleproductfeed.php:816
+#: googleproductfeed.php:836
+#: googleproductfeed.php:1048
+#: googleproductfeed.php:1070
+#: inventory.php:78
+#: inventory.php:89
+#: productfeed.php:415
+#: productfeed.php:425
+#: productfeed.php:531
+#: productfeed.php:542
+msgid "ID"
+msgstr ""
+
+#: customposttype.php:108
+#: widgetcode.php:80
+#: widgetcode.php:185
+#: widgetcode.php:260
+msgid "Title"
+msgstr "Tittel"
+
+#: customposttype.php:109
+#: googleproductfeed.php:820
+#: googleproductfeed.php:840
+#: googleproductfeed.php:1054
+#: googleproductfeed.php:1076
+#: productfeed.php:417
+#: productfeed.php:427
+#: productfeed.php:534
+#: productfeed.php:545
+msgid "Image"
+msgstr "Bilde"
+
+#: customposttype.php:110
+#: customposttype.php:569
+#: googleproductfeed.php:1052
+#: googleproductfeed.php:1074
+#: inventory.php:80
+#: inventory.php:91
+#: orders.php:218
+#: orders.php:536
+#: productfeed.php:533
+#: productfeed.php:544
+#: sso.php:136
+#: subscriptions.php:117
+msgid "Code"
+msgstr "Kode"
+
+#: customposttype.php:111
+#: googleproductfeed.php:1056
+#: googleproductfeed.php:1078
+#: orders.php:537
+#: productfeed.php:535
+#: productfeed.php:546
+msgid "Price"
+msgstr "Pris"
+
+#: customposttype.php:138
+msgid "Uncategorized"
+msgstr "Ukategorisert"
+
+#: customposttype.php:210
+#: subscriptions.php:99
+msgid "Show All"
+msgstr "Vis Alle"
+
+#: customposttype.php:232
+msgid "Custom field updated."
+msgstr "Tilpasset felt oppdatert."
+
+#: customposttype.php:233
+msgid "Custom field deleted."
+msgstr "Tilpasset felt slettet."
+
+#: customposttype.php:234
+msgid "updated"
+msgstr "oppdatert"
+
+#: customposttype.php:236
+msgid " saved"
+msgstr "lagret"
+
+#: customposttype.php:238
+msgid "M j, Y @ G:i"
+msgstr ""
+
+#: customposttype.php:253
+#: subscriptions.php:213
+#: subscriptions.php:224
+msgid "Details"
+msgstr "Detaljer"
+
+#: customposttype.php:254
+msgid "Pricing Details"
+msgstr "Pris Detaljer"
+
+#: customposttype.php:255
+msgid "Images"
+msgstr "Bilder"
+
+#: customposttype.php:256
+msgid "Variations"
+msgstr "Variasjoner"
+
+#: customposttype.php:257
+msgid "Google Product Feed Data"
+msgstr "Google Produkt Inndata"
+
+#: customposttype.php:258
+msgid "Related"
+msgstr "Relaterte"
+
+#: customposttype.php:259
+msgid "Bundled"
+msgstr "Samlet"
+
+#: customposttype.php:260
+msgid "Add-On"
+msgstr "Tilleggs"
+
+#: customposttype.php:315
+msgid "Show Available Downloadables"
+msgstr "Vis Tilgjengelige Nedlastbare"
+
+#: customposttype.php:317
+msgid "Hide Available Downloadables"
+msgstr "Skjul Tilgjengelige Nedlastbare"
+
+#: customposttype.php:318
+msgid "Select Downloadable To Prefill Data"
+msgstr "Velg Nedlastbare for Forhåndsutfylt Informasjon"
+
+#: customposttype.php:325
+msgid "None Found"
+msgstr "Ingen Funnet"
+
+#: customposttype.php:327
+msgid "Select Below"
+msgstr "Velg Under"
+
+#: customposttype.php:339
+msgid "Refresh List"
+msgstr "Oppdater"
+
+#: customposttype.php:349
+msgid "Item Code"
+msgstr "Produkt Kode"
+
+#: customposttype.php:358
+#: customposttype.php:359
+msgid "Disable Weight"
+msgstr "Deaktiver Vekt"
+
+#: customposttype.php:362
+msgid "Qty Settings"
+msgstr "Ant Innstillinger"
+
+#: customposttype.php:363
+msgid "Minimum Quantity"
+msgstr "Minimum Antall"
+
+#: customposttype.php:365
+msgid "Maximum Quantity"
+msgstr "Max Antall"
+
+#: customposttype.php:372
+msgid "FoxyCart Cat"
+msgstr "FoxyCart Kat"
+
+#: customposttype.php:375
+msgid "Default for all products"
+msgstr "Standard for alle produkter"
+
+#: customposttype.php:402
+msgid "Add to Cart"
+msgstr "Legg i Kurven"
+
+#: customposttype.php:410
+msgid "Require Account For Checkout"
+msgstr "Krever Konto for Utsjekking"
+
+#: customposttype.php:415
+msgid "Hide This %s From List View"
+msgstr "Skjul dette %s fra oversikten"
+
+#: customposttype.php:485
+msgid "Amount Based on Quantity"
+msgstr "Antall Basert på Antall"
+
+#: customposttype.php:486
+msgid "Percentage Based on Quantity"
+msgstr "Prosent Basert på Antall"
+
+#: customposttype.php:487
+msgid "Amount Based on Price"
+msgstr "Antall Basert på Pris"
+
+#: customposttype.php:488
+msgid "Percentage Based on Price"
+msgstr "Prosent Basert på Pris"
+
+#: customposttype.php:491
+msgid "All Units"
+msgstr "Alle Enheter"
+
+#: customposttype.php:492
+msgid "Incremental"
+msgstr "Trinnvis"
+
+#: customposttype.php:493
+msgid "Repeat"
+msgstr "Repeter"
+
+#: customposttype.php:494
+#: settings-page.php:351
+msgid "Single"
+msgstr "Singel"
+
+#: customposttype.php:507
+msgid "Sale"
+msgstr "Salg"
+
+#: customposttype.php:514
+#: customposttype.php:605
+#: subscriptions.php:136
+#: subscriptions.php:209
+#: subscriptions.php:220
+#: subscriptions.php:297
+msgid "Start Date"
+msgstr "Start Dato"
+
+#: customposttype.php:519
+#: customposttype.php:610
+#: subscriptions.php:148
+#: subscriptions.php:211
+#: subscriptions.php:222
+#: subscriptions.php:305
+msgid "End Date"
+msgstr "Slutt Dato"
+
+#: customposttype.php:526
+msgid "Discounts"
+msgstr "Rabatt"
+
+#: customposttype.php:526
+#: customposttype.php:596
+msgid "reference"
+msgstr "referanse"
+
+#: customposttype.php:542
+msgid "Disc. Type"
+msgstr "Rab. Type"
+
+#: customposttype.php:555
+msgid "Disc. Name"
+msgstr "Rab. Navn"
+
+#: customposttype.php:561
+msgid "This is Your Computed Discount"
+msgstr "Din Utregnede Rabatt"
+
+#: customposttype.php:568
+msgid "Set Inventory Levels"
+msgstr "Sett Lager Nivåer"
+
+#: customposttype.php:570
+msgid "Count"
+msgstr "Telle"
+
+#: customposttype.php:571
+msgid "If not set, default value will be used (%s)"
+msgstr "Hvis den ikke er satt, standard verdi blir brukt (%s)"
+
+#: customposttype.php:571
+#: inventory.php:84
+#: inventory.php:95
+msgid "Alert Lvl"
+msgstr "Nivå Varsel"
+
+#: customposttype.php:596
+msgid "Subscription Attributes"
+msgstr "Abbonement Attributter"
+
+#: customposttype.php:597
+msgid "You may also enter a"
+msgstr "Du kan også skriv inn "
+
+#: customposttype.php:597
+msgid "argument for start or end (like +3 months)"
+msgstr "valg for start og slutt (som +3 mnd)"
+
+#: customposttype.php:600
+#: subscriptions.php:106
+#: subscriptions.php:214
+#: subscriptions.php:225
+#: subscriptions.php:309
+msgid "Frequency"
+msgstr "Gjentakelse"
+
+#: customposttype.php:645
+#: customposttype.php:673
+#: customposttype.php:695
+msgid "Click the box above for a drop-down menu showing all %s. Type to search and click or press enter to select."
+msgstr "Trykk på boksen over for nedtrekksliste som viser alle %s. Skriv for å søke eller trykk enter for å velge."
+
+#: customposttype.php:647
+msgid "Set Custom Order For Related Products"
+msgstr "Sett Tilpasset rekkefølge for Relaterte Produkter"
+
+#: customposttype.php:776
+#: helperfunctions.php:249
+#: tools-page.php:423
+msgid "Dropdown List"
+msgstr "Nedtrekksliste"
+
+#: customposttype.php:776
+#: helperfunctions.php:249
+#: tools-page.php:424
+msgid "Radio Buttons"
+msgstr "Radio Knapper"
+
+#: customposttype.php:776
+#: helperfunctions.php:249
+#: tools-page.php:425
+msgid "Checkbox"
+msgstr "Avkryssningsboks"
+
+#: customposttype.php:776
+#: helperfunctions.php:249
+#: tools-page.php:426
+msgid "Single Line of Text"
+msgstr "Singel Linje med Tekst"
+
+#: customposttype.php:776
+#: helperfunctions.php:249
+#: tools-page.php:427
+msgid "Multiple Lines of Text"
+msgstr "Flere Linjer med Tekst"
+
+#: customposttype.php:776
+#: helperfunctions.php:249
+#: tools-page.php:428
+msgid "Custom File Upload"
+msgstr "Egen Filopplaster"
+
+#: customposttype.php:776
+#: helperfunctions.php:249
+#: tools-page.php:429
+msgid "Description Field"
+msgstr "Felt for Beskrivelse"
+
+#: customposttype.php:777
+#: tools-page.php:431
+msgid "Name{p+1.50|w-1|c:product_code|y:foxycart_category|dkey:display_key|ikey:image_id}"
+msgstr "Navn{p+20|c:produkt_kode|y:foxycart_kategori|dkey:visnings_nøkkel|ikey:bilde_id}"
+
+#: customposttype.php:828
+#: tools-page.php:476
+#: tools-page.php:738
+msgid "Variation Name"
+msgstr "Variansjons Navn"
+
+#: customposttype.php:831
+#: tools-page.php:479
+#: tools-page.php:740
+msgid "Variation Type"
+msgstr "Variasjons Type"
+
+#: customposttype.php:838
+#: customposttype.php:951
+#: tools-page.php:414
+msgid "Saved Variations"
+msgstr "Lagrede Variasjoner"
+
+#: customposttype.php:855
+#: tools-page.php:494
+#: tools-page.php:782
+msgid "Items in Dropdown"
+msgstr "Produkter i Nedtrekksliste"
+
+#: customposttype.php:863
+#: tools-page.php:502
+#: tools-page.php:790
+msgid "Radio Button Options"
+msgstr "Radio Knapper Valg"
+
+#: customposttype.php:873
+#: tools-page.php:512
+#: tools-page.php:799
+msgid "Text Box Size"
+msgstr "Størrelse Tekstboks"
+
+#: customposttype.php:874
+#: customposttype.php:878
+#: tools-page.php:513
+#: tools-page.php:517
+#: tools-page.php:800
+#: tools-page.php:804
+msgid "characters"
+msgstr "bokstaver"
+
+#: customposttype.php:877
+#: tools-page.php:516
+#: tools-page.php:803
+msgid "Maximum Chars"
+msgstr "Max Bokstaver"
+
+#: customposttype.php:886
+#: tools-page.php:525
+#: tools-page.php:812
+msgid "Lines of Text"
+msgstr "Linjer med Tekst"
+
+#: customposttype.php:893
+#: tools-page.php:532
+#: tools-page.php:820
+msgid "Descriptive Text"
+msgstr "Beskrivende Tekst"
+
+#: customposttype.php:908
+#: tools-page.php:362
+#: tools-page.php:547
+#: tools-page.php:835
+msgid "Instructions"
+msgstr "Instrukser"
+
+#: customposttype.php:914
+msgid "This varation will use saved settings."
+msgstr "Denne variasjonen vil bruke lagrede innstillinger."
+
+#: customposttype.php:920
+#: tools-page.php:556
+#: tools-page.php:751
+msgid "Display Key"
+msgstr "Visningsnøkkel"
+
+#: customposttype.php:926
+#: tools-page.php:562
+#: tools-page.php:756
+msgid "Make Field Required"
+msgstr "Feltet må Velges"
+
+#: customposttype.php:937
+#: tools-page.php:573
+msgid "Add Another Variation"
+msgstr "Legg til ny Variasjon"
+
+#: customposttype.php:938
+msgid "Minimize All"
+msgstr "Forminsk Alle"
+
+#: customposttype.php:939
+msgid "Maximize All"
+msgstr "Maksimer Alle"
+
+#: customsorting.php:5
+msgid "Custom %s Sorting"
+msgstr "Tilpasset %s Sortering"
+
+#: customsorting.php:5
+msgid "Set %s Order"
+msgstr "Sett %s rekkefølge"
+
+#: customsorting.php:22
+msgid "order updated successfully"
+msgstr "ordre oppdatert med suksess"
+
+#: customsorting.php:24
+msgid "An error occured, order has not been saved"
+msgstr "Det har skjedd en feil, ordren ble ikke lagret"
+
+#: customsorting.php:39
+msgid "order reverted to original"
+msgstr "ordren er satt tilbake til origialen"
+
+#: customsorting.php:57
+msgid "Custom %s Order"
+msgstr "Tilpasset %s rekkefølge"
+
+#: customsorting.php:63
+msgid "Select a category from the drop down to order the %s in that category."
+msgstr "Velg en kategori fra nedtrekkslisten for å bestille produkt i den kategorien"
+
+#: customsorting.php:71
+#: widgetcode.php:88
+msgid "Select Category"
+msgstr "Velg Kategori"
+
+#: customsorting.php:96
+msgid "Drag %s to the preferred order and then click the Save button at the bottom of the page."
+msgstr "Dra %s til valgt rekkefølge og trykk lagre knappen nederst på denne siden."
+
+#: customsorting.php:113
+msgid "Revert To Original"
+msgstr "Tilbakestill til Original"
+
+#: customsorting.php:122
+msgid "No %s Found For This Category."
+msgstr "Ingen %s ble funnet i denne Kategorien."
+
+#: customsorting.php:152
+msgid "Updating %s Order..."
+msgstr "Oppdaterer %s Rekkefølge..."
+
+#: foxyshop.php:46
+msgid "Product"
+msgstr "Produkt"
+
+#: foxyshop.php:47
+msgid "Products"
+msgstr "Produkter"
+
+#: googleproductfeed.php:505
+#: productfeed.php:257
+msgid "Google Products"
+msgstr "Google Produkter"
+
+#: googleproductfeed.php:543
+#: productfeed.php:276
+msgid "Google Authentication Required"
+msgstr "Krever Google Godkjenning"
+
+#: googleproductfeed.php:575
+#: productfeed.php:292
+msgid "Password"
+msgstr "Passord"
+
+#: googleproductfeed.php:704
+#: productfeed.php:357
+msgid "Operation completed successfully."
+msgstr "Operasjonene fullført med suksess."
+
+#: googleproductfeed.php:790
+#: productfeed.php:402
+msgid "Authentication Failed. It appears that your authentication has expired. This happens every two weeks. Please login again."
+msgstr "Autorisering Feilet. Det virker som din autorisasjon er utløpt. Dette skjer hver andre uke. Vennligst logg inn igjen."
+
+#: googleproductfeed.php:818
+#: googleproductfeed.php:838
+#: googleproductfeed.php:1050
+#: googleproductfeed.php:1072
+#: inventory.php:79
+#: inventory.php:90
+#: orders.php:221
+#: productfeed.php:416
+#: productfeed.php:426
+#: productfeed.php:532
+#: productfeed.php:543
+#: subscriptions.php:120
+msgid "Name"
+msgstr "Navn"
+
+#: googleproductfeed.php:822
+#: googleproductfeed.php:842
+#: productfeed.php:418
+#: productfeed.php:428
+msgid "Expiration"
+msgstr "Utløp"
+
+#: googleproductfeed.php:824
+#: googleproductfeed.php:844
+#: productfeed.php:419
+#: productfeed.php:429
+msgid "Performance"
+msgstr "Ytelse"
+
+#: googleproductfeed.php:890
+#: productfeed.php:452
+msgid "Unmatched!"
+msgstr "Ikke Samme!"
+
+#: googleproductfeed.php:908
+msgid "Renew/Update"
+msgstr "Forny/Oppdater"
+
+#: googleproductfeed.php:1058
+#: orders.php:410
+#: productfeed.php:536
+msgid "Date"
+msgstr "Dato"
+
+#: googleproductfeed.php:1080
+#: productfeed.php:547
+msgid "Data"
+msgstr ""
+
+#: googleproductfeed.php:1158
+msgid "Add To Google Products Feed"
+msgstr "Legg til i Google Produkt Strøm"
+
+#: googleproductfeed.php:1234
+#: productfeed.php:624
+msgid "Create Manual Export File"
+msgstr "Lag en Manuell Eksporteringsfil"
+
+#: helperfunctions.php:1078
+msgid "More Details"
+msgstr "Flere Detaljer"
+
+#: helperfunctions.php:1079
+msgid "Add To Cart"
+msgstr "Legg til Kurv"
+
+#: inventory.php:55
+msgid "Inventory Management"
+msgstr "Lagerstyring"
+
+#: inventory.php:55
+msgid "Inventory"
+msgstr "Lager"
+
+#: inventory.php:67
+msgid "Your New Inventory Levels Have Been Saved."
+msgstr "Dine Nye Lager Nivåer er Lagret."
+
+#: inventory.php:70
+msgid "Import completed: %s records updated."
+msgstr "Importering Komplett: %s filer oppdatert."
+
+#: inventory.php:81
+#: inventory.php:92
+msgid "Variation"
+msgstr "Variasjon"
+
+#: inventory.php:83
+#: inventory.php:94
+msgid "Stock Lvl"
+msgstr "Lager Nivå"
+
+#: inventory.php:152
+#: subscriptions.php:334
+msgid "Save Changes"
+msgstr "Lagre Forandringer"
+
+#: inventory.php:164
+msgid "Import New Inventory Values"
+msgstr "Importer nye Lager Verdier"
+
+#: inventory.php:176
+msgid "Update Inventory Values"
+msgstr "Oppdater Lager Verdier"
+
+#: orders.php:91
+msgid "Order Management"
+msgstr "Ordre Behandling"
+
+#: orders.php:154
+msgid "Manage Orders"
+msgstr "Behandle Order"
+
+#: orders.php:167
+msgid "Transaction Status"
+msgstr "Betalings Status"
+
+#: orders.php:170
+msgid "Unfilled"
+msgstr "Ikke Utfylt"
+
+#: orders.php:173
+msgid "Filled"
+msgstr "Utfylt"
+
+#: orders.php:176
+#: orders.php:189
+#: orders.php:202
+#: subscriptions.php:89
+msgid "Both"
+msgstr "Begge"
+
+#: orders.php:180
+msgid "Datafeed Status"
+msgstr "Datastrøm Status"
+
+#: orders.php:183
+msgid "Fed"
+msgstr "Matet"
+
+#: orders.php:186
+msgid "Unfed"
+msgstr "Umatet"
+
+#: orders.php:193
+msgid "Test Transactions"
+msgstr "Test Betalinger"
+
+#: orders.php:196
+msgid "Live"
+msgstr ""
+
+#: orders.php:199
+msgid "Test"
+msgstr ""
+
+#: orders.php:206
+#: orders.php:409
+msgid "Order ID"
+msgstr "Ordre ID"
+
+#: orders.php:210
+#: orders.php:435
+msgid "Order Total"
+msgstr "Ordre Total"
+
+#: orders.php:214
+msgid "Coupon Code"
+msgstr "Kupong Koder"
+
+#: orders.php:224
+#: subscriptions.php:123
+msgid "Option Name"
+msgstr "Navn Valg"
+
+#: orders.php:238
+msgid "Date Range"
+msgstr "Dato Rekkevidde"
+
+#: orders.php:239
+#: subscriptions.php:138
+#: subscriptions.php:144
+#: subscriptions.php:150
+msgid "to"
+msgstr "til"
+
+#: orders.php:260
+msgid "Shipping State"
+msgstr "Frakt Fylke"
+
+#: orders.php:263
+msgid "Customer IP"
+msgstr "Kundens IP"
+
+#: orders.php:268
+msgid "Show Orders"
+msgstr "Vis Ordrer"
+
+#: orders.php:269
+msgid "Print Receipts"
+msgstr "Skriv ut Kvittering"
+
+#: orders.php:271
+msgid "Export CSV"
+msgstr "Eksporter CSV"
+
+#: orders.php:272
+msgid "Export Tab Delimeted"
+msgstr "Eksporter Tab Inndelt"
+
+#: orders.php:273
+msgid "Export to UPS"
+msgstr "Ekporter til UPS"
+
+#: orders.php:277
+msgid "Submit"
+msgstr "Send"
+
+#: orders.php:278
+msgid "Reset"
+msgstr "Nullstill"
+
+#: orders.php:316
+#: subscriptions.php:187
+msgid "ERROR"
+msgstr "FEIL"
+
+#: orders.php:337
+#: orders.php:347
+msgid "Transaction ID"
+msgstr "Transaksjons ID"
+
+#: orders.php:338
+msgid "Order Date"
+msgstr "Ordre Dato"
+
+#: orders.php:339
+#: orders.php:349
+#: subscriptions.php:208
+#: subscriptions.php:219
+#: subscriptions.php:275
+msgid "Customer"
+msgstr "Kunde"
+
+#: orders.php:340
+#: orders.php:350
+msgid "Total"
+msgstr "Total"
+
+#: orders.php:348
+msgid "OrderDate"
+msgstr "Ordre Dato"
+
+#: orders.php:378
+msgid "FoxyCart Receipt"
+msgstr "FoxyCart Kvittering"
+
+#: orders.php:381
+msgid "View Order"
+msgstr "Se Ordrer"
+
+#: orders.php:382
+msgid "Printable Receipt"
+msgstr "Utskriftsbare Kvitteringer"
+
+#: orders.php:382
+msgid "Receipt"
+msgstr "Kvittering"
+
+#: orders.php:390
+msgid "Un-Archive"
+msgstr "Ikke Arkiver"
+
+#: orders.php:392
+msgid "Archive"
+msgstr "Arkiver"
+
+#: orders.php:407
+msgid "Transaction Details"
+msgstr "Transaksjons Detaljer"
+
+#: orders.php:414
+msgid "MinFraud Score"
+msgstr "Svindel Resultat"
+
+#: orders.php:415
+msgid "Shipping Type"
+msgstr "Frakt Metode"
+
+#: orders.php:420
+msgid "Order Details"
+msgstr "Ordre Detaljer"
+
+#: orders.php:422
+msgid "Subtotal"
+msgstr "Delsum"
+
+#: orders.php:434
+#: orders.php:481
+msgid "Shipping"
+msgstr "Frakt"
+
+#: orders.php:480
+msgid "Method"
+msgstr "Metode"
+
+#: orders.php:539
+msgid "Qty"
+msgstr "Ant"
+
+#: orders.php:546
+msgid "Subscription Frequency"
+msgstr "Abbonement Frekvens"
+
+#: orders.php:547
+msgid "Subscription Start Date"
+msgstr "Start Abbonement"
+
+#: orders.php:548
+msgid "Subscription Next Date"
+msgstr "Stopp Abbonement"
+
+#: productfeed.php:298
+msgid "Authenticate Now"
+msgstr "Autoriser Nå"
+
+#: productfeed.php:403
+msgid "Login Now"
+msgstr "Logg inn Nå"
+
+#: settings-page.php:101
+msgid "Settings"
+msgstr "Innstillinger"
+
+#: settings-page.php:116
+msgid "Your Settings Have Been Saved."
+msgstr "Dine Innstillinger er Lagret."
+
+#: settings-page.php:121
+msgid "The setup prompt has been hidden. You can always use the setup wizard by clicking the link above or just configure the settings on this page."
+msgstr "Spørringen er blitt gjemt. Du kan altids bruke oppsett veiviseren ved å trykke linken over eller bare forandre innstillingene på denne siden. "
+
+#: settings-page.php:125
+msgid "<strong>Congratulations!</strong> You are all set up and ready to go. You may now review all the settings on this page and start entering products."
+msgstr "<strong>Gratulerer!</strong> Alt er klart. Du kan nå se over innstillingene på denne siden og begynne å legge inn produkter."
+
+#: settings-page.php:128
+msgid "<strong>Warning:</strong> You are using PHP version %s. FoxyShop requires PHP version 5.1.2 or higher to utilize the required hmac_has() functions. Without upgrading you will experience problems adding items to the cart and completing other tasks. After upgrading, make sure that you reset your API key (on the FoxyShop Tools page) to ensure that you have a fully secure key."
+msgstr "<strong>Advarsel:</strong> Du bruker PHP versjon %s. FoxyShop krever at du bruker PHP versjon 5.1.2 eller høyere for å utnytte hmac_has() funksjonene. Uten oppgradering vil du oppleve problemer når varer blir lagt til handlekurven og andre oppgaver. Etter oppdatering er det viktig at du nullstiller API nøkkelen (på FoxyShop verktøy siden) for å være sikker på at du har en fullverdig sikkerhetsnøkkel."
+
+#: settings-page.php:131
+msgid "<strong>Warning:</strong> Your theme does not appear to be using header.php or footer.php. Without these files FoxyShop pages will show up unstyled. This error can often show up if you are using a WordPress framework that is bypassing the get_header() and get_footer() functions."
+msgstr "<strong>Advarsel:</strong> Det ser ikke ut som temaet ditt ikke bruker header.php eller footer.php. Uten disse filene vil FoxyShop sidene være udesignet. Denne feilen vil ofte vises hvis du bruker Wordpress rammeverk som hopper over get_header() og get_footer() funksjonene."
+
+#: settings-page.php:167
+msgid "FoxyShop Documentation"
+msgstr "FoxyShop Dokumentasjon"
+
+#: settings-page.php:168
+msgid "FoxyCart Information"
+msgstr "FoxyCart Informasjon"
+
+#: settings-page.php:169
+msgid "FoxyCart Wiki"
+msgstr ""
+
+#: settings-page.php:170
+msgid "FoxyCart Admin Panel"
+msgstr "FoxyCart Administrasjons Panel"
+
+#: settings-page.php:184
+msgid "Setup Information"
+msgstr "Informasjon Oppsett"
+
+#: settings-page.php:190
+msgid "API Key"
+msgstr "API Nøkkel"
+
+#: settings-page.php:197
+msgid "Datafeed URL"
+msgstr "Datastrøm URL"
+
+#: settings-page.php:204
+msgid "SSO Endpoint"
+msgstr ""
+
+#: settings-page.php:210
+msgid "Template Path"
+msgstr ""
+
+#: settings-page.php:216
+msgid "Sitemap"
+msgstr "Sidekart"
+
+#: settings-page.php:234
+msgid "FoxyCart Settings"
+msgstr "FoxyCart Innstillinger"
+
+#: settings-page.php:249
+msgid "Your FoxyCart Domain"
+msgstr "Ditt FoxyCart Domene"
+
+#: settings-page.php:258
+msgid "FoxyCart Version"
+msgstr "FoxyCart Versjon"
+
+#: settings-page.php:271
+msgid "Skip FoxyCart Includes on These Pages"
+msgstr "Hopp over FoxyCart Filer på Denne Siden"
+
+#: settings-page.php:279
+msgid "Automatically Insert jQuery %s from Google CDN"
+msgstr "Sett inn jQuery %s automatisk fra Google CDN"
+
+#: settings-page.php:285
+#: settings-page.php:332
+#: settings-page.php:359
+#: settings-page.php:548
+msgid "Save All Settings"
+msgstr "Lagre Alle Innstillinger"
+
+#: settings-page.php:293
+msgid "Display Settings"
+msgstr "Visnings Innstillinger"
+
+#: settings-page.php:299
+msgid "Sorting"
+msgstr "Sortering"
+
+#: settings-page.php:311
+msgid "Per Page"
+msgstr "Per Side"
+
+#: settings-page.php:317
+msgid "What To Show if No Image Is Loaded"
+msgstr "Hva skal vises når bilde ikke er lastet"
+
+#: settings-page.php:319
+msgid "Default Image"
+msgstr "Standard  Bilde"
+
+#: settings-page.php:321
+msgid "Custom Image"
+msgstr "Eget Bilde"
+
+#: settings-page.php:323
+msgid "Don't Show a Default Image"
+msgstr "Ikke vis standard bilde"
+
+#: settings-page.php:339
+msgid "Browser Title Bar Settings"
+msgstr "Innstillinger for tittel nettleser"
+
+#: settings-page.php:347
+msgid "All Categories"
+msgstr "Alle Kategorier"
+
+#: settings-page.php:349
+msgid "Single Category"
+msgstr "Singel Kategori"
+
+#: settings-page.php:353
+msgid "Search Results"
+msgstr "Søke Resultater"
+
+#: settings-page.php:366
+msgid "Advanced Settings"
+msgstr "Avanserte Innstillinger"
+
+#: settings-page.php:373
+msgid "FoxyCart Categories"
+msgstr "FoxyCart Kategorier"
+
+#: settings-page.php:384
+msgid "Enable Multi-Ship"
+msgstr "Muliggjør Multi-Frakt"
+
+#: settings-page.php:390
+msgid "Relation"
+msgstr "Relasjon"
+
+#: settings-page.php:392
+msgid "Enable Related %s (Custom)"
+msgstr "Muliggjør Relaterte %s (Tilpassede)"
+
+#: settings-page.php:397
+msgid "Enable Related %s (Tags)"
+msgstr "Muliggjør Relaterte %s (Tagger)"
+
+#: settings-page.php:403
+msgid "Enable Bundled"
+msgstr "Muliggjør Samlede"
+
+#: settings-page.php:408
+msgid "Enable Add-On"
+msgstr "Muliggjør Tillegg"
+
+#: settings-page.php:416
+msgid "Enable Subscriptions"
+msgstr "Muliggjør Abbonement"
+
+#: settings-page.php:423
+msgid "Enable WordPress Single-Sign-On"
+msgstr "Muliggjør Wordpress singleinnlogging"
+
+#: settings-page.php:427
+msgid "SSO Type"
+msgstr ""
+
+#: settings-page.php:430
+msgid "WordPress account optional"
+msgstr "Valgfri Wordpress Konto"
+
+#: settings-page.php:430
+msgid "Require WordPress account to check out"
+msgstr "Krever Wordpress Konto for utsjekking"
+
+#: settings-page.php:430
+msgid "Account required on product-by-product basis"
+msgstr "Krever konto på produkt-til-produkt basis"
+
+#: settings-page.php:437
+msgid "Create/Update WordPress User After Checkout"
+msgstr "Lage/Oppdater Wordpress Bruker etter utsjekking"
+
+#: settings-page.php:438
+msgid "The datafeed must be enabled at FoxyCart for this feature to work properly."
+msgstr "Datastrømmen må være avkrysset for at denne funksjonen skal virke."
+
+#: settings-page.php:447
+msgid "Manage Inventory Levels"
+msgstr "Rediger Lager Nivåer"
+
+#: settings-page.php:450
+msgid "Default Inventory Alert Level"
+msgstr "Standard Nivå på Alarm Lager"
+
+#: settings-page.php:451
+msgid "Send Email to Admin When Alert Level Reached"
+msgstr "Send epost til admin når lager nivået er nådd"
+
+#: settings-page.php:457
+msgid "Default Weight Type"
+msgstr "Standard Vekt Type"
+
+#: settings-page.php:459
+msgid "English"
+msgstr "Engelsk"
+
+#: settings-page.php:461
+msgid "Metric"
+msgstr "Metrisk"
+
+#: settings-page.php:466
+msgid "Default Weight"
+msgstr "Standard Vekt"
+
+#: settings-page.php:478
+msgid "Currency Locale Code"
+msgstr "Lokal Myntenhet"
+
+#: settings-page.php:479
+msgid "If you would like to use something other than $ for your currency, enter your locale code here. For the British Pound, enter \"en_GB\"."
+msgstr "Hvis du ønsker annet enn $ for myntenhet, skriv inn den lokale koden her. For Norske Kroner, skriv inn \"nb_NO\"."
+
+#: settings-page.php:481
+msgid "Attention: you are using Windows which does not support internationalization. You will be limited to $ (en_US) or &pound; (en_GB)."
+msgstr "Vær oppmerksom: du bruker Windows som ikke støtter oversettelse. Du vil kun få $(en_US) eller &pound;(en_GB)."
+
+#: settings-page.php:487
+msgid "Hide Child %s From Parent Categories (recommended)"
+msgstr "Skjul under-%s fra hoved kategori (anbefalt)"
+
+#: settings-page.php:488
+msgid "By default, WordPress treats children a little differently than you would expect in that products in child categories also show up in parent categories. FoxyShop removes these products, but if you would like to have all %s from sub-categories show up in parent categories, uncheck this box."
+msgstr "Som standard, Wordpress behandler produkter som ligger i underkategorier annerledes enn det du kanskje forventer da de også vises i hovedkategorien. FoxyShop fjerner disse produktene, men hvis du ønsker alle produktene fra under-kategoriene også skal vises i hoved-kategorien, fjerner du avmerkingen i boksen."
+
+#: settings-page.php:493
+msgid "Google Analytics Code"
+msgstr "Google Analyseringskode"
+
+#: settings-page.php:494
+msgid "Enter your UA code here and Google Analytics tracking will be installed in the footer. Tracking will only be initiated if the visitor is not a logged-in WordPress user so that admin usage won't be tracked."
+msgstr "Skriv inn din UA kode her og Google Analytics sporing vil bli installert i bunnen på siden. Sporing vil bare være i bruk for brukere som ikke er logget inn slik at administrator av sidene ikke blir registert."
+
+#: settings-page.php:497
+msgid "Advanced Google Analytics Code"
+msgstr "Avansert Google Analyseringskode"
+
+#: settings-page.php:498
+msgid "Check this box if you are using the advanced FoxyCart Google Analytics Sync. We will put the appropriate code in your footer (but you'll still have to setup Google Analytics and your template)."
+msgstr "Kryss av denne boksen hvis du bruker den avanserte synkroniseringen fra Google. Vi putter tilhørende kode i bunnen på siden (men du må fortsatt sette opp Google Analyseringskode og dine maler)."
+
+#: settings-page.php:506
+msgid "Enable Google Product Feed Connection"
+msgstr "Muliggjør Google Produkt mating kobling"
+
+#: settings-page.php:507
+msgid "If checked, you will be able to create a feed suitable for submitting to Google Product Search."
+msgstr "Hvis avkrysset, du vil ha muligheten til å lage en mater tilpasset for innsending til Google Produkt Søk"
+
+#: settings-page.php:509
+msgid "Google Merchant Account ID"
+msgstr "Google Kjøpmanns konto ID"
+
+#: settings-page.php:511
+msgid "Enter your Google Merchant Account ID found in the Google Merchant Center."
+msgstr "Skriv inn din Google konto's ID som du finner i Google Admin"
+
+#: settings-page.php:518
+msgid "Show FoxyShop Stats on Dashboard"
+msgstr "Vis Statestikk på hovedsiden av Admin området"
+
+#: settings-page.php:524
+msgid "Generate %s Sitemap"
+msgstr "Generer Sidekart for %s "
+
+#: settings-page.php:525
+msgid "If checked, a sitemap file with all of your %s will be created in your root folder."
+msgstr "Hvis avkrysset, et sidekart-fil med alle %s vil bli laget i din root-mappe."
+
+#: settings-page.php:531
+msgid "Show Add to Cart Link on the Product Entry Page."
+msgstr "Vis Legg i Kurven link på produkt oppføringsside"
+
+#: settings-page.php:538
+msgid "Enable FoxyCart Downloadables Sync"
+msgstr "Muliggjør FoxyCart Nedlastbare Synkronisering"
+
+#: settings-page.php:539
+msgid "If checked, you will be able to select from a list of the downloadables loaded at FoxyCart to help set up your new downloadable %s."
+msgstr "Hvis avkrysset, vil du ha muligheten til å velge fra en liste av nedlastbare produkter lastet fra FoxyCart slik at du enkelt kan sette opp nye nedlastbare produkter. "
+
+#: setup-page.php:16
+#: setup-page.php:48
+msgid "FoxyShop Setup Wizard"
+msgstr "FoxyCart Veiviser for oppsett"
+
+#: setup-page.php:61
+msgid "Create New FoxyCart Account"
+msgstr "Lag Ny FoxyCart Konto"
+
+#: setup-page.php:65
+msgid "Login To FoxyCart Account"
+msgstr "Login til din FoxyCart konto"
+
+#: setup-page.php:77
+msgid "Step 1: Click on Store / Settings"
+msgstr "Steg 1: Trykk på Butikk / Innstillinger"
+
+#: setup-page.php:94
+msgid "Enter Your FoxyCart Domain"
+msgstr "Skriv inn ditt FoxyCart Domene"
+
+#: setup-page.php:121
+msgid "Step 2: Click on Store / Advanced"
+msgstr "Steg 2: Trykk på Butikk / Avansert"
+
+#: setup-page.php:151
+msgid "Save and Get Started!"
+msgstr "Lagre og Kjør Igang!"
+
+#: sso.php:92
+msgid "Please login before checking out."
+msgstr "Vennligst logg inn før utsjekking."
+
+#: sso.php:92
+msgid "Click here to register."
+msgstr "Trykk her for å registrere."
+
+#: sso.php:110
+msgid "FoxyCart User Data"
+msgstr "FoxyCart Bruker Data"
+
+#: sso.php:113
+msgid "FoxyCart Customer ID"
+msgstr "FoxyCart Kunde ID"
+
+#: sso.php:114
+msgid "Editing is not recommended"
+msgstr "Redigering er ikke anbefalt"
+
+#: sso.php:131
+msgid "FoxyCart Subscriptions"
+msgstr "FoxyCart Abonnementer"
+
+#: sso.php:137
+#: subscriptions.php:89
+#: subscriptions.php:292
+msgid "Active"
+msgstr "Aktiv"
+
+#: sso.php:138
+msgid "Actions"
+msgstr "Handlinger"
+
+#: sso.php:149
+msgid "Yes"
+msgstr "Ja"
+
+#: sso.php:150
+msgid "Update Info"
+msgstr "Oppdater Info"
+
+#: sso.php:150
+#: subscriptions.php:334
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: subscriptions.php:5
+msgid "Subscription Management"
+msgstr "Abonnements Behandling"
+
+#: subscriptions.php:75
+msgid "Manage Subscriptions"
+msgstr "Behandle Abonnement"
+
+#: subscriptions.php:86
+msgid "Subscription Type"
+msgstr "Abonnements Type"
+
+#: subscriptions.php:89
+msgid "Disabled"
+msgstr "Deaktivert"
+
+#: subscriptions.php:96
+msgid "Past Due Status"
+msgstr "Passert Uløps Status"
+
+#: subscriptions.php:99
+msgid "Show Past Due Only"
+msgstr "Vis bare utløpte"
+
+#: subscriptions.php:109
+msgid "Third Party ID"
+msgstr "Tredjeparts ID"
+
+#: subscriptions.php:113
+msgid "Last Transaction ID"
+msgstr "Siste Transaksjons ID"
+
+#: subscriptions.php:142
+#: subscriptions.php:301
+msgid "Next Transaction Date"
+msgstr "Neste Transaksjons Dato"
+
+#: subscriptions.php:210
+#: subscriptions.php:221
+msgid "Next Date"
+msgstr "Neste Dato"
+
+#: subscriptions.php:212
+#: subscriptions.php:223
+msgid "Past Due"
+msgstr "Forfalt"
+
+#: subscriptions.php:290
+msgid "Subscription Status"
+msgstr "Status Abonnement"
+
+#: subscriptions.php:294
+msgid "In-active"
+msgstr "Ikke Aktiv"
+
+#: subscriptions.php:313
+msgid "Past Due Amount"
+msgstr "Forfalt Beløp"
+
+#: subscriptions.php:317
+msgid "Update URL"
+msgstr "Oppdater URL"
+
+#: subscriptions.php:321
+msgid "Cancellation URL"
+msgstr "Avbrutt URL"
+
+#: subscriptions.php:325
+msgid "Transaction Template"
+msgstr "Transaksjons Mal"
+
+#: subscriptions.php:327
+msgid "Select Option Below"
+msgstr "Velg Under"
+
+#: themefiles/foxyshop-custom-upload.php:40
+msgid "Invalid File Type"
+msgstr "Ugyldig Fil Type"
+
+#: themefiles/foxyshop-custom-upload.php:48
+msgid "File Uploaded Successfuly."
+msgstr "Filopplasting Gjennomført."
+
+#: themefiles/foxyshop-custom-upload.php:48
+msgid "Click here to view."
+msgstr "Trykk for å se."
+
+#: tools-page.php:159
+msgid "Tools"
+msgstr "Verktøy"
+
+#: tools-page.php:186
+msgid "Your Settings Have Been Imported"
+msgstr "Dine Innstillinger er Importert"
+
+#: tools-page.php:189
+msgid "There was an error with your import settings and they could not be imported. The decrypted value was invalid."
+msgstr "En feil har skjedd under importeringen og ble ikke gjennomført. Krypteringsverdien var ugyldig."
+
+#: tools-page.php:192
+msgid "Your API Key Has Been Reset: \"%s\". Please Update FoxyCart With Your New Key."
+msgstr "Din API Nøkkel har blitt nullstilt: \"%s\". Vennligst Oppdater FoxyCart med din Nye Nøkkel."
+
+#: tools-page.php:195
+msgid "Scan for old variations has been successfully completed."
+msgstr "Skanning av gammel variasjoner er gjennomført."
+
+#: tools-page.php:198
+msgid "WordPress rewrite rules have been flushed."
+msgstr "Wordpress omskrivningsregler har blitt flushet."
+
+#: tools-page.php:201
+msgid "Saved variations have been successfully updated."
+msgstr "Lagrede variasjoner har blitt oppdatert."
+
+#: tools-page.php:208
+msgid "Your saved URLs have been cleared."
+msgstr "Dine Lagrede URL'er har blitt fjernet."
+
+#: tools-page.php:210
+msgid "The %s template has been successfully updated."
+msgstr "Produkt Malen har blitt oppdatert."
+
+#: tools-page.php:238
+msgid "Recommended Companion Plugins"
+msgstr "Anbefalte Innstikk"
+
+#: tools-page.php:314
+msgid "Import/Export FoxyShop Settings"
+msgstr "Import/Eksport Innstillinger"
+
+#: tools-page.php:321
+msgid "Copy String To Your Clipboard to Export FoxyShop Settings"
+msgstr "Kopier setningen til copytavlen for eksportering av FoxyShop Innstillingene"
+
+#: tools-page.php:328
+msgid "Paste Settings String to Import"
+msgstr "Lim Inn Innstillingene for Importering"
+
+#: tools-page.php:332
+msgid "Import Settings"
+msgstr "Importer Innstillinger"
+
+#: tools-page.php:353
+msgid "Misc Tools"
+msgstr "Tilleggs Verktøy"
+
+#: tools-page.php:366
+msgid "Update Cart Cache"
+msgstr "Oppdater Handlekurv Minne"
+
+#: tools-page.php:372
+msgid "Update Checkout Cache"
+msgstr "Oppdater Utsjekkings Minne"
+
+#: tools-page.php:378
+msgid "Update Receipt Cache"
+msgstr "Oppdater Kvitterings Minne"
+
+#: tools-page.php:392
+msgid "Flush Rewrite Rules"
+msgstr "Tøm Omskrivningsregler"
+
+#: tools-page.php:397
+msgid "Scan For Old Variations"
+msgstr "Søk etter gamle variasjoner"
+
+#: tools-page.php:402
+msgid "Reset API Key"
+msgstr "Nullstill API Nøkkel"
+
+#: tools-page.php:471
+#: tools-page.php:733
+msgid "Reference Name"
+msgstr "Referanse Navn"
+
+#: tools-page.php:473
+msgid "Displayed in Dropdown Menu"
+msgstr "Vis i Nedtrekks Meny"
+
+#: tools-page.php:526
+#: tools-page.php:813
+msgid "default is"
+msgstr "standard er"
+
+#: tools-page.php:585
+msgid "Save These Variations"
+msgstr "Lagre disse Variasjonene"
+
+#: tools-page.php:598
+msgid "Uninstall FoxyShop"
+msgstr "Avinnstaller FoxyShop"
+
+#: uploadprocessor.php:18
+msgid "unsupported file type"
+msgstr "filtypen støttes ikke"
+
+#: uploadprocessor.php:106
+msgid "invalid request"
+msgstr "ugyldig anmodning"
+
+#: widgetcode.php:15
+msgid "Show the contents of a FoxyShop %s category."
+msgstr "Vis innholdet av en FoxyShop %s kategori."
+
+#: widgetcode.php:17
+msgid "FoxyShop Category"
+msgstr "FoxyShop Kategori"
+
+#: widgetcode.php:103
+msgid "Max %s to Show"
+msgstr "Max %s i Visning"
+
+#: widgetcode.php:104
+msgid "optional"
+msgstr "valgfri"
+
+#: widgetcode.php:110
+msgid "Show Simple View"
+msgstr "Vis Enkel Visning"
+
+#: widgetcode.php:116
+msgid "Show Add To Cart Button"
+msgstr "Vis Legg i Kurv Knapp"
+
+#: widgetcode.php:120
+msgid "Show More Details Button"
+msgstr "Vi Mer Detaljer Knapp"
+
+#: widgetcode.php:135
+msgid "Show a link to view shopping cart."
+msgstr "Vis en link for visning av handlekurven."
+
+#: widgetcode.php:137
+msgid "FoxyShop Cart Link"
+msgstr "FoxyShop Handlekurv Link"
+
+#: widgetcode.php:177
+msgid "Your Shopping Cart"
+msgstr "Din Handlekurv"
+
+#: widgetcode.php:178
+msgid "View Cart"
+msgstr "Se Handlekurv"
+
+#: widgetcode.php:191
+msgid "Link Text:"
+msgstr "Link Tekst:"
+
+#: widgetcode.php:193
+msgid "Example"
+msgstr "F.eks."
+
+#: widgetcode.php:198
+msgid "Hide Link if Cart is Empty"
+msgstr "Ikke vis link hvis kurven er tom"
+
+#: widgetcode.php:212
+msgid "Show the FoxyShop category list."
+msgstr "Vis FoxyShop kategori liste."
+
+#: widgetcode.php:214
+msgid "FoxyShop Category List"
+msgstr "FoxyShop Kagegori Liste"
+
+#: widgetcode.php:283
+msgid "Depth"
+msgstr "Dybde"
+
+#: widgetcode.php:284
+msgid "(default: 1)"
+msgstr "(standard: 1)"
+
+#: widgetcode.php:303
+msgid "FoxyShop Statistics"
+msgstr "FoxyShop Statestikk"
+
+#: widgetcode.php:319
+msgid "Order History"
+msgstr "Ordre Historie"
+
+#: widgetcode.php:321
+msgid "Loading"
+msgstr "Laster"
+
+#: widgetcode.php:327
+msgid "Summary"
+msgstr "Oppsummering"
+
+#: widgetcode.php:383
+msgid "One Day"
+msgstr "En Dag"
+
+#: widgetcode.php:383
+#: widgetcode.php:384
+#: widgetcode.php:385
+msgid "Seven Days"
+msgstr "7 Dager"
+
+#: widgetcode.php:385
+msgid "30 Days"
+msgstr "30 Dager"
+
+#. Plugin Name of the plugin/theme
+msgid "FoxyShop"
+msgstr "KKshop"
+
+#. #-#-#-#-#  plugin.pot (FoxyShop 4.1.3)  #-#-#-#-#
+#. Plugin URI of the plugin/theme
+#. #-#-#-#-#  plugin.pot (FoxyShop 4.1.3)  #-#-#-#-#
+#. Author URI of the plugin/theme
+msgid "http://www.foxy-shop.com/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "FoxyShop is a full integration for FoxyCart and WordPress, providing a robust shopping cart and inventory management tool."
+msgstr "FoxyShop er en helintergrasjon  mellom Foxycart og Wordpress, noe som gir deg en solid nettbutikk og vare redigerings verktøy."
+
+#. Author of the plugin/theme
+msgid "SparkWeb Interactive, Inc."
+msgstr ""
+

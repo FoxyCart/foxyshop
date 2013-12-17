@@ -1,0 +1,455 @@
+/*
+------------ ATTENTION ------------
+DO NOT EDIT!
+If you need to edit any styles in this file, do not edit the version in the plugin directory. Overwrite the styles in your theme's CSS file or place a copy
+of this file in your template folder and edit it there. This will allow you to upgrade FoxyShop without breaking your customizations. More details here:
+http://www.foxy-shop.com/documentation/theme-customization/
+-----------------------------------
+*/
+
+
+
+
+/* ---------- Colors and Sizes to Update ------------ */
+
+/* Breadcrumbs Colors */
+#foxyshop_breadcrumbs {
+	background-color: #FBEEB2;
+	border: 1px solid #E3CD69;
+}
+
+/* border color for images */
+.foxyshop_product_image img {
+	border: 1px solid #ABABAB;
+}
+
+
+/* width of product listings */
+.foxyshop_product_list li.foxyshop_product_box {
+	width: 47%;
+}
+.foxyshop_product_list .foxyshop_product_image {
+	width: 100px;
+}
+.foxyshop_product_list .foxyshop_product_image img {
+	width: 100px;
+}
+.foxyshop_product_list .foxyshop_product_info {
+	width: 310px;
+	margin-bottom: 40px;
+}
+.foxyshop_product_list .foxyshop_product_info h2 {
+	margin-bottom: 5px;
+	margin-top: -3px;
+}
+
+/* price size and sale price color */
+.foxyshop_price {
+	font-size: 16px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+.foxyshop_saleprice {
+	color:  #FF0000;
+}
+
+/* button color and settings */
+.foxyshop_button {
+	background-color: #7D268A;
+	color: #FFFFFF;
+	border: 1px solid #591B62;
+	font-family: Arial;
+	font-size: 12px;
+}
+.foxyshop_button:hover {
+	background-color: #591b62;
+	color: #fff;
+}
+
+/* disabled button color and settings */
+.foxyshop_button.foxyshop_disabled {
+	background-color: #DFDFDF;
+	color: #CECECE;
+	border: 1px solid #CECECE;
+	font-family: Arial;
+	font-size: 12px;
+}
+.foxyshop_button.foxyshop_disabled:hover {
+	background-color: #DFDFDF;
+	color: #CECECE;
+}
+
+/* product page settings */
+.foxyshop_product .foxyshop_product_image {
+	float: left;
+	width: 320px;
+}
+.foxyshop_product .foxyshop_product_image img {
+	border: 1px solid #ABABAB;
+	display: block;
+}
+.foxyshop_product .foxyshop_product_info {
+	float: left;
+	width: 590px;
+}
+.foxyshop_slideshow_title {
+	font-size: 11px;
+	color: #ABABAB;
+}
+.foxyshop_slideshow li img {
+	border: 1px solid #7D268A;
+}
+.foxyshop_variations label {
+	width: 190px;
+}
+
+/* featured product settings */
+.foxyshop_featured_product_list .foxyshop_product_box {
+	background-color: #FBEEB2;
+	border: 1px solid #E3CD69;
+}
+
+/* related product settings (gray default) */
+.foxyshop_related_product_list {
+	background-color: #DFDFDF;
+	border: 1px solid #CECECE;
+}
+
+/* pagination colors (gray default) */
+#foxyshop_pagination a {
+	border: 1px solid #CECECE;
+	background-color: #DFDFDF;
+}
+#foxyshop_pagination a.current {
+	background-color: #CECECE;
+}
+#foxyshop_pagination a:hover {
+	background-color: #CECECE;
+}
+
+/* Inventory Colors and Settings */
+.foxyshop_stock_alert {
+	background-color: #FBEEB2;
+	border: 1px solid #E3CD69;
+	padding: 10px;
+	margin-bottom: 20px;
+}
+
+/* Product Sort Dropdown */
+#foxyshop_sort_dropdown {
+	float: right;
+}
+
+
+
+
+
+/* generic settings below */
+#foxyshop_container .clr, .foxyshop_category_widget .clr { clear: both; height: 1px; }
+
+
+
+/* ---------- Breadcrumbs ------------ */
+#foxyshop_breadcrumbs {
+	list-style: none;
+	padding: 5px;
+	margin: 0 0 15px 0;
+	overflow: auto;
+}
+#foxyshop_breadcrumbs li {
+	float: left;
+	margin: 0 10px 0 0;
+	list-style: none;
+}
+
+
+/* ---------- Product Category Page ------------ */
+.foxyshop_categories {
+	list-style: none outside;
+	padding: 0;
+	margin: 30px 0 0 0;
+	width: 100%;
+}
+.foxyshop_categories li {
+	float: left;
+	width: 30%;
+	margin: 0 20px 30px 0;
+}
+
+
+.foxyshop_product_list {
+	list-style: none outside;
+	padding: 0;
+	margin-top: 30px;
+	margin-bottom: 15px;
+	width: 100%;
+}
+.foxyshop_product_list li.foxyshop_product_box {
+	margin: 0 20px 20px 0;
+	float: left;
+}
+.foxyshop_product_list li.foxyshop_product_box .foxyshop_price {
+	float: left;
+	margin-bottom: 10px;
+	margin-right: 10px;
+}
+.foxyshop_product li.foxyshop_product_box .foxyshop_price {
+	float: left;
+	margin-bottom: 10px;
+	margin-right: 10px;
+}
+.foxyshop_product_list .foxyshop_product_image {
+	margin: 0 14px 10px 0;
+	float: left;
+}
+.foxyshop_product_list .foxyshop_product_image img {
+	display: block;
+}
+.foxyshop_product_list .foxyshop_product_info {
+	float: left;
+}
+.foxyshop_product_list .foxyshop_product_info p {
+	margin: 0 0 10px 0;
+}
+
+
+/* ---------- Product Page ------------ */
+.foxyshop_edit_product {
+	float: right;
+}
+.foxyshop_product_info ul {
+	padding-bottom: 15px;
+}
+.foxyshop_product_info li {
+	list-style: disc outside;
+	margin-left: 27px;
+	padding-left: 1px;
+	margin-bottom: 7px;
+}
+input[type="text"].foxyshop_quantity {
+	width: 30px;
+}
+.foxyshop_oldprice {
+	text-decoration: line-through;
+	margin-right: 10px;
+}
+.foxyshop_button {
+	float: left;
+	text-decoration: none;
+	padding: 2px 12px;
+	margin-right: 15px;
+	font-weight: bold;
+	cursor: pointer;
+}
+.foxyshop_button:hover {
+	text-decoration: none;
+}
+.dkey {
+	display: none;
+}
+.foxyshop_social_media_buttons {
+	margin-top: 15px;
+}
+.foxyshop_social_media_buttons iframe {
+	float: left;
+}
+
+
+/* ---------- Slideshow ------------ */
+.foxyshop_slideshow_title {
+	clear: both;
+	margin: 10px 0 2px 0;
+}
+.foxyshop_slideshow {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.foxyshop_slideshow li {
+	list-style: none;
+	margin: 0 5px 8px 0;
+	float: left;
+}
+.foxyshop_slideshow li img {
+	width: 50px;
+	display: block;
+	border: 1px solid #7D268A;
+}
+.foxyshop_product .foxyshop_product_image {
+	margin-bottom: 20px;
+}
+
+
+
+
+/* ---------- Variations and Custom Upload Features ------------ */
+.foxyshop_variations label {
+	float: left;
+	text-align: right;
+	margin: 3px 7px 10px 0;
+}
+.foxyshop_variations input, .foxyshop_variations select {
+	float: left;
+}
+.foxyshop_short_element_holder {
+	float: left;
+	margin: 3px 7px 10px 0;
+}
+.foxyshop_short_element_holder input {
+	float: none;
+	margin-left: 0;
+}
+.foxyshop_radio_wrapper label, .foxyshop_radio_wrapper input {
+	margin: 3px 7px 0 0;
+}
+label.foxyshop_no_width {
+	width: auto;
+}
+.foxyshop_radio_wrapper .foxyshop_short_element_holder {
+	margin: 0;
+}
+.foxyshop_radio_wrapper {
+	margin-bottom: 10px;
+}
+.foxyshop_radio_title {
+	clear: both;
+	font-weight: bold;
+}
+.foxyshop_uploaded_file img {
+	max-width: 400px;
+	max-height: 400px;
+}
+.foxyshop_custom_upload_container object, .foxyshop_custom_upload_container embed {
+	float: left;
+	margin-bottom: 10px;
+}
+.foxyshop_custom_upload_container p {
+	margin-left: 196px;
+	clear: both;
+}
+.foxyshop_custom_upload_container .uploadifyQueue {
+	clear: both;
+}
+.foxyshop_uploaded_file {
+	margin-bottom: 10px;
+}
+.shipto_name {
+	clear: both;
+}
+.foxyshop_descriptionfield_title {
+	font-weight: bold;
+}
+.foxyshop_descriptionfield_text {
+	margin-bottom: 10px;
+}
+
+
+/* ---------- Featured Product ------------ */
+.foxyshop_featured_product_list .foxyshop_product_box {
+	margin-bottom: 15px;
+	padding: 5px;
+}
+.foxyshop_featured_product_list .foxyshop_product_image {
+	float: left;
+	width: 50px;
+	margin-right: 10px;
+}
+.foxyshop_featured_product_list .foxyshop_product_image img {
+	width: 50px;
+	display: block;
+}
+.foxyshop_featured_product_list .foxyshop_product_info {
+	width: 205px;
+	float: left;
+}
+.foxyshop_featured_product_list .foxyshop_product_info h2 {
+	font-size: 16px;
+	margin-bottom: 0;
+}
+
+
+/* ---------- Related Product ------------ */
+.foxyshop_related_product_list {
+	padding: 5px;
+	margin-top: 40px;
+	clear: both;
+}
+.foxyshop_related_product_list li.titleline {
+	margin: 0 0 5px 0;
+	padding: 0;
+}
+.foxyshop_related_product_list li.titleline h3 {
+	line-height: normal;
+}
+.foxyshop_related_product_list li {
+	margin: 0;
+	list-style: none;
+}
+.foxyshop_related_product_list .foxyshop_product_box {
+	margin-bottom: 0;
+	padding: 5px;
+}
+.foxyshop_product .foxyshop_related_product_list .foxyshop_product_image {
+	float: left;
+	width: 50px;
+	margin-right: 10px;
+}
+.foxyshop_related_product_list .foxyshop_product_image img {
+	width: 50px;
+	display: block;
+}
+.foxyshop_related_product_list .foxyshop_product_info {
+	float: left;
+	width: 485px;
+}
+.foxyshop_related_product_list .foxyshop_product_info h2 {
+	font-size: 16px;
+	margin-bottom: 0;
+}
+
+
+/* ---------- Category Widget ------------ */
+.foxyshop_category_widget li {
+	width: auto;
+}
+.foxyshop_category_widget .foxyshop_featured_product_list {
+	clear: both;
+}
+.foxyshop_category_widget .foxyshop_product_box {
+	clear: both;
+}
+
+/* ---------- Pagination ------------ */
+#foxyshop_pagination {
+	clear: both;
+}
+#foxyshop_pagination a {
+	float: left;
+	margin-right: 4px;
+	padding: 3px 5px;
+	text-decoration: none;
+}
+
+/* ---------- Addon Products ------------ */
+.foxyshop_addon_container {
+	clear: both;
+	overflow: auto;
+}
+.foxyshop_addon_checkbox {
+	float: left;
+	margin-bottom: 10px;
+}
+.foxyshop_addon_container label.addon_main_label {
+	float: left;
+	width: 250px;
+}
+.foxyshop_addon_container .foxyshop_price {
+	float: left;
+	width: 130px;
+	font-weight: normal;
+	margin: auto;
+	font-size: inherit;
+}
+.foxyshop_addon_container .foxyshop_price {
+
+}
