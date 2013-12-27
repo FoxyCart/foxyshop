@@ -415,9 +415,6 @@ body label.variationtypelabel {
 #foxyshop_version {
 	min-width: 80px;
 }
-.widefat th:last-child, .widefat th:last-child td {
-	border-bottom: 0 none;
-}
 #foxyshop_settings_wrap select {
 	float: left;
 	margin-top: 2px;
