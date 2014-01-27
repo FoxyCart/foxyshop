@@ -68,6 +68,11 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Changelog ==
 
+= 4.4.5-dev1 =
+* Adding full and medium size image type filters
+* Updating max_quantity calculation
+* Open validation for bundled product images
+
 = 4.4.4 =
 * Changing the Manage Inventory page to use ajax-based saving
 * Trim individual variation lines

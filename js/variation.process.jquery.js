@@ -148,10 +148,11 @@ jQuery(document).ready(function($){
 			//Cloud-zoom
 			if (typeof window.foxyshop_cloudzoom_image_change == 'function') {
 				foxyshop_cloudzoom_image_change(new_ikey);
+				$("#foxyshop_cart_product_image_" + current_product_id).val(ikey[new_ikey][1]);
 
 			//Replace Image
 			} else {
-				$("#foxyshop_cart_product_image_" + current_product_id).attr("name",'image'+ikey[new_ikey][5]).val(ikey[new_ikey][1]);
+				$("#foxyshop_cart_product_image_" + current_product_id).val(ikey[new_ikey][1]);
 			}
 
 			//Plugin Function Here
@@ -176,6 +177,8 @@ jQuery(document).ready(function($){
 			original_max_quantity = $("#original_quantity_max_" + current_product_id).val();
 			original_max_quantity_hash = $("#original_quantity_max_" + current_product_id).attr("rel");
 			if (!foxyshop_allow_backorder && newcount < original_max_quantity) {
+				$("#fs_quantity_max_" + current_product_id).val(newcount);
+			} else if (!foxyshop_allow_backorder && original_max_quantity == 0) {
 				$("#fs_quantity_max_" + current_product_id).val(newcount);
 			} else if (!foxyshop_allow_backorder && newcount >= original_max_quantity && original_max_quantity > 0) {
 				$("#fs_quantity_max_" + current_product_id).val(original_max_quantity);
