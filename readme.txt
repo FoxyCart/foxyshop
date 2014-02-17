@@ -3,7 +3,7 @@ Contributors: sparkweb
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2AHG2QMABF8SG
 Tags: foxycart, shopping, cart, inventory, management, ecommerce, selling, subscription, foxy
 Requires at least: 3.1
-Tested up to: 3.8
+Tested up to: 3.8.1
 Stable tag: 4.4.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -68,10 +68,12 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Changelog ==
 
-= 4.4.5-dev1 =
+= 4.4.5-dev2 =
 * Adding full and medium size image type filters
 * Updating max_quantity calculation
 * Open validation for bundled product images
+* Adding filters for adjusting all prices and variations
+* Updated to jQuery 1.11.0
 
 = 4.4.4 =
 * Changing the Manage Inventory page to use ajax-based saving

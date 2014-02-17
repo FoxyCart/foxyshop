@@ -179,6 +179,10 @@ function foxyshop_setup_product($thepost = false, $shortcut = false) {
 		$new_product['price'] = number_format((double)get_post_meta($thepost->ID,'_price', 1),FOXYSHOP_DECIMAL_PLACES,".","");
 	}
 
+	//Price Filters
+	$new_product['originalprice'] = apply_filters("foxyshop_price_adjustment", $new_product['originalprice']);
+	$new_product['price'] = apply_filters("foxyshop_price_adjustment", $new_product['price']);
+
 	//Extra Cart Parameters
 	$fields = array('cart','empty','coupon','redirect','output','_cart','_empty','_coupon');
 	foreach ($fields as $fieldname) {
@@ -192,8 +196,6 @@ function foxyshop_setup_product($thepost = false, $shortcut = false) {
 
 	return $new_product;
 }
-
-
 
 //Starts the form
 function foxyshop_start_form() {
@@ -440,7 +442,7 @@ function foxyshop_run_variations($variationValue, $variationName, $showPriceVari
 		$code = "";
 		$codeadd = "";
 		$price_change_multiplier = pow(10, FOXYSHOP_DECIMAL_PLACES);
-		$val = trim($val);
+		$val = apply_filters("foxyshop_variation_adjustment", trim($val));
 		if (strpos($val,"*") !== false) {
 			$val = str_replace("*","",$val);
 			if ($variationType == "dropdown") {
@@ -530,6 +532,7 @@ function foxyshop_run_variations($variationValue, $variationName, $showPriceVari
 	}
 	return $write1;
 }
+
 
 function foxyshop_add_spaces($str) {
 	return str_replace(" ", "_", $str);
