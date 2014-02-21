@@ -249,7 +249,7 @@ function foxyshop_google_products_act() {
 	if (isset($_GET['googleprodlogout'])) {
 		$foxyshop_settings['google_product_auth'] = "";
 		update_option("foxyshop_settings", $foxyshop_settings);
-		header('location: edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page');
+		wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page');
 		die;
 	}
 
@@ -777,11 +777,11 @@ function foxyshop_manage_google_feed() {
 			die;
 		}
 
-		header('location: edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1'.$error);
+		wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1'.$error);
 		die;
 
 	}
 
-	header('location: edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&error='. urlencode("Nothing to do. Unmatched products cannot be updated or renewed."));
+	wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&error='. urlencode("Nothing to do. Unmatched products cannot be updated or renewed."));
 	die;
 }

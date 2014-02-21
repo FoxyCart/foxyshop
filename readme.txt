@@ -73,6 +73,8 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 * Updating max_quantity calculation
 * Open validation for bundled product images
 * Adding filters for adjusting all prices and variations
+* Adding filter for default wp user role
+* Allowing price changes to still be enforces with v: variation modifier
 * Updated to jQuery 1.11.0
 
 = 4.4.4 =

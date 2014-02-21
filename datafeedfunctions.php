@@ -192,7 +192,7 @@ function foxyshop_datafeed_user_update($xml) {
 					'user_nicename' => $customer_first_name . ' ' . $customer_last_name,
 					'display_name' => $customer_first_name . ' ' . $customer_last_name,
 					'nickname' => $customer_first_name . ' ' . $customer_last_name,
-					'role' => 'subscriber'
+					'role' => apply_filters('foxyshop_default_user_role', 'subscriber'),
 				));
 				add_user_meta($new_user_id, 'foxycart_customer_id', $customer_id, true);
 

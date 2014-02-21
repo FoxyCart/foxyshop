@@ -437,6 +437,7 @@ function foxyshop_run_variations($variationValue, $variationName, $showPriceVari
 		$alternate_value = "NO-VALUE";
 		$sub_frequency = "NO-VALUE";
 		$pricechange = "";
+		$original_price_change = "";
 		$displaypricechange = "";
 		$priceset = "";
 		$code = "";
@@ -481,6 +482,7 @@ function foxyshop_run_variations($variationValue, $variationName, $showPriceVari
 			}
 
 			if ($pricechange != "") {
+				$original_price_change = $pricechange;
 				if (substr($pricechange,0,1) == '-') {
 					$displaypricechange = foxyshop_currency($pricechange);
 					$pricechange = $pricechange * $price_change_multiplier;
@@ -501,7 +503,12 @@ function foxyshop_run_variations($variationValue, $variationName, $showPriceVari
 				if ($alternate_value != preg_replace("/[^0-9]/","", $alternate_value)) $alternate_value = date("Ymd", strtotime($alternate_value));
 			}
 
-			if ($alternate_value != "NO-VALUE") $val = $alternate_value;
+			if ($alternate_value != "NO-VALUE") {
+				$val = $alternate_value;
+				if ($original_price_change != "") {
+					$val .= '{p' . $original_price_change . '}';
+				}
+			}
 			if ($priceset) $option_attributes .= ' priceset="' . $priceset . '"';
 			if ($pricechange) $option_attributes .= ' pricechange="' . $pricechange . '"';
 			if ($displaykey) $option_attributes .= ' displaykey="' . $displaykey . '"';
