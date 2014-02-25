@@ -68,9 +68,9 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Changelog ==
 
-= 4.4.5-dev2 =
+= 4.4.5-dev3 =
 * Adding full and medium size image type filters
-* Updating max_quantity calculation
+* Updating max_quantity calculation, removing hashes
 * Open validation for bundled product images
 * Adding filters for adjusting all prices and variations
 * Adding filter for default wp user role

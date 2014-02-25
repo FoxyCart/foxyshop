@@ -173,9 +173,7 @@ jQuery(document).ready(function($){
 		if (inventory_match_count >= 0) {
 			newcount = parseInt(arr_foxyshop_inventory[current_product_id][inventory_match_count][1]);
 			newalert = parseInt(arr_foxyshop_inventory[current_product_id][inventory_match_count][2]);
-			newhash = arr_foxyshop_inventory[current_product_id][inventory_match_count][3];
 			original_max_quantity = $("#original_quantity_max_" + current_product_id).val();
-			original_max_quantity_hash = $("#original_quantity_max_" + current_product_id).attr("rel");
 			if (!foxyshop_allow_backorder && newcount < original_max_quantity) {
 				$("#fs_quantity_max_" + current_product_id).val(newcount);
 			} else if (!foxyshop_allow_backorder && original_max_quantity == 0) {

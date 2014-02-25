@@ -219,7 +219,7 @@ function foxyshop_start_form() {
 
 	echo '<input type="hidden" name="quantity_min' . foxyshop_get_verification('quantity_min', '--OPEN--') . '" value="' . $product['quantity_min'] . '" id="fs_quantity_min_' . $product['id'] . '" />'."\n";
 	echo '<input type="hidden" name="quantity_max' . foxyshop_get_verification('quantity_max', '--OPEN--') . '" value="' . $product['quantity_max'] . '" id="fs_quantity_max_' . $product['id'] . '" />'."\n";
-	echo '<input type="hidden" name="x:quantity_max" value="' . $product['quantity_max_original'] . '" rel="' . foxyshop_get_verification('quantity_max') . '" id="original_quantity_max_' . $product['id'] . '" />'."\n";
+	echo '<input type="hidden" name="x:quantity_max" value="' . $product['quantity_max_original'] . '" id="original_quantity_max_' . $product['id'] . '" />'."\n";
 	if (FOXYSHOP_DECIMAL_PLACES != 2) echo '<input type="hidden" name="x:foxyshop_decimal_places" value="' . pow(10, FOXYSHOP_DECIMAL_PLACES) . '" id="foxyshop_decimal_places" />'."\n";
 
 	//Sub Frequency
@@ -1099,7 +1099,7 @@ function foxyshop_inventory_management($alertMessage = "There are %c of these it
 	echo "arr_foxyshop_inventory[" . $product['id'] . "] = [];\n";
 	$i = 0;
 	foreach ($product['inventory_levels'] as $ivcode => $iv) {
-		echo "arr_foxyshop_inventory[" . $product['id'] . "][" . $i . "] = ['" . str_replace("'","\'",$ivcode) . "','" . $iv['count'] . "','" . ($iv['alert'] == '' ? $foxyshop_settings['inventory_alert_level'] : $iv['alert']) . "','" . foxyshop_get_verification("quantity_max", $iv['count']) . "'];\n";
+		echo "arr_foxyshop_inventory[" . $product['id'] . "][" . $i . "] = ['" . str_replace("'","\'",$ivcode) . "','" . $iv['count'] . "','" . ($iv['alert'] == '' ? $foxyshop_settings['inventory_alert_level'] : $iv['alert']) . "'];\n";
 		$i++;
 	}
 	if ($stockStatus == -1 && !$allowBackOrder) {
