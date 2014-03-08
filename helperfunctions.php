@@ -1360,7 +1360,7 @@ function foxyshop_addon_products($show_qty = false, $before_entry = "", $after_e
 
 
 //Get Sort Order
-function foxyshop_sort_order_array() {
+function foxyshop_sort_order_array($category_id = 0) {
 	global $foxyshop_settings;
 	if (isset($_COOKIE['sort_key'])) $foxyshop_settings['sort_key'] = $_COOKIE['sort_key'];
 	if (isset($_GET['sort_key'])) $foxyshop_settings['sort_key'] = $_GET['sort_key'];
@@ -1374,6 +1374,8 @@ function foxyshop_sort_order_array() {
 		return array('orderby' => 'date', 'order' => 'ASC');
 	} elseif ($foxyshop_settings['sort_key'] == "date_desc") {
 		return array('orderby' => 'date', 'order' => 'DESC');
+	} elseif ($category_id > 0) {
+		return array('orderby' => 'meta_value_num', "meta_key" => "_foxyshop_menu_order_" . $category_id, 'order' => 'ASC');
 	} else {
 		return array('orderby' => 'menu_order', 'order' => 'ASC');
 	}

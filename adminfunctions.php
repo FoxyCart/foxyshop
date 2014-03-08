@@ -469,6 +469,11 @@ function foxyshop_activation() {
 			}
 		}
 
+		//Upgrade New Custom Sorting in 4.5
+		if (version_compare($foxyshop_settings['foxyshop_version'], '4.5', "<")) {
+			add_action('init', 'foxyshop_upgrade_menu_order');
+		}
+
 		//Load in New Defaults and Version Number
 		$foxyshop_settings = wp_parse_args($foxyshop_settings,$default_foxyshop_settings);
 		$foxyshop_settings['foxyshop_version'] = FOXYSHOP_VERSION;

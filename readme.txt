@@ -68,7 +68,8 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Changelog ==
 
-= 4.4.5-dev3 =
+= 4.5-dev1 =
+* Custom sorting by category
 * Adding full and medium size image type filters
 * Updating max_quantity calculation, removing hashes
 * Open validation for bundled product images

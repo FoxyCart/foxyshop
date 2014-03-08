@@ -1237,5 +1237,5 @@ function foxyshop_product_meta_save($post_id) {
 	//Save Action (For Other Integrations)
 	do_action("foxyshop_save_product", $post_id);
 
-	return $post_id;
+	return;
 }
