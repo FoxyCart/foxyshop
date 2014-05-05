@@ -21,6 +21,12 @@ remove_action('init', 'foxyshop_insert_jquery');
 //Do Special Google Analytics If Required
 add_action('wp_footer', 'foxyshop_insert_google_analytics_receipt');
 
+//Wrap RAW tags
+add_action('wp_head', 'foxycart_template_start_raw', 1);
+add_action('wp_head', 'foxycart_template_end_raw', 999);
+function foxycart_template_start_raw() { echo "{% raw %}"; }
+function foxycart_template_end_raw() { echo "{% endraw %}<style></style>"; }
+
 //Put Special CSS in Head
 add_action('wp_head', 'foxycart_template_header_includes');
 function foxycart_template_header_includes() {
