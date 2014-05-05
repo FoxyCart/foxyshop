@@ -90,13 +90,18 @@ function foxyshop_save_settings() {
 	//Set Setup Prompt If FoxyCart API Version Available
 	//if ($domain && version_compare($foxyshop_settings['version'], '1.1', ">=") && !$foxyshop_settings['api']['store_access_token']) add_option("foxyshop_setup_required", 1);
 
-	//Other Settings Treadted Specially
+	//Other Settings Treated Specially
 	$foxyshop_settings["default_weight"] = (int)$_POST['foxyshop_default_weight1'] . ' ' . (double)$_POST['foxyshop_default_weight2'];
 	$foxyshop_settings["products_per_page"] = ((int)$_POST['foxyshop_products_per_page'] == 0 ? -1 : (int)$_POST['foxyshop_products_per_page']);
 
 	//Cache the FoxyCart Includes
 	if (version_compare($foxyshop_settings['version'], '0.7.2', ">=") && $foxyshop_settings['domain']) {
-		$foxy_data = array("api_action" => "store_includes_get", "javascript_library" => "none", "cart_type" => "colorbox");
+		if (version_compare($foxyshop_settings['version'], '0.7.2', "<=")) {
+			$cart_type = "colorbox";
+		} else {
+			$cart_type = "pageslide";
+		}
+		$foxy_data = array("api_action" => "store_includes_get", "javascript_library" => "none", "cart_type" => $cart_type);
 		$foxy_data = apply_filters('foxyshop_store_includes_get', $foxy_data);
 		$foxy_response = foxyshop_get_foxycart_data($foxy_data);
 		$xml = simplexml_load_string($foxy_response, NULL, LIBXML_NOCDATA);

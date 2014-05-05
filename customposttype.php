@@ -1105,11 +1105,17 @@ function foxyshop_product_meta_save($post_id) {
 	if (isset($_POST['_sub_frequency'])) {
 		if ($_POST['_sub_frequency'] == "") {
 			foxyshop_save_meta_data('_sub_frequency', "");
-			foxyshop_save_meta_data('_sub_startdate', "");
-			foxyshop_save_meta_data('_sub_enddate', "");
 		} else {
 			foxyshop_save_meta_data('_sub_frequency', $_POST['_sub_frequency']);
+		}
+		if ($_POST['_sub_startdate'] == "") {
+			foxyshop_save_meta_data('_sub_startdate', "");
+		} else {
 			foxyshop_save_meta_data('_sub_startdate', $_POST['_sub_startdate']);
+		}
+		if ($_POST['_sub_enddate'] == "") {
+			foxyshop_save_meta_data('_sub_enddate', "");
+		} else {
 			foxyshop_save_meta_data('_sub_enddate', $_POST['_sub_enddate']);
 		}
 	}
