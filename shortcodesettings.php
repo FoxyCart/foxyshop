@@ -9,6 +9,9 @@ Examples:
 [productcategory name="category-slug"]
 Shows all products in a given category with full markup
 
+[showproduct id="product-id"]
+Shows all product content and markup
+
 [showproduct name="product-slug"]
 Shows all product content and markup
 
@@ -46,11 +49,18 @@ function foxyshop_showproduct_shortcode($atts, $content = null) {
 	global $product, $prod;
 	$original_product = $product;
 	extract(shortcode_atts(array(
-		"name" => ''
+		"id" => '',
+		"name" => '',
 	), $atts));
 
-	$prod = foxyshop_get_product_by_name($name);
-	if (!$prod || !$name) return "";
+	$prod = "";
+	if ($id) {
+		$prod = get_post($id, OBJECT);
+	} elseif ($name) {
+		$prod = foxyshop_get_product_by_name($name);
+	}
+
+	if (!$prod) return "";
 
 	ob_start();
 	foxyshop_include('single-product-shortcode');
@@ -103,8 +113,10 @@ function foxyshop_productlink_shortcode($atts, $content = null) {
 
 //Function To Get the Product Object From SLUG
 function foxyshop_get_product_by_name($post_name, $output = OBJECT) {
-    global $wpdb;
-    $post = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_type='foxyshop_product'", $post_name ));
-    if ($post) return get_post($post, $output);
-    return null;
+	global $wpdb;
+	$post = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_type='foxyshop_product'", $post_name ));
+	if ($post) {
+		return get_post($post, $output);
+	}
+	return null;
 }
