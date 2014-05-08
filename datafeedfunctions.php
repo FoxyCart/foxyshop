@@ -80,7 +80,7 @@ function foxyshop_datafeed_inventory_update($xml) {
 			if (!$product_code) continue;
 
 			//Get List of Target ID's for Inventory Update
-			$meta_list = $wpdb->get_results("SELECT post_id, meta_id, meta_value FROM $wpdb->postmeta WHERE meta_key = '_inventory_levels' AND meta_value LIKE '%" . mysql_real_escape_string($product_code) . "%'");
+			$meta_list = $wpdb->get_results("SELECT post_id, meta_id, meta_value FROM $wpdb->postmeta WHERE meta_key = '_inventory_levels' AND meta_value LIKE '%" . esc_sql($product_code) . "%'");
 			foreach ($meta_list as $meta) {
 				$productID = $meta->post_id;
 				$val = unserialize($meta->meta_value);

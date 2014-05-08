@@ -506,7 +506,7 @@ function foxyshop_check_rewrite_rules() {
 function foxyshop_inventory_count_update($code, $new_count, $product_id = 0, $force = true) {
 	global $wpdb;
 
-	$search_code = mysql_real_escape_string($code);
+	$search_code = esc_sql($code);
 
 	//Setup Search Query
 	$sql = "SELECT $wpdb->postmeta.`post_id`, $wpdb->postmeta.`meta_value`,  $wpdb->postmeta.`meta_key` ";
