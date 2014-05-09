@@ -69,8 +69,8 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 == Changelog ==
 
 = 4.5-dev1 =
-* Added FoxyCart 2.0 support
-* Custom sorting by category
+* Added FoxyCart 2.0 support (pending)
+* Custom product sorting by category
 * Adding full and medium size image type filters
 * Updating max_quantity calculation, removing hashes
 * Updating most fields to remove tags to solve validation issues
@@ -78,6 +78,8 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 * Adding filters for adjusting all prices and variations
 * Adding filter for default wp user role
 * Adding filter for Google Analytics ga.src
+* Adding filter for custom bundled product fields
+* Changing mysql_real_escape_string() to esc_sql()
 * Allowing price changes to still be enforced with v: variation modifier
 * Allowing id attribute when specifying 'showproduct' shortcode
 * Updated to jQuery 1.11.0

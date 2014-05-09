@@ -12,36 +12,36 @@ function foxyshop_insert_foxycart_files() {
 		} elseif ($foxyshop_settings['version'] == '0.7.2') {
 			echo "<!-- BEGIN FOXYCART FILES -->\n";
 			echo '<link rel="stylesheet" href="//cdn.foxycart.com/static/scripts/colorbox/1.3.18/style1_fc/colorbox.css" type="text/css" media="screen" charset="utf-8" />'."\n";
-			echo '<script src="//cdn.foxycart.com/' . str_replace('.foxycart.com','',$foxyshop_settings['domain']) . '/foxycart.colorbox.js" type="text/javascript" charset="utf-8"></script>'."\n";
+			echo '<script src="//cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.colorbox.js" type="text/javascript" charset="utf-8"></script>'."\n";
 			echo "<!-- END FOXYCART FILES -->\n";
 		} elseif ($foxyshop_settings['version'] == '1.0') {
 			echo "<!-- BEGIN FOXYCART FILES -->\n";
 			echo '<link rel="stylesheet" href="//cdn.foxycart.com/static/scripts/colorbox/1.3.19/style1_fc/colorbox.css" type="text/css" media="screen" charset="utf-8" />'."\n";
-			echo '<script src="//cdn.foxycart.com/' . str_replace('.foxycart.com','',$foxyshop_settings['domain']) . '/foxycart.colorbox.js" type="text/javascript" charset="utf-8"></script>'."\n";
+			echo '<script src="//cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.colorbox.js" type="text/javascript" charset="utf-8"></script>'."\n";
 			echo "<!-- END FOXYCART FILES -->\n";
 		} elseif ($foxyshop_settings['version'] == '1.1') {
 			echo "<!-- BEGIN FOXYCART FILES -->\n";
 			echo '<link rel="stylesheet" href="//cdn.foxycart.com/static/scripts/colorbox/1.3.23/style1_fc/colorbox.css?ver=1" type="text/css" media="screen" charset="utf-8" />'."\n";
-			echo '<script src="//cdn.foxycart.com/' . str_replace('.foxycart.com','',$foxyshop_settings['domain']) . '/foxycart.colorbox.js?ver=2" type="text/javascript" charset="utf-8"></script>'."\n";
+			echo '<script src="//cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.colorbox.js?ver=2" type="text/javascript" charset="utf-8"></script>'."\n";
 			echo "<!-- END FOXYCART FILES -->\n";
 		} elseif ($foxyshop_settings['version'] >= '2.0') {
 			echo "<!-- BEGIN FOXYCART FILES -->\n";
 			echo "<link rel=\"stylesheet\" href=\"//cdn.foxycart.com/static/scripts/pageslide/2.0/jquery.pageslide.css\">\n";
 			echo "<link rel=\"stylesheet\" href=\"//cdn.foxycart.com/static/frameworks/bootstrap/3.0.0-sass/css/bootstrap.fc.css\">\n";
 			echo "<link href=\"//cdn.foxycart.com/static/fonts/font-awesome-3.1.2/css/font-awesome.min.css\" rel=\"stylesheet\">\n";
-			echo "<link href=\"//cdn.foxycart.com/static/themes/responsive/styles.css\" rel=\"stylesheet\">\n";
-			echo "<script src=\"//cdn.foxycart.com/" . str_replace('.foxycart.com','',$foxyshop_settings['domain']) . "/foxycart.jsonp.pageslide.js?ver=1\" charset=\"utf-8\"></script>\n";
+			echo "<link href=\"//" . esc_attr($foxyshop_settings['domain']) . "/static/themes/responsive/styles.css\" rel=\"stylesheet\">\n";
+			echo "<script src=\"//cdn.foxycart.com/" . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . "/foxycart.jsonp.pageslide.js?ver=1\" charset=\"utf-8\"></script>\n";
 			echo "<!-- END FOXYCART FILES -->\n";
 		}
 	} elseif (version_compare($foxyshop_settings['version'], '0.7.1', "=")) {
 		echo "<!-- BEGIN FOXYCART FILES -->\n";
 		echo '<link rel="stylesheet" href="http://static.foxycart.com/scripts/colorbox/1.3.16/style1_fc/colorbox.css" type="text/css" media="screen" charset="utf-8" />'."\n";
-		echo '<script src="http://cdn.foxycart.com/' . str_replace('.foxycart.com','',$foxyshop_settings['domain']) . '/foxycart.complete.3.js" type="text/javascript" charset="utf-8"></script>'."\n";
+		echo '<script src="http://cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.complete.3.js" type="text/javascript" charset="utf-8"></script>'."\n";
 		echo "<!-- END FOXYCART FILES -->\n";
 	} else { // 0.7.0
 		echo "<!-- BEGIN FOXYCART FILES -->\n";
 		echo '<link rel="stylesheet" href="http://static.foxycart.com/scripts/colorbox/1.3.16/style1_fc/colorbox.css" type="text/css" media="screen" charset="utf-8" />'."\n";
-		echo '<script src="http://cdn.foxycart.com/' . str_replace('.foxycart.com','',$foxyshop_settings['domain']) . '/foxycart.complete.2.js" type="text/javascript" charset="utf-8"></script>'."\n";
+		echo '<script src="http://cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.complete.2.js" type="text/javascript" charset="utf-8"></script>'."\n";
 		echo "<!-- END FOXYCART FILES -->\n";
 	}
 }
@@ -254,12 +254,15 @@ function foxyshop_start_form() {
 
 	//Bundled Products
 	if ($product['bundled_products']) {
+		global $bundled_product;
+		$bundled_product = 1;
 		$original_product = $product;
 		$bundledproducts = get_posts(array('post_type' => 'foxyshop_product', "post__in" => explode(",",$product['bundled_products']), 'numberposts' => -1));
 		$num = 2;
 		foreach($bundledproducts as $bundledproduct) {
 			$product = foxyshop_setup_product($bundledproduct);
 			$fields = array('name','code','category','weight','discount_quantity_amount','discount_quantity_percentage','discount_price_amount','discount_price_percentage','sub_frequency','sub_startdate','sub_enddate');
+			$fields = apply_filters("bundled_product_fields", $fields, $product);
 			if (defined('FOXYSHOP_BUNDLED_PRODUCT_FULL_PRICE')) {
 				$fields[] = 'price';
 			} else {
@@ -273,6 +276,7 @@ function foxyshop_start_form() {
 			$num++;
 		}
 		$product = $original_product;
+		$bundled_product = 0;
 	}
 
 }
@@ -647,12 +651,15 @@ function foxyshop_product_link($AddText = "Add To Cart", $linkOnly = false, $var
 
 	//Bundled Products
 	if ($product['bundled_products']) {
+		global $bundled_product;
+		$bundled_product = 1;
 		$original_product = $product;
 		$bundledproducts = get_posts(array('post_type' => 'foxyshop_product', "post__in" => explode(",",$product['bundled_products']), 'numberposts' => -1));
 		$num = 2;
 		foreach($bundledproducts as $bundledproduct) {
 			$product = foxyshop_setup_product($bundledproduct);
 			$fields = array('name','code','category','weight','discount_quantity_amount','discount_quantity_percentage','discount_price_amount','discount_price_percentage','sub_frequency','sub_startdate','sub_enddate');
+			$fields = apply_filters("bundled_product_fields", $fields, $product);
 			if (defined('FOXYSHOP_BUNDLED_PRODUCT_FULL_PRICE')) {
 				$fields[] = "price";
 			} else {
@@ -668,6 +675,7 @@ function foxyshop_product_link($AddText = "Add To Cart", $linkOnly = false, $var
 			$num++;
 		}
 		$product = $original_product;
+		$bundled_product = 1;
 	}
 
 	if ($linkOnly) {
