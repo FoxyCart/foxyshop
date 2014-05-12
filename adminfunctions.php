@@ -105,6 +105,55 @@ function foxyshop_insert_google_analytics() {
 
 	//Advanced
 	if ($foxyshop_settings['ga_advanced']) {
+
+		//Universal
+		if ($foxyshop_settings['ga_type'] == "universal") {
+			?>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<script type="text/javascript" charset="utf-8">
+  fcc.events.cart.preprocess.add(function(e, arr) {
+    if (arr['cart'] == 'checkout' || arr['cart'] == 'updateinfo' || arr['output'] == 'json') {
+      return true;
+    }
+    if (arr['cart'] == 'checkout_paypal_express') {
+      ga('send', 'pageview', '/paypal_checkout', {
+        'hitCallback': function() {
+          jQuery.getJSON('https://' + document.domain + '/cart?' + fcc.session_get() + '&h:_fcpm=paypal|cart&output=json&callback=?', function(cart) {
+            fcc.events.cart.preprocess.resume();
+          });
+        }
+      });
+      return "pause";
+    }
+    return true;
+  });
+  fcc.events.cart.process.add_pre(function(e, arr) {
+    ga(function(tracker) {
+      jQuery.getJSON('https://' + storedomain + '/cart?' + fcc.session_get() + '&h:ga=' + escape(tracker.get('clientId')) + '&output=json&callback=?', function(data){
+        fcc.events.cart.process.resume();
+      });
+    });
+    return "pause";
+  });
+</script>
+<?php
+
+
+
+		//Legacy
+		} else {
+
+
+
 		?><script type="text/javascript" charset="utf-8">
 	var _gaq = _gaq || [];
 	_gaq.push(['_setAccount', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>']);
@@ -135,6 +184,12 @@ function foxyshop_insert_google_analytics() {
 	});
 </script><?php
 
+
+		}
+
+
+
+	//Regular Analytics, not advanced
 	} else {
 		if (!is_user_logged_in()) {
 		?><script type="text/javascript">
@@ -157,6 +212,71 @@ _gaq.push(['_trackPageview']);
 function foxyshop_insert_google_analytics_checkout() {
 	global $foxyshop_settings;
 	if (!$foxyshop_settings['ga_advanced']) return;
+
+	//Universal
+	if ($foxyshop_settings['ga_type'] == "universal") {
+
+		?>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>', 'auto', {
+    'clientId': fc_json.custom_fields['ga'],
+    'storage': 'none'
+  });
+  ga('set', 'page', '/checkout');
+  ga('send', 'pageview');
+
+</script>
+<script type="text/javascript" charset="utf-8">
+  var originalValidateAndSubmit = FC.checkout.validateAndSubmit;
+  function ga_tracker() {
+    var wait = false;
+    if (typeof(fc_json.custom_fields['ga']) != "undefined") {
+      var method, method_co, source = "";
+      if (typeof(fc_json.custom_fields['_fcpm']) != "undefined" && fc_json.custom_fields['_fcpm'] != "") {
+        var fcpm = fc_json.custom_fields['_fcpm'].split("|");
+        method = fcpm[0];
+        source = fcpm[1];
+      }
+      if (jQuery("input[name='fc_payment_method']:first").attr("type") == "radio") {
+        method_co = jQuery("input[name='fc_payment_method']:checked").val();
+      } else if (jQuery("input[name='fc_payment_method']:first").attr("type") == "hidden") {
+        method_co = jQuery("input[name='fc_payment_method']").val();
+      }
+      if (method != method_co || source == "checkout") {
+        method = method_co;
+        source = "checkout";
+        wait = true;
+        jQuery.getJSON('https://' + document.domain + '/cart?' + FC.checkout.config.session + '&h:_fcpm=' + method + "|" + source + '&output=json&callback=?', function(cart) {
+          fc_json = cart;
+          if (method != "plastic" && method != "purchase_order" && source == "checkout") {
+            ga('send', 'pageview', '/' + method + '_payment');
+          }
+          originalValidateAndSubmit();
+        });
+      }
+    }
+
+    if (!wait) {
+      originalValidateAndSubmit();
+    }
+  }
+  FC.checkout.override('validateAndSubmit', 'ga_tracker');
+</script>
+
+
+
+		<?php
+
+
+
+	//Legacy
+	} else {
+
 	?>
 	<script type="text/javascript" charset="utf-8">
 		if (window.location.hash.search(/utma/) == -1 && typeof(fc_json.custom_fields['ga']) != "undefined") {
@@ -193,6 +313,7 @@ function foxyshop_insert_google_analytics_checkout() {
 		FC.checkout.overload('validateAndSubmit', 'ga_tracker', null);
 	</script>
 	<?php
+	}
 }
 
 
@@ -200,6 +321,44 @@ function foxyshop_insert_google_analytics_checkout() {
 function foxyshop_insert_google_analytics_receipt() {
 	global $foxyshop_settings;
 	if (!$foxyshop_settings['ga_advanced']) return;
+
+
+	//Universal
+	if ($foxyshop_settings['ga_type'] == "universal") {
+
+		?>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>', 'auto', {
+    'clientId': fc_json.custom_fields['ga'],
+    'storage': 'none'
+  });
+  var pageview = "/receipt";
+  if (typeof(fc_json.custom_fields['_fcpm']) != "undefined" && fc_json.custom_fields['_fcpm'] != "") {
+    var fcpm = fc_json.custom_fields['_fcpm'].split("|");
+    if (fcpm[0] != "plastic" && fcpm[0] != "purchase_order") {
+      pageview += "_" + fcpm[0] + "_from_" + fcpm[1];
+    }
+  }
+  ga('set', 'page', pageview);
+  {% if first_receipt_display %}
+    ga('send', 'pageview');
+  {% endif %}
+</script>
+{% if first_receipt_display %}
+  ^^analytics_google_ga_universal^^
+{% endif %}
+	<?php
+
+
+
+	//Legacy
+	} else {
+
 	?>
 	<script type="text/javascript">
 
@@ -222,6 +381,7 @@ function foxyshop_insert_google_analytics_receipt() {
 	^^analytics_google_ga_async^^
 	^^receipt_only_end^^
 	<?php
+	}
 }
 
 //Product Category Comparison
@@ -320,6 +480,7 @@ function foxyshop_activation() {
 		"sso_account_required" => "0",
 		"ga" => "",
 		"ga_advanced" => "",
+		"ga_type" => "legacy",
 		"locale_code" => $current_locale,
 		"manage_inventory_levels" => "",
 		"inventory_alert_level" => 3,
@@ -394,6 +555,7 @@ function foxyshop_activation() {
 		if (!array_key_exists('use_cart_validation',$foxyshop_settings)) $foxyshop_settings['use_cart_validation'] = (defined('FOXYSHOP_SKIP_VERIFICATION') ? 0 : 1); //4.2
 		if (!array_key_exists('browser_title_6', $foxyshop_settings)) $foxyshop_settings['browser_title_6'] = get_bloginfo("name") . " Checkout"; //4.4
 		if (!array_key_exists('browser_title_7', $foxyshop_settings)) $foxyshop_settings['browser_title_7'] = get_bloginfo("name") . " Receipt"; //4.4
+		if (!array_key_exists('ga_type',$foxyshop_settings)) $foxyshop_settings['ga_type'] = 'legacy'; //4.5
 
 
 

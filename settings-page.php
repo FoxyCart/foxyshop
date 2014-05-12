@@ -31,6 +31,7 @@ function foxyshop_save_settings() {
 		"use_jquery",
 		"ga",
 		"ga_advanced",
+		"ga_type",
 		"hide_subcat_children",
 		"generate_product_sitemap",
 		"manage_inventory_levels",
@@ -551,7 +552,13 @@ function foxyshop_settings_page() {
 						<input type="checkbox" id="foxyshop_ga_advanced" name="foxyshop_ga_advanced"<?php checked($foxyshop_settings['ga_advanced'], "on"); ?> />
 						<label for="foxyshop_ga_advanced"><?php _e('Advanced Google Analytics Code', 'foxyshop'); ?></label>
 						<a href="#" class="foxyshophelp"><?php _e('Check this box if you are using the advanced FoxyCart Google Analytics Sync. We will put the appropriate code in your footer.', 'foxyshop'); ?></a>
-						<small><a href="http://wiki.foxycart.com/integration/googleanalytics_async" target="_blank" tabindex="99999">advanced instructions here</a></small>
+						<small>Advanced Instructions: <a href="https://wiki.foxycart.com/integration/googleanalytics_async" target="_blank" tabindex="99998">legacy</a> or <a href="https://wiki.foxycart.com/integration/googleanalytics_universal" target="_blank" tabindex="99999">universal</a></small>
+						<div style="clear: both;">
+						<select name="foxyshop_ga_type" id="ga_type">
+							<option value="legacy"<?php if ($foxyshop_settings['ga_type'] == "legacy") echo ' selected="selected"'; ?>>Legacy Analytics</option>
+							<option value="universal"<?php if ($foxyshop_settings['ga_type'] == "universal") echo ' selected="selected"'; ?>>Universal Analytics</option>
+						</select>
+						</div>
 					</div>
 				</td>
 			</tr>

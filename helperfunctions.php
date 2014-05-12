@@ -294,7 +294,7 @@ function foxyshop_product_variations($showQuantity = 0, $showPriceVariations = t
 	if ($product['quantity_hide']) $showQuantity = 0;
 	if ($showQuantity == 1) {
 		$write .= foxyshop_get_shipto();
-		$write .= foxyshop_quantity(1, $beforeVariation, $afterVariation);
+		$write .= foxyshop_quantity(apply_filters("foxyshop_default_quantity_value", 1), $beforeVariation, $afterVariation);
 	}
 
 	//Loop Through Variations
@@ -421,7 +421,7 @@ function foxyshop_product_variations($showQuantity = 0, $showPriceVariations = t
 	//Show Quantity After Variations
 	if ($showQuantity != 1) {
 		$write .= foxyshop_get_shipto();
-		if ($showQuantity == 2) $write .= foxyshop_quantity(1, $beforeVariation, $afterVariation);
+		if ($showQuantity == 2) $write .= foxyshop_quantity(apply_filters("foxyshop_default_quantity_value", 1), $beforeVariation, $afterVariation);
 	}
 
 	if ($write && !isset($foxyshop_write_variation_include)) {
@@ -1341,7 +1341,7 @@ function foxyshop_addon_products($show_qty = false, $before_entry = "", $after_e
 		echo '<label for="addon_'.$num.'" class="addon_main_label">' . $product['name'] . '</label>';
 		echo '<input type="hidden" name="x:addon_price_'.$num.'" id="addon_price_'.$num.'" value="' . $product['price'] . '" />';
 		foxyshop_price(0, 1);
-		if ($show_qty) echo foxyshop_quantity(1, "", "", $num);
+		if ($show_qty) echo foxyshop_quantity(apply_filters("foxyshop_default_quantity_value", 1), "", "", $num);
 		echo $after_entry;
 
 
