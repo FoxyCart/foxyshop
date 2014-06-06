@@ -78,7 +78,8 @@ function foxyshop_product_shortcode($atts, $content = null) {
 	$original_product = $product;
 	extract(shortcode_atts(array(
 		"name" => '',
-		"variations" => ''
+		"sub_frequency" => '',
+		"variations" => '',
 	), $atts));
 
 
@@ -86,7 +87,11 @@ function foxyshop_product_shortcode($atts, $content = null) {
 	if (!$prod || !$name) return;
 	if ($content == "") $content = "Add To Cart";
 	$product = foxyshop_setup_product($prod);
-	$write = '<a href="' . foxyshop_product_link("", true, $variations) . '" class="foxyshop_sc_product_link">' . $content . '</a>';
+	$url_extra = "";
+	if ($sub_frequency) {
+		$url_extra .= "&amp;sub_frequency=" . $sub_frequency . foxyshop_get_verification("sub_frequency", $sub_frequency);
+	}
+	$write = '<a href="' . foxyshop_product_link("", true, $variations) . $url_extra . '" class="foxyshop_sc_product_link">' . $content . '</a>';
 	$product = $original_product;
 	return $write;
 }

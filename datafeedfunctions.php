@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) exit();
 
 //Decrypt Data From Source
 function foxyshop_decrypt($src) {
-    	global $foxyshop_settings;
+	global $foxyshop_settings;
 	return rc4crypt::decrypt($foxyshop_settings['api_key'],urldecode($src));
 }
 

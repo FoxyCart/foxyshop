@@ -70,6 +70,7 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 = 4.5-dev1 =
 * Added FoxyCart 2.0 support (pending)
+* Google Analytics Universal functionality
 * Custom product sorting by category
 * Adding full and medium size image type filters
 * Updating max_quantity calculation, removing hashes

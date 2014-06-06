@@ -26,11 +26,10 @@ function foxyshop_insert_foxycart_files() {
 			echo "<!-- END FOXYCART FILES -->\n";
 		} elseif ($foxyshop_settings['version'] >= '2.0') {
 			echo "<!-- BEGIN FOXYCART FILES -->\n";
-			echo "<link rel=\"stylesheet\" href=\"//cdn.foxycart.com/static/scripts/pageslide/2.0/jquery.pageslide.css\">\n";
 			echo "<link rel=\"stylesheet\" href=\"//cdn.foxycart.com/static/frameworks/bootstrap/3.0.0-sass/css/bootstrap.fc.css\">\n";
 			echo "<link href=\"//cdn.foxycart.com/static/fonts/font-awesome-3.1.2/css/font-awesome.min.css\" rel=\"stylesheet\">\n";
 			echo "<link href=\"//" . esc_attr($foxyshop_settings['domain']) . "/static/themes/responsive/styles.css\" rel=\"stylesheet\">\n";
-			echo "<script src=\"//cdn.foxycart.com/" . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . "/foxycart.jsonp.pageslide.js?ver=1\" charset=\"utf-8\"></script>\n";
+			echo "<script src=\"//cdn.foxycart.com/" . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . "/foxycart.jsonp.sidecart.js?ver=1\" charset=\"utf-8\"></script>\n";
 			echo "<!-- END FOXYCART FILES -->\n";
 		}
 	} elseif (version_compare($foxyshop_settings['version'], '0.7.1', "=")) {
