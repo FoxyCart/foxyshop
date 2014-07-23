@@ -69,7 +69,7 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 == Changelog ==
 
 = 4.5-dev1 =
-* Added FoxyCart 2.0 support (pending)
+* Added FoxyCart 2.0 support
 * Google Analytics Universal functionality
 * Custom product sorting by category
 * Adding full and medium size image type filters
@@ -83,7 +83,7 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 * Changing mysql_real_escape_string() to esc_sql()
 * Allowing price changes to still be enforced with v: variation modifier
 * Allowing id attribute when specifying 'showproduct' shortcode
-* Updated to jQuery 1.11.0
+* Updated to jQuery 1.11.1
 
 = 4.4.4 =
 * Changing the Manage Inventory page to use ajax-based saving
