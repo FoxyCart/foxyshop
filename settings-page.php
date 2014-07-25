@@ -100,7 +100,7 @@ function foxyshop_save_settings() {
 		if (version_compare($foxyshop_settings['version'], '0.7.2', "<=")) {
 			$cart_type = "colorbox";
 		} else {
-			$cart_type = "pageslide";
+			$cart_type = "sidecart";
 		}
 		$foxy_data = array("api_action" => "store_includes_get", "javascript_library" => "none", "cart_type" => $cart_type);
 		$foxy_data = apply_filters('foxyshop_store_includes_get', $foxy_data);
