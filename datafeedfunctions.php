@@ -179,9 +179,11 @@ function foxyshop_datafeed_user_update($xml) {
 
 			//Check To See if WordPress User Already Exists
 			$current_user = get_user_by("email", $customer_email);
+			$foxyshop_new_password_hash = $customer_password;
 
 			//No Return, Add New User, Username will be email address
 			if (!$current_user) {
+				remove_action('user_register', 'foxyshop_profile_add', 5);
 				$new_user_id = wp_insert_user(array(
 					'user_login' => $customer_email,
 					'user_email' => $customer_email,
@@ -196,19 +198,20 @@ function foxyshop_datafeed_user_update($xml) {
 				));
 				add_user_meta($new_user_id, 'foxycart_customer_id', $customer_id, true);
 
-				//Set Password
+				//Set Password In WordPress Database
 				$wpdb->query("UPDATE $wpdb->users SET user_pass = '" . esc_sql($customer_password) . "' WHERE ID = $new_user_id");
-				$foxyshop_new_password_hash = $customer_password;
+
+				//Set Original Password at FoxyCart
+				//foxyshop_get_foxycart_data(array("api_action" => "customer_save", "customer_id" => $customer_id, "customer_password_hash" => $customer_password));
 
 				//Run Your Custom Actions Here with add_action()
-				do_action("foxyshop_datafeed_add_wp_user", $xml, $user_id);
+				do_action("foxyshop_datafeed_add_wp_user", $xml, $new_user_id);
 
 			//Update User
 			} else {
 
 				//Set Password
 				$wpdb->query("UPDATE $wpdb->users SET user_pass = '" . esc_sql($customer_password) . "' WHERE ID = " . $current_user->ID);
-				$foxyshop_new_password_hash = $customer_password;
 
 				//Update First Name and Last Name
 				$updated_user_id = wp_update_user(array(
