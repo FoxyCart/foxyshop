@@ -217,6 +217,9 @@ function foxyshop_datafeed_user_update($xml) {
 					'last_name' => $customer_last_name
 				));
 
+				//Reset Password Again
+				$wpdb->query("UPDATE $wpdb->users SET user_pass = '" . esc_sql($customer_password) . "' WHERE ID = " . $current_user->ID);
+
 				//Add FoxyCart User ID if not added before
 				add_user_meta($current_user->ID, 'foxycart_customer_id', $customer_id, true);
 
