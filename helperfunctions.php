@@ -1011,11 +1011,14 @@ function foxyshop_category_writer($category_id, $depth) {
 
 
 //Generates Verification Code for HMAC Anti-Tampering
-function foxyshop_get_verification($varname, $varvalue = "") {
+function foxyshop_get_verification($name, $value = "") {
 	global $product, $foxyshop_settings;
 	if (!$foxyshop_settings['use_cart_validation']) return "";
-	$encodingval = $product['code'] . htmlspecialchars($varname) . htmlspecialchars($varvalue ? $varvalue : strip_tags($product[$varname]));
-	return '||'.hash_hmac('sha256', $encodingval, $foxyshop_settings['api_key']).($varvalue == "--OPEN--" ? "||open" : "");
+	$open_text = $varvalue === "--OPEN--" ? "||open" : "";
+	$product_code = array_key_exists('parent_code', $product) ? $product['parent_code'] . $product['code'] : $product['code'];
+	if ($value === "") $value = strip_tags($product[$name]);
+	$encodingval = htmlspecialchars($product_code . $name . $value);
+	return '||' . hash_hmac('sha256', $encodingval, $foxyshop_settings['api_key']) . $open_text;
 }
 
 
