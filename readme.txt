@@ -70,6 +70,7 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 = 4.5-dev1 =
 * Added FoxyCart 2.0 support
+* Added true bundled product support
 * Google Analytics Universal functionality
 * Custom product sorting by category
 * Adding full and medium size image type filters
@@ -80,6 +81,7 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 * Adding filter for default wp user role
 * Adding filter for Google Analytics ga.src
 * Adding filter for custom bundled product fields
+* Fixed the SSO password problem when adding new WordPress accounts
 * Changing mysql_real_escape_string() to esc_sql()
 * Allowing price changes to still be enforced with v: variation modifier
 * Allowing id attribute when specifying 'showproduct' shortcode

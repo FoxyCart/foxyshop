@@ -24,12 +24,10 @@ function foxyshop_insert_foxycart_files() {
 			echo '<link rel="stylesheet" href="//cdn.foxycart.com/static/scripts/colorbox/1.3.23/style1_fc/colorbox.css?ver=1" type="text/css" media="screen" charset="utf-8" />'."\n";
 			echo '<script src="//cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.colorbox.js?ver=2" type="text/javascript" charset="utf-8"></script>'."\n";
 			echo "<!-- END FOXYCART FILES -->\n";
-		} elseif ($foxyshop_settings['version'] >= '2.0') {
+		} elseif (version_compare($foxyshop_settings['version'], '2.0', ">=")) {
 			echo '<!-- BEGIN FOXYCART FILES -->' . "\n";
-			echo '<link rel="stylesheet" href="//cdn.foxycart.com/static/frameworks/bootstrap/3.0.0-sass/css/bootstrap.fc.css">' . "\n";
-			echo '<link href="//cdn.foxycart.com/static/fonts/font-awesome-3.1.2/css/font-awesome.min.css" rel="stylesheet">' . "\n";
-			echo '<link href="https://' . esc_attr($foxyshop_settings['domain']) . '/static/themes/responsive/styles.css" rel="stylesheet">' . "\n";
-			echo '<script src="//cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.jsonp.sidecart.js?ver=1" charset="utf-8"></script>' . "\n";
+			echo '<link href="//cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/responsive_styles.css" rel="stylesheet">' . "\n";
+			echo '<script>window.jQuery&&1<=window.jQuery.fn.jquery.match(/(\d+)\.(\d+)/)[1]&&7<window.jQuery.fn.jquery.match(/(\d+)\.(\d+)/)[2]?document.write(\'<script src="//cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.jsonp.sidecart.min.js">\x3c/script>\'):document.write(\'<script src="//cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.jsonp.sidecart.with-jquery.min.js">\x3c/script>\');</script>' . "\n";
 			echo '<!-- END FOXYCART FILES -->' . "\n";
 		}
 	} elseif (version_compare($foxyshop_settings['version'], '0.7.1', "=")) {
@@ -261,6 +259,16 @@ function foxyshop_start_form() {
 		foreach($bundledproducts as $bundledproduct) {
 			$product = foxyshop_setup_product($bundledproduct);
 			$fields = array('name','code','category','weight','discount_quantity_amount','discount_quantity_percentage','discount_price_amount','discount_price_percentage','sub_frequency','sub_startdate','sub_enddate');
+
+			//For version 2.0+, add the bundled parent code
+			if (version_compare($foxyshop_settings['version'], '2.0', ">=")) {
+				$fields[] = 'parent_code';
+				$fields[] = 'quantity_min';
+				$product['parent_code'] = $original_product['code'];
+				$product['quantity_min'] = 1;
+			}
+
+			//Apply the Filter
 			$fields = apply_filters("bundled_product_fields", $fields, $product);
 			if (defined('FOXYSHOP_BUNDLED_PRODUCT_FULL_PRICE')) {
 				$fields[] = 'price';
@@ -268,7 +276,7 @@ function foxyshop_start_form() {
 				echo '<input type="hidden" name="' . $num . ':price' . foxyshop_get_verification('price','0.00') . '" id="' . $num . ':price_' . $product['id'] . '" value="0.00" />'."\n";
 			}
 			foreach ($fields as $fieldname) {
-				if ($product[$fieldname]) echo '<input type="hidden" name="' . $num . ':' . $fieldname . foxyshop_get_verification($fieldname) . '" id="' . $num . ':' . $fieldname . '_' . $product['id'] . '" value="' . esc_attr(strip_tags($product[$fieldname])) . '" />'."\n";
+				if ($product[$fieldname] !== "") echo '<input type="hidden" name="' . $num . ':' . $fieldname . foxyshop_get_verification($fieldname) . '" id="' . $num . ':' . $fieldname . '_' . $product['id'] . '" value="' . esc_attr(strip_tags($product[$fieldname])) . '" />'."\n";
 			}
 			if (foxyshop_get_main_image() && version_compare($foxyshop_settings['version'], '0.7.0', ">")) echo '<input type="hidden" name="' . $num . ':image' . foxyshop_get_verification('image',"--OPEN--") . '" id="' . $num . ':image_' . $product['id'] . '" value="' . foxyshop_get_main_image() . '" />'."\n";
 			if (version_compare($foxyshop_settings['version'], '0.7.0', ">") && !isset($foxyshop_skip_url_link)) echo '<input type="hidden" name="' . $num . ':url' . foxyshop_get_verification('url') . '" id="' . $num . ':url_' . $product['id'] . '" value="' . $product['url'] . '" />'."\n";
@@ -658,11 +666,20 @@ function foxyshop_product_link($AddText = "Add To Cart", $linkOnly = false, $var
 		foreach($bundledproducts as $bundledproduct) {
 			$product = foxyshop_setup_product($bundledproduct);
 			$fields = array('name','code','category','weight','discount_quantity_amount','discount_quantity_percentage','discount_price_amount','discount_price_percentage','sub_frequency','sub_startdate','sub_enddate');
+
+			//For version 2.0+, add the bundled parent code
+			if (version_compare($foxyshop_settings['version'], '2.0', ">=")) {
+				$fields[] = 'parent_code';
+				$fields[] = 'quantity_min';
+				$product['parent_code'] = $original_product['code'];
+				$product['quantity_min'] = 1;
+			}
+
 			$fields = apply_filters("bundled_product_fields", $fields, $product);
 			if (defined('FOXYSHOP_BUNDLED_PRODUCT_FULL_PRICE')) {
 				$fields[] = "price";
 			} else {
-				$url .= '&amp;' . urlencode($num . ':') . 'price'.foxyshop_get_verification('price','0.00').'='.urlencode('0.00');
+				$url .= '&amp;' . urlencode($num . ':') . 'price' . foxyshop_get_verification('price', '0.00') . '=' . urlencode('0.00');
 			}
 			foreach ($fields as $fieldname) {
 				if (array_key_exists($fieldname, $product)) {
@@ -1014,8 +1031,8 @@ function foxyshop_category_writer($category_id, $depth) {
 function foxyshop_get_verification($name, $value = "") {
 	global $product, $foxyshop_settings;
 	if (!$foxyshop_settings['use_cart_validation']) return "";
-	$open_text = $varvalue === "--OPEN--" ? "||open" : "";
-	$product_code = array_key_exists('parent_code', $product) ? $product['parent_code'] . $product['code'] : $product['code'];
+	$open_text = $value === "--OPEN--" ? "||open" : "";
+	$product_code = array_key_exists('parent_code', $product) ? $product['code'] . $product['parent_code'] : $product['code'];
 	if ($value === "") $value = strip_tags($product[$name]);
 	$encodingval = htmlspecialchars($product_code . $name . $value);
 	return '||' . hash_hmac('sha256', $encodingval, $foxyshop_settings['api_key']) . $open_text;
