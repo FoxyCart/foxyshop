@@ -212,6 +212,7 @@ _gaq.push(['_trackPageview']);
 function foxyshop_insert_google_analytics_checkout() {
 	global $foxyshop_settings;
 	if (!$foxyshop_settings['ga_advanced']) return;
+	if (version_compare($foxyshop_settings['version'], '2.0', ">=")) return;
 
 	//Universal
 	if ($foxyshop_settings['ga_type'] == "universal") {
@@ -321,7 +322,7 @@ function foxyshop_insert_google_analytics_checkout() {
 function foxyshop_insert_google_analytics_receipt() {
 	global $foxyshop_settings;
 	if (!$foxyshop_settings['ga_advanced']) return;
-
+	if (version_compare($foxyshop_settings['version'], '2.0', ">=")) return;
 
 	//Universal
 	if ($foxyshop_settings['ga_type'] == "universal") {

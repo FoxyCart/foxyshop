@@ -10,6 +10,7 @@ http://yoursite.com/foxycart-checkout-template/
 http://yoursite.com/foxycart-receipt-template/
 
 */
+global $foxyshop_settings;
 
 //Remove jQuery and FoxyCart Includes
 add_action('wp_enqueue_scripts', 'foxyshop_remove_jquery', 99);
@@ -50,17 +51,26 @@ get_header(); ?>
 <div id="foxyshop_container">
 
 
-
+<?php if (version_compare($foxyshop_settings['version'], '1.1', "<=")) { ?>
 ^^cart^^
 ^^checkout^^
+<?php } else { ?>
+{% include 'cart.inc.twig' %}
+{% include 'checkout.inc.twig' %}
+<?php } ?>
 
 
+<?php
+//Not Needed in 2.0 as custom fields can be dropped right into the admin config pages
+if (version_compare($foxyshop_settings['version'], '1.1', "<=")) { ?>
 ^^custom_begin^^
 <?php
 //Displays anything that's dynamically hooked to the custom fields section. You can also put your own code or fields here.
 do_action('foxyshop_checkout_template_custom_fields_section');
 ?>
 ^^custom_end^^
+<?php } ?>
+
 
 </div>
 <?php foxyshop_include('footer'); ?>
