@@ -136,6 +136,7 @@ function foxyshop_inventory_management_page() {
 					echo '<input type="hidden" name="code_' . $i . '" id="code_' . $i . '" value="' . $ivcode . '" />';
 					echo '<input type="text" name="new_count_' . $i . '" id="new_count_' . $i . '" value="' . (int)$inventory_count . '" data-id="' . $i . '" class="inventory_update_width" autocomplete="off" />';
 					echo '<div class="foxyshop_wait" id="wait_' . $i . '"></div>';
+					echo "</form>\n";
 					echo "</td>\n";
 
 					echo '<td id="current_inventory_' . $i . '" class="inventory' . $grade . '">' . $inventory_count . '</td>'."\n";
@@ -152,7 +153,7 @@ function foxyshop_inventory_management_page() {
 		<?php
 		$export_icon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACH0lEQVR4nKWSTUhUYRSGnzv33snRdEY0M0dJaSDTzRBkiZhZkNCiTZC1CIQQahFEq9q3aBFRqzZFkUQRuayFEKlZhv0ZGsUw6VD4N5rj5KjT3O9+p4VphCVKZ3PO5nl4Obzwn2M0tLSdBE6vk7vedfvETQDjQOs9qT1Suy66t72XEn8y2Hb51KglIiwk59YlEJHl29paMMPEm4/4sn2rQspOkAi2Exg9TGizQ372/ByAVZSX5tihbYTD4X/C8fkxWp80URZSjA1/JnesGiZ2LSZYS+Svs0MEcjZSWDTNpiKDl11vSXmmioHkqoKekQ4exe4ykorxLT1Dmcpg2x727PXR3Rn90PigouSvAldcLjxrITbXjzdvGl+xy3Y/OMrGMAy8tkFDY8Ds6ZqN/iEQEdJqnrOdzUwuRCktzKK8oA7LtDFNzZDqxDAMDMNDqRlGpC/LAtBa47ouIsKtwatMJL+wu6Se0fQkjwfekevNI60WCFULhqEoZAcPu185rnZLPUsCpRRKKSKJQcr9lbye6qcpeJz7+19wo66D6vydJGc8+N0Kevri5KS21Dw9Ohy3AJRSOI6D1hqfmY3X3sD58DVMLLQStHZIOd+pyjrIwKcogalKiuM1w9DNCsG5qkuICNrVKFForRERzoQucid2hXBuPbOJIBmc3z2IRCJkMhlEZBH+BS1Vdmnvoxl+wHMdWX78omA8SWT8/Vo6tWJ+AquVAo19QSjUAAAAAElFTkSuQmCC";
 		?>
-		<form method="post" name="foxyshop_inventory_import_form" action="">
+		<form method="post" name="foxyshop_inventory_import_form" action="edit.php?post_type=foxyshop_product&amp;page=foxyshop_inventory_management_page">
 		<table class="widefat">
 			<thead>
 				<tr>
