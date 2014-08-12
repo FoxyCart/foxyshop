@@ -823,7 +823,9 @@ function foxyshop_build_image_slideshow($slideshow_type = "prettyPhoto", $use_in
 			?>
 			<script type="text/javascript">
 			jQuery(document).ready(function($) {
-				$("a[rel^='foxyshop_gallery']").colorbox({sldeshow: true, maxHeight: "80%"});
+				if ($().colorbox) {
+					$("a[rel^='foxyshop_gallery']").colorbox({sldeshow: true, maxHeight: "80%"});
+				}
 			});
 			</script><?php
 			$foxyshop_slideshow_includes_set = 1;

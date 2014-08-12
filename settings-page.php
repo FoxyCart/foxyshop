@@ -578,7 +578,7 @@ function foxyshop_settings_page() {
 				<td>
 					<input type="checkbox" id="foxyshop_set_orderdesk_url" name="foxyshop_set_orderdesk_url"<?php if ($foxyshop_settings['orderdesk_url']) echo ' checked="checked"'; ?> />
 					<label for="foxyshop_set_orderdesk_url"><?php _e('Use FoxyTools Order Desk', 'foxyshop'); ?></label>
-					<small>(<a href="https://foxytools.com/orderdesk/" target="_blank"><?php _e("more info", "foxyshop"); ?></a>)</small>
+					<small>(<a href="http://www.orderdesk.me/" target="_blank"><?php _e("more info", "foxyshop"); ?></a>)</small>
 					<div id="orderdesk_url_holder"<?php if (!$foxyshop_settings['orderdesk_url']) echo ' style="display:none;"'; ?>>
 						<label for="foxyshop_orderdesk_url"><?php echo __('Your Order Desk Datafeed URL', 'foxyshop'); ?>:</label>
 						<input type="text" id="foxyshop_orderdesk_url" name="foxyshop_orderdesk_url" value="<?php echo esc_attr($foxyshop_settings['orderdesk_url']); ?>" style="width: 400px;" />
