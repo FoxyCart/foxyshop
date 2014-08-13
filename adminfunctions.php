@@ -106,6 +106,9 @@ function foxyshop_insert_google_analytics() {
 	//Advanced
 	if ($foxyshop_settings['ga_advanced']) {
 
+		//Not Supported on 2.0 at this time
+		if (version_compare($foxyshop_settings['version'], '2.0', ">=")) return;
+
 		//Universal
 		if ($foxyshop_settings['ga_type'] == "universal") {
 			?>
