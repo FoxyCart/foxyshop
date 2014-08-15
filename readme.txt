@@ -68,6 +68,9 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Changelog ==
 
+= 4.5.1 =
+* SSO - WordPress password resets now get saved back to FoxyCart
+
 = 4.5 =
 * Added FoxyCart 2.0 support
 * Added true bundled product support
@@ -86,6 +89,7 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 * Allowing price changes to still be enforced with v: variation modifier
 * Allowing id attribute when specifying 'showproduct' shortcode
 * Updated to jQuery 1.11.1
+* See [Release Notes](http://www.foxy-shop.com/2014/08/version-4-5-foxycart-2-0-support/) for more details
 
 = 4.4.4 =
 * Changing the Manage Inventory page to use ajax-based saving
@@ -351,6 +355,5 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Upgrade Notice ==
 
-= 4.4.4 =
-WP 3.8 CSS Updates
-
+= 4.5 =
+FoxyCart v2 Updates

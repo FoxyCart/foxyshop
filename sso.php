@@ -5,6 +5,23 @@ if (!defined('ABSPATH')) exit();
 //When Saving Profile, These Actions Sync Data to FoxyCart
 add_action('profile_update', 'foxyshop_profile_update', 5);
 add_action('user_register', 'foxyshop_profile_add', 5);
+add_action('password_reset', 'foxyshop_password_reset_at_foxycart', 5, 2);
+
+//Reset the Password at FoxyCart on a WordPress Password Reset
+function foxyshop_password_reset_at_foxycart($wp_user, $new_password) {
+
+	//Get User Info
+	$foxycart_customer_id = get_user_meta($wp_user->ID, 'foxycart_customer_id', true);
+
+	//Send Updated Info to FoxyCart
+	$foxy_data = array("api_action" => "customer_save");
+	if ($foxycart_customer_id) $foxy_data["customer_id"] = $foxycart_customer_id;
+	$foxy_data["customer_email"] = $wp_user->user_email;
+	$foxy_data["customer_password"] = $new_password;
+	if ($wp_user->user_firstname) $foxy_data["customer_first_name"] = $wp_user->user_firstname;
+	if ($wp_user->user_lastname) $foxy_data["customer_last_name"] = $wp_user->user_lastname;
+	$foxy_response = foxyshop_get_foxycart_data($foxy_data);
+}
 
 //Runs When WP Profile is Updated
 function foxyshop_profile_update($user_id) {
