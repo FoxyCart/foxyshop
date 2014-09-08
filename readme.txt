@@ -70,6 +70,7 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 = 4.5.1 =
 * SSO - WordPress password resets now get saved back to FoxyCart
+* Ensure only is_anonymous=0 transactions update WordPress users
 
 = 4.5 =
 * Added FoxyCart 2.0 support

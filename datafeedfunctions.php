@@ -173,9 +173,10 @@ function foxyshop_datafeed_user_update($xml) {
 		$customer_last_name = (string)$transaction->customer_last_name;
 		$customer_email = (string)$transaction->customer_email;
 		$customer_password = (string)$transaction->customer_password;
+		$is_anonymous = (int)$transaction->is_anonymous;
 
 		//Add or Update WordPress User If Not Guest Checkout
-		if ($customer_id != '0') {
+		if ($customer_id != '0' && $is_anonymous == 0) {
 
 			//Check To See if WordPress User Already Exists
 			$current_user = get_user_by("email", $customer_email);
