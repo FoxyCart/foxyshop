@@ -449,6 +449,7 @@ function foxyshop_order_management() {
 			if ((string)$transaction->cc_exp_month != "") $holder .= '<li>' . __('Exp', 'foxyshop') . ': ' . (string)$transaction->cc_exp_month . '-' . (string)$transaction->cc_exp_year . '</li>';
 			if ($minfraud_score > 0) $holder .= '<li>' . __('MinFraud Score', 'foxyshop') . ': ' . $minfraud_score . '</li>';
 			if ((string)$transaction->shipto_shipping_service_description != "") $holder .= '<li>' . __('Shipping Type', 'foxyshop') . ': ' . (string)$transaction->shipto_shipping_service_description . '</li>';
+			if ((string)$transaction->processor_response == "Purchase Order") $holder .= '<li>PO #: ' . (string)$transaction->purchase_order . '</li>';
 			$holder .= '</ul>';
 			$holder .= '</div>';
 
