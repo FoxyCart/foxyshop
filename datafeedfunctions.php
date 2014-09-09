@@ -293,7 +293,7 @@ class rc4crypt {
 	 * @access public
 	 * @return string
 	 */
-	function encrypt ($pwd, $data, $ispwdHex = 0) {
+	public static function encrypt ($pwd, $data, $ispwdHex = 0) {
 		if ($ispwdHex) $pwd = @pack('H*', $pwd); // valid input, please!
  		$key[] = '';
 		$box[] = '';
@@ -330,7 +330,7 @@ class rc4crypt {
 	 * @access public
 	 * @return string
 	 */
-	function decrypt ($pwd, $data, $ispwdHex = 0) {
+	public static function decrypt ($pwd, $data, $ispwdHex = 0) {
 		return rc4crypt::encrypt($pwd, $data, $ispwdHex);
 	}
 }
