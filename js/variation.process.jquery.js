@@ -268,11 +268,10 @@ jQuery(document).ready(function($){
 	}
 
 	//Form Validation
-	$("form.foxyshop_product").submit(function(e) {
+	jQuery("form.foxyshop_product").submit(function(e) {
 
 		var current_product_id = jQuery(this).attr("rel");
 		var strFailed = false;
-		console.log(current_product_id);
 		if (current_product_id) {
 			jQuery("#foxyshop_product_form_" + current_product_id + " .foxyshop_required").each(function() {
 				if (jQuery(this).is('select') && jQuery(this).is(':visible') && jQuery('option:selected', this).index() == 0) {
