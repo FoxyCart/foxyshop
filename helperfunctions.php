@@ -970,21 +970,21 @@ function foxyshop_category_children($categoryID = 0, $showCount = false, $showDe
 
 
 //Writes a Simple List of Children Categories of a Category (if available)
-function foxyshop_simple_category_children($category_id = 0, $depth = 1) {
+function foxyshop_simple_category_children($category_id = 0, $depth = 1, $hide_empty = 0) {
 	global $foxyshop_category_write;
 	global $foxyshop_category_depth;
 	if ($depth <= 0) $depth = 100;
 	$foxyshop_category_depth = $depth;
 	$foxyshop_category_write = "";
-	foxyshop_category_writer($category_id, 1);
+	foxyshop_category_writer($category_id, 1, $hide_empty);
 	if ($foxyshop_category_write) echo $foxyshop_category_write;
 }
 
-function foxyshop_category_writer($category_id, $depth) {
+function foxyshop_category_writer($category_id, $depth, $hide_empty = 0) {
 	global $foxyshop_category_write;
 	global $foxyshop_category_depth;
 	$args = array(
-		'hide_empty' => 0,
+		'hide_empty' => $hide_empty,
 		'hierarchical' => 0,
 		'parent' => $category_id,
 		'orderby' => 'name',
