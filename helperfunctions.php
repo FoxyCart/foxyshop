@@ -990,7 +990,7 @@ function foxyshop_category_writer($category_id, $depth) {
 		'orderby' => 'name',
 		'order' => "ASC",
 	);
-	$termchildren = get_terms('foxyshop_categories', $args);
+	$termchildren = get_terms('foxyshop_categories', apply_filters('foxyshop_categories_get_terms', $args));
 	if ($termchildren) {
 
 
