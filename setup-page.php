@@ -109,7 +109,7 @@ function foxyshop_setup_legacy() {
 					echo '<option value="' . $key . '"' . ($foxyshop_settings['version'] == $key ? ' selected="selected"' : '') . '>' . $val . '  </option>'."\n";
 				} ?>
 				</select>
-				<small>Version 1.1 is recommended.</small>
+				<small>Version 2.0 is recommended.</small>
 			</td>
 		</tr>
 	</tbody>

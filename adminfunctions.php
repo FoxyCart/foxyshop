@@ -454,7 +454,7 @@ function foxyshop_activation() {
 	//Defaults For Settings
 	$default_foxyshop_settings = array(
 		"domain" => "",
-		"version" => "1.1",
+		"version" => "2.0",
 		"foxyshop_version" => FOXYSHOP_VERSION,
 		"ship_categories" => "",
 		"enable_ship_to" => "",
