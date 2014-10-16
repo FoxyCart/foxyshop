@@ -475,7 +475,7 @@ function foxyshop_activation() {
 		"browser_title_7" => get_bloginfo("name") . " Receipt",
 		"weight_type" => "english",
 		"default_weight" => "1 0.0",
-		"use_jquery" => "on",
+		"use_jquery" => "",
 		"hide_subcat_children" => "on",
 		"generate_product_sitemap" => "on",
 		"sort_key" => "menu_order",

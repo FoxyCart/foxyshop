@@ -90,7 +90,12 @@ if (is_admin()) {
 //Load FoxyShop Scripts and Styles on Public Site
 } else {
 	if ($foxyshop_settings['use_jquery']) add_action('wp_enqueue_scripts', 'foxyshop_insert_jquery', 15);
-	add_action('wp_head', 'foxyshop_insert_foxycart_files');
+
+	if (version_compare($foxyshop_settings['version'], '2.0', ">=")) {
+		add_action('wp_footer', 'foxyshop_insert_foxycart_loader');
+	} else {
+		add_action('wp_head', 'foxyshop_insert_foxycart_files');
+	}
 	add_action('init', 'foxyshop_load_site_scripts', 1);
 	add_action('wp', 'foxyshop_check_include_status', 11);
 	if ($foxyshop_settings['ga']) add_action('wp_footer', 'foxyshop_insert_google_analytics', 100);

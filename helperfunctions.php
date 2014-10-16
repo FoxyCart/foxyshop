@@ -43,6 +43,14 @@ function foxyshop_insert_foxycart_files() {
 	}
 }
 
+function foxyshop_insert_foxycart_loader() {
+	global $foxyshop_settings;
+	if (empty($foxyshop_settings['domain'])) return;
+	echo "<!-- FOXYCART -->\n";
+	echo "<script src=\"//cdn.foxycart.com/" . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . "/loader.js\" async defer></script>\n";
+	echo "<!-- /FOXYCART -->\n\n";
+}
+
 
 //Sets up the $product array
 function foxyshop_setup_product($thepost = false, $shortcut = false) {

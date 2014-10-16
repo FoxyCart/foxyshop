@@ -96,7 +96,7 @@ function foxyshop_save_settings() {
 	$foxyshop_settings["products_per_page"] = ((int)$_POST['foxyshop_products_per_page'] == 0 ? -1 : (int)$_POST['foxyshop_products_per_page']);
 
 	//Cache the FoxyCart Includes
-	if (version_compare($foxyshop_settings['version'], '0.7.2', ">=") && $foxyshop_settings['domain']) {
+	if (version_compare($foxyshop_settings['version'], '0.7.2', ">=") && version_compare($foxyshop_settings['version'], '2.0', "<") && $foxyshop_settings['domain']) {
 		if (version_compare($foxyshop_settings['version'], '0.7.2', "<=")) {
 			$cart_type = "colorbox";
 		} else {
