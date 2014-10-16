@@ -156,7 +156,11 @@ function foxyshop_theme_redirect() {
 		status_header(200);
 		$wp_query->is_404 = false;
 		if (!defined("IS_FOXYSHOP")) define("IS_FOXYSHOP", 1);
-		include foxyshop_get_template_file('foxyshop-checkout-template.php');
+		if (version_compare($foxyshop_settings['version'], '2.0', ">=")) {
+			include foxyshop_get_template_file('foxyshop-checkout-template-2.php');
+		} else {
+			include foxyshop_get_template_file('foxyshop-checkout-template.php');
+		}
 		die;
 
 	//FoxyCart Receipt Template
@@ -166,7 +170,11 @@ function foxyshop_theme_redirect() {
 		status_header(200);
 		$wp_query->is_404 = false;
 		if (!defined("IS_FOXYSHOP")) define("IS_FOXYSHOP", 1);
-		include foxyshop_get_template_file('foxyshop-receipt-template.php');
+		if (version_compare($foxyshop_settings['version'], '2.0', ">=")) {
+			include foxyshop_get_template_file('foxyshop-receipt-template-2.php');
+		} else {
+			include foxyshop_get_template_file('foxyshop-receipt-template.php');
+		}
 		die;
 
 	//File Upload
