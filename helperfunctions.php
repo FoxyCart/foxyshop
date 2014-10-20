@@ -24,11 +24,6 @@ function foxyshop_insert_foxycart_files() {
 			echo '<link rel="stylesheet" href="//cdn.foxycart.com/static/scripts/colorbox/1.3.23/style1_fc/colorbox.css?ver=1" type="text/css" media="screen" charset="utf-8" />'."\n";
 			echo '<script src="//cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.colorbox.js?ver=2" type="text/javascript" charset="utf-8"></script>'."\n";
 			echo "<!-- END FOXYCART FILES -->\n";
-		} elseif (version_compare($foxyshop_settings['version'], '2.0', ">=")) {
-			echo '<!-- BEGIN FOXYCART FILES -->' . "\n";
-			echo '<link href="//cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/responsive_styles.css" rel="stylesheet">' . "\n";
-			echo '<script>window.jQuery&&1<=window.jQuery.fn.jquery.match(/(\d+)\.(\d+)/)[1]&&7<window.jQuery.fn.jquery.match(/(\d+)\.(\d+)/)[2]?document.write(\'<script src="//cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.jsonp.sidecart.min.js">\x3c/script>\'):document.write(\'<script src="//cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.jsonp.sidecart.with-jquery.min.js">\x3c/script>\');</script>' . "\n";
-			echo '<!-- END FOXYCART FILES -->' . "\n";
 		}
 	} elseif (version_compare($foxyshop_settings['version'], '0.7.1', "=")) {
 		echo "<!-- BEGIN FOXYCART FILES -->\n";
