@@ -2,6 +2,9 @@
 ------------ ATTENTION ------------
 If you need to edit this template, do not edit the version in the plugin directory. Place a copy in your template folder and edit it there.
 This will allow you to upgrade FoxyShop without breaking your customizations. More details here: http://www.foxy-shop.com/documentation/theme-customization/
+
+This file is for FoxyCart version 2+. You may run into javascript problems so it might be better to avoid wp_head() if you can
+and to put the header contents in manually. Avoid unnecesary libraries and styles. Put id="fc" in your <html> tag.
 -----------------------------------
 
 ------------ FOXYCART TEMPLATE INSTRUCTIONS ------------
@@ -13,6 +16,9 @@ http://yoursite.com/foxycart-receipt-template/
 global $foxyshop_settings;
 
 //Remove jQuery and FoxyCart Includes
+add_action('wp_enqueue_scripts', 'foxyshop_remove_jquery', 99);
+wp_deregister_script('jquery');
+remove_action('init', 'foxyshop_insert_jquery');
 remove_action('wp_footer', 'foxyshop_insert_google_analytics', 100);
 remove_action('wp_footer', 'foxyshop_insert_foxycart_loader');
 
@@ -62,12 +68,6 @@ get_header(); ?>
 {% use 'receipt.inc.twig' %}
 {{ block('receipt') }}
 
-
-<!-- FC footer script insertion -->{% include template_from_string(fc_footer_content) %}<!-- /FC footer scripts -->
-
-</body>
-</html>
-
 </div>
 <?php foxyshop_include('footer'); ?>
 
@@ -76,5 +76,11 @@ jQuery(document).ready(function($){
 	$("html").attr("id", "fc");
 });
 </script>
+
+<!-- FC footer script insertion -->{% include template_from_string(fc_footer_content) %}<!-- /FC footer scripts -->
+
+<!--[if lt IE 9 ]>
+	<script src="//{{ config.store_domain }}/static/scripts/respond/respond.1.4.2.js" charset="utf-8"></script>
+<![endif]-->
 
 <?php get_footer(); ?>

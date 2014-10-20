@@ -2,6 +2,9 @@
 ------------ ATTENTION ------------
 If you need to edit this template, do not edit the version in the plugin directory. Place a copy in your template folder and edit it there.
 This will allow you to upgrade FoxyShop without breaking your customizations. More details here: http://www.foxy-shop.com/documentation/theme-customization/
+
+This file is for FoxyCart version 2+. You may run into javascript problems so it might be better to avoid wp_head() if you can
+and to put the header contents in manually. Avoid unnecesary libraries and styles. Put id="fc" in your <html> tag.
 -----------------------------------
 
 ------------ FOXYCART TEMPLATE INSTRUCTIONS ------------

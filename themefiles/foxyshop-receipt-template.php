@@ -2,6 +2,8 @@
 ------------ ATTENTION ------------
 If you need to edit this template, do not edit the version in the plugin directory. Place a copy in your template folder and edit it there.
 This will allow you to upgrade FoxyShop without breaking your customizations. More details here: http://www.foxy-shop.com/documentation/theme-customization/
+
+This file is for FoxyCart version 1.1. Do not use for version 2+
 -----------------------------------
 
 ------------ FOXYCART TEMPLATE INSTRUCTIONS ------------
