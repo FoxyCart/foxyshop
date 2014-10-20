@@ -119,6 +119,7 @@ function foxyshop_insert_google_analytics() {
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
   ga('create', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>', 'auto');
+  <?php if ($foxyshop_settings['ga_demographics']) echo "ga('require', 'displayfeatures');\n" ?>
   ga('send', 'pageview');
 
 </script>
@@ -195,7 +196,29 @@ function foxyshop_insert_google_analytics() {
 	//Regular Analytics, not advanced
 	} else {
 		if (!is_user_logged_in()) {
-		?><script type="text/javascript">
+
+
+		//Universal
+		if ($foxyshop_settings['ga_type'] == "universal") {
+		?>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>', 'auto');
+  <?php if ($foxyshop_settings['ga_demographics']) echo "ga('require', 'displayfeatures');\n" ?>
+  ga('send', 'pageview');
+</script>
+
+
+		<?php
+		//Legacy
+		} else {
+		?>
+
+		<script type="text/javascript">
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>']);
 _gaq.push(['_trackPageview']);
@@ -205,6 +228,8 @@ _gaq.push(['_trackPageview']);
 	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
 </script><?php
+		}
+
 		} else {
 			echo "\n<!-- Google Analytics Not Loaded Because This is a Logged-In User -->\n";
 		}
@@ -231,6 +256,7 @@ function foxyshop_insert_google_analytics_checkout() {
     'clientId': fc_json.custom_fields['ga'],
     'storage': 'none'
   });
+  <?php if ($foxyshop_settings['ga_demographics']) echo "ga('require', 'displayfeatures');\n" ?>
   ga('set', 'page', '/checkout');
   ga('send', 'pageview');
 
@@ -350,6 +376,7 @@ function foxyshop_insert_google_analytics_receipt() {
   }
   ga('set', 'page', pageview);
   {% if first_receipt_display %}
+    <?php if ($foxyshop_settings['ga_demographics']) echo "ga('require', 'displayfeatures');\n" ?>
     ga('send', 'pageview');
   {% endif %}
 </script>
@@ -485,6 +512,7 @@ function foxyshop_activation() {
 		"ga" => "",
 		"ga_advanced" => "",
 		"ga_type" => "legacy",
+		"ga_demographics" => "",
 		"locale_code" => $current_locale,
 		"manage_inventory_levels" => "",
 		"inventory_alert_level" => 3,

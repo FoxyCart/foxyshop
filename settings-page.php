@@ -32,6 +32,7 @@ function foxyshop_save_settings() {
 		"ga",
 		"ga_advanced",
 		"ga_type",
+		"ga_demographics",
 		"hide_subcat_children",
 		"generate_product_sitemap",
 		"manage_inventory_levels",
@@ -558,6 +559,8 @@ function foxyshop_settings_page() {
 							<option value="legacy"<?php if ($foxyshop_settings['ga_type'] == "legacy") echo ' selected="selected"'; ?>>Legacy Analytics</option>
 							<option value="universal"<?php if ($foxyshop_settings['ga_type'] == "universal") echo ' selected="selected"'; ?>>Universal Analytics</option>
 						</select>
+
+						<label for="foxyshop_ga_demographics" style="margin: 2px 3px 0 9px;"><input type="checkbox" name="foxyshop_ga_demographics" id="foxyshop_ga_demographics" <?php checked($foxyshop_settings['ga_demographics'], "on"); ?>>Include Demographics</label>
 						</div>
 					</div>
 				</td>
