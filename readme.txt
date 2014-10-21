@@ -68,6 +68,9 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Changelog ==
 
+= 4.5.2-dev =
+* Updating the multiship javascript for FC 2
+
 = 4.5.1 =
 * Making FoxyCart 2.0 the Default
 * Updating checkout/receipt templates for 2.0
@@ -364,5 +367,5 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Upgrade Notice ==
 
-= 4.5 =
-FoxyCart v2 Updates
+= 4.5.1 =
+FoxyCart v2 Tweaks and Updates
