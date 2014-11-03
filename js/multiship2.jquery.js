@@ -110,7 +110,7 @@ setCookie = function(e) {
 	// Set the cookie
 	var error = false;
 	var shipto_cookie = jQuery.cookie('shipto_names');
-	var shipto_new = jQuery(e).find('input[name^="shipto"]').eq(0).val();
+	var shipto_new = jQuery(e.element).find('input[name^="shipto"]').eq(0).val();
 
 	jQuery.cookie('shipto_name_recent', '', {expires: -1, path: '/', domain: location.host.match('[^.]+.[^.]+$')});
 	jQuery.cookie('shipto_name_recent', shipto_new, {expires: 300, path: '/', domain: location.host.match('[^.]+.[^.]+$')});
@@ -132,7 +132,6 @@ FC.onLoad = function () {
 	FC.client.on('cart-submit', setCookie);
 	FC.client.on('cart-submit.done', constructShipTo);
 };
-
 
 
 
@@ -165,12 +164,12 @@ function contains(a, e) {
 
 // ============================================================================
 /*!
- * jQuery Cookie Plugin v1.3.1
+ * jQuery Cookie Plugin v1.4.1
  * https://github.com/carhartl/jquery-cookie
  *
- * Copyright 2013 Klaus Hartl
+ * Copyright 2006, 2014 Klaus Hartl
  * Released under the MIT license
  */
-(function(d){"function"===typeof define&&define.amd?define(["jquery"],d):d(jQuery)})(function(d){function m(a){return a}function n(a){return decodeURIComponent(a.replace(j," "))}function k(a){0===a.indexOf('"')&&(a=a.slice(1,-1).replace(/\\"/g,'"').replace(/\\\\/g,"\\"));try{return e.json?JSON.parse(a):a}catch(c){}}var j=/\+/g,e=d.cookie=function(a,c,b){if(void 0!==c){b=d.extend({},e.defaults,b);if("number"===typeof b.expires){var g=b.expires,f=b.expires=new Date;f.setDate(f.getDate()+g)}c=e.json?
-JSON.stringify(c):String(c);return document.cookie=[e.raw?a:encodeURIComponent(a),"=",e.raw?c:encodeURIComponent(c),b.expires?"; expires="+b.expires.toUTCString():"",b.path?"; path="+b.path:"",b.domain?"; domain="+b.domain:"",b.secure?"; secure":""].join("")}c=e.raw?m:n;b=document.cookie.split("; ");for(var g=a?void 0:{},f=0,j=b.length;f<j;f++){var h=b[f].split("="),l=c(h.shift()),h=c(h.join("="));if(a&&a===l){g=k(h);break}a||(g[l]=k(h))}return g};e.defaults={};d.removeCookie=function(a,c){return void 0!==
-d.cookie(a)?(d.cookie(a,"",d.extend({},c,{expires:-1})),!0):!1}});
+(function(c){"function"===typeof define&&define.amd?define(["jquery"],c):"object"===typeof exports?c(require("jquery")):c(jQuery)})(function(c){function p(a){a=e.json?JSON.stringify(a):String(a);return e.raw?a:encodeURIComponent(a)}function n(a,g){var b;if(e.raw)b=a;else a:{var d=a;0===d.indexOf('"')&&(d=d.slice(1,-1).replace(/\\"/g,'"').replace(/\\\\/g,"\\"));try{d=decodeURIComponent(d.replace(l," "));b=e.json?JSON.parse(d):d;break a}catch(h){}b=void 0}return c.isFunction(g)?g(b):b}var l=/\+/g,e=
+c.cookie=function(a,g,b){if(1<arguments.length&&!c.isFunction(g)){b=c.extend({},e.defaults,b);if("number"===typeof b.expires){var d=b.expires,h=b.expires=new Date;h.setTime(+h+864E5*d)}return document.cookie=[e.raw?a:encodeURIComponent(a),"=",p(g),b.expires?"; expires="+b.expires.toUTCString():"",b.path?"; path="+b.path:"",b.domain?"; domain="+b.domain:"",b.secure?"; secure":""].join("")}for(var d=a?void 0:{},h=document.cookie?document.cookie.split("; "):[],m=0,l=h.length;m<l;m++){var f=h[m].split("="),
+k;k=f.shift();k=e.raw?k:decodeURIComponent(k);f=f.join("=");if(a&&a===k){d=n(f,g);break}a||void 0===(f=n(f))||(d[k]=f)}return d};e.defaults={};c.removeCookie=function(a,e){if(void 0===c.cookie(a))return!1;c.cookie(a,"",c.extend({},e,{expires:-1}));return!c.cookie(a)}});
