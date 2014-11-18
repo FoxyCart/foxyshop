@@ -427,9 +427,6 @@ jQuery(document).ready(function($){
 
 	//IMAGES
 	//--------------------------------
-
-	$("#postimagediv").hide();
-
 	$(document).on("click", "#foxyshop_product_image_list .foxyshop_image_rename", function() {
 		var thisID = $(this).attr("rel");
 		$(".renamediv").removeClass('rename_active');

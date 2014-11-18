@@ -930,6 +930,9 @@ table.widefat tr:last-child td {
 #foxyshop_settings_wrap #foxydomainsimplelabel {
 	margin-left: 5px;
 }
+body.post-type-foxyshop_product #postimagediv {
+	display: none;
+}
 
 
 /* Icons Sprite */
