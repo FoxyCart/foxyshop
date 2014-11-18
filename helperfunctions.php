@@ -1381,19 +1381,23 @@ function foxyshop_addon_products($show_qty = false, $before_entry = "", $after_e
 	$product = $original_product;
 	?>
 	<script type="text/javascript">
+	function foxyshop_addon_enable(rel) {
+		if ($("#addon_" + rel).is(":checked")) {
+			jQuery(".foxyshop_addon_fields[rel='" + rel + "']").each(function() {
+				jQuery(this).attr("name", rel + ":" + jQuery(this).attr("originalname"));
+			});
+			jQuery(".foxyshop_quantity.foxyshop_addon_fields[rel=" + rel + "]").prop("disabled", false);
+		} else {
+			jQuery(".foxyshop_addon_fields[rel='" + rel + "']").each(function() {
+				jQuery(this).attr("name", "x:" + jQuery(this).attr("originalname"))
+			});
+			jQuery(".foxyshop_quantity.foxyshop_addon_fields[rel=" + rel + "]").prop("disabled", true);
+		}
+	}
+
 	jQuery(document).ready(function($){
 		$(".foxyshop_addon_checkbox").click(function() {
-			if ($(this).is(":checked")) {
-				$(".foxyshop_addon_fields[rel='" + $(this).attr("rel") + "']").each(function() {
-					$(this).attr("name", $(this).attr("rel") + ":" + $(this).attr("originalname"))
-				});
-				$(".foxyshop_quantity.foxyshop_addon_fields[rel=" + $(this).attr("rel") + "]").prop("disabled", false);
-			} else {
-				$(".foxyshop_addon_fields[rel='" + $(this).attr("rel") + "']").each(function() {
-					$(this).attr("name", "x:" + $(this).attr("originalname"))
-				});
-				$(".foxyshop_quantity.foxyshop_addon_fields[rel=" + $(this).attr("rel") + "]").prop("disabled", true);
-			}
+			foxyshop_addon_enable($(this).attr("rel"));
 		});
 		$("input.foxyshop_quantity.foxyshop_addon_fields").keyup(function() {
 			$(this).val($(this).val().replace(/\D/g,''));
