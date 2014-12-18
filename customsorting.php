@@ -126,13 +126,8 @@ function foxyshop_custom_sort() {
 				'orderby' => "meta_value_num",
 				"meta_key" => "_foxyshop_menu_order_" . $categoryID,
 				'order' => "ASC",
+				'post__not_in' => foxyshop_hide_children_array($categoryID),
 			);
-
-			$unwanted_children = get_term_children($categoryID, "foxyshop_categories");
-			if ($unwanted_children) {
-				$args['post__not_in'] = get_objects_in_term($unwanted_children, "foxyshop_categories");
-			}
-
 
 		} else {
 			$current_category_name = __("All", 'foxyshop') . ' ' . FOXYSHOP_PRODUCT_NAME_PLURAL;
