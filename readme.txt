@@ -3,7 +3,7 @@ Contributors: sparkweb
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2AHG2QMABF8SG
 Tags: foxycart, shopping, cart, inventory, management, ecommerce, selling, subscription, foxy
 Requires at least: 3.1
-Tested up to: 4.0
+Tested up to: 4.1
 Stable tag: 4.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -68,8 +68,9 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Changelog ==
 
-= 4.5.2-dev =
-* Updating the multiship javascript for FC 2
+= 4.5.2 =
+* Updating the multiship javascript for FoxyCart 2.0
+* Custom sorting honors hidden category children preferences
 
 = 4.5.1 =
 * Making FoxyCart 2.0 the Default
