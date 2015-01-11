@@ -571,10 +571,11 @@ function foxyshop_add_spaces($str) {
 
 //Writes the Ship To Box
 function foxyshop_get_shipto() {
-	global $foxyshop_settings;
-	add_action("wp_footer", "foxyshop_insert_multship_js", 200);
+	global $foxyshop_settings, $multiship_script_included;
+	$write = "";
 	if ($foxyshop_settings['enable_ship_to'] == "on") {
-		$write = '<div class="shipto_container">'."\n";
+		if (!isset($multiship_script_included)) $write .= '<script type="text/javascript" src="' . FOXYSHOP_DIR . '/js/multiship.jquery.js"></script>'."\n";
+		$write .= '<div class="shipto_container">'."\n";
 		$write .= '<div class="shipto_select" style="display:none">'."\n";
 		$write .= '<label>' . apply_filters('foxyshop_shipname_to', 'Ship this item to') . '</label>'."\n";
 		$write .= '<select name="x:shipto_name_select">'."\n";
@@ -586,15 +587,9 @@ function foxyshop_get_shipto() {
 		$write .= '</div>'."\n";
 		$write .= '<div class="clr"></div>'."\n";
 		$write .= '</div>'."\n";
-		return $write;
+		$multiship_script_included = 1;
 	}
-	return "";
-}
-
-function foxyshop_insert_multship_js() {
-	global $foxyshop_settings;
-	$v2 = version_compare($foxyshop_settings['version'], '2.0', "<") ? "" : "2";
-	echo '<script type="text/javascript" src="' . FOXYSHOP_DIR . '/js/multiship' . $v2 . '.jquery.js"></script>'."\n";
+	return $write;
 }
 
 
@@ -822,6 +817,61 @@ function foxyshop_build_image_slideshow($slideshow_type = "prettyPhoto", $use_in
 		echo "</div>\n";
 		foxyshop_image_slideshow("thumbnail", false, "Click Below For More Images:", "foxyshop_gallery[" . $product['id'] . "]");
 		echo "</div>\n";
+
+	//Magnific Popup (Lightbox)
+	} elseif ($slideshow_type == "magnific") {
+
+		if ($use_includes && !isset($foxyshop_slideshow_includes_set)) {
+			echo '<script type="text/javascript" src="' . FOXYSHOP_DIR . '/js/magnific/jquery.magnific-popup.min.js"></script>'."\n";
+			echo '<link rel="stylesheet" href="' . FOXYSHOP_DIR . '/js/magnific/magnific-popup.css" type="text/css" media="screen" />'."\n";
+			?>
+			<script type="text/javascript">
+			jQuery(document).ready(function($) {
+				$('.magnific-gallery, .foxyshop_slideshow').magnificPopup({
+					delegate: 'a',
+					type: 'image',
+					closeOnContentClick: false,
+					closeBtnInside: false,
+					mainClass: 'mfp-with-zoom mfp-img-mobile',
+					image: {
+						verticalFit: true,
+						titleSrc: function(item) {
+							return item.el.attr('title');
+						}
+					},
+					gallery: {
+						enabled: true,
+						navigateByImgClick: true,
+						preload: [1,1] // Will preload 1 - before current, and 1 after the current image
+					},
+					zoom: {
+						enabled: true,
+						duration: 300, // don't foget to change the duration also in CSS
+						opener: function(element) {
+							return element.find('img');
+						}
+					}
+				});
+			});
+			</script><?php
+			$foxyshop_slideshow_includes_set = 1;
+		}
+
+
+		$imagecount = count($product['images']);
+		$use_link = (foxyshop_get_main_image("medium") != foxyshop_get_main_image("full") || $imagecount > 1 ? 1 : 0);
+
+		echo '<div class="foxyshop_product_image">'."\n";
+		echo '<div class="foxyshop_product_image_holder magnific-gallery">'."\n";
+
+		if ($use_link) echo '<a href="' . foxyshop_get_main_image('large') . '" rel="foxyshop_gallery' . ($imagecount > 1 ? '[' . $product['id'] . ']' : '') . '"  title="' . esc_attr(apply_filters('foxyshop_image_link_title', '')) . '">';
+		echo '<img src="' . foxyshop_get_main_image('medium') . '" id="foxyshop_main_product_image" alt="' . esc_attr(foxyshop_get_main_image('title')) . '" title="" />';
+		if ($use_link) echo "</a>\n";
+
+		echo "</div>\n";
+		foxyshop_image_slideshow("thumbnail", false, "Click Below For More Images:", "foxyshop_gallery[" . $product['id'] . "]");
+		echo "</div>\n";
+
 
 
 	//ColorBox (Lightbox)
@@ -1381,23 +1431,19 @@ function foxyshop_addon_products($show_qty = false, $before_entry = "", $after_e
 	$product = $original_product;
 	?>
 	<script type="text/javascript">
-	function foxyshop_addon_enable(rel) {
-		if ($("#addon_" + rel).is(":checked")) {
-			jQuery(".foxyshop_addon_fields[rel='" + rel + "']").each(function() {
-				jQuery(this).attr("name", rel + ":" + jQuery(this).attr("originalname"));
-			});
-			jQuery(".foxyshop_quantity.foxyshop_addon_fields[rel=" + rel + "]").prop("disabled", false);
-		} else {
-			jQuery(".foxyshop_addon_fields[rel='" + rel + "']").each(function() {
-				jQuery(this).attr("name", "x:" + jQuery(this).attr("originalname"))
-			});
-			jQuery(".foxyshop_quantity.foxyshop_addon_fields[rel=" + rel + "]").prop("disabled", true);
-		}
-	}
-
 	jQuery(document).ready(function($){
 		$(".foxyshop_addon_checkbox").click(function() {
-			foxyshop_addon_enable($(this).attr("rel"));
+			if ($(this).is(":checked")) {
+				$(".foxyshop_addon_fields[rel='" + $(this).attr("rel") + "']").each(function() {
+					$(this).attr("name", $(this).attr("rel") + ":" + $(this).attr("originalname"))
+				});
+				$(".foxyshop_quantity.foxyshop_addon_fields[rel=" + $(this).attr("rel") + "]").prop("disabled", false);
+			} else {
+				$(".foxyshop_addon_fields[rel='" + $(this).attr("rel") + "']").each(function() {
+					$(this).attr("name", "x:" + $(this).attr("originalname"))
+				});
+				$(".foxyshop_quantity.foxyshop_addon_fields[rel=" + $(this).attr("rel") + "]").prop("disabled", true);
+			}
 		});
 		$("input.foxyshop_quantity.foxyshop_addon_fields").keyup(function() {
 			$(this).val($(this).val().replace(/\D/g,''));
