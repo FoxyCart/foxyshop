@@ -30,13 +30,12 @@ global $foxyshop_prettyphoto_included;
 	
 
 	//Shows Main Image and Optional Slideshow
-	//Available Built-in Options: prettyPhoto (lightbox), magnific-popup (lightbox), cloud-zoom (inline zooming), or colorbox (native FoxyCart lightbox)
+	//Available Built-in Options: prettyPhoto (lightbox), magnific-popup (lightbox)
 	//Second arg writes css and js includes on page
-	//If you want to make more customizations, you can grab the code from helperfunctions.php line ~650 and paste here
+	//If you want to make more customizations, you can grab the code from helperfunctions.php line ~780 and paste here
 	//-------------------------------------------------------------------------------------------------------------------------
 	foxyshop_build_image_slideshow("prettyPhoto", true);
 	//foxyshop_build_image_slideshow("magnific", true);
-
 
 
 	//Main Product Information Area
