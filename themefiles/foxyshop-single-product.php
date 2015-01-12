@@ -28,13 +28,12 @@ while (have_posts()) : the_post();
 
 
 	//Shows Main Image and Optional Slideshow
-	//Available Built-in Options: prettyPhoto (lightbox), cloud-zoom (inline zooming), or colorbox (native FoxyCart lightbox)
+	//Available Built-in Options: magnific-popup (lightbox), prettyPhoto (lightbox)
 	//Second arg writes css and js includes on page
-	//If you want to make more customizations, you can grab the code from helperfunctions.php line ~650 and paste here
+	//If you want to make more customizations, you can grab the code from helperfunctions.php line ~780 and paste here
 	//-------------------------------------------------------------------------------------------------------------------------
-	foxyshop_build_image_slideshow("prettyPhoto", true);
-	//foxyshop_build_image_slideshow("cloud-zoom", true); //Note, make sure to use jQuery 1.7.2 as 1.8+ seems to be incompatible for now
-	//foxyshop_build_image_slideshow("colorbox", true); //only recommended for 0.7.2+
+	foxyshop_build_image_slideshow("magnific", true);
+	//foxyshop_build_image_slideshow("prettyPhoto", true);
 
 
 	//Main Product Information Area
