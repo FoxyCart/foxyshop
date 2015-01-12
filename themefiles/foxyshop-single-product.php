@@ -34,8 +34,6 @@ while (have_posts()) : the_post();
 	//-------------------------------------------------------------------------------------------------------------------------
 	foxyshop_build_image_slideshow("prettyPhoto", true);
 	//foxyshop_build_image_slideshow("magnific", true);
-	//foxyshop_build_image_slideshow("cloud-zoom", true); //Note, make sure to use jQuery 1.7.2 as 1.8+ seems to be incompatible for now
-	//foxyshop_build_image_slideshow("colorbox", true); //only recommended for 0.7.2+
 
 
 	//Main Product Information Area

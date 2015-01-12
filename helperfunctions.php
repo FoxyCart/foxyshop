@@ -571,11 +571,10 @@ function foxyshop_add_spaces($str) {
 
 //Writes the Ship To Box
 function foxyshop_get_shipto() {
-	global $foxyshop_settings, $multiship_script_included;
-	$write = "";
+	global $foxyshop_settings;
+	add_action("wp_footer", "foxyshop_insert_multship_js", 200);
 	if ($foxyshop_settings['enable_ship_to'] == "on") {
-		if (!isset($multiship_script_included)) $write .= '<script type="text/javascript" src="' . FOXYSHOP_DIR . '/js/multiship.jquery.js"></script>'."\n";
-		$write .= '<div class="shipto_container">'."\n";
+		$write = '<div class="shipto_container">'."\n";
 		$write .= '<div class="shipto_select" style="display:none">'."\n";
 		$write .= '<label>' . apply_filters('foxyshop_shipname_to', 'Ship this item to') . '</label>'."\n";
 		$write .= '<select name="x:shipto_name_select">'."\n";
@@ -587,9 +586,15 @@ function foxyshop_get_shipto() {
 		$write .= '</div>'."\n";
 		$write .= '<div class="clr"></div>'."\n";
 		$write .= '</div>'."\n";
-		$multiship_script_included = 1;
+		return $write;
 	}
-	return $write;
+	return "";
+}
+
+function foxyshop_insert_multship_js() {
+	global $foxyshop_settings;
+	$v2 = version_compare($foxyshop_settings['version'], '2.0', "<") ? "" : "2";
+	echo '<script type="text/javascript" src="' . FOXYSHOP_DIR . '/js/multiship' . $v2 . '.jquery.js"></script>'."\n";
 }
 
 
@@ -1431,19 +1436,23 @@ function foxyshop_addon_products($show_qty = false, $before_entry = "", $after_e
 	$product = $original_product;
 	?>
 	<script type="text/javascript">
+	function foxyshop_addon_enable(rel) {
+		if ($("#addon_" + rel).is(":checked")) {
+			jQuery(".foxyshop_addon_fields[rel='" + rel + "']").each(function() {
+				jQuery(this).attr("name", rel + ":" + jQuery(this).attr("originalname"));
+			});
+			jQuery(".foxyshop_quantity.foxyshop_addon_fields[rel=" + rel + "]").prop("disabled", false);
+		} else {
+			jQuery(".foxyshop_addon_fields[rel='" + rel + "']").each(function() {
+				jQuery(this).attr("name", "x:" + jQuery(this).attr("originalname"))
+			});
+			jQuery(".foxyshop_quantity.foxyshop_addon_fields[rel=" + rel + "]").prop("disabled", true);
+		}
+	}
+
 	jQuery(document).ready(function($){
 		$(".foxyshop_addon_checkbox").click(function() {
-			if ($(this).is(":checked")) {
-				$(".foxyshop_addon_fields[rel='" + $(this).attr("rel") + "']").each(function() {
-					$(this).attr("name", $(this).attr("rel") + ":" + $(this).attr("originalname"))
-				});
-				$(".foxyshop_quantity.foxyshop_addon_fields[rel=" + $(this).attr("rel") + "]").prop("disabled", false);
-			} else {
-				$(".foxyshop_addon_fields[rel='" + $(this).attr("rel") + "']").each(function() {
-					$(this).attr("name", "x:" + $(this).attr("originalname"))
-				});
-				$(".foxyshop_quantity.foxyshop_addon_fields[rel=" + $(this).attr("rel") + "]").prop("disabled", true);
-			}
+			foxyshop_addon_enable($(this).attr("rel"));
 		});
 		$("input.foxyshop_quantity.foxyshop_addon_fields").keyup(function() {
 			$(this).val($(this).val().replace(/\D/g,''));
