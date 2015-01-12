@@ -826,9 +826,10 @@ function foxyshop_build_image_slideshow($slideshow_type = "prettyPhoto", $use_in
 	//Magnific Popup (Lightbox)
 	} elseif ($slideshow_type == "magnific") {
 
+		add_filter("foxyshop_gallery_image_link_title", "__return_true");
 		if ($use_includes && !isset($foxyshop_slideshow_includes_set)) {
 			echo '<script type="text/javascript" src="' . FOXYSHOP_DIR . '/js/magnific/jquery.magnific-popup.min.js"></script>'."\n";
-			echo '<link rel="stylesheet" href="' . FOXYSHOP_DIR . '/js/magnific/magnific-popup.css" type="text/css" media="screen" />'."\n";
+			echo '<link rel="stylesheet" href="' . FOXYSHOP_DIR . '/css/magnific-popup.css" type="text/css" media="screen" />'."\n";
 			?>
 			<script type="text/javascript">
 			jQuery(document).ready(function($) {
@@ -869,7 +870,7 @@ function foxyshop_build_image_slideshow($slideshow_type = "prettyPhoto", $use_in
 		echo '<div class="foxyshop_product_image">'."\n";
 		echo '<div class="foxyshop_product_image_holder magnific-gallery">'."\n";
 
-		if ($use_link) echo '<a href="' . foxyshop_get_main_image('large') . '" rel="foxyshop_gallery' . ($imagecount > 1 ? '[' . $product['id'] . ']' : '') . '"  title="' . esc_attr(apply_filters('foxyshop_image_link_title', '')) . '">';
+		if ($use_link) echo '<a href="' . foxyshop_get_main_image('large') . '" rel="foxyshop_gallery' . ($imagecount > 1 ? '[' . $product['id'] . ']' : '') . '"  title="' . esc_attr(foxyshop_get_main_image('title')) . '">';
 		echo '<img src="' . foxyshop_get_main_image('medium') . '" id="foxyshop_main_product_image" alt="' . esc_attr(foxyshop_get_main_image('title')) . '" title="" />';
 		if ($use_link) echo "</a>\n";
 

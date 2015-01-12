@@ -30,12 +30,12 @@ global $foxyshop_prettyphoto_included;
 	
 
 	//Shows Main Image and Optional Slideshow
-	//Available Built-in Options: prettyPhoto (lightbox), magnific-popup (lightbox)
+	//Available Built-in Options: magnific-popup (lightbox), prettyPhoto (lightbox)
 	//Second arg writes css and js includes on page
 	//If you want to make more customizations, you can grab the code from helperfunctions.php line ~780 and paste here
 	//-------------------------------------------------------------------------------------------------------------------------
-	foxyshop_build_image_slideshow("prettyPhoto", true);
-	//foxyshop_build_image_slideshow("magnific", true);
+	foxyshop_build_image_slideshow("magnific", true);
+	//foxyshop_build_image_slideshow("prettyPhoto", true);
 
 
 	//Main Product Information Area
