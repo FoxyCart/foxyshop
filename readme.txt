@@ -68,6 +68,10 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Changelog ==
 
+= Next =
+* Adding Magnific as the new default lightbox
+* Removing loader.js from wp_footer if requested by settings
+
 = 4.5.2 =
 * Updating the multiship javascript for FoxyCart 2.0
 * Custom sorting honors hidden category children preferences
@@ -370,5 +374,5 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Upgrade Notice ==
 
-= 4.5.2 =
-Updating Multiship JS for FoxyCart 2.0
+= 4.5.3 =
+Adding new default lightbox
