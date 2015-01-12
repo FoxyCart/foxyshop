@@ -74,6 +74,7 @@ function foxyshop_check_include_status() {
 	}
 	if ($skip) {
 		remove_action('wp_head', 'foxyshop_insert_foxycart_files');
+		remove_action('wp_footer', 'foxyshop_insert_foxycart_loader');
 		remove_action('init', 'foxyshop_insert_jquery');
 		if ($foxyshop_settings['include_exception_list'] != "*") {
 			add_action('wp_enqueue_scripts', 'foxyshop_remove_jquery', 99);
