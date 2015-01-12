@@ -828,7 +828,7 @@ function foxyshop_build_image_slideshow($slideshow_type = "prettyPhoto", $use_in
 
 		add_filter("foxyshop_gallery_image_link_title", "__return_true");
 		if ($use_includes && !isset($foxyshop_slideshow_includes_set)) {
-			echo '<script type="text/javascript" src="' . FOXYSHOP_DIR . '/js/magnific/jquery.magnific-popup.min.js"></script>'."\n";
+			echo '<script type="text/javascript" src="' . FOXYSHOP_DIR . '/js/jquery.magnific-popup.min.js"></script>'."\n";
 			echo '<link rel="stylesheet" href="' . FOXYSHOP_DIR . '/css/magnific-popup.css" type="text/css" media="screen" />'."\n";
 			?>
 			<script type="text/javascript">
