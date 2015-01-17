@@ -63,6 +63,11 @@ if (isset($_POST['foxyshop_image_uploader'])) {
 
 	move_uploaded_file($tempFile,$targetFile);
 
+	$targetFile = apply_filters("foxyshop_image_upload_file", $targetFile);
+	if (is_array($targetFile)) {
+		die("error: " . $targetFile['error']);
+	}
+
 	//Setup New Image
 	$wp_filetype = wp_check_filetype(basename($targetFile), null);
 	$product_title = get_the_title($product_id);
