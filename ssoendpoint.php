@@ -37,7 +37,8 @@ if (isset($_GET['fcsid']) && isset($_GET['timestamp'])) {
 			$sso_required = 0;
 			if ($curlout) {
 				$response = json_decode($curlout, true);
-				foreach($response['products'] as $product){
+				$item_list = isset($response['products']) ? $response['products'] : $response['items'];
+				foreach($item_list as $product){
 					$code = $product['code'];
 					$product_name = $product['name'];
 					$product_id = 0;
