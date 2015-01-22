@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: foxycart, shopping, cart, inventory, management, ecommerce, selling, subscription, foxy
 Requires at least: 3.1
 Tested up to: 4.1
-Stable tag: 4.5.1
+Stable tag: 4.5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 FoxyShop provides a robust shopping cart and inventory management tool for use with FoxyCart's hosted e-commerce solution.
@@ -68,15 +68,18 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Changelog ==
 
-= Next =
+= 4.5.3 =
 * Adding Magnific as the new default lightbox
 * Removing loader.js from wp_footer if requested by settings
+* Adding filter to allow file processing images
+* Upgrading to jQuery 1.11.2
+* Fixing numbers with commas when setting inventory
+* SSO endpoint now listens for proper JSON on FC version 2
 
 = 4.5.2 =
 * Updating the multiship javascript for FoxyCart 2.0
 * Custom sorting honors hidden category children preferences
 * Improving product add-on functionality
-
 
 = 4.5.1 =
 * Making FoxyCart 2.0 the Default
@@ -375,4 +378,4 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 == Upgrade Notice ==
 
 = 4.5.3 =
-Adding new default lightbox
+Adding new default lightbox, updating jQuery
