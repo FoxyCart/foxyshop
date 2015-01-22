@@ -100,7 +100,7 @@ function foxyshop_inventory_management_page() {
 					$i++;
 					if (!isset($iv['alert'])) $iv['alert'] = $foxyshop_settings['inventory_alert_level'];
 					$inventory_alert = (int)($iv['alert'] == '' ? $foxyshop_settings['inventory_alert_level'] : $iv['alert']);
-					$inventory_count = $iv['count'];
+					$inventory_count = str_replace(",", "", $iv['count']);
 
 					$variation = "&nbsp;";
 					foreach ($product['variations'] as $product_variation) {
@@ -134,7 +134,7 @@ function foxyshop_inventory_management_page() {
 					echo '<input type="hidden" name="original_count_' . $i . '" id="original_count_' . $i . '" value="' . $inventory_count . '" />';
 					echo '<input type="hidden" name="productid_' . $i . '" id="productid_' . $i . '" value="' . $single_product->ID . '" />';
 					echo '<input type="hidden" name="code_' . $i . '" id="code_' . $i . '" value="' . $ivcode . '" />';
-					echo '<input type="text" name="new_count_' . $i . '" id="new_count_' . $i . '" value="' . (int)$inventory_count . '" data-id="' . $i . '" class="inventory_update_width" autocomplete="off" />';
+					echo '<input type="text" name="new_count_' . $i . '" id="new_count_' . $i . '" value="' . $inventory_count . '" data-id="' . $i . '" class="inventory_update_width" autocomplete="off" />';
 					echo '<div class="foxyshop_wait" id="wait_' . $i . '"></div>';
 					echo "</form>\n";
 					echo "</td>\n";
@@ -186,7 +186,7 @@ jQuery(document).ready(function($){
 	$(".inventory_update_width").blur(function() {
 		current_field_id = $(this).attr("id");
 		current_id = $("#" + current_field_id).attr("data-id");
-		new_count = foxyshop_format_number_single($("#" + current_field_id).val());
+		new_count = $("#" + current_field_id).val();
 
 		$("#" + current_field_id).val(new_count);
 		$("#" + current_field_id).parents("tr").removeClass("inventory_update_width_highlight");
@@ -216,6 +216,12 @@ jQuery(document).ready(function($){
 			});
 		}
   	});
+	$(".inventory_update_width").keypress(function(e) {
+		if (e.which == 13) {
+			$(this).trigger("blur");
+			return false;
+		}
+	});
 	$(".inventory_update_width").focus(function() {
 		$(this).parents("tr").addClass("inventory_update_width_highlight");
 	});
