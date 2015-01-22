@@ -183,12 +183,11 @@ if (isset($_POST["FoxyData"])) {
 			//These are the options for the product
 			$transaction_detail_options = array();
 			foreach($transaction_detail->transaction_detail_options->transaction_detail_option as $transaction_detail_option) {
-				$product_option_name = $transaction_detail_option->product_option_name;
+				$product_option_name = (string)$transaction_detail_option->product_option_name;
 				$product_option_value = (string)$transaction_detail_option->product_option_value;
 				$price_mod = (double)$transaction_detail_option->price_mod;
 				$weight_mod = (double)$transaction_detail_option->weight_mod;
-
-
+				$transaction_detail_options[$product_name] = $product_option_value;
 
 
 			}
