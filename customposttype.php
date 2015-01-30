@@ -149,6 +149,9 @@ function foxyshop_manage_custom_columns($column_name, $id) {
 		$imageNumber = 0;
 		$src = "";
 		$attachments = get_posts(array('numberposts' => -1, 'post_type' => 'attachment','post_status' => null,'post_parent' => $id, 'order' => 'ASC','orderby' => 'menu_order'));
+		if (!$attachments && $featuredImageID) {
+			$attachments = get_posts(array("p" => $featuredImageID, 'post_type' => 'attachment', "post_mime_type" => "image"));
+		}
 		foreach ($attachments as $attachment) {
 			$thumbnailSRC = wp_get_attachment_image_src($attachment->ID, "thumbnail");
 			if ($featuredImageID == $attachment->ID || ($featuredImageID == 0 && $imageNumber == 0)) $src = $thumbnailSRC[0];

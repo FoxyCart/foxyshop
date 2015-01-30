@@ -148,6 +148,9 @@ function foxyshop_setup_product($thepost = false, $shortcut = false) {
 		$imageNumber = 0;
 		$featuredImageID = (has_post_thumbnail($thepost->ID) ? get_post_thumbnail_id($thepost->ID) : 0);
 		$attachments = get_posts(array('numberposts' => -1, 'post_type' => 'attachment','post_status' => null,'post_parent' => $thepost->ID, "post_mime_type" => "image", 'order' => 'ASC','orderby' => 'menu_order'));
+		if (!$attachments && $featuredImageID) {
+			$attachments = get_posts(array("p" => $featuredImageID, 'post_type' => 'attachment', "post_mime_type" => "image"));
+		}
 		$sizes = get_intermediate_image_sizes();
 		$sizes[] = 'full';
 		foreach ($attachments as $attachment) {

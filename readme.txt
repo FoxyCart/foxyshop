@@ -68,6 +68,9 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Changelog ==
 
+= Next =
+* Connecting featured images that weren't uploaded to the product
+
 = 4.5.3 =
 * Adding Magnific as the new default lightbox
 * Removing loader.js from wp_footer if requested by settings
