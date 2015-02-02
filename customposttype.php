@@ -157,6 +157,10 @@ function foxyshop_manage_custom_columns($column_name, $id) {
 			if ($featuredImageID == $attachment->ID || ($featuredImageID == 0 && $imageNumber == 0)) $src = $thumbnailSRC[0];
 			$imageNumber++;
 		}
+		if (!$src && $featuredImageID) {
+			$arr = wp_get_attachment_image_src($featuredImageID, "thumbnail");
+			$src = $arr[0];
+		}
 		if (!$src) $src = $foxyshop_settings['default_image'];
 		if (!$src) $src = WP_PLUGIN_URL."/foxyshop/images/no-photo.png";
 		echo $src != 'none' ? '<a href="post.php?post=' . $id . '&amp;action=edit"><img src="' . $src . '" alt="" /></a>' : '&nbsp;';

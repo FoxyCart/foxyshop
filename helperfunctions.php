@@ -162,13 +162,13 @@ function foxyshop_setup_product($thepost = false, $shortcut = false) {
 			$new_product['images'][$imageNumber] = array(
 				"id" => $attachment->ID,
 				"title" => $imageTitle,
-				"featured" => ($featuredImageID == $attachment->ID || ($featuredImageID == 0 && $imageNumber == 0) ? 1 : 0),
 				"hide_from_slideshow" => (get_post_meta($attachment->ID, "_foxyshop_hide_image", 1) ? 1 : 0)
 			);
 			foreach($sizes as $size) {
 				$sizearray = wp_get_attachment_image_src($attachment->ID, $size);
 				$new_product['images'][$imageNumber][$size] = $sizearray[0];
 			}
+			$new_product['images'][$imageNumber]["featured"] = $featuredImageID == $attachment->ID || ($featuredImageID == 0 && $imageNumber == 0) ? 1 : 0;
 			$imageNumber++;
 		}
 	}

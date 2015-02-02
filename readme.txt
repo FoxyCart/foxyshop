@@ -70,6 +70,7 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 = Next =
 * Connecting featured images that weren't uploaded to the product
+* A custom image size called "featured" won't take over the featured image functionality any more
 
 = 4.5.3 =
 * Adding Magnific as the new default lightbox
