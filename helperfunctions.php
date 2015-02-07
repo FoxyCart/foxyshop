@@ -197,10 +197,17 @@ function foxyshop_setup_product($thepost = false, $shortcut = false) {
 	//Extra Cart Parameters
 	$fields = array('cart','empty','coupon','redirect','output','_cart','_empty','_coupon');
 	foreach ($fields as $fieldname) {
-		if (get_post_meta($thepost->ID,$fieldname, true)) {
+		if (get_post_meta($thepost->ID, $fieldname, true)) {
 			$new_product[str_replace("_", "", $fieldname)] = get_post_meta($thepost->ID,$fieldname, true);
 		}
 	}
+
+	//Expires
+	$expires = get_post_meta($thepost->ID, '_expires', true);
+	if ($expires) {
+		$new_product['expires'] = strpos($expires, "-") ? strtotime($expires) : $expires;
+	}
+
 
 	//Hook To Add Your Own Function to Update the $new_product array with your own data
 	if (has_filter('foxyshop_setup_product_info')) $new_product = apply_filters('foxyshop_setup_product_info', $new_product, $thepost->ID);
@@ -232,6 +239,11 @@ function foxyshop_start_form() {
 	echo '<input type="hidden" name="quantity_max' . foxyshop_get_verification('quantity_max', '--OPEN--') . '" value="' . $product['quantity_max'] . '" id="fs_quantity_max_' . $product['id'] . '" />'."\n";
 	echo '<input type="hidden" name="x:quantity_max" value="' . $product['quantity_max_original'] . '" id="original_quantity_max_' . $product['id'] . '" />'."\n";
 	if (FOXYSHOP_DECIMAL_PLACES != 2) echo '<input type="hidden" name="x:foxyshop_decimal_places" value="' . pow(10, FOXYSHOP_DECIMAL_PLACES) . '" id="foxyshop_decimal_places" />'."\n";
+
+	//Expires
+	if (isset($product['expires']) && $product['expires']) {
+		echo '<input type="hidden" name="expires' . foxyshop_get_verification('expires') . '" value="' . $product['expires'] . '" id="fs_expires_' . $product['id'] . '" />'."\n";
+	}
 
 	//Sub Frequency
 	if (!$product["sub_frequency"]) {
