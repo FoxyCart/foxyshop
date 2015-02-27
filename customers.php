@@ -134,7 +134,7 @@ function foxyshop_customer_management() {
 					<?php if ($foxyshop_settings['enable_subscriptions']) echo "<th>" . __('Subscriptions', 'foxyshop') . "</th>\n"; ?>
 				</tr>
 			</tfoot>
-			<tbody>
+			<tbody id="the-list">
 
 		<?php
 		$holder = "";

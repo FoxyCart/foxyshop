@@ -358,7 +358,7 @@ function foxyshop_order_management() {
 					<?php do_action("foxyshop_order_table_foot"); ?>
 				</tr>
 			</tfoot>
-			<tbody>
+			<tbody id="the-list">
 
 		<?php
 		$holder = "";

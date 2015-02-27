@@ -228,7 +228,7 @@ function foxyshop_subscription_management() {
 					<th><?php _e('Frequency', 'foxyshop'); ?></th>
 				</tr>
 			</tfoot>
-			<tbody>
+			<tbody id="the-list">
 
 		<?php
 		$holder = "";
