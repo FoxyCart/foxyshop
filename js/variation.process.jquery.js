@@ -278,7 +278,7 @@ jQuery(document).ready(function($){
 						strFailed = true;
 						alert("Error: You must select an option from the dropdown.");
 						jQuery(this).focus();
-				} else if (jQuery(this).is(':checkbox') && !jQuery(this).is(':checked')) {
+				} else if (jQuery(this).is(':visible') && jQuery(this).is(':checkbox') && !jQuery(this).is(':checked')) {
 						strFailed = true;
 						alert("Error: You must check this checkbox before adding to cart.");
 						jQuery(this).focus();
