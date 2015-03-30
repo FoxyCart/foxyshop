@@ -349,37 +349,50 @@ function foxyshop_order_history_dashboard_ajax() {
 	global $foxyshop_settings;
 	check_ajax_referer('foxyshop-order-info-dashboard', 'security');
 
-	//Get Order Info
-	$foxy_data = array(
-		"api_action" => "transaction_list",
-		"transaction_date_filter_begin" => date("Y-m-d", strtotime("-30 days")),
-		"transaction_date_filter_end" => date("Y-m-d"),
-		"is_test_filter" => "0",
-		"hide_transaction_filter" => ""
-	);
-	if ($foxyshop_settings['version'] >= "0.7.1") $foxy_data['entries_per_page'] = 300;
-	$foxy_response = foxyshop_get_foxycart_data($foxy_data);
-	$xml = simplexml_load_string($foxy_response, NULL, LIBXML_NOCDATA);
+
+	$pagination_start = 1;
+	$filtered_total = 2;
 	$orderstats = array(1 => array(0, 0), 7 => array(0, 0), 30 => array(0, 0));
-	if ($xml->result != "ERROR") {
-		foreach($xml->transactions->transaction as $transaction) {
-			$transaction_date = (string)$transaction->transaction_date;
-			$transaction_total = (double)$transaction->order_total;
 
-			if (strtotime($transaction_date) >= strtotime("-24 hours")) {
-				$orderstats[1][0]++;
-				$orderstats[1][1] += $transaction_total;
+	while ($pagination_start < $filtered_total) {
+
+		//Get Order Info
+		$foxy_data = array(
+			"api_action" => "transaction_list",
+			"entries_per_page" => 50,
+			"pagination_start" => $pagination_start,
+			"transaction_date_filter_begin" => date("Y-m-d", strtotime("-30 days")),
+			"transaction_date_filter_end" => date("Y-m-d"),
+			"is_test_filter" => 0,
+			"hide_transaction_filter" => "",
+		);
+		$foxy_response = foxyshop_get_foxycart_data($foxy_data);
+		$xml = simplexml_load_string($foxy_response, NULL, LIBXML_NOCDATA);
+		if ($xml->result != "ERROR") {
+			$filtered_total = (int)$xml->statistics->filtered_total;
+			$pagination_start = (int)$xml->statistics->pagination_end + 1;
+			foreach($xml->transactions->transaction as $transaction) {
+				$transaction_date = (string)$transaction->transaction_date;
+				$transaction_total = (double)$transaction->order_total;
+
+				if (strtotime($transaction_date) >= strtotime("-24 hours")) {
+					$orderstats[1][0]++;
+					$orderstats[1][1] += $transaction_total;
+				}
+
+				if (strtotime($transaction_date) >= strtotime("-7 days")) {
+					$orderstats[7][0]++;
+					$orderstats[7][1] += $transaction_total;
+				}
+
+				$orderstats[30][0]++;
+				$orderstats[30][1] += $transaction_total;
 			}
-
-			if (strtotime($transaction_date) >= strtotime("-7 days")) {
-				$orderstats[7][0]++;
-				$orderstats[7][1] += $transaction_total;
-			}
-
-			$orderstats[30][0]++;
-			$orderstats[30][1] += $transaction_total;
+		} else {
+			$filtered_total = 0;
 		}
 	}
+
 	echo '<li>' . __('One Day', 'foxyshop') . ': <a href="edit.php?foxyshop_search=1&amp;is_test_filter=&amp;post_type=foxyshop_product&amp;page=foxyshop_order_management&amp;transaction_date_filter_begin=' . date("Y-m-d", strtotime("-1 day")) . '&amp;transaction_date_filter_end='.date("Y-m-d") . '">' . $orderstats[1][0] . ' ' . _n('order', 'orders', $orderstats[1][0], 'foxyshop') . ', ' . foxyshop_currency($orderstats[1][1]) . '</a></li>'."\n";
 	echo '<li>' . __('Seven Days', 'foxyshop') . ': <a href="edit.php?foxyshop_search=1&amp;is_test_filter=&amp;post_type=foxyshop_product&amp;page=foxyshop_order_management&amp;transaction_date_filter_begin=' . date("Y-m-d", strtotime("-7 days")) . '&amp;transaction_date_filter_end='.date("Y-m-d") . '">' . $orderstats[7][0] . ' ' . _n('order', 'orders', $orderstats[7][0], 'foxyshop') . ', ' . foxyshop_currency($orderstats[7][1]) . '</a></li>'."\n";
 	echo '<li>' . __('30 Days', 'foxyshop') . ': <a href="edit.php?foxyshop_search=1&amp;is_test_filter=&amp;post_type=foxyshop_product&amp;page=foxyshop_order_management&amp;transaction_date_filter_begin=' . date("Y-m-d", strtotime("-30 days")) . '&amp;transaction_date_filter_end='.date("Y-m-d") . '">' . $orderstats[30][0] . ' ' . _n('order', 'orders', $orderstats[30][0], 'foxyshop') . ', ' . foxyshop_currency($orderstats[30][1]) . '</a></li>'."\n";
