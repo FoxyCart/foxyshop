@@ -1024,7 +1024,10 @@ function foxyshop_category_children($categoryID = 0, $showCount = false, $showDe
 	if ($termchildren) {
 
 		//Sort Categories
-		$termchildren = foxyshop_sort_categories($termchildren, $categoryID);
+		$skip_category_sort = apply_filters('foxyshop_categories_skip_sort', 0);
+		if (!$skip_category_sort) {
+			$termchildren = foxyshop_sort_categories($termchildren, $categoryID);
+		}
 
 		foreach ($termchildren as $child) {
 			$term = get_term_by('id', $child->term_id, "foxyshop_categories");
@@ -1086,7 +1089,10 @@ function foxyshop_category_writer($category_id, $depth) {
 		}
 
 
-		$termchildren = foxyshop_sort_categories($termchildren, $category_id);
+		$skip_category_sort = apply_filters('foxyshop_category_writer_skip_sort', 0);
+		if (!$skip_category_sort) {
+			$termchildren = foxyshop_sort_categories($termchildren, $category_id);
+		}
 		if ($depth > 1) $foxyshop_category_write .= '<ul class="children">';
 		foreach ($termchildren as $child) {
 			$term = get_term_by('id', $child->term_id, "foxyshop_categories");

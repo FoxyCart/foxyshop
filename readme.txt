@@ -69,9 +69,11 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 == Changelog ==
 
 = Next =
-* Adding "expired" feature - use a number or a date (Y-m-d in Pacific time)
+* Adding "expired" feature - use a number (minutes) or a date (Y-m-d in Pacific time)
 * Connecting featured images that weren't uploaded to the product
 * A custom image size called "featured" won't take over the featured image functionality any more
+* Fix to make sure that hidden required checkboxes aren't required
+* Adding filters to disable custom category sorting
 
 = 4.5.3 =
 * Adding Magnific as the new default lightbox
