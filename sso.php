@@ -200,8 +200,9 @@ function foxyshop_add_registration_redirect($path) {
 function foxyshop_reverse_sso_login() {
 
 	$redirect_url = apply_filters("foxyshop_reverse_sso_login_failed_destination", get_home_url());
+	$result = "failed";
 
-	if (!isset($_GET['foxycart_customer_id']) || !isset($_GET['timestamp']) || !isset($_GET['fc_auth_token'])) {
+	if (!isset($_REQUEST['foxycart_customer_id']) || !isset($_GET['timestamp']) || !isset($_GET['fc_auth_token'])) {
 		wp_redirect($redirect_url);
 		die;
 	}
@@ -209,10 +210,11 @@ function foxyshop_reverse_sso_login() {
 	//Build Token
 	global $foxyshop_settings;
 	$timestamp = $_GET['timestamp'];
+	$current_timestamp = date("U");
 	$calculated_auth_token = sha1($_GET['foxycart_customer_id'] . '|' . $_GET['timestamp'] . '|' . $foxyshop_settings['api_key']);
 
 	//Token Matches, Do Login
-	if ($calculated_auth_token === $_GET['fc_auth_token']) {
+	if ($calculated_auth_token === $_GET['fc_auth_token'] && $timestamp >= $current_timestamp) {
 
 		//Lookup ID By FoxyCart Customer ID
 		$wp_user_id = 0;
@@ -225,7 +227,14 @@ function foxyshop_reverse_sso_login() {
 		if ($wp_user_id) {
 			$redirect_url = apply_filters("foxyshop_reverse_sso_login_destination", get_home_url());
 			wp_set_auth_cookie($wp_user_id);
+			$result = "ok";
 		}
+	}
+
+	//Is This a JSONP Request?
+	if (isset($_GET['callback'])) {
+		echo htmlspecialchars($_GET['callback']) . '({ "result": "' . $result . '"})';
+		die;
 	}
 
 	wp_redirect($redirect_url);
