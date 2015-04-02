@@ -1093,6 +1093,7 @@ function foxyshop_category_writer($category_id, $depth) {
 		if (!$skip_category_sort) {
 			$termchildren = foxyshop_sort_categories($termchildren, $category_id);
 		}
+		$termchildren = apply_filters("foxyshop_simple_category_custom_sort", $termchildren);
 		if ($depth > 1) $foxyshop_category_write .= '<ul class="children">';
 		foreach ($termchildren as $child) {
 			$term = get_term_by('id', $child->term_id, "foxyshop_categories");
