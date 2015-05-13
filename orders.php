@@ -150,7 +150,7 @@ function foxyshop_order_management() {
 	$transaction_search_type = isset($_GET['transaction_search_type']) ? $_GET['transaction_search_type'] : '';
 
 	if ($foxyshop_settings["orderdesk_url"]) {
-		$orderdesk_link = ' <a class="' . (version_compare(get_bloginfo('version'), '3.2', "<") ? "button " : '') . 'add-new-h2" href="https://foxytools.com/app/orderdesk/" target="_blank">' . __('Launch Order Desk', 'foxyshop') . '</a>';
+		$orderdesk_link = ' <a class="' . (version_compare(get_bloginfo('version'), '3.2', "<") ? "button " : '') . 'add-new-h2" href="https://app.orderdesk.me/" target="_blank">' . __('Launch Order Desk', 'foxyshop') . '</a>';
 	} else {
 		$orderdesk_link = "";
 	}
