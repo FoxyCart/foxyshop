@@ -154,10 +154,6 @@ function foxyshop_setup_product($thepost = false, $shortcut = false) {
 		$sizes = get_intermediate_image_sizes();
 		$sizes[] = 'full';
 		foreach ($attachments as $attachment) {
-			$thumbnailSRC = wp_get_attachment_image_src($attachment->ID, "thumbnail");
-			$mediumSRC = wp_get_attachment_image_src($attachment->ID, "medium");
-			$largeSRC = wp_get_attachment_image_src($attachment->ID, "large");
-			$fullSRC = wp_get_attachment_image_src($attachment->ID, "full");
 			$imageTitle = $attachment->post_title;
 			$new_product['images'][$imageNumber] = array(
 				"id" => $attachment->ID,
