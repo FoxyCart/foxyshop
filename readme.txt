@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: foxycart, shopping, cart, inventory, management, ecommerce, selling, subscription, foxy
 Requires at least: 3.1
 Tested up to: 4.2
-Stable tag: 4.6
+Stable tag: 4.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 FoxyShop provides a robust shopping cart and inventory management tool for use with FoxyCart's hosted e-commerce solution.
@@ -68,10 +68,16 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Changelog ==
 
+= 4.6.1 =
+* Update PrettyPhoto to 3.1.6
+* Update Order Desk Link on Orders page
+* Removing unneeded queries when setting up images
+
 = 4.6 =
 * Adding "expired" feature - use a number (minutes) or a date (Y-m-d in Pacific time)
 * Adding Reverse SSO functionality - log your customers into WordPress after checkout
 * Connecting featured images that weren't uploaded to the product
+* The dashboard widget now shows all orders for the month instead of just the first 300
 * A custom image size called "featured" won't take over the featured image functionality any more
 * Fix to make sure that hidden required checkboxes aren't required
 * Adding filters to disable custom category sorting and provide your own custom sorting
