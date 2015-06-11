@@ -24,7 +24,7 @@ if (isset($_GET['fcsid']) && isset($_GET['timestamp'])) {
 			die;
 
 		//Check Cart Contents to Decide on Redirect
-		} elseif ($foxyshop_settings['sso_account_required'] == 2) {
+		} elseif ($foxyshop_settings['sso_account_required'] == 2 && !isset($_GET['checkout_type'])) {
 			$ch = curl_init();
 			if (!defined('FOXYSHOP_CURL_CONNECTTIMEOUT')) define('FOXYSHOP_CURL_CONNECTTIMEOUT', 10);
 			if (!defined('FOXYSHOP_CURL_TIMEOUT')) define('FOXYSHOP_CURL_TIMEOUT', 15);
@@ -105,7 +105,7 @@ if (isset($_GET['fcsid']) && isset($_GET['timestamp'])) {
 	$auth_token = sha1($customer_id . '|' . $newtimestamp . '|' . $foxyshop_settings['api_key']);
 	$redirect_complete = 'https://' . $foxyshop_settings['domain'] . '/checkout?fc_auth_token=' . $auth_token . '&fc_customer_id=' . $customer_id . '&timestamp=' . $newtimestamp . '&fcsid=' . $fcsid;
 
-	header('Location: ' . $redirect_complete);
+	wp_redirect($redirect_complete, 301);
 	die;
 }
 

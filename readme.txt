@@ -68,6 +68,9 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Changelog ==
 
+= Next =
+* SSO endpoint now listens for update/cancellation and doesn't query cart in those cases
+
 = 4.6.1 =
 * Update PrettyPhoto to 3.1.6
 * Update Order Desk Link on Orders page
