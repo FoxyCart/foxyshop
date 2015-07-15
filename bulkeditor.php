@@ -112,7 +112,7 @@ function foxyshop_cfbe_metabox($post_type) {
 					<input type="radio" name="_weight_status" id="_weight_status1" value="1" />
 					<label for="_weight_status1"><?php echo $change_to_text; ?>:</label>
 					<input type="text" name="_weight" id="_weight" value="" class="cfbe_field_name" onfocus="jQuery('#_weight_status1').prop('checked', true);" />
-					<small>enter 5 lbs, 2 oz as "5 2"</small>
+					<small>enter 5 lbs, 2 oz as "5 2" or +5% or -5.00</small>
 					<div style="clear: both;"></div>
 				</td>
 			</tr>
@@ -355,14 +355,14 @@ function foxyshop_cfbe_save($post_type, $post_id) {
 	global $foxyshop_settings, $google_product_field_names;
 
 	//Generic Fields Needing No Special Treatment
-	$fields = array("category", "weight", "discount_quantity_amount", "discount_quantity_percentage", "discount_price_amount", "discount_price_percentage", "sub_frequency", "sub_startdate", "sub_enddate");
+	$fields = array("category", "discount_quantity_amount", "discount_quantity_percentage", "discount_price_amount", "discount_price_percentage", "sub_frequency", "sub_startdate", "sub_enddate");
 	foreach ($fields as $field) {
 		if ($_POST['_' . $field . '_status'] == 1) cfbe_save_meta_data('_'.$field, $_POST['_'.$field]);
 	}
 
 
 	//Generic Price Fields Needing Special Treatment
-	$fields = array("price", "saleprice");
+	$fields = array("price", "saleprice", "weight");
 	foreach ($fields as $field) {
 		if ($_POST['_' . $field . '_status'] == 1 && $_POST['_' . $field] != "") {
 
@@ -372,8 +372,28 @@ function foxyshop_cfbe_save($post_type, $post_id) {
 			//Price modifier in play
 			if ($modifier == "+" || $modifier == "-") {
 
+
+				//Is This Weight?
+				if ($field === "weight") {
+					$original_price = get_post_meta($post_id,'_weight', true);
+					$weight = explode(" ", $original_price);
+					if (count($weight) == 1) $weight = explode(" ", $foxyshop_settings['default_weight']);
+					$weight1 = (int)$weight[0];
+					$weight2 = (double)$weight[1];
+					if ($weight1 == 0 && $weight2 == 0) {
+						$defaultweight = explode(" ",$foxyshop_settings['default_weight']);
+						$weight1 = (int)$defaultweight[0];
+						$weight2 = (count($defaultweight) > 1 ? (double)$defaultweight[1] : 0);
+					}
+					if ($weight2 > 0) $weight2 = number_format($weight2 / ($foxyshop_settings['weight_type'] == 'metric' ? 1000 : 16), 3);
+					$arr_weight2 = explode('.', $weight2);
+					$weight2 = ((strpos($weight2, '.') !== false) ? end($arr_weight2) : $weight2);
+					$original_price = (double)($weight1 . "." . $weight2);
+
 				//Get original price
-				$original_price = (double)get_post_meta($post_id,'_' . $field, true);
+				} else {
+					$original_price = (double)get_post_meta($post_id,'_' . $field, true);
+				}
 
 				//Percentage
 				if ((string)substr($new_price, -1) == "%") {
@@ -399,8 +419,17 @@ function foxyshop_cfbe_save($post_type, $post_id) {
 
 			}
 
-			if ($new_price < 0) $new_price = 0;
-			$new_price = number_format($new_price, 2);
+			//Is This Weight?
+			if ($field === "weight") {
+				$new_price = (string)number_format($new_price, 2);
+				$to_split = explode(".", $new_price);
+				$new_price = $to_split[0] . " " . $to_split[0];
+
+			//Just a Price
+			} else {
+				if ($new_price < 0) $new_price = 0;
+				$new_price = number_format($new_price, 2);
+			}
 
 			//Do the save
 			cfbe_save_meta_data('_'.$field, $new_price);
