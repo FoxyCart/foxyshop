@@ -17,7 +17,7 @@ class FoxyShop_Category extends WP_Widget {
 	function FoxyShop_Category() {
 		$widget_ops = array('classname' => 'foxyshop_category', 'description' => sprintf(__('Show the contents of a FoxyShop %s category.', 'foxyshop'), strtolower(FOXYSHOP_PRODUCT_NAME_SINGULAR)));
 		$control_ops = array('width' => 300, 'height' => 350, 'id_base' => 'foxyshop-category-widget');
-		$this->WP_Widget('foxyshop-category-widget', __('FoxyShop Category', 'foxyshop'), $widget_ops, $control_ops);
+		parent::__construct('foxyshop-category-widget', __('FoxyShop Category', 'foxyshop'), $widget_ops, $control_ops);
 	}
 
 	//Widget Display
@@ -137,7 +137,7 @@ class FoxyShop_Cart_Link extends WP_Widget {
 	function FoxyShop_Cart_Link() {
 		$widget_ops = array('classname' => 'foxyshop_cart_link', 'description' => __('Show a link to view shopping cart.', 'foxyshop'));
 		$control_ops = array('width' => 300, 'height' => 350, 'id_base' => 'foxyshop-cart-link-widget');
-		$this->WP_Widget('foxyshop-cart-link-widget', __('FoxyShop Cart Link', 'foxyshop'), $widget_ops, $control_ops);
+		parent::__construct('foxyshop-cart-link-widget', __('FoxyShop Cart Link', 'foxyshop'), $widget_ops, $control_ops);
 	}
 
 	//Widget Display
@@ -211,7 +211,7 @@ class FoxyShop_Category_List extends WP_Widget {
 	function FoxyShop_Category_List() {
 		$widget_ops = array('classname' => 'foxyshop_category_list', 'description' => __('Show the FoxyShop category list.', 'foxyshop'));
 		$control_ops = array('width' => 300, 'height' => 350, 'id_base' => 'foxyshop-category-list-widget');
-		$this->WP_Widget('foxyshop-category-list-widget', __('FoxyShop Category List', 'foxyshop'), $widget_ops, $control_ops);
+		parent::__construct('foxyshop-category-list-widget', __('FoxyShop Category List', 'foxyshop'), $widget_ops, $control_ops);
 	}
 
 	//Widget Display
