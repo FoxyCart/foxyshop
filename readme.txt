@@ -3,8 +3,8 @@ Contributors: sparkweb
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2AHG2QMABF8SG
 Tags: foxycart, shopping, cart, inventory, management, ecommerce, selling, subscription, foxy
 Requires at least: 3.1
-Tested up to: 4.2.2
-Stable tag: 4.6.1
+Tested up to: 4.3
+Stable tag: 4.6.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 FoxyShop provides a robust shopping cart and inventory management tool for use with FoxyCart's hosted e-commerce solution.
@@ -68,7 +68,8 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Changelog ==
 
-= Next =
+= 4.6.2 =
+* WP 4.3 compatibility changes with widget constructor
 * SSO endpoint now listens for update/cancellation and doesn't query cart in those cases
 
 = 4.6.1 =
@@ -211,5 +212,5 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Upgrade Notice ==
 
-= 4.6 =
-Expired feature, checkout reverse login feature
+= 4.6.2 =
+WP_Widget Fix For WordPress 4.3 Compatibility
