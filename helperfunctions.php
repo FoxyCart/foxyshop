@@ -583,8 +583,8 @@ function foxyshop_add_spaces($str) {
 //Writes the Ship To Box
 function foxyshop_get_shipto() {
 	global $foxyshop_settings;
-	add_action("wp_footer", "foxyshop_insert_multship_js", 200);
 	if ($foxyshop_settings['enable_ship_to'] == "on") {
+		add_action("wp_footer", "foxyshop_insert_multship_js", 200);
 		$write = '<div class="shipto_container">'."\n";
 		$write .= '<div class="shipto_select" style="display:none">'."\n";
 		$write .= '<label>' . apply_filters('foxyshop_shipname_to', 'Ship this item to') . '</label>'."\n";
