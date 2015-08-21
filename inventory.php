@@ -167,7 +167,7 @@ function foxyshop_inventory_management_page() {
 							Copy and paste these values into Excel. Make your changes, then copy and paste back in and click update.<br />
 							You can also add new inventory levels by using the template to add new rows with code and inventory fields.
 						</p>
-						<textarea id="name="foxyshop_inventory_updates" name="foxyshop_inventory_updates" wrap="auto" style="float: left; width:650px;height: 200px;"><?php echo $exported; ?></textarea>
+						<textarea id="foxyshop_inventory_updates" name="foxyshop_inventory_updates" wrap="auto" style="float: left; width:650px;height: 200px;"><?php echo $exported; ?></textarea>
 						<div style="clear: both;"></div>
 						<p><input type="submit" class="button-primary" value="<?php _e('Update Inventory Values'); ?>" /></p>
 					</td>
