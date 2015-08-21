@@ -489,7 +489,7 @@ function foxyshop_product_details_setup() {
 
 	var FOXYSHOP_DIR = '<?php echo FOXYSHOP_DIR; ?>';
 	var FOXYSHOP_URL_BASE = '<?php echo FOXYSHOP_URL_BASE; ?>';
-	var bloginfo_url = '<?php bloginfo("url"); ?>';
+	var bloginfo_url = '<?php echo is_ssl() ? str_replace("http://", "https://", get_bloginfo("url")) : get_bloginfo("url"); ?>';
 	var datafeed_url_key = '<?php echo $foxyshop_settings['datafeed_url_key']; ?>';
 
 	</script>
