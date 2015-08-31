@@ -68,6 +68,10 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Changelog ==
 
+= 4.6.3 =
+* Update sub start and end dates to listen for FoxyCart date format (like 1m, 10d, etc.)
+* Don't load multiship JavaScript is multiship is not enabled
+
 = 4.6.2 =
 * WP 4.3 compatibility changes with widget constructor
 * SSO endpoint now listens for update/cancellation and doesn't query cart in those cases
@@ -212,5 +216,5 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Upgrade Notice ==
 
-= 4.6.2 =
-WP_Widget Fix For WordPress 4.3 Compatibility
+= 4.6.3 =
+Properly Listening for FoxyCart Date Format on Subs

@@ -98,16 +98,19 @@ function foxyshop_setup_product($thepost = false, $shortcut = false) {
 	}
 
 	//Calculate Subscription Start
+	$foxycart_last_chars = array("m","d","y");
 	$sub_startdate = get_post_meta($thepost->ID,'_sub_startdate', 1);
 	if ($sub_startdate) {
-		if ($sub_startdate != preg_replace("/[^0-9]/","", $sub_startdate)) $sub_startdate = date("Ymd", strtotime($sub_startdate));
+		$last_char = strtolower(substr($sub_startdate, -1));
+		if (!in_array($last_char, $foxycart_last_chars) && $sub_startdate != preg_replace("/[^0-9]/","", $sub_startdate)) $sub_startdate = date("Ymd", strtotime($sub_startdate));
 	}
 	$new_product['sub_startdate'] = $sub_startdate;
 
 	//Calculate Subscription End
 	$sub_enddate = get_post_meta($thepost->ID,'_sub_enddate', 1);
 	if ($sub_enddate) {
-		if ($sub_enddate != preg_replace("/[^0-9]/","", $sub_enddate)) $sub_enddate = date("Ymd", strtotime($sub_enddate));
+		$last_char = strtolower(substr($sub_enddate, -1));
+		if (!in_array($last_char, $foxycart_last_chars) && $sub_enddate != preg_replace("/[^0-9]/","", $sub_enddate)) $sub_enddate = date("Ymd", strtotime($sub_enddate));
 	}
 	$new_product['sub_enddate'] = $sub_enddate;
 
