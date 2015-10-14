@@ -650,11 +650,12 @@ function foxyshop_quantity($qty = 1, $beforeVariation = "", $afterVariation = '<
 
 
 //Writes a Straight Text Link
-function foxyshop_product_link($AddText = "Add To Cart", $linkOnly = false, $variations = "") {
+function foxyshop_product_link($AddText = "Add To Cart", $linkOnly = false, $variations = "", $quantity = "") {
 	global $product, $foxyshop_settings, $foxyshop_skip_url_link;
 
 	$url = 'price' . foxyshop_get_verification('price') . '=' . urlencode($product['price']);
 	if (foxyshop_get_main_image() && version_compare($foxyshop_settings['version'], '0.7.0', ">")) $url .= '&amp;image' . foxyshop_get_verification('image',"--OPEN--") . '=' . urlencode(foxyshop_get_main_image());
+	if ($quantity) $url .= '&amp;quantity' . foxyshop_get_verification('quantity', $quantity) . '=' . $quantity;
 	if (version_compare($foxyshop_settings['version'], '0.7.0', ">") && !isset($foxyshop_skip_url_link)) $url .= '&amp;url' . foxyshop_get_verification('url') . '=' . urlencode($product['url']);
 	$fields = array('name','code','category','weight','quantity_min','quantity_max','discount_quantity_amount','discount_quantity_percentage','discount_price_amount','discount_price_percentage','sub_frequency','sub_startdate','sub_enddate');
 	$non_verification_fields = apply_filters('foxyshop_non_verification_fields', array('cart','empty','coupon','redirect','output'));
