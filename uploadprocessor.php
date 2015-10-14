@@ -23,9 +23,9 @@ $allowed_extensions = array("jpg","gif","jpeg","png","doc","docx","odt","xmls","
 if (defined('FOXYSHOP_ALLOWED_EXTENSIONS')) $allowed_extensions = array_merge($allowed_extensions, explode(",",str_replace(' ','',FOXYSHOP_ALLOWED_EXTENSIONS)));
 
 //Admin Upload
-if (isset($_POST['foxyshop_image_uploader'])) {
+if (isset($_GET['foxyshop_product_id'])) {
 
-	$product_id = (isset($_POST['foxyshop_product_id']) ? $_POST['foxyshop_product_id'] : 0);
+	$product_id = (isset($_GET['foxyshop_product_id']) ? $_GET['foxyshop_product_id'] : 0);
 
 	$images = get_children(array('post_parent' => $product_id, 'post_type' => 'attachment', "post_mime_type" => "image"));
 	if (empty($images)) {
@@ -34,10 +34,10 @@ if (isset($_POST['foxyshop_image_uploader'])) {
 		$product_count = count($images);
 	}
 
-	$tempFile = $_FILES['Filedata']['tmp_name'];
+	$tempFile = $_FILES['file']['tmp_name'];
 	$targetPath = $upload_dir['path'];
 
-	$filename = urldecode($_FILES['Filedata']['name']);
+	$filename = urldecode($_FILES['file']['name']);
 	$filename = str_replace(array('[1]','[2]','[3]','[4]','[5]','[6]','[7]','[8]','[9]','[10]'),'',$filename);
 	$filename = sanitize_file_name($filename);
 
@@ -80,7 +80,7 @@ if (isset($_POST['foxyshop_image_uploader'])) {
 		'post_content' => '',
 		'post_status' => 'inherit'
 	);
-	require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+	require_once(ABSPATH . "wp-admin/includes/image.php");
 	$attach_id = wp_insert_attachment($attachment, $targetFile, $product_id);
 	$attach_data = wp_generate_attachment_metadata($attach_id, $targetFile);
 	wp_update_attachment_metadata($attach_id, $attach_data);

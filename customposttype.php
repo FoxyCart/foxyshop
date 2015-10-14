@@ -823,15 +823,10 @@ function foxyshop_product_images_setup() {
 			return;
 		}
 	}
+	echo '<script type="text/javascript" src="' . FOXYSHOP_DIR . '/js/dropzone.js"></script>'."\n";
+	echo '<link rel="stylesheet" href="' . FOXYSHOP_DIR . '/css/dropzone.css" type="text/css" media="screen" />'."\n";
 
-	echo '<link rel="stylesheet" href="' . FOXYSHOP_DIR . '/js/uploadify/uploadify.css" type="text/css" media="screen" />'."\n";
-	echo '<script type="text/javascript" src="' . FOXYSHOP_DIR . '/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>'."\n";
-	//echo '<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>'."\n";
-
-	echo '<div id="foxyshop_new_product_image_container">'."\n";
-	echo '<input type="file" id="foxyshop_new_product_image">'."\n";
-	echo '<div id="foxyshop_image_waiter"></div>';
-	echo '</div>'."\n";
+	echo '<div id="foxyshop_new_product_image_container" class="dropzone"></div>'."\n";
 	echo '<input type="hidden" id="foxyshop_sortable_value" name="foxyshop_sortable_value" />'."\n";
 	echo '<ul id="foxyshop_product_image_list">' . foxyshop_redraw_images($post->ID) . '</ul>'."\n";
 	echo '<div style="clear: both;"></div>';

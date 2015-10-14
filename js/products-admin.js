@@ -515,36 +515,31 @@ jQuery(document).ready(function($){
 		return false;
 	});
 
-	$('#foxyshop_new_product_image').show().each(function() {
-		var variationID = $(this).attr("rel");
-		$(this).uploadify({
-			uploader  : FOXYSHOP_DIR + '/js/uploadify/uploadify.swf',
-			script    : bloginfo_url + FOXYSHOP_URL_BASE + '/upload-' + datafeed_url_key + '/',
-			cancelImg : FOXYSHOP_DIR + '/js/uploadify/cancel.png',
-			auto      : true,
-			buttonImg	: FOXYSHOP_DIR + '/images/add-new-image.png',
-			width     : '132',
-			height    : '23',
-			scriptData: {
-				'foxyshop_image_uploader':'1',
-				'foxyshop_product_id': post_id
-			},
-			sizeLimit : foxyshop_max_upload,
-			onComplete: function(event,queueID,fileObj,response,data) {
-					var data = {
-						'action': 'foxyshop_product_ajax_action',
-						'security': nonce_images,
-						'foxyshop_product_id': post_id,
-						'foxyshop_action': 'add_new_image'
-					};
+	Dropzone.autoDiscover = false;
+	$("#foxyshop_new_product_image_container").dropzone({
+		url: bloginfo_url + FOXYSHOP_URL_BASE + '/upload-' + datafeed_url_key + '/?foxyshop_product_id=' + post_id,
+		createImageThumbnails: false,
+		acceptedFiles: "image/*,*.pdf,*.doc,*.docx,*.odt,*.xmls,*.xlsx,*.txt,*.tif,*.psd,*.mp3",
+		dictDefaultMessage: 'Drop Images Here To Upload',
+		init: function() {
+			this.on("success", function(file) {
+				var data = {
+					'action': 'foxyshop_product_ajax_action',
+					'security': nonce_images,
+					'foxyshop_product_id': post_id,
+					'foxyshop_action': 'add_new_image'
+				};
 
-					$("#foxyshop_image_waiter").show();
-					$.post(ajaxurl, data, function(response) {
-						$("#foxyshop_product_image_list").html(response)
-						$("#foxyshop_image_waiter").hide();
+				$("#foxyshop_image_waiter").show();
+				$.post(ajaxurl, data, function(response) {
+					$("#foxyshop_product_image_list").html(response)
+					$("#foxyshop_image_waiter").hide();
+					$(".dz-complete").delay(3000).fadeOut(400, function() {
+						$(".dropzone.dz-started").removeClass("dz-started");
 					});
-			}
-		});
+				});
+			});
+		}
 	});
 
 	$("#foxyshop_product_image_list").sortable({
