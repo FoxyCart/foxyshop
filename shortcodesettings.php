@@ -104,13 +104,14 @@ function foxyshop_productlink_shortcode($atts, $content = null) {
 	$original_product = $product;
 	extract(shortcode_atts(array(
 		"name" => '',
-		"variations" => ''
+		"variations" => '',
+		"quantity" => '1',
 	), $atts));
 
 	$prod = foxyshop_get_product_by_name($name);
 	if (!$prod || !$name) return "";
 	$product = foxyshop_setup_product($prod);
-	$write = foxyshop_product_link("", true, $variations);
+	$write = foxyshop_product_link("", true, $variations, $quantity);
 	$product = $original_product;
 	return $write;
 }
