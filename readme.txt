@@ -71,6 +71,7 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 = 4.7 =
 * Updating the FoxyShop image uploader to use Dropzone instead of Uploadify
 * NOTE: If you are currently using the product variation image upload feature for your cart, please read our upgrade notes before updating
+* Removed jqueryui datepicker files. Using WordPress versions instead. NOTE: if you were linking to these files, please download them directly from jQueryUI.
 * Update sub start and end dates to listen for FoxyCart date format (like 1m, 10d, etc.)
 * Don't load multiship JavaScript if multiship is not enabled
 
@@ -219,4 +220,4 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 == Upgrade Notice ==
 
 = 4.7 =
-FoxyShop Image Upload Updates. NOTE: If you are currently using the product variation image upload feature for your cart, please read our upgrade notes before updating
+FoxyShop Image Upload Updates. NOTE: If you are currently using the product variation image upload feature for your cart (or a front-end datepicker), please read our upgrade notes before updating.

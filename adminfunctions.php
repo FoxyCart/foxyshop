@@ -30,7 +30,7 @@ function foxyshop_remove_jquery() {
 function foxyshop_load_admin_scripts($hook) {
 	global $foxyshop_settings;
 
-	$page = (isset($_REQUEST['page']) ? $_REQUEST['page'] : '');
+	$page = isset($_REQUEST['page']) ? $_REQUEST['page'] : '';
 
 	//Style - Always Do This
 	wp_enqueue_style('foxyshop_admin_css', FOXYSHOP_DIR . '/css/foxyshop-admin.css');
@@ -45,7 +45,7 @@ function foxyshop_load_admin_scripts($hook) {
 	}
 
 	//Product
-	if ($hook != 'post.php' && $hook != 'post-new.php' && $page != 'cfbe_editor-foxyshop_product' && $page != 'foxyshop_setup') return;
+	if ($hook !== 'post.php' && $hook !== 'post-new.php' && $page !== 'cfbe_editor-foxyshop_product' && $page !== 'foxyshop_setup') return;
 	wp_enqueue_script('swfobject');
 	if ($foxyshop_settings['related_products_custom'] || $foxyshop_settings['related_products_tags'] || $foxyshop_settings['enable_addon_products']) {
 		wp_enqueue_script('chosenScript', FOXYSHOP_DIR . '/js/chosen.jquery.min.js', array('jquery'));
@@ -85,8 +85,8 @@ function foxyshop_check_include_status() {
 
 
 function foxyshop_date_picker() {
-	wp_enqueue_style('datepickerStyle', FOXYSHOP_DIR . '/css/ui-smoothness/jquery-ui.custom.css');
-	wp_enqueue_script('datepickerScript', FOXYSHOP_DIR . '/js/jquery-ui.datepicker.min.js', array('jquery','jquery-ui-core'));
+	wp_enqueue_style('jquery-style', 'http' . (is_ssl() ? "s" : "") . '://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css');
+	wp_enqueue_script('jquery-ui-datepicker', array('jquery','jquery-ui-core'));
 }
 
 //Check Permalinks on all admin pages and warn if incorrect
