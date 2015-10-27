@@ -1,3 +1,6 @@
+//Disable Dropzone Immediately
+Dropzone.autoDiscover = false;
+
 jQuery(document).ready(function($){
 
 	//Check For Illegal Code
@@ -515,7 +518,6 @@ jQuery(document).ready(function($){
 		return false;
 	});
 
-	Dropzone.autoDiscover = false;
 	$("#foxyshop_new_product_image_container").dropzone({
 		url: bloginfo_url + FOXYSHOP_URL_BASE + '/upload-' + datafeed_url_key + '/?foxyshop_product_id=' + post_id,
 		createImageThumbnails: false,

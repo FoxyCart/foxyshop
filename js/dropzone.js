@@ -1747,6 +1747,7 @@
     }
   };
 
-  contentLoaded(window, Dropzone._autoDiscoverFunction);
+  //FoxyShop Disabled
+  //contentLoaded(window, Dropzone._autoDiscoverFunction);
 
 }).call(this);
