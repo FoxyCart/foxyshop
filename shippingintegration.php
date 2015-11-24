@@ -331,16 +331,20 @@ function foxyshop_transaction_export() {
 		}
 
 		$product_total = 0;
+		$future_product_total = 0;
 		foreach($transaction->transaction_details->transaction_detail as $transaction_detail) {
 			$product_price = (double)$transaction_detail->product_price;
 			foreach($transaction_detail->transaction_detail_options->transaction_detail_option as $transaction_detail_option) {
 				$product_price += (double)$transaction_detail_option->price_mod;
 			}
 			$product_total += $product_price * (int)$transaction_detail->product_quantity;
+			if ($transaction_detail->is_future_line_item) {
+				$future_product_total += $product_price * (int)$transaction_detail->product_quantity;
+			}
 		}
 
 		$shipping_total = (double)$transaction->shipping_total;
-		$order_total = $product_total + $shipping_total + $discount_total + $tax_total;
+		$order_total = $product_total + $shipping_total + $discount_total + $tax_total - $future_product_total;
 
 
 
