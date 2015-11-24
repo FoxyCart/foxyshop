@@ -3,15 +3,15 @@ Contributors: sparkweb
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2AHG2QMABF8SG
 Tags: foxycart, shopping, cart, inventory, management, ecommerce, selling, subscription, foxy
 Requires at least: 3.1
-Tested up to: 4.3.1
-Stable tag: 4.7
+Tested up to: 4.4
+Stable tag: 4.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 FoxyShop provides a robust shopping cart and inventory management tool for use with FoxyCart's hosted e-commerce solution.
 
 == Description ==
 
-FoxyShop is a complete shopping cart solution for WordPress. This plugin connects to [FoxyCart's]((http://affiliate.foxycart.com/idevaffiliate.php?id=211)) hosted shopping cart service and will allow you to manage your inventory from a WordPress backend. FoxyShop was built to make the integration of FoxyCart and WordPress a breeze. Products are easy to manage and the flexible templates make it easy for developers to quickly build their storefront. The FoxyShop plugin is exhaustively documented, actively maintained, and completely free. And it's foxy, too.
+FoxyShop is a complete shopping cart solution for WordPress. This plugin connects to [FoxyCart's]((https://affiliate.foxycart.com/idevaffiliate.php?id=211)) hosted shopping cart service and will allow you to manage your inventory from a WordPress backend. FoxyShop was built to make the integration of FoxyCart and WordPress a breeze. Products are easy to manage and the flexible templates make it easy for developers to quickly build their storefront. The FoxyShop plugin is exhaustively documented, actively maintained, and completely free. And it's foxy, too.
 
 Visit [foxy-shop.com](http://www.foxy-shop.com/) for full documentation and instructions.
 
@@ -34,11 +34,11 @@ Visit [foxy-shop.com](http://www.foxy-shop.com/) for full documentation and inst
 * Inventory management
 * Internationalization support
 * Field validation to prevent form tampering
-* Lots more... [See Complete Feature List!](http://www.foxy-shop.com/foxyshop-features/)
+* Much more... [See Complete Feature List!](http://www.foxy-shop.com/foxyshop-features/)
 
 = Translations Available =
 * Norwegian (Kenneth from [KKTrends](http://kktrend.no/))
-* German (Andrei from [PixelDarkroom](http://www.pixeldarkroom.com/))
+* German (Andrei from PixelDarkroom)
 
 
 == Installation ==
@@ -67,6 +67,11 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 
 == Changelog ==
+
+= 4.7.1 =
+* Remove Dropzone autodiscover to avoid potentials JavaScript errors
+* Exported order lists now subtract future line items from the total
+* WordPress 4.4 support
 
 = 4.7 =
 * Updating the FoxyShop image uploader to use Dropzone instead of Uploadify
@@ -219,5 +224,5 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Upgrade Notice ==
 
-= 4.7 =
-FoxyShop Image Upload Updates. NOTE: If you are currently using the product variation image upload feature for your cart (or a front-end datepicker), please read our upgrade notes before updating.
+= 4.7.1 =
+Permanently Disabling Dropzone Autodiscover
