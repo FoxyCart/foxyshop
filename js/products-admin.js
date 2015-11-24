@@ -1,6 +1,3 @@
-//Disable Dropzone Immediately
-Dropzone.autoDiscover = false;
-
 jQuery(document).ready(function($){
 
 	//Check For Illegal Code
@@ -518,31 +515,33 @@ jQuery(document).ready(function($){
 		return false;
 	});
 
-	$("#foxyshop_new_product_image_container").dropzone({
-		url: bloginfo_url + FOXYSHOP_URL_BASE + '/upload-' + datafeed_url_key + '/?foxyshop_product_id=' + post_id,
-		createImageThumbnails: false,
-		acceptedFiles: "image/*,*.pdf,*.doc,*.docx,*.odt,*.xmls,*.xlsx,*.txt,*.tif,*.psd,*.mp3",
-		dictDefaultMessage: 'Drop Images Here To Upload',
-		init: function() {
-			this.on("success", function(file) {
-				var data = {
-					'action': 'foxyshop_product_ajax_action',
-					'security': nonce_images,
-					'foxyshop_product_id': post_id,
-					'foxyshop_action': 'add_new_image'
-				};
+	if (jQuery().dropzone) {
+		$("#foxyshop_new_product_image_container").dropzone({
+			url: bloginfo_url + FOXYSHOP_URL_BASE + '/upload-' + datafeed_url_key + '/?foxyshop_product_id=' + post_id,
+			createImageThumbnails: false,
+			acceptedFiles: "image/*,*.pdf,*.doc,*.docx,*.odt,*.xmls,*.xlsx,*.txt,*.tif,*.psd,*.mp3",
+			dictDefaultMessage: 'Drop Images Here To Upload',
+			init: function() {
+				this.on("success", function(file) {
+					var data = {
+						'action': 'foxyshop_product_ajax_action',
+						'security': nonce_images,
+						'foxyshop_product_id': post_id,
+						'foxyshop_action': 'add_new_image'
+					};
 
-				$("#foxyshop_image_waiter").show();
-				$.post(ajaxurl, data, function(response) {
-					$("#foxyshop_product_image_list").html(response)
-					$("#foxyshop_image_waiter").hide();
-					$(".dz-complete").delay(3000).fadeOut(400, function() {
-						$(".dropzone.dz-started").removeClass("dz-started");
+					$("#foxyshop_image_waiter").show();
+					$.post(ajaxurl, data, function(response) {
+						$("#foxyshop_product_image_list").html(response)
+						$("#foxyshop_image_waiter").hide();
+						$(".dz-complete").delay(3000).fadeOut(400, function() {
+							$(".dropzone.dz-started").removeClass("dz-started");
+						});
 					});
 				});
-			});
-		}
-	});
+			}
+		});
+	}
 
 	$("#foxyshop_product_image_list").sortable({
 		placeholder: "sortable-placeholder",
