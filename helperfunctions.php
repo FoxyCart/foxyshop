@@ -148,11 +148,23 @@ function foxyshop_setup_product($thepost = false, $shortcut = false) {
 	//Images
 	$new_product['images'] = array();
 	if (!$shortcut) {
+
+		//Get Featured Image
 		$imageNumber = 0;
 		$featuredImageID = (has_post_thumbnail($thepost->ID) ? get_post_thumbnail_id($thepost->ID) : 0);
+
+		//Get Attachments
 		$attachments = get_posts(array('numberposts' => -1, 'post_type' => 'attachment','post_status' => null,'post_parent' => $thepost->ID, "post_mime_type" => "image", 'order' => 'ASC','orderby' => 'menu_order'));
-		if (!$attachments && $featuredImageID) {
-			$attachments = get_posts(array("p" => $featuredImageID, 'post_type' => 'attachment', "post_mime_type" => "image"));
+
+		//Search For Featured Image in Attachments
+		$featured_image_in_attachments = false;
+		foreach ($attachments as $cur_value) {
+			if ($cur_value->ID == $featuredImageID) {
+				$featured_image_in_attachments = true;
+			}
+		}
+		if ((!$attachments && $featuredImageID) || !$featured_image_in_attachments) {
+			$attachments = array_merge($attachments, get_posts(array("p" => $featuredImageID, 'post_type' => 'attachment', "post_mime_type" => "image")));
 		}
 		$sizes = get_intermediate_image_sizes();
 		$sizes[] = 'full';
