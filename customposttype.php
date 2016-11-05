@@ -137,7 +137,7 @@ function foxyshop_manage_custom_columns($column_name, $id) {
 		if ( !empty( $terms ) ) {
 			$out = array();
 			foreach ( $terms as $c )
-				$out[] = "<a href='edit-tags.php?action=edit&taxonomy=$_taxonomy&post_type=book&tag_ID={$c->term_id}'> " . esc_html(sanitize_term_field('name', $c->name, $c->term_id, 'category', 'display')) . "</a>";
+				$out[] = "<a href='edit-tags.php?action=edit&taxonomy=$_taxonomy&post_type=foxyshop_product&tag_ID={$c->term_id}'> " . esc_html(sanitize_term_field('name', $c->name, $c->term_id, 'category', 'display')) . "</a>";
 			echo join( ', ', $out );
 		}
 		else {
