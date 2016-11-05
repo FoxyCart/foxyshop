@@ -47,9 +47,13 @@ function foxyshop_create_feed() {
 	$lastfieldname = end($fieldnames);
 
 	$write = "";
-	foreach($fieldnames as $field) {
+	foreach($fieldnames as  $key => $field) {
 		if ($field != $fieldnames[0]) $write .= "\t";
 		if ($amazon_version) {
+			if ($field == "identifier_exists") {
+				unset($fieldnames[$key]);
+				continue;
+			}
 			if ($field == "product_type") $field = "category";
 			if ($field == "id") $field = "sku";
 			if ($field == "image_link") $field = "image";
@@ -68,6 +72,7 @@ function foxyshop_create_feed() {
 	foreach($products as $singleproduct) {
 		$product = foxyshop_setup_product($singleproduct);
 		$product = apply_filters('foxyshop_setup_product_info_google', $product);
+		$identifier_exists = "";
 
 		foreach($fieldnames as $fieldname) {
 
@@ -126,13 +131,26 @@ function foxyshop_create_feed() {
 
 				case 'gtin':
 					$gtin = get_post_meta($product['id'],'_gtin',1);
-					if (!$gtin) $gtin = $product['code'];
-					$write .= foxyshop_dblquotes($gtin); break;
+					if ($gtin === "FALSE") {
+						$identifier_exists = "FALSE";
+						$gtin = "";
+					} else {
+						if (!$gtin) $gtin = $product['code'];
+					}
 
+					$write .= foxyshop_dblquotes($gtin); break;
 				case 'mpn':
 					$mpn = get_post_meta($product['id'],'_mpn',1);
-					if (!$mpn) $mpn = $product['code'];
+					if ($mpn === "FALSE") {
+						$identifier_exists = "FALSE";
+						$mpn = "";
+					} else {
+						if (!$mpn) $mpn = $product['code'];
+					}
 					$write .= foxyshop_dblquotes($mpn); break;
+
+				case 'identifier_exists':
+					$write .= foxyshop_dblquotes($identifier_exists); break;
 
 				case "image_link":
 					$write .= foxyshop_dblquotes(foxyshop_get_main_image(apply_filters("foxyshop_google_product_image_size", "thumbnail"))); break;
@@ -155,8 +173,6 @@ function foxyshop_create_feed() {
 			if ($fieldname != $lastfieldname) $write .= "\t";
 		}
 		$write .= "\n";
-
-
 	}
 	echo $write;
 }
@@ -242,12 +258,28 @@ function foxyshop_google_product_xml($id, $batch_process = "") {
 
 		$xml .= '<sc:target_country>' . apply_filters("foxyshop_google_product_target_country", "US") . '</sc:target_country>'."\n";
 		$xml .= '<sc:content_language>en</sc:content_language>'."\n";
+		$identifier_exists = true;
 		foreach($google_product_field_names as $field) {
 			$val = get_post_meta($product['id'],'_'.$field,1);
+			if ($field == 'gtin' && $val == "FALSE") {
+				$identifier_exists = false;
+				$val = "";
+			}
+			if ($field == 'mpn' && $val == "FALSE") {
+				$identifier_exists = false;
+				$val = "";
+			}
 			if ($field == 'condition') $val = $condition;
-			if ($field == 'gtin' && !$val) $val = $product['code'];
+			if ($field == 'gtin' && !$val && $identifier_exists) $val = $product['code'];
+			if ($field == 'mpn' && !$val && $identifier_exists) $val = $product['code'];
 			if ($val) $xml .= '<scp:'.$field.'>' . esc_attr($val) . '</scp:'.$field.'>'."\n";
 		}
+
+		//No GTIN or MPN
+		if (!$identifier_exists) {
+			$xml .= '<scp:identifier_exists>FALSE</scp:identifier_exists>'."\n";
+		}
+
 		$xml .= '<scp:availability>in stock</scp:availability>'."\n";
 		$xml .= '<scp:price unit="' . apply_filters("foxyshop_google_product_currency", "usd") . '">' . $product['originalprice'] . '</scp:price>'."\n";
 		if ($product['originalprice'] != $product['price']) {
