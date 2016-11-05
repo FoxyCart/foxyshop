@@ -434,7 +434,7 @@ function foxyshop_settings_page() {
 
 					<input type="checkbox" id="foxyshop_ship_to" name="foxyshop_enable_ship_to"<?php checked($foxyshop_settings['enable_ship_to'], "on"); ?> />
 					<label for="foxyshop_ship_to"><?php _e('Enable Multi-Ship', 'foxyshop'); ?></label>
-					<a href="#" class="foxyshophelp">Remember that FoxyCart charges an extra fee for this service. You must enable it on your FoxyCart account or it will not work. NOTE: At this time, this feature is not available for multi-ship stores.</a>
+					<a href="#" class="foxyshophelp">You must enable this feature on your FoxyCart account or it will not work.</a>
 				</td>
 			</tr>
 			<tr>
