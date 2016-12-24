@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: foxycart, shopping, cart, inventory, management, ecommerce, selling, subscription, foxy
 Requires at least: 3.1
 Tested up to: 4.7
-Stable tag: 4.7.2
+Stable tag: 4.7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 FoxyShop provides a robust shopping cart and inventory management tool for use with FoxyCart's hosted e-commerce solution.
@@ -67,6 +67,9 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 
 == Changelog ==
+
+= 4.7.3 =
+* Fixing error which showed unassigned images when no images had been associated
 
 = 4.7.2 =
 * Show featured image in a group even if it wasn't uploaded to product
@@ -229,5 +232,5 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Upgrade Notice ==
 
-= 4.7.1 =
-Permanently Disabling Dropzone Autodiscover
+= 4.7.3 =
+Fixing error which showed unassigned images when no images had been associated
