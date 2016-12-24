@@ -163,7 +163,7 @@ function foxyshop_setup_product($thepost = false, $shortcut = false) {
 				$featured_image_in_attachments = true;
 			}
 		}
-		if ((!$attachments && $featuredImageID) || !$featured_image_in_attachments) {
+		if ($featuredImageID && (!$attachments || !$featured_image_in_attachments)) {
 			$attachments = array_merge($attachments, get_posts(array("p" => $featuredImageID, 'post_type' => 'attachment', "post_mime_type" => "image")));
 		}
 		$sizes = get_intermediate_image_sizes();
