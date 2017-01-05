@@ -120,7 +120,7 @@ function foxyshop_productlink_shortcode($atts, $content = null) {
 //Function To Get the Product Object From SLUG
 function foxyshop_get_product_by_name($post_name, $output = OBJECT) {
 	global $wpdb;
-	$post = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_type='foxyshop_product'", $post_name ));
+	$post = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE ( post_name = %s OR post_title = %s ) AND post_type='foxyshop_product'", $post_name, $post_name ));
 	if ($post) {
 		return get_post($post, $output);
 	}
