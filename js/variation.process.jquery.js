@@ -45,6 +45,8 @@ jQuery(document).ready(function($){
 			for (var i = 0; i < dkeyarray.length; i++) {
 				$('#foxyshop_product_form_' + current_product_id + ' .dkey[dkey="' + dkeyarray[i] + '"]').show();
 			}
+			var dkey_changed = new Event('dkey.'+dkeyarray[i]);
+			document.dispatchEvent(dkey_changed);
 		});
 
 		//Set Hidden Dkeys to a value of "" or index of -1
