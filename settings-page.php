@@ -203,9 +203,9 @@ function foxyshop_settings_page() {
 					<a href="http://www.foxy-shop.com/?utm_source=plugin&amp;utm_medium=app&amp;utm_campaign=pluginlink_<?php echo FOXYSHOP_VERSION ?>" target="_blank"><img src="<?php echo FOXYSHOP_DIR; ?>/images/logo.png" alt="FoxyShop" style="float: right; margin-left: 20px;" /></a>
 
 					<p>Stay up to date with the latest updates from FoxyShop by following on Twitter and Facebook.</p>
-					<a href="http://twitter.com/FoxyShopWP" class="twitter-follow-button">Follow @FoxyShopWP</a>
-					<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
-					<iframe src="http://www.facebook.com/plugins/like.php?href=<?php echo urlencode('https://www.facebook.com/pages/FoxyShop/188079417920111'); ?>&amp;layout=button_count&amp;show_faces=false&amp;width=190&amp;action=like&amp;colorscheme=light&amp;font=arial" scrolling="no" frameborder="0" allowTransparency="true" style="border:none; overflow:hidden; width:190px; height:26px;"></iframe>
+					<a href="https://twitter.com/FoxyShopWP" class="twitter-follow-button">Follow @FoxyShopWP</a>
+					<script src="https://platform.twitter.com/widgets.js" type="text/javascript"></script>
+					<iframe src="https://www.facebook.com/plugins/like.php?href=<?php echo urlencode('https://www.facebook.com/pages/FoxyShop/188079417920111'); ?>&amp;layout=button_count&amp;show_faces=false&amp;width=190&amp;action=like&amp;colorscheme=light&amp;font=arial" scrolling="no" frameborder="0" allowTransparency="true" style="border:none; overflow:hidden; width:190px; height:26px;"></iframe>
 
 					<p>
 					<a href="http://www.foxy-shop.com/documentation/?utm_source=plugin&amp;utm_medium=app&amp;utm_campaign=pluginlink_<?php echo FOXYSHOP_VERSION ?>" target="_blank" class="button"><?php _e('FoxyShop Documentation', 'foxyshop'); ?></a>
