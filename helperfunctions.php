@@ -1472,7 +1472,7 @@ function foxyshop_addon_products($show_qty = false, $before_entry = "", $after_e
 	?>
 	<script type="text/javascript">
 	function foxyshop_addon_enable(rel) {
-		if ($("#addon_" + rel).is(":checked")) {
+		if (jQuery("#addon_" + rel).is(":checked")) {
 			jQuery(".foxyshop_addon_fields[rel='" + rel + "']").each(function() {
 				jQuery(this).attr("name", rel + ":" + jQuery(this).attr("originalname"));
 			});
