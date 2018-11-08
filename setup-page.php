@@ -54,7 +54,7 @@ function foxyshop_setup_legacy() {
 
 <p>The first thing you'll need to do is open up your FoxyCart account in another window so we can copy some information over there. If you don't have a FoxyCart account yet, that's no problem. Here's a short video overview that may help.</p>
 
-<iframe width="640" height="390" src="http://www.youtube.com/embed/TaW1yLbURfc?rel=0" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="390" src="https://www.youtube.com/embed/TaW1yLbURfc?rel=0" frameborder="0" allowfullscreen></iframe>
 
 <table width="640" style="margin:10px 0 15px 0;">
 <tr>
