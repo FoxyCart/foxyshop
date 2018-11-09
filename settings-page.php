@@ -467,11 +467,16 @@ function foxyshop_settings_page() {
 					<input type="checkbox" id="foxyshop_enable_subscriptions" name="foxyshop_enable_subscriptions"<?php checked($foxyshop_settings['enable_subscriptions'], "on"); ?> />
 					<label for="foxyshop_enable_subscriptions"><?php _e('Enable Subscriptions', 'foxyshop'); ?></label>
 					<a href="#" class="foxyshophelp">Show fields to allow the creation of subscription <?php echo strtolower(FOXYSHOP_PRODUCT_NAME_PLURAL); ?>.</a>
+					<?php if ($foxyshop_settings['expiring_cards_reminder']) { ?>
 					<div class="settings_indent">
 						<input type="checkbox" id="foxyshop_expiring_cards_reminder" name="foxyshop_expiring_cards_reminder"<?php checked($foxyshop_settings['expiring_cards_reminder'], "on"); ?> />
 						<label for="foxyshop_expiring_cards_reminder"><?php _e('Send Reminders to Subscription Customers with Expiring Credit Cards', 'foxyshop'); ?></label>
 						<a href="#" class="foxyshophelp"><?php _e('This can be configured in your datafeed template file', 'foxyshop'); ?></a>
+						<div class="foxyshop-notice notice-warning notice-alt">
+							<p><strong>Deprecation Warning:</strong> This feature is <a href="https://wiki.foxycart.com/v/2.0/products/subscriptions#using_foxycart_s_native_dunning_functionality" target="_blank">now part of FoxyCart</a> and will be removed in a future version of FoxyShop. Please disable this option, and instead enable the "expiring soon payment method email schedule" found on the <a href="https://admin.foxycart.com/admin.php?ThisAction=EditAdvancedFeatures" target="_blank">"advanced" page of the Foxy administration</a>.</p>
+						</div>
 					</div>
+					<?php } ?>
 				</td>
 			</tr>
 			<tr>

@@ -961,6 +961,19 @@ table.cfbe_foxyshop_table .chzn-container {
     margin: 5px 0;
 }
 
+.foxyshop-notice {
+    float:left;
+    clear:both;
+    border-left-width: 4px;
+    border-left-style: solid;
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+    margin: 10px 0px 15px;
+    padding: 8px 12px;
+}
+.foxyshop-notice *:last-child {
+    margin-bottom:0;
+}
+
 
 /* Responsive Variations */
 @media all and (max-width: 1150px) {
