@@ -11,29 +11,29 @@ function foxyshop_insert_foxycart_files() {
 			echo $foxyshop_settings['foxycart_include_cache'];
 		} elseif ($foxyshop_settings['version'] == '0.7.2') {
 			echo "<!-- BEGIN FOXYCART FILES -->\n";
-			echo '<link rel="stylesheet" href="//cdn.foxycart.com/static/scripts/colorbox/1.3.18/style1_fc/colorbox.css" type="text/css" media="screen" charset="utf-8" />'."\n";
-			echo '<script src="//cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.colorbox.js" type="text/javascript" charset="utf-8"></script>'."\n";
+			echo '<link rel="stylesheet" href="https://cdn.foxycart.com/static/scripts/colorbox/1.3.18/style1_fc/colorbox.css" type="text/css" media="screen" charset="utf-8" />'."\n";
+			echo '<script src="https://cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.colorbox.js" type="text/javascript" charset="utf-8"></script>'."\n";
 			echo "<!-- END FOXYCART FILES -->\n";
 		} elseif ($foxyshop_settings['version'] == '1.0') {
 			echo "<!-- BEGIN FOXYCART FILES -->\n";
-			echo '<link rel="stylesheet" href="//cdn.foxycart.com/static/scripts/colorbox/1.3.19/style1_fc/colorbox.css" type="text/css" media="screen" charset="utf-8" />'."\n";
-			echo '<script src="//cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.colorbox.js" type="text/javascript" charset="utf-8"></script>'."\n";
+			echo '<link rel="stylesheet" href="https://cdn.foxycart.com/static/scripts/colorbox/1.3.19/style1_fc/colorbox.css" type="text/css" media="screen" charset="utf-8" />'."\n";
+			echo '<script src="https://cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.colorbox.js" type="text/javascript" charset="utf-8"></script>'."\n";
 			echo "<!-- END FOXYCART FILES -->\n";
 		} elseif ($foxyshop_settings['version'] == '1.1') {
 			echo "<!-- BEGIN FOXYCART FILES -->\n";
-			echo '<link rel="stylesheet" href="//cdn.foxycart.com/static/scripts/colorbox/1.3.23/style1_fc/colorbox.css?ver=1" type="text/css" media="screen" charset="utf-8" />'."\n";
-			echo '<script src="//cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.colorbox.js?ver=2" type="text/javascript" charset="utf-8"></script>'."\n";
+			echo '<link rel="stylesheet" href="https://cdn.foxycart.com/static/scripts/colorbox/1.3.23/style1_fc/colorbox.css?ver=1" type="text/css" media="screen" charset="utf-8" />'."\n";
+			echo '<script src="https://cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.colorbox.js?ver=2" type="text/javascript" charset="utf-8"></script>'."\n";
 			echo "<!-- END FOXYCART FILES -->\n";
 		}
 	} elseif (version_compare($foxyshop_settings['version'], '0.7.1', "=")) {
 		echo "<!-- BEGIN FOXYCART FILES -->\n";
-		echo '<link rel="stylesheet" href="http://static.foxycart.com/scripts/colorbox/1.3.16/style1_fc/colorbox.css" type="text/css" media="screen" charset="utf-8" />'."\n";
-		echo '<script src="http://cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.complete.3.js" type="text/javascript" charset="utf-8"></script>'."\n";
+		echo '<link rel="stylesheet" href="https://static.foxycart.com/scripts/colorbox/1.3.16/style1_fc/colorbox.css" type="text/css" media="screen" charset="utf-8" />'."\n";
+		echo '<script src="https://cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.complete.3.js" type="text/javascript" charset="utf-8"></script>'."\n";
 		echo "<!-- END FOXYCART FILES -->\n";
 	} else { // 0.7.0
 		echo "<!-- BEGIN FOXYCART FILES -->\n";
-		echo '<link rel="stylesheet" href="http://static.foxycart.com/scripts/colorbox/1.3.16/style1_fc/colorbox.css" type="text/css" media="screen" charset="utf-8" />'."\n";
-		echo '<script src="http://cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.complete.2.js" type="text/javascript" charset="utf-8"></script>'."\n";
+		echo '<link rel="stylesheet" href="https://static.foxycart.com/scripts/colorbox/1.3.16/style1_fc/colorbox.css" type="text/css" media="screen" charset="utf-8" />'."\n";
+		echo '<script src="https://cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.complete.2.js" type="text/javascript" charset="utf-8"></script>'."\n";
 		echo "<!-- END FOXYCART FILES -->\n";
 	}
 }
@@ -42,7 +42,7 @@ function foxyshop_insert_foxycart_loader() {
 	global $foxyshop_settings;
 	if (empty($foxyshop_settings['domain'])) return;
 	echo "<!-- FOXYCART -->\n";
-	echo "<script src=\"//cdn.foxycart.com/" . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . "/loader.js\" async defer></script>\n";
+	echo "<script src=\"https://cdn.foxycart.com/" . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . "/loader.js\" async defer></script>\n";
 	echo "<!-- /FOXYCART -->\n\n";
 }
 
