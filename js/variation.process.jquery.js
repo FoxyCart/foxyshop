@@ -163,7 +163,7 @@ jQuery(document).ready(function($){
 		if (typeof arr_foxyshop_inventory == "undefined") arr_foxyshop_inventory = [];
 		inventory_code = new_code;
 		inventory_match_count = -1;
-		if (new_codeadd) inventory_code = $("#fs_code_" + current_product_id).val() + new_codeadd;
+		if (new_codeadd) inventory_code += new_codeadd;
 		if (inventory_code != "" && typeof arr_foxyshop_inventory[current_product_id] != 'undefined') {
 			for (i=0; i<arr_foxyshop_inventory[current_product_id].length; i++) {
 				if (arr_foxyshop_inventory[current_product_id][i][0] == inventory_code) inventory_match_count = i;

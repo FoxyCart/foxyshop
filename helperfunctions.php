@@ -557,12 +557,12 @@ function foxyshop_run_variations($variationValue, $variationName, $showPriceVari
 					$val .= '{p' . $original_price_change . '}';
 				}
 			}
-			if ($priceset) $option_attributes .= ' priceset="' . $priceset . '"';
-			if ($pricechange) $option_attributes .= ' pricechange="' . $pricechange . '"';
-			if ($displaykey) $option_attributes .= ' displaykey="' . $displaykey . '"';
-			if ($imagekey) $option_attributes .= ' imagekey="' . $imagekey . '"';
-			if ($code) $option_attributes .= ' code="' . esc_attr($code) . '"';
-			if ($codeadd) $option_attributes .= ' codeadd="' . esc_attr($codeadd) . '"';
+			if ($priceset !== "") $option_attributes .= ' priceset="' . $priceset . '"';
+			if ($pricechange !== "") $option_attributes .= ' pricechange="' . $pricechange . '"';
+			if ($displaykey !== "") $option_attributes .= ' displaykey="' . $displaykey . '"';
+			if ($imagekey !== "") $option_attributes .= ' imagekey="' . $imagekey . '"';
+			if ($code !== "") $option_attributes .= ' code="' . esc_attr($code) . '"';
+			if ($codeadd !== "") $option_attributes .= ' codeadd="' . esc_attr($codeadd) . '"';
 			if ($sub_frequency != "NO-VALUE") $option_attributes .= ' subfrequency="' . esc_attr($sub_frequency) . '"';
 		}
 
