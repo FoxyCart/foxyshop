@@ -82,6 +82,11 @@ function foxyshop_save_settings() {
 		$foxyshop_settings["orderdesk_url"] = "";
 	}
 
+	//Customise API Key
+	if (isset($_POST['api_key']) && !empty($_POST['api_key'])) {
+		$foxyshop_settings["api_key"] = $_POST['api_key'];
+	}
+
 
 	//Set FoxyCart Domain Name
 	$domain = $_POST['foxyshop_domain'];
@@ -220,7 +225,8 @@ function foxyshop_settings_page() {
 	</table>
 
 	<br /><br />
-	<form>
+
+	<form method="post" name="foxycart_settings_form" action="options.php" onsubmit="return foxyshop_check_settings_form();">
 
 	<table class="widefat infoonly">
 		<thead>
@@ -232,7 +238,7 @@ function foxyshop_settings_page() {
 			<tr>
 				<td style="border-bottom: 0 none;">
 					<label for="foxyshop_key"><?php _e('API Key', 'foxyshop'); ?>:</label>
-					<input type="text" id="foxyshop_key" name="key" value="<?php echo esc_attr($foxyshop_settings['api_key']); ?>" readonly="readonly" onclick="this.select();" />
+					<input type="text" id="foxyshop_key" name="api_key" value="<?php echo esc_attr($foxyshop_settings['api_key']); ?>" readonly="readonly" />
 					<a href="#" class="foxyshophelp">The API key is saved here and stored on your FoxyCart account so that your cart information can be encrypted to avoid link tampering. The API key is also used to communicate with FoxyCart and retrieve your order information.<br /><br />This API key is generated automatically and cannot be edited. Go to the tools page if you need to reset this key.</a>
 					<div style="clear: both; padding: 5px 0; font-style: italic;"><strong style="color: #BB1E1E;">Required Setup:</strong> Enter this API key on the advanced menu of your <a href="http://affiliate.foxycart.com/idevaffiliate.php?id=211&url=http://admin.foxycart.com/" target="_blank">FoxyCart admin</a> and check the box to enable cart validation.</div>
 
@@ -265,11 +271,9 @@ function foxyshop_settings_page() {
 			</tr>
 		</tbody>
 	</table>
-	</form>
+	<p><a href="#" class="button-link customise-api-key">Set a custom API key</a><input type="submit" class="button-primary customise-api-key-save" value="<?php _e('Save All Settings', 'foxyshop'); ?>" style="display:none;" /></p>
 
 	<br /><br />
-
-	<form method="post" name="foxycart_settings_form" action="options.php" onsubmit="return foxyshop_check_settings_form();">
 
 	<table class="widefat">
 		<thead>
@@ -651,6 +655,19 @@ jQuery(document).ready(function($){
 		$("#weight_title1").text("kg");
 		$("#weight_title2").text("gm");
 	}
+
+	$("#foxyshop_key").click(function(e) {
+		if ($(this).prop("readonly")) {
+			$(this).select();
+		}
+	});
+
+	$(".customise-api-key").click(function(e) {
+		e.preventDefault();
+		$("#foxyshop_key").prop("readonly", false);
+		$(this).hide();
+		$(".customise-api-key-save").show();
+	});
 
 	$("#resetimage").click(function() {
 		$("#foxyshop_default_image").val("<?php echo FOXYSHOP_DIR."/images/no-photo.png"; ?>");
