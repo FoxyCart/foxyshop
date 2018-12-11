@@ -318,7 +318,6 @@ function foxyshop_start_form() {
 }
 
 
-
 //Retrieves All Custom Fields; ignore should be array of key names
 function foxyshop_product_custom_fields($ignore = array()) {
     global $product;
@@ -332,6 +331,14 @@ function foxyshop_product_custom_fields($ignore = array()) {
 	$custom = array_diff_key($custom, $ignore);
 
 	return $custom;	
+}
+
+
+//Retrieves Variation Names (useful when pairing custom fields to FoxyShop variation fields)
+function foxyshop_product_variation_names() {
+    global $product;
+
+    return array_column($product['variations'], 'name');
 }
 
 
