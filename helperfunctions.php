@@ -319,8 +319,62 @@ function foxyshop_start_form() {
 
 
 
-//Writes Variations (showQuantity 0 = Not Shown, 1 = Above, 2 = Below)
-function foxyshop_product_variations($showQuantity = 0, $showPriceVariations = true, $beforeVariation = "", $afterVariation = '<div class="clr"></div>') {
+//Retrieves All Custom Fields; ignore should be array of key names
+function foxyshop_product_custom_fields($ignore = array()) {
+    global $product;
+	$custom = get_post_custom($product['id']);
+
+	$custom = array_filter( $custom, function($key){
+    	return strpos($key, '_') !== 0;
+	}, ARRAY_FILTER_USE_KEY );
+
+	$ignore = array_flip($ignore);
+	$custom = array_diff_key($custom, $ignore);
+
+	return $custom;	
+}
+
+
+//Retrieves the Number of Variations
+function foxyshop_product_variation_count() {
+    global $product;
+
+    return sizeof($product['variations']);
+}
+
+
+//Retrieves All Custom Fields; ignore should be array of key names
+function foxyshop_product_custom_fields($ignore = array()) {
+	global $product;
+	$custom = get_post_custom($product['id']);
+
+	//Removes the default FoxyShop fields
+	$custom = array_filter( $custom, function($key){
+		return strpos($key, '_') !== 0;
+	}, ARRAY_FILTER_USE_KEY );
+
+	$ignore = array_flip($ignore);
+	$custom = array_diff_key($custom, $ignore);
+
+	return $custom;	
+}
+
+
+//Retrieves the Number of Variations
+function foxyshop_product_variation_count() {
+	global $product;
+
+	return sizeof($product['variations']);
+}
+
+
+/**
+* Writes Variations
+* @param	int	$showQuantity	0 = Not Shown, 1 = Above, 2 = Below
+* @param	int	$labelPosition	0 = Before, 1 = Placeholder
+* @param	int	$count			0 = return all variations, 0 = return a single variation (useful for being able to insert fields between each form element)
+*/
+function foxyshop_product_variations($showQuantity = 0, $showPriceVariations = true, $beforeVariation = "", $afterVariation = '<div class="clr"></div>', $labelPosition = 0, $count = null) {
 	global $post, $product, $foxyshop_settings, $foxyshop_write_variation_include;
 	$writeUploadInclude = 0;
 	$write = "";
@@ -330,14 +384,19 @@ function foxyshop_product_variations($showQuantity = 0, $showPriceVariations = t
 	if ($product['quantity_hide']) $showQuantity = 0;
 	if ($showQuantity == 1) {
 		$write .= foxyshop_get_shipto();
-		$write .= foxyshop_quantity(apply_filters("foxyshop_default_quantity_value", 1), $beforeVariation, $afterVariation);
+		$write .= foxyshop_quantity(apply_filters("foxyshop_default_quantity_value", 1), $beforeVariation, $afterVariation, "", $labelPosition);
 	}
 
 	//Loop Through Variations
 	$i = 1;
 	foreach ($product['variations'] as $product_variation) {
-		$variationName = $product_variation['name'];
+		if ($count != null) {
+			$i = $count;
+			$product_variation = $product['variations'][$i];
+		}
+
 		$variationDisplayName = $product_variation['name'];
+		$variationName = $product_variation['name'];
 		$variationType = $product_variation['type'];
 		$variationValue = isset($product_variation['value']) ? $product_variation['value'] : '';
 		$variationDisplayKey = isset($product_variation['displayKey']) ? $product_variation['displayKey'] : '';
@@ -390,8 +449,16 @@ function foxyshop_product_variations($showQuantity = 0, $showPriceVariations = t
 		//Text
 		if ($variationType == "text") {
 			$write .= $writeBeforeVariation;
-			$write .= '<label for="' . esc_attr($product['code']) . '_' . $i . '" class="' . $className . $dkeyclass . '"'. $dkey . '>' . esc_attr(str_replace('_',' ',$variationDisplayName)) . '</label>'."\n";
-			$write .= '<input type="text" name="' . esc_attr(foxyshop_add_spaces($variationName)) . foxyshop_get_verification(foxyshop_add_spaces($variationName),'--OPEN--') . '" id="' . esc_attr($product['code']) . '_' . $i . '" value="" class="' . $className . $dkeyclass . '"';
+
+			if ($labelPosition == 0) {
+				$write .= '<label for="' . esc_attr($product['code']) . '_' . $count . '" class="' . $className . $dkeyclass . '"'. $dkey . '>' . esc_attr(str_replace('_',' ',$variationDisplayName)) . '</label>'."\n";
+				$write .= '<input type="text" name="' . esc_attr(foxyshop_add_spaces($variationName)) . foxyshop_get_verification(foxyshop_add_spaces($variationName),'--OPEN--') . '" id="' . esc_attr($product['code']) . '_' . $count . '" value="" class="' . $className . $dkeyclass . '"';
+			}
+			else if ($labelPosition == 1) {
+				$write .= '<label for="' . esc_attr($product['code']) . '_' . $count . '" class="' . $className . $dkeyclass . '"'. $dkey . '></label>'."\n";
+				$write .= '<input type="text" name="' . esc_attr(foxyshop_add_spaces($variationName)) . foxyshop_get_verification(foxyshop_add_spaces($variationName),'--OPEN--') . '" id="' . esc_attr($product['code']) . '_' . $count . '" value="" class="' . $className . $dkeyclass . '" placeholder="' . esc_attr(str_replace('_',' ',$variationDisplayName)) . '"';
+			}
+
 			if ((int)$arrVariationText[0] > 0) $write .= ' style="width: ' . (int)$arrVariationText[0] * 6.5 . 'px;"';
 			if ($variationDisplayKey) $write .= ' dkey="' . $variationDisplayKey . '"';
 			if ($arrVariationText[1]) $write .= ' maxlength="' . $arrVariationText[1] . '"';
@@ -401,8 +468,16 @@ function foxyshop_product_variations($showQuantity = 0, $showPriceVariations = t
 		//Textarea
 		} elseif ($variationType == "textarea") {
 			$write .= $writeBeforeVariation;
-			$write .= '<label for="' . esc_attr($product['code']) . '_' . $i . '" class="' . $className . $dkeyclass . '"'. $dkey . '>' . esc_attr(str_replace('_',' ',$variationDisplayName)) . '</label>'."\n";
-			$write .= '<textarea name="' . esc_attr(foxyshop_add_spaces($variationName)) . foxyshop_get_verification(foxyshop_add_spaces($variationName),'--OPEN--') . '" id="' . esc_attr($product['code']) . '_' . $i . '" class="foxyshop_freetext ' . $className . $dkeyclass . '" style="height: ' . 16 * (int)$variationValue . 'px;"' . $dkey . '></textarea>'."\n";
+
+			if ($labelPosition == 0) {
+				$write .= '<label for="' . esc_attr($product['code']) . '_' . $i . '" class="' . $className . $dkeyclass . '"'. $dkey . '>' . esc_attr(str_replace('_',' ',$variationDisplayName)) . '</label>'."\n";
+				$write .= '<textarea name="' . esc_attr(foxyshop_add_spaces($variationName)) . foxyshop_get_verification(foxyshop_add_spaces($variationName),'--OPEN--') . '" id="' . esc_attr($product['code']) . '_' . $i . '" class="foxyshop_freetext ' . $className . $dkeyclass . '" style="height: ' . 16 * (int)$variationValue . 'px;"' . $dkey . '></textarea>'."\n";
+			}
+			if ($labelPosition == 1) {
+				$write .= '<label for="' . esc_attr($product['code']) . '_' . $i . '" class="' . $className . $dkeyclass . '"'. $dkey . '></label>'."\n";
+				$write .= '<textarea name="' . esc_attr(foxyshop_add_spaces($variationName)) . foxyshop_get_verification(foxyshop_add_spaces($variationName),'--OPEN--') . '" id="' . esc_attr($product['code']) . '_' . $i . '" class="foxyshop_freetext ' . $className . $dkeyclass . '" style="height: ' . 16 * (int)$variationValue . 'px;"' . $dkey . '" placeholder="' . esc_attr(str_replace('_',' ',$variationDisplayName)) . '"></textarea>'."\n";
+			}
+
 			$write .= $writeAfterVariation;
 
 		//Upload
@@ -430,8 +505,17 @@ function foxyshop_product_variations($showQuantity = 0, $showPriceVariations = t
 			//Select
 			if ($variationType == "dropdown") {
 				$write .= $writeBeforeVariation;
-				$write .= '<label for="' . esc_attr($product['code']) . '_' . $i . '" class="' . $className . $dkeyclass . '"'. $dkey . '>' . esc_attr(str_replace('_',' ',$variationDisplayName)) . '</label>'."\n";
-				$write .= '<select name="' . esc_attr(foxyshop_add_spaces($variationName)) . '" id="' . esc_attr($product['code']) . '_' . $i . '" class="' . $className . $dkeyclass . '"' . $dkey . '>'."\n";
+
+				if ($labelPosition == 0) {
+					$write .= '<label for="' . esc_attr($product['code']) . '_' . $i . '" class="' . $className . $dkeyclass . '"'. $dkey . '>' . esc_attr(str_replace('_',' ',$variationDisplayName)) . '</label>'."\n";
+					$write .= '<select name="' . esc_attr(foxyshop_add_spaces($variationName)) . '" id="' . esc_attr($product['code']) . '_' . $i . '" class="' . $className . $dkeyclass . '"' . $dkey . '>'."\n";
+				}
+				else if ($labelPosition == 1) {
+					$write .= '<label for="' . esc_attr($product['code']) . '_' . $i . '" class="' . $className . $dkeyclass . '"'. $dkey . '></label>'."\n";
+					$write .= '<select name="' . esc_attr(foxyshop_add_spaces($variationName)) . '" id="' . esc_attr($product['code']) . '_' . $i . '" class="' . $className . $dkeyclass . '"' . $dkey . '>'."\n";
+					$write .= '<option value="">' . esc_attr(str_replace('_',' ',$variationDisplayName)) . '</option>'."\n";
+				}
+
 				$write .= foxyshop_run_variations($variationValue, $variationName, $showPriceVariations, $variationType, $dkey, $dkeyclass, $i, $className);
 				$write .= "</select>\n";
 				$write .= $writeAfterVariation;
@@ -452,12 +536,16 @@ function foxyshop_product_variations($showQuantity = 0, $showPriceVariations = t
 				$write .= $writeAfterVariation;
 			}
 		}
-		$i++;
+
+		if ($count != null) {
+			break;
+		}
+		else $i++;
 	}
 	//Show Quantity After Variations
 	if ($showQuantity != 1) {
 		$write .= foxyshop_get_shipto();
-		if ($showQuantity == 2) $write .= foxyshop_quantity(apply_filters("foxyshop_default_quantity_value", 1), $beforeVariation, $afterVariation);
+		if ($showQuantity == 2) $write .= foxyshop_quantity(apply_filters("foxyshop_default_quantity_value", 1), $beforeVariation, $afterVariation, "", $labelPosition);
 	}
 
 	if ($write && !isset($foxyshop_write_variation_include)) {
