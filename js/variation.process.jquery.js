@@ -211,7 +211,11 @@ jQuery(document).ready(function($){
 			if ($("input.foxyshop_quantity.foxyshop_addon_fields[rel=" + current_id + "]").length > 0) {
 				totalQty = $("input.foxyshop_quantity.foxyshop_addon_fields[rel=" + current_id + "]").val();
 			} else if ($("select.foxyshop_quantity.foxyshop_addon_fields[rel=" + current_id + "]").length > 0) {
-				totalQty = $("select.foxyshop_quantity.foxyshop_addon_fields[rel=" + current_id + "] option:selected").text();
+				if ($("select.foxyshop_quantity.foxyshop_addon_fields[rel=" + current_id + "]").val() == 0) {
+					totalQty = 0;
+				} else {
+					totalQty = $("select.foxyshop_quantity.foxyshop_addon_fields[rel=" + current_id + "] option:selected").text();					
+				}
 			} else {
 				totalQty = 1;
 			}
