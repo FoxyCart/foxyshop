@@ -851,3 +851,157 @@ function foxyshop_manage_google_feed() {
 	wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&error='. urlencode("Nothing to do. Unmatched products cannot be updated or renewed."));
 	die;
 }
+
+function foxyshop_product_permutations($product, &$productPerms) {
+	$mods = array('c', 'p', 'y', 'ikey', 'fr');
+	
+	$varKey = NULL;
+	$variation = array();
+	foreach ($product['variations'] as $varKey => $variation) {
+    	break;
+	}
+
+	if (isset($variation['required']) && !$variation['required']) {
+		$prodRecur = $product;
+		unset($prodRecur['variations'][$varKey]);
+		foxyshop_product_permutations($prodRecur, $productPerms);
+	}
+	foreach ($variation as $varOpKey => $varOp) {
+        if (is_array($variation[$varOpKey])) {
+            $prodRecur = $product;
+			foreach ($varOp as $key => $op) {
+				if (isset($op['param'])) {
+					if (in_array($op['param'], $mods)) {
+						switch ($op['param']) {
+							case 'c':
+								switch ($op['oper']) {
+									case '=':
+										$prodRecur['code'] = $op['val'];
+										break;
+									case '+':
+										$prodRecur['code'] .= $op['val'];
+										break;
+									case '-':
+										$prodRecur['code'] = rtrim($prodRecur['code'], $op['val']);
+										break;
+								}
+								break;
+                            case 'p':
+                                switch ($op['oper']) {
+                                    case '=':
+                                        $prodRecur['price'] = $op['val'];
+                                        break;
+                                    case '+':
+										$prodRecur['price'] += $op['val'];
+										break;
+                                    case '-':
+                                        $prodRecur['price'] -= $op['val'];
+                                        break;
+                                }
+                                break;
+                            case 'w':
+                                switch ($op['oper']) {
+                                    case '=':
+                                        $prodRecur['weight'] = $op['val'];
+                                        break;
+                                    case '+':
+                                        $prodRecur['weight'] += $op['val'];
+                                        break;
+                                    case '-':
+                                        $prodRecur['weight'] -= $op['val'];
+                                        break;
+                                }
+                                break;
+                            case 'y':
+                                switch ($op['oper']) {
+                                    case '=':
+                                        $prodRecur['category'] = $op['val'];
+                                        break;
+                                    case '+':
+                                        $prodRecur['category'] .= $op['val'];
+                                        break;
+                                    case '-':
+                                        $prodRecur['category'] = rtrim($prodRecur['category'], $op['val']);
+                                        break;
+                                }
+                                break;
+                            case 'ikey':
+                                switch ($op['oper']) {
+                                    case '=':
+                                        $prodRecur['ikey'] = $op['val'];
+                                        break;
+                                    //case '+':
+                                    //    $prodRecur['ikey'] .= $op['val'];
+                                    //    break;
+                                    //case '-':
+                                    //    break;
+                                }
+                                break;
+                            case 'fr':
+                                switch ($op['oper']) {
+                                    case '=':
+                                        $prodRecur['code'] = $op['val'];
+                                        break;
+                                    //case '+':
+                                    //    $prodRecur['code'] .= $op['val'];
+                                    //    break;
+                                    //case '-':
+                                    //    break;
+                                }
+                                break;
+						}
+					}
+				}
+			}
+			unset($prodRecur['variations'][$varKey]);
+			if (sizeof($prodRecur['variations']) == 0) {
+				if (!in_array($prodRecur, $productPerms)) {
+					array_push($productPerms, $prodRecur);
+				}
+			}
+			else {
+				foxyshop_product_permutations($prodRecur, $productPerms);
+			}
+		}
+	}
+}
+
+function foxyshop_expand_variations($singleproduct) {
+	$product = foxyshop_setup_product($singleproduct);
+	foreach ($product['variations'] as $varKey => &$variation) {
+		$required = false;
+		if ($variation['required'] == "on") {
+			$required = true;
+		};
+		$variation = explode("\n", $variation['value']);
+		foreach ($variation as &$varOp) {
+			$varOp = substr($varOp, strpos($varOp, '{') + 1);
+			$varOp = substr($varOp, 0, strpos($varOp, '}'));
+			$varOp = explode('|',$varOp);
+			foreach ($varOp as $key => $op) {
+				$params = array(
+					'param'	=> "",
+					'oper'	=> "",
+					'val'	=> "",
+					);
+				if (strpos($op, ':') !== false) {
+					$op = explode(':', $op);
+					$params['oper'] = '=';
+				}
+				else if (strpos($op, '+') !== false) {
+					$op = explode('+', $op);
+					$params['oper'] = '+';
+				}
+				else if (strpos($op, '-') !== false) {
+					$op = explode('-', $op);
+					$params['oper'] = '-';
+				}
+				$params['val'] = $op[1];
+                $params['param'] = $op[0];
+                $varOp[$key] = $params;
+			}
+		}
+		$variation['required'] = $required;
+	}
+	return $product;
+}
