@@ -88,7 +88,7 @@ if (isset($_GET['fcsid']) && isset($_GET['timestamp'])) {
 
 	//Already Logged In, Get Account Info.
 	} else {
-		get_currentuserinfo();
+		wp_get_current_user();
 		$customer_id = get_user_meta($current_user->ID, "foxycart_customer_id", TRUE);
 		$customer_email = $current_user->user_email;
 
@@ -113,7 +113,7 @@ if (isset($_GET['fcsid']) && isset($_GET['timestamp'])) {
 
 function foxyshop_check_for_customer_id($email) {
 	global $current_user;
-	get_currentuserinfo();
+	wp_get_current_user();
 	$foxy_data = array("api_action" => "customer_get", "customer_email" => $email);
 	$foxy_response = foxyshop_get_foxycart_data($foxy_data);
 	$xml = simplexml_load_string($foxy_response, NULL, LIBXML_NOCDATA);
@@ -128,7 +128,7 @@ function foxyshop_check_for_customer_id($email) {
 
 function foxyshop_add_new_customer_id($email, $pass, $first_name, $last_name) {
 	global $current_user;
-	get_currentuserinfo();
+	wp_get_current_user();
 	$foxy_data = array("api_action" => "customer_save", "customer_email" => $email, "customer_password_hash" => $pass);
 	if ($first_name != '') $foxy_data['customer_first_name'] = $first_name;
 	if ($last_name != '') $foxy_data['customer_last_name'] = $last_name;
