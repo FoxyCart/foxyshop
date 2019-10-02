@@ -283,7 +283,7 @@ function foxyshop_tools() {
 						</li>
 
 						<li><h3><a href="plugin-install.php?tab=search&type=term&s=csv+importer">CSV Importer</a></h3>
-						(import products - <a href="http://www.foxy-shop.com/2011/03/importing-products/" target="_blank">guide here</a>)
+						(import products - <a href="https://www.foxy-shop.com/importing-products/" target="_blank">guide here</a>)
 						<?php
 						foxyshop_check_plugin_status("csv-importer");
 						?>
