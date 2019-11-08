@@ -14,8 +14,8 @@ http://www.foxy-shop.com/documentation/theme-customization/
 
 /* Breadcrumbs Colors */
 #foxyshop_breadcrumbs {
-	background-color: #FBEEB2;
-	border: 1px solid #E3CD69;
+	background-color: #FFF5C9;
+	border: 1px solid #ECDC93;
 }
 
 /* border color for images */
@@ -61,6 +61,9 @@ http://www.foxy-shop.com/documentation/theme-customization/
 	font-family: Arial;
 	font-size: 12px;
 }
+.foxyshop_button:visited {
+	color: #fff;
+}
 .foxyshop_button:hover {
 	background-color: #591b62;
 	color: #fff;
@@ -94,7 +97,7 @@ http://www.foxy-shop.com/documentation/theme-customization/
 }
 .foxyshop_slideshow_title {
 	font-size: 11px;
-	color: #ABABAB;
+	color: #555555;
 }
 .foxyshop_slideshow li img {
 	border: 1px solid #7D268A;
@@ -105,8 +108,8 @@ http://www.foxy-shop.com/documentation/theme-customization/
 
 /* featured product settings */
 .foxyshop_featured_product_list .foxyshop_product_box {
-	background-color: #FBEEB2;
-	border: 1px solid #E3CD69;
+	background-color: #FFF5C9;
+	border: 1px solid #ECDC93;
 }
 
 /* related product settings (gray default) */
@@ -129,8 +132,8 @@ http://www.foxy-shop.com/documentation/theme-customization/
 
 /* Inventory Colors and Settings */
 .foxyshop_stock_alert {
-	background-color: #FBEEB2;
-	border: 1px solid #E3CD69;
+	background-color: #FFF5C9;
+	border: 1px solid #ECDC93;
 	padding: 10px;
 	margin-bottom: 20px;
 }
@@ -145,7 +148,7 @@ http://www.foxy-shop.com/documentation/theme-customization/
 
 
 /* generic settings below */
-#foxyshop_container .clr, .foxyshop_category_widget .clr { clear: both; height: 1px; }
+#foxyshop_container .clr, .foxyshop_container .clr, .foxyshop_category_widget .clr { clear: both; height: 1px; }
 
 
 
@@ -160,6 +163,9 @@ http://www.foxy-shop.com/documentation/theme-customization/
 	float: left;
 	margin: 0 10px 0 0;
 	list-style: none;
+}
+#foxyshop_breadcrumbs a {
+	color:#4F4F4F;
 }
 
 

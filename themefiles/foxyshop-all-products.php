@@ -12,7 +12,7 @@ global $product;
 ?>
 
 <?php foxyshop_include('header'); ?>
-<div id="foxyshop_container">
+<div class="foxyshop_container">
 	<?php
 	//Write Category Title
 	echo '<h1 id="foxyshop_category_title">Products</h1>'."\n";
