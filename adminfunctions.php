@@ -473,7 +473,7 @@ function foxyshop_dblquotes($str) {
 
 //Plugin Activation Function
 function foxyshop_activation() {
-	global $wpdb, $google_product_field_names;
+	global $wpdb, $product_feed_field_names;
 
 	//Get Locale
 	$current_locale = get_locale();
@@ -527,9 +527,6 @@ function foxyshop_activation() {
 		"template_url_receipt" => get_bloginfo("url") . "/foxycart-receipt-template/",
 		"products_per_page" => -1,
 		"downloadables_sync" => "",
-		"google_product_support" => "",
-		"google_product_merchant_id" => "",
-		"google_product_auth" => "",
 		"include_exception_list" => "",
 		"show_add_to_cart_link" => "",
 		"api_key" => "spfx" . hash_hmac('sha256', rand(2165,64898), "dkw81" . time()),
@@ -577,9 +574,6 @@ function foxyshop_activation() {
 		if (!array_key_exists('template_url_receipt',$foxyshop_settings)) $foxyshop_settings['template_url_receipt'] = ""; //3.6.1
 		if (!array_key_exists('ups_worldship_export',$foxyshop_settings)) $foxyshop_settings['ups_worldship_export'] = ""; //3.7
 		if (!array_key_exists('downloadables_sync',$foxyshop_settings)) $foxyshop_settings['downloadables_sync'] = ""; //3.7
-		if (!array_key_exists('google_product_support',$foxyshop_settings)) $foxyshop_settings['google_product_support'] = ""; //3.7
-		if (!array_key_exists('google_product_merchant_id',$foxyshop_settings)) $foxyshop_settings['google_product_merchant_id'] = ""; //3.7
-		if (!array_key_exists('google_product_auth',$foxyshop_settings)) $foxyshop_settings['google_product_auth'] = ""; //3.7
 		if (!array_key_exists('include_exception_list',$foxyshop_settings)) $foxyshop_settings['include_exception_list'] = ""; //3.9
 		if (array_key_exists('ups_worldship_export',$foxyshop_settings)) unset($foxyshop_settings['ups_worldship_export']); //4.1
 		if (!array_key_exists('show_add_to_cart_link',$foxyshop_settings)) $foxyshop_settings['show_add_to_cart_link'] = ""; //4.1.1
@@ -654,10 +648,10 @@ function foxyshop_activation() {
 		if (version_compare($foxyshop_settings['foxyshop_version'], '3.7', "<")) {
 			$products = get_posts(array('post_type' => 'foxyshop_product', 'numberposts' => -1, 'post_status' => null));
 			foreach ($products as $product) {
-				foreach($google_product_field_names as $field) {
-					$google_product_field_value = get_post_meta($product->ID, $field, 1);
-					if ($google_product_field_value) {
-						add_post_meta($product->ID, "_" . $field, $google_product_field_value);
+				foreach($product_feed_field_names as $field) {
+					$product_feed_field_value = get_post_meta($product->ID, $field, 1);
+					if ($product_feed_field_value) {
+						add_post_meta($product->ID, "_" . $field, $product_feed_field_value);
 						delete_post_meta($product->ID, $field);
 					}
 				}

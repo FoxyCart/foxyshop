@@ -1,6 +1,7 @@
 <?php
 //Exit if not called in proper context
 if (!defined('ABSPATH')) exit();
+include 'xmlproductfeed.php';
 
 //Save Settings
 add_action('admin_init', 'foxyshop_save_settings');
@@ -42,8 +43,6 @@ function foxyshop_save_settings() {
 		"sso_account_required",
 		"checkout_customer_create",
 		"downloadables_sync",
-		"google_product_support",
-		"google_product_merchant_id",
 		"include_exception_list",
 		"show_add_to_cart_link",
 		"use_cart_validation",
@@ -87,6 +86,12 @@ function foxyshop_save_settings() {
 		$foxyshop_settings["api_key"] = $_POST['api_key'];
 	}
 
+	//Generate full product catalog in webroot
+	if (isset($_POST['foxyshop_generate_product_sitemap']) && $_POST['foxyshop_generate_product_sitemap'] == 'on') {
+		file_put_contents(ABSPATH . 'products.xml', foxyshop_xml_product_feed());
+	} else {
+		unlink(ABSPATH . 'products.xml');
+	}
 
 	//Set FoxyCart Domain Name
 	$domain = $_POST['foxyshop_domain'];
@@ -576,18 +581,6 @@ function foxyshop_settings_page() {
 			</tr>
 			<tr>
 				<td>
-					<input type="checkbox" id="foxyshop_google_product_support" name="foxyshop_google_product_support"<?php checked($foxyshop_settings['google_product_support'], "on"); ?> />
-					<label for="foxyshop_google_product_support"><?php _e('Enable Google Product Feed Connection', 'foxyshop'); ?></label>
-					<a href="#" class="foxyshophelp"><?php _e('If checked, you will be able to create a feed suitable for submitting to Google Product Search.', 'foxyshop'); ?></a>
-					<div id="google_merchant_id_holder"<?php if (!$foxyshop_settings['google_product_support']) echo ' style="display:none;"'; ?>>
-						<label for="foxyshop_google_product_merchant_id"><?php echo __('Google Merchant Account ID', 'foxyshop'); ?>:</label>
-						<input type="text" id="foxyshop_google_product_merchant_id" name="foxyshop_google_product_merchant_id" value="<?php echo esc_attr($foxyshop_settings['google_product_merchant_id']); ?>" />
-						<a href="#" class="foxyshophelp"><?php _e('Enter your Google Merchant Account ID found in the Google Merchant Center.', 'foxyshop'); ?></a>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td>
 					<input type="checkbox" id="foxyshop_set_orderdesk_url" name="foxyshop_set_orderdesk_url"<?php if ($foxyshop_settings['orderdesk_url']) echo ' checked="checked"'; ?> />
 					<label for="foxyshop_set_orderdesk_url"><?php _e('Use FoxyTools Order Desk', 'foxyshop'); ?></label>
 					<small>(<a href="http://www.orderdesk.me/" target="_blank"><?php _e("more info", "foxyshop"); ?></a>)</small>
@@ -607,7 +600,7 @@ function foxyshop_settings_page() {
 				<td>
 					<input type="checkbox" id="foxyshop_generate_product_sitemap" name="foxyshop_generate_product_sitemap"<?php checked($foxyshop_settings['generate_product_sitemap'], "on"); ?> />
 					<label for="foxyshop_generate_product_sitemap"><?php echo sprintf(__('Generate %s Sitemap', 'foxyshop'), esc_html(FOXYSHOP_PRODUCT_NAME_SINGULAR)); ?></label>
-					<a href="#" class="foxyshophelp"><?php echo sprintf(__('If checked, a sitemap file with all of your %s will be created in your root folder.', 'foxyshop'), strtolower(esc_html(FOXYSHOP_PRODUCT_NAME_PLURAL))); ?></a>
+					<a href="#" class="foxyshophelp"><?php echo sprintf(__('If checked, a sitemap file named products.xml will be created in your root folder with all of your %s. This can be used for integrating with Google Merchant Services, Facebook Merchant Commerce, etc.', 'foxyshop'), strtolower(esc_html(FOXYSHOP_PRODUCT_NAME_PLURAL))); ?></a>
 				</td>
 			</tr>
 			<tr>
@@ -672,13 +665,6 @@ jQuery(document).ready(function($){
 	$("#resetimage").click(function() {
 		$("#foxyshop_default_image").val("<?php echo FOXYSHOP_DIR."/images/no-photo.png"; ?>");
 		return false;
-	});
-	$("#foxyshop_google_product_support").click(function() {
-		if ($(this).is(":checked")) {
-			$("#google_merchant_id_holder").show();
-		} else {
-			$("#google_merchant_id_holder").hide();
-		}
 	});
 	$("#foxyshop_set_orderdesk_url").click(function() {
 		if ($(this).is(":checked")) {

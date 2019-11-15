@@ -50,7 +50,6 @@ function foxyshop_insert_foxycart_loader() {
 //Sets up the $product array
 function foxyshop_setup_product($thepost = false, $shortcut = false) {
 	global $foxyshop_settings, $product;
-
 	//Product ID
 	if (gettype($thepost) == "integer") {
 		$newposts = get_posts(array("post_type" => "foxyshop_product", "page_id" => $thepost));
@@ -68,6 +67,7 @@ function foxyshop_setup_product($thepost = false, $shortcut = false) {
 	//Product Object
 	} elseif (!$thepost) {
 		global $post;
+
 		$thepost = $post;
 	}
 
@@ -75,6 +75,7 @@ function foxyshop_setup_product($thepost = false, $shortcut = false) {
 	if (isset($product)) {
 		if ($product['id'] == $thepost->ID) return $product;
 	}
+file_put_contents('foxyshop_post', print_r($thepost,1) . "\n");
 
 	$new_product = array();
 	$new_product['id'] = $thepost->ID;
@@ -222,6 +223,7 @@ function foxyshop_setup_product($thepost = false, $shortcut = false) {
 
 	//Hook To Add Your Own Function to Update the $new_product array with your own data
 	if (has_filter('foxyshop_setup_product_info')) $new_product = apply_filters('foxyshop_setup_product_info', $new_product, $thepost->ID);
+file_put_contents('foxyshop_product', print_r($new_product,1) . "\n");
 
 	return $new_product;
 }

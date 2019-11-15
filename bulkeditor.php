@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) exit();
 //-------------------------------------------
 function foxyshop_cfbe_metabox($post_type) {
 	if ($post_type != 'foxyshop_product') return;
-	global $foxyshop_settings, $wp_version, $google_product_field_names;
+	global $foxyshop_settings, $wp_version, $product_feed_field_names;
 
 	$change_to_text = __("Change To", 'foxyshop');
 	$leave_unchanged_text = __("Leave Unchanged", 'foxyshop');
@@ -255,8 +255,8 @@ function foxyshop_cfbe_metabox($post_type) {
 				<input type="hidden" name="_sub_enddate_status" value="0" />
 			<?php endif; ?>
 			<?php
-			if ($foxyshop_settings['google_product_support']) :
-				foreach ($google_product_field_names as $field) {
+			if ($foxyshop_settings['generate_product_sitemap']) :
+				foreach ($product_feed_field_names as $field) {
 					$display_title = ucwords(str_replace("_", " ", $field));
 					if (strlen($display_title) <= 4 && $display_title != "Size") $display_title = strtoupper($display_title);
 					?>
@@ -268,7 +268,7 @@ function foxyshop_cfbe_metabox($post_type) {
 							<input type="radio" name="_<?php echo $field; ?>_status" id="_<?php echo $field; ?>_status1" value="1" />
 							<label for="_<?php echo $field; ?>_status1"><?php echo $change_to_text; ?>:</label>
 							<input type="text" name="_<?php echo $field; ?>" id="_<?php echo $field; ?>" value="" class="cfbe_field_name" onfocus="jQuery('#_<?php echo $field; ?>_status1').prop('checked', true);" style="width: 300px;" />
-							<?php if ($field == "google_product_category") echo '<small>(<a href="http://www.google.com/basepages/producttype/taxonomy.en-US.txt" target="_blank">' . __('Reference', 'foxyshop') . '</a>)</small>'; ?>
+							<?php if ($field == "generate_product_sitemap") echo '<small>(<a href="http://www.google.com/basepages/producttype/taxonomy.en-US.txt" target="_blank">' . __('Reference', 'foxyshop') . '</a>)</small>'; ?>
 							<div style="clear: both;"></div>
 						</td>
 					</tr>
@@ -352,7 +352,7 @@ add_action('cfbe_before_metabox', 'foxyshop_cfbe_metabox');
 
 function foxyshop_cfbe_save($post_type, $post_id) {
 	if ($post_type != "foxyshop_product") return;
-	global $foxyshop_settings, $google_product_field_names;
+	global $foxyshop_settings, $product_feed_field_names;
 
 	//Generic Fields Needing No Special Treatment
 	$fields = array("category", "discount_quantity_amount", "discount_quantity_percentage", "discount_price_amount", "discount_price_percentage", "sub_frequency", "sub_startdate", "sub_enddate");
@@ -481,8 +481,8 @@ function foxyshop_cfbe_save($post_type, $post_id) {
 
 
 	//Google Products Fields
-	if ($foxyshop_settings['google_product_support']) {
-		foreach($google_product_field_names as $field) {
+	if ($foxyshop_settings['generate_product_sitemap']) {
+		foreach($product_feed_field_names as $field) {
 			if ($_POST['_' . $field . '_status'] == 1) {
 				cfbe_save_meta_data('_'.$field, $_POST['_'.$field]);
 			}

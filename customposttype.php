@@ -267,7 +267,7 @@ function foxyshop_product_meta_init() {
 	add_meta_box('product_pricing_meta', __('Pricing Details', 'foxyshop'), 'foxyshop_product_pricing_setup', 'foxyshop_product', 'side', 'low');
 	add_meta_box('product_images_meta', FOXYSHOP_PRODUCT_NAME_SINGULAR.' ' . __('Images', 'foxyshop'), 'foxyshop_product_images_setup', 'foxyshop_product', 'normal', 'high');
 	add_meta_box('product_variations_meta', FOXYSHOP_PRODUCT_NAME_SINGULAR.' '.__('Variations', 'foxyshop'), 'foxyshop_product_variations_setup', 'foxyshop_product', 'normal', 'high');
-	if ($foxyshop_settings['google_product_support']) add_meta_box('google_products_data', __('Google Product Feed Data', 'foxyshop'), 'foxyshop_google_products_data', 'foxyshop_product', 'normal', 'low');
+	if ($foxyshop_settings['generate_product_sitemap']) add_meta_box('google_products_data', __('Product Feed Data', 'foxyshop'), 'foxyshop_google_products_data', 'foxyshop_product', 'normal', 'low');
 	if ($foxyshop_settings['related_products_custom']) add_meta_box('product_related_meta', __('Related', 'foxyshop').' '.FOXYSHOP_PRODUCT_NAME_PLURAL, 'foxyshop_related_products_setup', 'foxyshop_product', 'normal', 'low');
 	if ($foxyshop_settings['enable_bundled_products']) add_meta_box('product_bundled_meta', __('Bundled', 'foxyshop').' '.FOXYSHOP_PRODUCT_NAME_PLURAL, 'foxyshop_bundled_products_setup', 'foxyshop_product', 'normal', 'low');
 	if ($foxyshop_settings['enable_addon_products']) add_meta_box('product_addon_meta', __('Add-On', 'foxyshop').' '.FOXYSHOP_PRODUCT_NAME_PLURAL, 'foxyshop_addon_products_setup', 'foxyshop_product', 'normal', 'low');
@@ -781,19 +781,32 @@ function foxyshop_addon_products_setup() {
 
 
 //-------------------------------------------
-//Google Products Data
+//Products Feed Data
 //-------------------------------------------
 function foxyshop_google_products_data() {
-	global $post, $google_product_field_names;
+	global $post, $product_feed_field_names;
 
-	echo '<p>The following data is used by the Google Product Search tool. Read the <a href="http://www.google.com/support/merchants/bin/answer.py?hl=en&answer=188494#US" target="_blank">feed specification</a> for specific field.<br /><em>Google Product Category</em> is required.</p>';
+	echo '<p>The following data is used to generate the product feed for integrating with systems such as Google Merchant Services, Facebook Merchant Commerce, etc. Read the <a href="http://www.google.com/support/merchants/bin/answer.py?hl=en&answer=188494#US" target="_blank">feed specification</a> for specific fields.<br /><em>Google Product Category</em> is required.</p>';
 
-	foreach($google_product_field_names as $field) {
+	$product = foxyshop_setup_product($post);
+//	$gtin = $product['code'];
+//	$mpn = $product['code'];
+    $condition = "new";
+	$brand = get_bloginfo('name');
+
+	foreach($product_feed_field_names as $field) {
 		$display_title = ucwords(str_replace("_", " ", $field));
 		if (strlen($display_title) <= 4 && $display_title != "Size") $display_title = strtoupper($display_title);
 		echo '<div class="foxyshop_field_control">'."\n";
 		echo '<label for="_' . $field . '">' . $display_title . '</label>'."\n";
-		echo '<input type="text" id="_' . $field . '" name="_' . $field . '" value="' . esc_attr(get_post_meta($post->ID, "_" . $field, 1)) . '" />'."\n";
+		$val = esc_attr(get_post_meta($post->ID, "_" . $field, 1));
+
+		if ($field == 'condition' && !$val) $val = $condition;
+//		if ($field == 'gtin' && !$val) $val = $gtin;
+//		if ($field == 'mpn' && !$val) $val = $mpn;
+        if ($field == 'brand' && !$val) $val = $brand;
+
+		echo '<input type="text" id="_' . $field . '" name="_' . $field . '" value="' . $val . '" />'."\n";
 		switch ($field) {
 			case "google_product_category": echo '<span>(<a href="http://www.google.com/basepages/producttype/taxonomy.en-US.txt" target="_blank">options</a>)</span>'; break;
 		}
@@ -1054,7 +1067,7 @@ if (is_array($saved_variations)) {
 //Save All Product Info
 //-------------------------------------------
 function foxyshop_product_meta_save($post_id) {
-	global $foxyshop_settings, $google_product_field_names;
+	global $foxyshop_settings, $product_feed_field_names;
 	if (!wp_verify_nonce((isset($_POST['products_meta_noncename']) ? $_POST['products_meta_noncename'] : ""),__FILE__)) return $post_id;
 	if (!current_user_can('edit_'.($_POST['post_type'] == 'page' ? 'page' : 'post'), $post_id)) return $post_id;
 
@@ -1249,13 +1262,17 @@ function foxyshop_product_meta_save($post_id) {
 	if (count($variations) == 0) $variations = "";
 	foxyshop_save_meta_data('_variations', $variations);
 
-
-	//Google Products Fields
-	if ($foxyshop_settings['google_product_support']) {
-		foreach($google_product_field_names as $field) {
+	//Product Feed Fields
+	if ($foxyshop_settings['generate_product_sitemap']) {
+		foreach($product_feed_field_names as $field) {
 			foxyshop_save_meta_data("_" . $field, $_POST["_" . $field]);
 		}
 	}
+
+    //Generate full product catalog on webroot
+    if ($foxyshop_settings['generate_product_sitemap']) {
+        file_put_contents(ABSPATH . 'products.xml', foxyshop_xml_product_feed());
+    }
 
 	//Save Action (For Other Integrations)
 	do_action("foxyshop_save_product", $post_id);
