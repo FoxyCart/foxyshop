@@ -229,6 +229,10 @@ http://www.foxy-shop.com/documentation/theme-customization/
 input[type="text"].foxyshop_quantity {
 	width: 30px;
 }
+input[id^=quantity][name$=\|\|open] {
+	padding: 0.5em;
+	display: inline;
+}
 .foxyshop_oldprice {
 	text-decoration: line-through;
 	margin-right: 10px;
