@@ -1,0 +1,1988 @@
+# Copyright (C) 2012 FoxyShop
+# This file is distributed under the same license as the FoxyShop package.
+msgid ""
+msgstr ""
+"Project-Id-Version: FoxyShop 4.3\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/foxyshop\n"
+"POT-Creation-Date: 2012-11-07 20:48:46+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2020-08-11 19:48-0300\n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.2.1\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: pt_BR\n"
+
+#: adminfunctions.php:514
+msgid "Connection Error"
+msgstr "Erro de conexão"
+
+#: adminfunctions.php:634 googleproductfeed.php:466 googleproductfeed.php:472
+msgid "Delete"
+msgstr "Apagar"
+
+#: adminfunctions.php:634 customposttype.php:18 customposttype.php:40
+#: customposttype.php:61 subscriptions.php:277
+msgid "Edit"
+msgstr "Editar"
+
+#: adminfunctions.php:638
+msgid "Add Attribute"
+msgstr "Adicionar atributo"
+
+#: bulkeditor.php:12
+msgid "Change To"
+msgstr "Mudar para"
+
+#: bulkeditor.php:13
+msgid "Leave Unchanged"
+msgstr "Deixar inalterado"
+
+#: bulkeditor.php:19
+msgid "Set Values For Checked FoxyShop %s"
+msgstr "Definir Valores para o FoxyShop Marcado %s"
+
+#: bulkeditor.php:26
+msgid "FoxyCart Category"
+msgstr "Categoria FoxyCart"
+
+#: bulkeditor.php:33
+msgid "Default"
+msgstr "Padrão"
+
+#: bulkeditor.php:61 customposttype.php:518
+msgid "Sale Price"
+msgstr "Preço de venda"
+
+#: bulkeditor.php:63
+msgid "Leave Unchanged, 'foxyshop'"
+msgstr "Deixar inalterado, 'foxyshop'"
+
+#: bulkeditor.php:73
+msgid "Sale Start Date"
+msgstr "Data de início da promoção"
+
+#: bulkeditor.php:85
+msgid "Sale End Date"
+msgstr "Data de fim da promoção"
+
+#: bulkeditor.php:97 customposttype.php:349
+msgid "Base Price"
+msgstr "Preço base"
+
+#: bulkeditor.php:109 customposttype.php:358
+msgid "Weight"
+msgstr "Peso"
+
+#: bulkeditor.php:123
+msgid "Minimum Qty"
+msgstr "Quantidade mínima"
+
+#: bulkeditor.php:134
+msgid "Maximum Qty"
+msgstr "Quantidade máxima"
+
+#: bulkeditor.php:145
+msgid "Hide Quantity"
+msgstr "Ocultar quantidade"
+
+#: bulkeditor.php:149 customposttype.php:372 customposttype.php:373
+msgid "Hide Quantity Box"
+msgstr "Ocultar caixa de quantidade"
+
+#: bulkeditor.php:151
+msgid "Show Quantity Box"
+msgstr "Mostrar caixa de quantidade"
+
+#: bulkeditor.php:157
+msgid "Hide From List View"
+msgstr "Ocultar da visualização em lista"
+
+#: bulkeditor.php:161
+msgid "Hide"
+msgstr "Ocultar"
+
+#: bulkeditor.php:163
+msgid "Show"
+msgstr "Mostrar"
+
+#: bulkeditor.php:169
+msgid "Discount Qty $"
+msgstr "Desconto de quantidade $"
+
+#: bulkeditor.php:175 bulkeditor.php:187 bulkeditor.php:199 bulkeditor.php:211
+#: bulkeditor.php:224 bulkeditor.php:236 bulkeditor.php:248 bulkeditor.php:271
+msgid "Reference"
+msgstr "Referência"
+
+#: bulkeditor.php:181
+msgid "Discount Qty %"
+msgstr "Desconto de Quantidade %"
+
+#: bulkeditor.php:193
+msgid "Discount Price $"
+msgstr "Preço de Desconto $"
+
+#: bulkeditor.php:205
+msgid "Discount Price %"
+msgstr "Preço de Desconto %"
+
+#: bulkeditor.php:218
+msgid "Sub. Frequency"
+msgstr "Frequência de assinatura"
+
+#: bulkeditor.php:230
+msgid "Sub. Start Date"
+msgstr "Data de início de assinatura"
+
+#: bulkeditor.php:242
+msgid "Sub. End Date"
+msgstr "Data de fim de assinatura"
+
+#: bulkeditor.php:289
+msgid "Related Products"
+msgstr "Produtos relacionados"
+
+#: bulkeditor.php:303
+msgid "Bundled Products"
+msgstr "Produtos empacotados"
+
+#: bulkeditor.php:321
+msgid "Add-on Products"
+msgstr "Produtos adicionais"
+
+#: categorysorting.php:8
+msgid "Category Sorting"
+msgstr "Ordenação de categoria"
+
+#: categorysorting.php:8
+msgid "Set Category Order"
+msgstr "Definir a ordem da categoria"
+
+#: categorysorting.php:27
+msgid "Category order updated successfully."
+msgstr "Ordem da categoria atualizada com sucesso."
+
+#: categorysorting.php:39
+msgid "Category order reset to alphabetical."
+msgstr "Ordem da categoria redefinida como alfabética."
+
+#: categorysorting.php:59
+msgid "Set %s Category Order"
+msgstr "Define a ordem da categoria %s"
+
+#: categorysorting.php:78
+msgid "Select Sub-Category"
+msgstr "Selecionar sub-categoria"
+
+#: categorysorting.php:89 widgetcode.php:268
+msgid "Top Level Categories"
+msgstr "Categorias de nível de topo"
+
+#: categorysorting.php:98
+msgid ""
+"Drag categories to the preferred order and then click the Save button at the "
+"bottom of the page."
+msgstr ""
+"Arraste as categorias para a ordem preferida e então clique no botão salvar "
+"no final da página."
+
+#: categorysorting.php:99
+msgid "Current Sorting"
+msgstr "Ordenação atual"
+
+#: categorysorting.php:99
+msgid "Custom"
+msgstr "Personalizada"
+
+#: categorysorting.php:99
+msgid "Alphabetical"
+msgstr "Alfabética"
+
+#: categorysorting.php:117 customsorting.php:113
+msgid "Save Custom Order"
+msgstr "Salvar ordenação personalizada"
+
+#: categorysorting.php:118
+msgid "Reset to Alphabetical"
+msgstr "Redefinir como alfabética"
+
+#: categorysorting.php:127
+msgid "No Sub-Categories Found."
+msgstr "Nenhuma sub-categoria encontrada."
+
+#: categorysorting.php:148
+msgid "Updating Category Order..."
+msgstr "Atualizando a ordenação da categoria..."
+
+#: customers.php:7
+msgid "Customer Management"
+msgstr "Gerenciamento de clientes"
+
+#: customers.php:7
+msgid "Customers"
+msgstr "Clientes"
+
+#: customers.php:51
+msgid "Manage Customers"
+msgstr "Gerenciar clientes"
+
+#: customers.php:59 orders.php:170 subscriptions.php:86
+msgid "Search Options"
+msgstr "Opções de Busca"
+
+#: customers.php:63 customers.php:119 customers.php:129 orders.php:252
+#: subscriptions.php:158
+msgid "Customer ID"
+msgstr "ID de Cliente"
+
+#: customers.php:66 orders.php:258 subscriptions.php:164
+msgid "Customer First Name"
+msgstr "Primeiro Nome de Cliente"
+
+#: customers.php:69 orders.php:261 subscriptions.php:167
+msgid "Customer Last Name"
+msgstr "Último Nome de Cliente"
+
+#: customers.php:73 orders.php:237 subscriptions.php:131
+msgid "Custom Field Name"
+msgstr "Nome de Campo Personalizado"
+
+#: customers.php:74 customposttype.php:931 customposttype.php:947
+#: orders.php:232 orders.php:238 subscriptions.php:127 subscriptions.php:132
+#: tools-page.php:548 tools-page.php:557 tools-page.php:846
+msgid "Value"
+msgstr "Valor"
+
+#: customers.php:79 orders.php:255 subscriptions.php:161
+msgid "Customer Email"
+msgstr "Email de Cliente"
+
+#: customers.php:82 orders.php:264
+msgid "Customer State"
+msgstr "Estado de Cliente"
+
+#: customers.php:86 subscriptions.php:171
+msgid "Search Records Now"
+msgstr "Buscar Registros Agora"
+
+#: customers.php:87 subscriptions.php:172
+msgid "Reset Form"
+msgstr "Reiniciar Formulário"
+
+#: customers.php:120 customers.php:130
+msgid "Last Name"
+msgstr "Último Nome"
+
+#: customers.php:121 customers.php:131
+msgid "First Name"
+msgstr "Primeiro Nome"
+
+#: customers.php:122 customers.php:132 googleproductfeed.php:291
+#: productfeed.php:290
+msgid "Email"
+msgstr "Email"
+
+#: customers.php:123 customers.php:133 customers.php:155 orders.php:94
+msgid "Orders"
+msgstr "Ordens"
+
+#: customers.php:124 customers.php:134 customers.php:156 subscriptions.php:8
+msgid "Subscriptions"
+msgstr "Assinaturas"
+
+#: customers.php:164 orders.php:495
+msgid "Customer Details"
+msgstr "Detalhes de Cliente"
+
+#: customers.php:168 customers.php:169 orders.php:419
+msgid "Card"
+msgstr "Cartão"
+
+#: customers.php:170 orders.php:420
+msgid "Exp"
+msgstr "Exp"
+
+#: customers.php:171
+msgid "Last Modified"
+msgstr "Última Modificação"
+
+#: customers.php:179 orders.php:448
+msgid "Customer Address"
+msgstr "Endereço de Cliente"
+
+#: customers.php:193 customers.php:209 orders.php:462 orders.php:478
+msgid "Shipping Details"
+msgstr "Detalhes de Envio"
+
+#: customposttype.php:14 customposttype.php:17 customposttype.php:22
+msgid "Categories"
+msgstr "Categorias"
+
+#: customposttype.php:15 customposttype.php:18 customposttype.php:19
+#: customposttype.php:20 customposttype.php:116 widgetcode.php:89
+#: widgetcode.php:330
+msgid "Category"
+msgstr "Categoria"
+
+#: customposttype.php:16 customposttype.php:38 widgetcode.php:266
+msgid "Parent Category"
+msgstr "Categoria Pai"
+
+#: customposttype.php:17 customposttype.php:39 customsorting.php:67
+#: customsorting.php:88 settings-page.php:375
+msgid "All"
+msgstr "Todos"
+
+#: customposttype.php:19 customposttype.php:41 inventory.php:85
+#: inventory.php:96
+msgid "Update"
+msgstr "Atualizar"
+
+#: customposttype.php:20 customposttype.php:42 customposttype.php:59
+#: customposttype.php:60
+msgid "Add New"
+msgstr "Adicionar Novo"
+
+#: customposttype.php:21 customposttype.php:43 customposttype.php:62
+msgid "New"
+msgstr "Novo"
+
+#: customposttype.php:21
+msgid "Category Name"
+msgstr "Nome de Categoria"
+
+#: customposttype.php:36 customposttype.php:39 customposttype.php:44
+msgid "Tags"
+msgstr "Etiquetas"
+
+#: customposttype.php:37 customposttype.php:40 customposttype.php:41
+#: customposttype.php:42
+msgid "Tag"
+msgstr "Etiqueta"
+
+#: customposttype.php:43
+msgid "Tag Name"
+msgstr "Nome de Etiqueta"
+
+#: customposttype.php:63
+msgid "View"
+msgstr "Visualização"
+
+#: customposttype.php:64
+msgid "Manage"
+msgstr "Gerenciar"
+
+#: customposttype.php:66 customposttype.php:67 sso.php:152
+msgid "No"
+msgstr "Não"
+
+#: customposttype.php:66
+msgid "Found"
+msgstr "Encontrado"
+
+#: customposttype.php:67
+msgid "Found in Trash"
+msgstr "Encontrado no Lixo"
+
+#: customposttype.php:68
+msgid "Search"
+msgstr "Buscar"
+
+#: customposttype.php:111 googleproductfeed.php:419 googleproductfeed.php:429
+#: googleproductfeed.php:535 googleproductfeed.php:546 inventory.php:81
+#: inventory.php:92 productfeed.php:418 productfeed.php:428 productfeed.php:534
+#: productfeed.php:545
+msgid "ID"
+msgstr "ID"
+
+#: customposttype.php:112 widgetcode.php:83 widgetcode.php:188
+#: widgetcode.php:260
+msgid "Title"
+msgstr "Título"
+
+#: customposttype.php:113 googleproductfeed.php:421 googleproductfeed.php:431
+#: googleproductfeed.php:538 googleproductfeed.php:549 productfeed.php:420
+#: productfeed.php:430 productfeed.php:537 productfeed.php:548
+msgid "Image"
+msgstr "Imagem"
+
+#: customposttype.php:114 customposttype.php:578 customposttype.php:643
+#: googleproductfeed.php:537 googleproductfeed.php:548 inventory.php:83
+#: inventory.php:94 orders.php:225 orders.php:543 productfeed.php:536
+#: productfeed.php:547 sso.php:139 subscriptions.php:120
+msgid "Code"
+msgstr "Código"
+
+#: customposttype.php:115 googleproductfeed.php:539 googleproductfeed.php:550
+#: orders.php:544 productfeed.php:538 productfeed.php:549
+msgid "Price"
+msgstr "Preço"
+
+#: customposttype.php:142
+msgid "Uncategorized"
+msgstr "Não categorizado"
+
+#: customposttype.php:214 subscriptions.php:102
+msgid "Show All"
+msgstr "Mostrar Todos"
+
+#: customposttype.php:236
+msgid "Custom field updated."
+msgstr "Campo personalizado atualizado."
+
+#: customposttype.php:237
+msgid "Custom field deleted."
+msgstr "Campo personalizado apagado."
+
+#: customposttype.php:238
+msgid "updated"
+msgstr "atualizado"
+
+#: customposttype.php:240
+msgid " saved"
+msgstr " salvo"
+
+#: customposttype.php:242
+msgid "M j, Y @ G:i"
+msgstr "M j, Y @ G:i"
+
+#: customposttype.php:257 subscriptions.php:216 subscriptions.php:227
+msgid "Details"
+msgstr "Detalhes"
+
+#: customposttype.php:258
+msgid "Pricing Details"
+msgstr "Detalhes de Preço"
+
+#: customposttype.php:259
+msgid "Images"
+msgstr "Imagens"
+
+#: customposttype.php:260
+msgid "Variations"
+msgstr "Variações"
+
+#: customposttype.php:261
+msgid "Google Product Feed Data"
+msgstr "Feed de Dados de Produtos do Google"
+
+#: customposttype.php:262
+msgid "Related"
+msgstr "Relacionado"
+
+#: customposttype.php:263
+msgid "Bundled"
+msgstr "Empacotado"
+
+#: customposttype.php:264
+msgid "Add-On"
+msgstr "Adicional"
+
+#: customposttype.php:320
+msgid "Show Available Downloadables"
+msgstr "Mostrar Baixáveis Disponíveis"
+
+#: customposttype.php:322
+msgid "Hide Available Downloadables"
+msgstr "Ocultar Baixáveis Disponíveis"
+
+#: customposttype.php:323
+msgid "Select Downloadable To Prefill Data"
+msgstr "Selecionar Baixáveis para Pré-Preencher Dados"
+
+#: customposttype.php:330
+msgid "None Found"
+msgstr "Nenhum Encontrado"
+
+#: customposttype.php:332
+msgid "Select Below"
+msgstr "Selecionar Abaixo"
+
+#: customposttype.php:344
+msgid "Refresh List"
+msgstr "Recarregar a Lista"
+
+#: customposttype.php:354
+msgid "Item Code"
+msgstr "Código do Item"
+
+#: customposttype.php:363 customposttype.php:364
+msgid "Disable Weight"
+msgstr "Desabilitar Peso"
+
+#: customposttype.php:367
+msgid "Qty Settings"
+msgstr "Configurações de Quantidade"
+
+#: customposttype.php:368
+msgid "Minimum Quantity"
+msgstr "Quantidade Mínima"
+
+#: customposttype.php:370
+msgid "Maximum Quantity"
+msgstr "Quantidade Máxima"
+
+#: customposttype.php:377
+msgid "FoxyCart Cat"
+msgstr "Cat FoxyCart"
+
+#: customposttype.php:380
+msgid "Default for all products"
+msgstr "Padrão para todos os produtos"
+
+#: customposttype.php:407
+msgid "Add to Cart"
+msgstr "Adicionar ao Carrinho"
+
+#: customposttype.php:415
+msgid "Require Account For Checkout"
+msgstr "Requerer Conta para ir ao Caixa"
+
+#: customposttype.php:420
+msgid "Hide This %s From List View"
+msgstr "Ocultar Este %s da Visão em Lista"
+
+#: customposttype.php:494
+msgid "Amount Based on Quantity"
+msgstr "Valor Baseado na Quantidade"
+
+#: customposttype.php:495
+msgid "Percentage Based on Quantity"
+msgstr "Percentual Baseado na Quantidade"
+
+#: customposttype.php:496
+msgid "Amount Based on Price"
+msgstr "Valor Baseado no Preço"
+
+#: customposttype.php:497
+msgid "Percentage Based on Price"
+msgstr "Percentual Baseado no Preço"
+
+#: customposttype.php:500
+msgid "All Units"
+msgstr "Todas as Unidades"
+
+#: customposttype.php:501
+msgid "Incremental"
+msgstr "Incremental"
+
+#: customposttype.php:502
+msgctxt "Recurring"
+msgid "Repeat"
+msgstr "Periódico"
+
+#: customposttype.php:503
+msgctxt "One-time"
+msgid "Single"
+msgstr "Único"
+
+#: customposttype.php:516
+msgctxt "Noun, Special Offer"
+msgid "Sale"
+msgstr "Promoção"
+
+#: customposttype.php:523 customposttype.php:614 subscriptions.php:139
+#: subscriptions.php:212 subscriptions.php:223 subscriptions.php:300
+msgid "Start Date"
+msgstr "Data de Início"
+
+#: customposttype.php:528 customposttype.php:619 subscriptions.php:151
+#: subscriptions.php:214 subscriptions.php:225 subscriptions.php:308
+msgid "End Date"
+msgstr "Data Final"
+
+#: customposttype.php:535
+msgctxt "Discounted Prices Applied to Products"
+msgid "Discounts"
+msgstr "Descontos"
+
+#: customposttype.php:535 customposttype.php:605
+msgid "reference"
+msgstr "referência"
+
+#: customposttype.php:551
+msgctxt "Type of Discount"
+msgid "Disc. Type"
+msgstr "Tipo de Desconto"
+
+#: customposttype.php:564
+msgctxt "Name of Discount"
+msgid "Disc. Name"
+msgstr "Nome do Descont"
+
+#: customposttype.php:570
+msgid "This is Your Computed Discount"
+msgstr "Este é o Seu Desconto Computado"
+
+#: customposttype.php:577
+msgid "Set Inventory Levels"
+msgstr "Definir Níveis de Estoque"
+
+#: customposttype.php:579
+msgid "Count"
+msgstr "Contar"
+
+#: customposttype.php:580
+msgid "If not set, default value will be used (%s)"
+msgstr "Se não estiver definido, o valor padrão será usado (%s)"
+
+#: customposttype.php:580 inventory.php:87 inventory.php:98
+msgid "Alert Lvl"
+msgstr "Nível de Alerta"
+
+#: customposttype.php:605
+msgid "Subscription Attributes"
+msgstr "Atributos de Assinatura"
+
+#: customposttype.php:606
+msgid "You may also enter a"
+msgstr "Você também pode inserir um"
+
+#: customposttype.php:606
+msgid "argument for start or end (like +3 months)"
+msgstr "argumento para início ou fim (como +3 months)"
+
+#: customposttype.php:609
+msgctxt "Frequency of Subscription Charge"
+msgid "Frequency"
+msgstr "Frequência"
+
+#: customposttype.php:629
+msgid "Other Product Features"
+msgstr "Outras Características de Produto"
+
+#: customposttype.php:632
+msgid "Force Immediate Checkout"
+msgstr "Forçar ir Imediatamente ao Caixa"
+
+#: customposttype.php:636
+msgid "Empty Cart Before Adding Product"
+msgstr "Esvaziar o Carrinho Antes de Adicionar o Produto"
+
+#: customposttype.php:640
+msgid "Add a Coupon"
+msgstr "Adicionar um Cupom"
+
+#: customposttype.php:675 customposttype.php:703 customposttype.php:725
+msgid ""
+"Click the box above for a drop-down menu showing all %s. Type to search and "
+"click or press enter to select."
+msgstr ""
+"Clique a caixa acima para um menu drop-down mostrando todos %s. Digite para "
+"pesquisar e clique ou pressione enter para selecionar."
+
+#: customposttype.php:677
+msgid "Set Custom Order For Related Products"
+msgstr "Definir uma Ordenação Personalizada para Produtos Relacionados"
+
+#: customposttype.php:806 helperfunctions.php:261 tools-page.php:428
+msgid "Dropdown List"
+msgstr "Lista Dropdown"
+
+#: customposttype.php:806 helperfunctions.php:261 tools-page.php:429
+msgid "Radio Buttons"
+msgstr "Botões Radiais"
+
+#: customposttype.php:806 helperfunctions.php:261 tools-page.php:430
+msgid "Checkbox"
+msgstr "Caixa de marcação"
+
+#: customposttype.php:806 helperfunctions.php:261 tools-page.php:431
+msgid "Single Line of Text"
+msgstr "Linha de Texto Única"
+
+#: customposttype.php:806 helperfunctions.php:261 tools-page.php:432
+msgid "Multiple Lines of Text"
+msgstr "Múltiplas Linhas de Texto"
+
+#: customposttype.php:806 helperfunctions.php:261 tools-page.php:433
+msgid "Custom File Upload"
+msgstr "Upload de Arquivo Personalizado"
+
+#: customposttype.php:806 helperfunctions.php:261 tools-page.php:434
+msgid "Hidden Field"
+msgstr "Campo Oculto"
+
+#: customposttype.php:806 helperfunctions.php:261 tools-page.php:435
+msgid "Description Field"
+msgstr "Campo de Descrição"
+
+#: customposttype.php:807 tools-page.php:437
+msgid ""
+"Name{p+1.50|w-1|c:product_code|y:foxycart_category|dkey:display_key|ikey:"
+"image_id}"
+msgstr ""
+"Nome{p+1.50|w-1|c:product_code|y:foxycart_category|dkey:display_key|ikey:"
+"image_id}"
+
+#: customposttype.php:859 tools-page.php:484 tools-page.php:757
+msgid "Variation Name"
+msgstr "Nome da Variedade"
+
+#: customposttype.php:862 tools-page.php:487 tools-page.php:759
+msgid "Variation Type"
+msgstr "Tipo da Variedade"
+
+#: customposttype.php:869 customposttype.php:992 tools-page.php:419
+msgid "Saved Variations"
+msgstr "Variedades Salvas"
+
+#: customposttype.php:886 tools-page.php:502 tools-page.php:801
+msgid "Items in Dropdown"
+msgstr "Itens no Dropdown"
+
+#: customposttype.php:894 tools-page.php:510 tools-page.php:809
+msgid "Radio Button Options"
+msgstr "Opções do Botão Radial"
+
+#: customposttype.php:904 tools-page.php:520 tools-page.php:818
+msgid "Text Box Size"
+msgstr "Tamanho da Caixa de Texto"
+
+#: customposttype.php:905 customposttype.php:909 tools-page.php:521
+#: tools-page.php:525 tools-page.php:819 tools-page.php:823
+msgid "characters"
+msgstr "caracteres"
+
+#: customposttype.php:908 tools-page.php:524 tools-page.php:822
+msgid "Maximum Chars"
+msgstr "Máximo de Caracteres"
+
+#: customposttype.php:917 tools-page.php:533 tools-page.php:831
+msgid "Lines of Text"
+msgstr "Linhas de Texto"
+
+#: customposttype.php:924 tools-page.php:540 tools-page.php:839
+msgid "Descriptive Text"
+msgstr "Texto Descritivo"
+
+#: customposttype.php:939 tools-page.php:367 tools-page.php:565
+#: tools-page.php:861
+msgid "Instructions"
+msgstr "Instruções"
+
+#: customposttype.php:955
+msgid "This varation will use saved settings."
+msgstr "Esta variação será usada nas configurações salvas."
+
+#: customposttype.php:961 tools-page.php:574 tools-page.php:770
+msgid "Display Key"
+msgstr "Exibir Chave"
+
+#: customposttype.php:967 tools-page.php:580 tools-page.php:775
+msgid "Make Field Required"
+msgstr "Tornar Campo Obrigatório"
+
+#: customposttype.php:978 tools-page.php:591
+msgid "Add Another Variation"
+msgstr "Adicionar Outra Variedade"
+
+#: customposttype.php:979
+msgid "Minimize All"
+msgstr "Minimizar Tudo"
+
+#: customposttype.php:980
+msgid "Maximize All"
+msgstr "Maximizar Tudo"
+
+#: customsorting.php:8
+msgid "Custom %s Sorting"
+msgstr "Ordenação de %s Personalizada"
+
+#: customsorting.php:8
+msgid "Set %s Order"
+msgstr "Definir Ordenação de %s"
+
+#: customsorting.php:23
+msgid "order updated successfully"
+msgstr "ordenação atualizada com sucesso"
+
+#: customsorting.php:25
+msgid "An error occured, order has not been saved"
+msgstr "Ocorreu um erro, o pedido não foi salvo"
+
+#: customsorting.php:40
+msgid "order reverted to original"
+msgstr "pedido revertido para o original"
+
+#: customsorting.php:58
+msgid "Custom %s Order"
+msgstr "Pedido %s Personalizado"
+
+#: customsorting.php:64
+msgid "Select a category from the drop down to order the %s in that category."
+msgstr "Selecione uma categoria do dropdown para ordenar o %s nesta categoria."
+
+#: customsorting.php:72 widgetcode.php:91
+msgid "Select Category"
+msgstr "Selecionar Categoria"
+
+#: customsorting.php:97
+msgid ""
+"Drag %s to the preferred order and then click the Save button at the bottom "
+"of the page."
+msgstr ""
+"Arraste %s para a ordenação preferida e então clique no botão Salvar no "
+"final da página."
+
+#: customsorting.php:114
+msgid "Revert To Original"
+msgstr "Reverter Ao Original"
+
+#: customsorting.php:123
+msgid "No %s Found For This Category."
+msgstr "Nenhum %s Encontrado Para Esta Categoria."
+
+#: customsorting.php:148
+msgid "Updating %s Order..."
+msgstr "Atualizando Pedido %s..."
+
+#: foxyshop.php:49
+msgid "Product"
+msgstr "Produto"
+
+#: foxyshop.php:50
+msgid "Products"
+msgstr "Produtos"
+
+#: googleproductfeed.php:261 productfeed.php:260
+msgid "Google Products"
+msgstr "Produtos do Google"
+
+#: googleproductfeed.php:280 productfeed.php:279
+msgid "Google Authentication Required"
+msgstr "Autenticação do Google Requerida"
+
+#: googleproductfeed.php:296 productfeed.php:295
+msgid "Password"
+msgstr "Senha"
+
+#: googleproductfeed.php:361 productfeed.php:360
+msgid "Operation completed successfully."
+msgstr "Operação concluída com sucesso"
+
+#: googleproductfeed.php:406 productfeed.php:405
+msgid ""
+"Authentication Failed. It appears that your authentication has expired. This "
+"happens every two weeks. Please login again."
+msgstr ""
+"A Autenticação Falhou. Parece que sua autenticação expirou. Isto ocorre a "
+"cada duas semanas. Por favor, faça login novamente."
+
+#: googleproductfeed.php:420 googleproductfeed.php:430
+#: googleproductfeed.php:536 googleproductfeed.php:547 inventory.php:82
+#: inventory.php:93 orders.php:228 productfeed.php:419 productfeed.php:429
+#: productfeed.php:535 productfeed.php:546 subscriptions.php:123
+msgid "Name"
+msgstr "Nome"
+
+#: googleproductfeed.php:422 googleproductfeed.php:432 productfeed.php:421
+#: productfeed.php:431
+msgid "Expiration"
+msgstr "Expiração"
+
+#: googleproductfeed.php:423 googleproductfeed.php:433 productfeed.php:422
+#: productfeed.php:432
+msgid "Performance"
+msgstr "Desempenho"
+
+#: googleproductfeed.php:456 productfeed.php:455
+msgid "Unmatched!"
+msgstr "Inigualado!"
+
+#: googleproductfeed.php:465
+msgid "Renew/Update"
+msgstr "Renovar/Atualizar"
+
+#: googleproductfeed.php:540 orders.php:417 productfeed.php:539
+msgid "Date"
+msgstr "Data"
+
+#: googleproductfeed.php:551 productfeed.php:550
+msgid "Data"
+msgstr "Dados"
+
+#: googleproductfeed.php:590
+msgid "Add To Google Products Feed"
+msgstr "Adicionar ao Feed de Produtos do Google"
+
+#: googleproductfeed.php:627 productfeed.php:627
+msgid "Create Manual Export File"
+msgstr "Criar Arquivo de Exportação Manual"
+
+#: helperfunctions.php:1124
+msgid "More Details"
+msgstr "Mais Detalhes"
+
+#: helperfunctions.php:1125
+msgid "Add To Cart"
+msgstr "Adicionar Ao Carrinho"
+
+#: inventory.php:58
+msgid "Inventory Management"
+msgstr "Gerenciamento de Estoque"
+
+#: inventory.php:58
+msgid "Inventory"
+msgstr "Estoque"
+
+#: inventory.php:70
+msgid "Your New Inventory Levels Have Been Saved."
+msgstr "Os Seus Novos Níveis de Estoque Foram Salvos."
+
+#: inventory.php:73
+msgid "Import completed: %s records updated."
+msgstr "Importação completa: %s registros atualizados."
+
+#: inventory.php:84 inventory.php:95
+msgid "Variation"
+msgstr "Variedade"
+
+#: inventory.php:86 inventory.php:97
+msgid "Stock Lvl"
+msgstr "Nível de Estoque"
+
+#: inventory.php:156 subscriptions.php:337
+msgid "Save Changes"
+msgstr "Salvar Mudanças"
+
+#: inventory.php:168
+msgid "Import New Inventory Values"
+msgstr "Importar Novos Valores de Estoque"
+
+#: inventory.php:180
+msgid "Update Inventory Values"
+msgstr "Atualizar Valores de Estoque"
+
+#: orders.php:94
+msgid "Order Management"
+msgstr "Gerenciamento de Pedido"
+
+#: orders.php:153
+msgid "Launch Order Desk"
+msgstr "Lançar Mesa de Pedido"
+
+#: orders.php:161
+msgid "Manage Orders"
+msgstr "Gerenciar Pedidos"
+
+#: orders.php:174
+msgid "Transaction Status"
+msgstr "Situação da Transação"
+
+#: orders.php:177
+msgid "Unfilled"
+msgstr "Não preenchido"
+
+#: orders.php:180
+msgid "Filled"
+msgstr "Preenchido"
+
+#: orders.php:183 orders.php:196 orders.php:209 subscriptions.php:92
+msgid "Both"
+msgstr "Ambos"
+
+#: orders.php:187
+msgid "Datafeed Status"
+msgstr "Situação do Feed de Dados"
+
+#: orders.php:190
+msgid "Fed"
+msgstr "Alimentado"
+
+#: orders.php:193
+msgid "Unfed"
+msgstr "Não alimentado"
+
+#: orders.php:200
+msgid "Test Transactions"
+msgstr "Testar Transações"
+
+#: orders.php:203
+msgid "Live"
+msgstr "Vivo"
+
+#: orders.php:206
+msgid "Test"
+msgstr "Teste"
+
+#: orders.php:213 orders.php:416
+msgid "Order ID"
+msgstr "ID do Pedido"
+
+#: orders.php:217 orders.php:442
+msgid "Order Total"
+msgstr "Total do Pedido"
+
+#: orders.php:221
+msgid "Coupon Code"
+msgstr "Código do Cupom"
+
+#: orders.php:231 subscriptions.php:126
+msgid "Option Name"
+msgstr "Nome da Opção"
+
+#: orders.php:245
+msgid "Date Range"
+msgstr "Intervalo de datas"
+
+#: orders.php:246 subscriptions.php:141 subscriptions.php:147
+#: subscriptions.php:153
+msgid "to"
+msgstr "para"
+
+#: orders.php:267
+msgid "Shipping State"
+msgstr "Situação do envio"
+
+#: orders.php:270
+msgid "Customer IP"
+msgstr "IP do Cliente"
+
+#: orders.php:275
+msgid "Show Orders"
+msgstr "Mostrar Pedidos"
+
+#: orders.php:276
+msgid "Print Receipts"
+msgstr "Imprimir Receitas"
+
+#: orders.php:278
+msgid "Export CSV"
+msgstr "Exportar CSV"
+
+#: orders.php:279
+msgid "Export Tab Delimeted"
+msgstr "Exportar Delimitado por Tabs"
+
+#: orders.php:280
+msgid "Export to UPS"
+msgstr "Exportar para UPS"
+
+#: orders.php:284
+msgid "Submit"
+msgstr "Enviar"
+
+#: orders.php:285
+msgid "Reset"
+msgstr "Reiniciar"
+
+#: orders.php:323 subscriptions.php:190
+msgid "ERROR"
+msgstr "ERRO"
+
+#: orders.php:344 orders.php:354
+msgid "Transaction ID"
+msgstr "ID da Transação"
+
+#: orders.php:345
+msgid "Order Date"
+msgstr "Data do Pedido"
+
+#: orders.php:346 orders.php:356 subscriptions.php:211 subscriptions.php:222
+#: subscriptions.php:278
+msgid "Customer"
+msgstr "Cliente"
+
+#: orders.php:347 orders.php:357
+msgid "Total"
+msgstr "Total"
+
+#: orders.php:355
+msgid "OrderDate"
+msgstr "OrderDate"
+
+#: orders.php:385
+msgid "FoxyCart Receipt"
+msgstr "Recibo FoxyCart"
+
+#: orders.php:388
+msgid "View Order"
+msgstr "Ver Pedido"
+
+#: orders.php:389
+msgid "Printable Receipt"
+msgstr "Recibo Imprimível"
+
+#: orders.php:389
+msgid "Receipt"
+msgstr "Recibo"
+
+#: orders.php:397
+msgid "Un-Archive"
+msgstr "Desarquivar"
+
+#: orders.php:399
+msgid "Archive"
+msgstr "Arquivar"
+
+#: orders.php:414
+msgid "Transaction Details"
+msgstr "Detalhes da Transação"
+
+#: orders.php:421
+msgid "MinFraud Score"
+msgstr "Pontuação MinFraud"
+
+#: orders.php:422
+msgid "Shipping Type"
+msgstr "Tipo de Envio"
+
+#: orders.php:427
+msgid "Order Details"
+msgstr "Detalhes do Pedido"
+
+#: orders.php:429
+msgid "Subtotal"
+msgstr "Subtotal"
+
+#: orders.php:441 orders.php:488
+msgid "Shipping"
+msgstr "Envio"
+
+#: orders.php:487
+msgid "Method"
+msgstr "Método"
+
+#: orders.php:546
+msgid "Qty"
+msgstr "Qtd"
+
+#: orders.php:553
+msgid "Subscription Frequency"
+msgstr "Frequência da Assinatura"
+
+#: orders.php:554
+msgid "Subscription Start Date"
+msgstr "Data de Início da Assinatura"
+
+#: orders.php:555
+msgid "Subscription Next Date"
+msgstr "Próxima Data da Assinatura"
+
+#: productfeed.php:301
+msgid "Authenticate Now"
+msgstr "Autenticar Agora"
+
+#: productfeed.php:406
+msgid "Login Now"
+msgstr "Autenticar Agora"
+
+#: settings-page.php:118
+msgid "Settings"
+msgstr "Configurações"
+
+#: settings-page.php:148
+msgid "Your Settings Have Been Saved."
+msgstr "Suas configurações foram salvas."
+
+#: settings-page.php:153
+msgid ""
+"The setup prompt has been hidden. You can always use the setup wizard by "
+"clicking the link above or just configure the settings on this page."
+msgstr ""
+"O prompt de configuração foi ocultado. Você sempre pode usar o assistente de "
+"configuração clicando no link acima ou simplesmente use as configurações "
+"nesta página."
+
+#: settings-page.php:157
+msgid ""
+"<strong>Congratulations!</strong> You are all set up and ready to go. You "
+"may now review all the settings on this page and start entering products."
+msgstr ""
+"<strong>Parabéns!</strong> Você configurou tudo e está pronto pra usar. Você "
+"pode revisar todas as porfigurações nesta página e começar a inserir "
+"produtos."
+
+#: settings-page.php:160
+msgid ""
+"<strong>Warning:</strong> You are using PHP version %s. FoxyShop requires "
+"PHP version 5.1.2 or higher to utilize the required hmac_has() functions. "
+"Without upgrading you will experience problems adding items to the cart and "
+"completing other tasks. After upgrading, make sure that you reset your API "
+"key (on the FoxyShop Tools page) to ensure that you have a fully secure key."
+msgstr ""
+"<strong>Atenção:</strong> Você está usando o PHP versão %s. FoxyShop requer "
+"PHP a versão 5.1.2 ou superior para usar as funções hmac_has(), que são "
+"requeridas. Sem atualizar você terá problemas ao adicionar itens ao carrinho "
+"e completar outras tarefas. Depois de atualizar, certifique-se de reinicar "
+"sua chave de API (na página de Ferramentas do FoxyShop) para garantir que "
+"você tem uma chave completamente segura."
+
+#: settings-page.php:163
+msgid ""
+"<strong>Warning:</strong> Your theme does not appear to be using header.php "
+"or footer.php. Without these files FoxyShop pages will show up unstyled. "
+"This error can often show up if you are using a WordPress framework that is "
+"bypassing the get_header() and get_footer() functions."
+msgstr ""
+"<strong>Aviso:</strong> O seu tema não parece suportar usar header.php ou "
+"footer.php. Sem estes arquivos as páginas FoxyShop serão exibidas sem "
+"estilo. Este erro pode aparecer se você estiver usando um framework "
+"WordPress que ignora as funções get_header() e get_footer."
+
+#: settings-page.php:199
+msgid "FoxyShop Documentation"
+msgstr "Documentação do FoxyShop"
+
+#: settings-page.php:200
+msgid "FoxyCart Information"
+msgstr "Informação FoxyCart"
+
+#: settings-page.php:201
+msgid "FoxyCart Wiki"
+msgstr "Wiki FoxyCart"
+
+#: settings-page.php:202
+msgid "FoxyCart Admin Panel"
+msgstr "Painel de Administração FoxyCart"
+
+#: settings-page.php:216
+msgid "Setup Information"
+msgstr "Informações de Configuração"
+
+#: settings-page.php:222
+msgid "API Key"
+msgstr "Chave de API"
+
+#: settings-page.php:229
+msgid "Datafeed URL"
+msgstr "URL do Feed de Dados"
+
+#: settings-page.php:235
+msgid "SSO Endpoint"
+msgstr "Endpoint do SSO"
+
+#: settings-page.php:241
+msgid "Template Path"
+msgstr "Caminho do Template"
+
+#: settings-page.php:247
+msgid "Sitemap"
+msgstr "Sitemap"
+
+#: settings-page.php:265
+msgid "FoxyCart Settings"
+msgstr "Configurações FoxyCart"
+
+#: settings-page.php:280
+msgid "Your FoxyCart Domain"
+msgstr "Seu Domínio FoxyCart"
+
+#: settings-page.php:289
+msgid "FoxyCart Version"
+msgstr "Versão FoxyCart"
+
+#: settings-page.php:301
+msgid "Skip FoxyCart Includes on These Pages"
+msgstr "Não Incluir FoxyCart Nestas Páginas"
+
+#: settings-page.php:309
+msgid "Automatically Insert jQuery %s from Google CDN"
+msgstr "Inserir jQuery %s Automaticamente a partir do CDN do Google"
+
+#: settings-page.php:315 settings-page.php:362 settings-page.php:389
+#: settings-page.php:600
+msgid "Save All Settings"
+msgstr "Salvar todas configurações"
+
+#: settings-page.php:323
+msgid "Display Settings"
+msgstr "Configurações de Exibição"
+
+#: settings-page.php:329
+msgid "Sorting"
+msgstr "Ordenação"
+
+#: settings-page.php:341
+msgid "Per Page"
+msgstr "Por página"
+
+#: settings-page.php:347
+msgid "What To Show if No Image Is Loaded"
+msgstr "O que exibir se nenhuma imagem for carregada"
+
+#: settings-page.php:349
+msgid "Default Image"
+msgstr "Imagem padrão"
+
+#: settings-page.php:351
+msgid "Custom Image"
+msgstr "Imagem personalizada"
+
+#: settings-page.php:353
+msgid "Don't Show a Default Image"
+msgstr "Não mostrar uma Imagem padrão"
+
+#: settings-page.php:369
+msgid "Browser Title Bar Settings"
+msgstr "Configurações da Barra de Título do Navegador"
+
+#: settings-page.php:377
+msgid "All Categories"
+msgstr "Todas as Categorias"
+
+#: settings-page.php:379
+msgid "Single Category"
+msgstr "Única Categoria"
+
+#: settings-page.php:381
+msgid "Single"
+msgstr "Único"
+
+#: settings-page.php:383
+msgid "Search Results"
+msgstr "Resultados da busca"
+
+#: settings-page.php:396
+msgid "Advanced Settings"
+msgstr "Configurações avançadas"
+
+#: settings-page.php:403
+msgid "FoxyCart Categories"
+msgstr "Categorias FoxyCart"
+
+#: settings-page.php:414
+msgid "Use Cart Validation (strongly recommended)"
+msgstr "Usar Validação de Carrinho (fortemente recomendado)"
+
+#: settings-page.php:420
+msgid "Enable Multi-Ship"
+msgstr "Habilitar Multi-envio"
+
+#: settings-page.php:426
+msgid "Relation"
+msgstr "Relação"
+
+#: settings-page.php:428
+msgid "Enable Related %s (Custom)"
+msgstr "Habilitar %s Relacionado (Personalizado)"
+
+#: settings-page.php:433
+msgid "Enable Related %s (Tags)"
+msgstr "Habilitar %s Relacionado (Tags)"
+
+#: settings-page.php:439
+msgid "Enable Bundled"
+msgstr "Habilitar Empacotado"
+
+#: settings-page.php:444
+msgid "Enable Add-On"
+msgstr "Ativar Adicional"
+
+#: settings-page.php:452
+msgid "Enable Subscriptions"
+msgstr "Habilitar Assinaturas"
+
+#: settings-page.php:456
+msgid "Send Reminders to Subscription Customers with Expiring Credit Cards"
+msgstr "Enviar Lembretes a Assinantes com Cartões de Crédito Expirados"
+
+#: settings-page.php:457
+msgid "This can be configured in your datafeed template file"
+msgstr "Isto pode ser configurado no seu arquivo de template do datafeed"
+
+#: settings-page.php:464
+msgid "Enable WordPress Single-Sign-On"
+msgstr "Habilitar o Single-Sign-On do Wordpress"
+
+#: settings-page.php:468
+msgid "SSO Type"
+msgstr "Tipo de SSO"
+
+#: settings-page.php:471
+msgid "WordPress account optional"
+msgstr "Conta do WordPress opcional"
+
+#: settings-page.php:471
+msgid "Require WordPress account to check out"
+msgstr "Requerer conta do WordPress para ir ao caixa"
+
+#: settings-page.php:471
+msgid "Account required on product-by-product basis"
+msgstr "Obrigatoriedade da conta dependente do produto"
+
+#: settings-page.php:478
+msgid "Create/Update WordPress User After Checkout"
+msgstr "Criar/Atualizar Usuário do WordPress após o Checkout"
+
+#: settings-page.php:479
+msgid ""
+"The datafeed must be enabled at FoxyCart for this feature to work properly."
+msgstr ""
+"O datafeed precisa estar habilitado no FoxyCart para que esta funcionalidade "
+"opere normalmente."
+
+#: settings-page.php:488
+msgid "Manage Inventory Levels"
+msgstr "Gerenciar Níveis de Estoque"
+
+#: settings-page.php:491
+msgid "Default Inventory Alert Level"
+msgstr "Nível de Alerta de Inventário Padrão"
+
+#: settings-page.php:492
+msgid "Send Email to Admin When Alert Level Reached"
+msgstr "Enviar Email para Administrador Quando Nível de Alerta For Alcançado"
+
+#: settings-page.php:498
+msgid "Default Weight Type"
+msgstr "Tipo de Peso Padrão"
+
+#: settings-page.php:500
+msgid "English"
+msgstr "English"
+
+#: settings-page.php:502
+msgid "Metric"
+msgstr "Métrico"
+
+#: settings-page.php:507
+msgid "Default Weight"
+msgstr "Peso Padrão"
+
+#: settings-page.php:519
+msgid "Currency Locale Code"
+msgstr "Código de Moeda Local"
+
+#: settings-page.php:520
+msgid ""
+"If you would like to use something other than $ for your currency, enter "
+"your locale code here. For the British Pound, enter \"en_GB\"."
+msgstr ""
+"Se você quer usar algo diferente de $ para sua moeda, insira o código da "
+"moeda aqui. Para a Libra Britânica, insira \"en_GB\", para o real Brasileiro "
+"insira \"pt_BR\"."
+
+#: settings-page.php:522
+msgid ""
+"Attention: you are using Windows which does not support "
+"internationalization. You will be limited to $ (en_US) or &pound; (en_GB)."
+msgstr ""
+"Atenção: você está usando o Windows que não suporta internacionalização. "
+"Você está limitado a $ (en_US) ou &pound; (en_GB)."
+
+#: settings-page.php:528
+msgid "Hide Child %s From Parent Categories (recommended)"
+msgstr "Ocultar Filho %s das Categorias Pais (recomendado)"
+
+#: settings-page.php:529
+msgid ""
+"By default, WordPress treats children a little differently than you would "
+"expect in that products in child categories also show up in parent "
+"categories. FoxyShop removes these products, but if you would like to have "
+"all %s from sub-categories show up in parent categories, uncheck this box."
+msgstr ""
+"Por padrão o WordPress trata os filhos de forma um pouco diferente do que "
+"você esperaria. Producos em categorias filhas são mostrados também nas "
+"categorias pai. O FoxyShop remove esses produtos, mas se você quer que todos "
+"%s de sub-categorias sejam exibidos nas categorias pai, desmarque esta "
+"caixa. "
+
+#: settings-page.php:534
+msgid "Google Analytics Code"
+msgstr "Código do Google Analytics"
+
+#: settings-page.php:535
+msgid ""
+"Enter your UA code here and Google Analytics tracking will be installed in "
+"the footer. Tracking will only be initiated if the visitor is not a logged-"
+"in WordPress user so that admin usage won't be tracked."
+msgstr ""
+"Insira o seu código UA aqui e o rastreamento do Google Analytics será "
+"instalado no rodapé. O rastreamento só vai começar se um visitante não "
+"estiver logado no WordPress de modo que o usuário administrador não é "
+"rastreado."
+
+#: settings-page.php:538
+msgid "Advanced Google Analytics Code"
+msgstr "Código Avançado do Google Analytics"
+
+#: settings-page.php:539
+msgid ""
+"Check this box if you are using the advanced FoxyCart Google Analytics Sync. "
+"We will put the appropriate code in your footer (but you'll still have to "
+"setup Google Analytics and your template)."
+msgstr ""
+"Marque esta caixa se você estiver usando a Sincronização Avançada do Google "
+"Analytics FoxyCart. Colocaremos o código apropriado no seu rodapé (mas você "
+"ainda tem que configurar o Google Analytics e o seu template)."
+
+#: settings-page.php:547
+msgid "Enable Google Product Feed Connection"
+msgstr "Habilitar Conexão com Feed de Produtos Google"
+
+#: settings-page.php:548
+msgid ""
+"If checked, you will be able to create a feed suitable for submitting to "
+"Google Product Search."
+msgstr ""
+"Se marcado, você será capaz de criar um feed para enviar produtos para a "
+"Busca de Produtos do Google."
+
+#: settings-page.php:550
+msgid "Google Merchant Account ID"
+msgstr "ID da Conta Google Merchant"
+
+#: settings-page.php:552
+msgid ""
+"Enter your Google Merchant Account ID found in the Google Merchant Center."
+msgstr ""
+"Insira o seu ID da conta Google Merchant encontrada no Centro Google Merchant"
+
+#: settings-page.php:559
+msgid "Use FoxyTools Order Desk"
+msgstr "Usar Mesa de Pedido FoxyTools"
+
+#: settings-page.php:560
+msgid "more info"
+msgstr "mais informações"
+
+#: settings-page.php:562
+msgid "Your Order Desk Datafeed URL"
+msgstr "Sua URL do Datafeed da Mesa de Pedidos"
+
+#: settings-page.php:570
+msgid "Show FoxyShop Stats on Dashboard"
+msgstr "Mostrar Estatísticas do FoxyShop no Painel"
+
+#: settings-page.php:576
+msgid "Generate %s Sitemap"
+msgstr "Gerar Sitemap %s"
+
+#: settings-page.php:577
+msgid ""
+"If checked, a sitemap file with all of your %s will be created in your root "
+"folder."
+msgstr ""
+"Se marcado, um arquivo de sitemap com todos os seus %s será criado na sua "
+"pasta raiz."
+
+#: settings-page.php:583
+msgid "Show Add to Cart Link on the Product Entry Page."
+msgstr "Mostrar Link de Adicionar ao Carrinho na Página de Entrada do Produto."
+
+#: settings-page.php:590
+msgid "Enable FoxyCart Downloadables Sync"
+msgstr "Habilitar Sincronização de Baixáveis FoxyCart."
+
+#: settings-page.php:591
+msgid ""
+"If checked, you will be able to select from a list of the downloadables "
+"loaded at FoxyCart to help set up your new downloadable %s."
+msgstr ""
+"Se marcado, você poderá selecionar de uma lista de baixáveis carregada da "
+"FoxyCart para ajudar a configurar seus %s baixáveis."
+
+#: setup-page.php:19 setup-page.php:50
+msgid "FoxyShop Setup Wizard"
+msgstr "Assistente de Configuração FoxyShop"
+
+#: setup-page.php:63
+msgid "Create New FoxyCart Account"
+msgstr "Criar nova conta FoxyCart"
+
+#: setup-page.php:67
+msgid "Login To FoxyCart Account"
+msgstr "Autentique-se na sua conta FoxyCart"
+
+#: setup-page.php:79
+msgid "Step 1: Click on Store / Settings"
+msgstr "Passo 1: Clique em Loja / Configurações"
+
+#: setup-page.php:96
+msgid "Enter Your FoxyCart Domain"
+msgstr "Insira seu Domínio FoxyCart"
+
+#: setup-page.php:123
+msgid "Step 2: Click on Store / Advanced"
+msgstr "Passo 2: Clique em Loja / Avançado"
+
+#: setup-page.php:153
+msgid "Save and Get Started!"
+msgstr "Salvar e Começar!"
+
+#: sso.php:95
+msgid "Please login before checking out."
+msgstr "Por favor, autentique-se antes de ir ao Caixa."
+
+#: sso.php:95
+msgid "Click here to register."
+msgstr "Clique aqui para registrar."
+
+#: sso.php:113
+msgid "FoxyCart User Data"
+msgstr "Dados do usuário FoxyCart"
+
+#: sso.php:116
+msgid "FoxyCart Customer ID"
+msgstr "ID de Cliente FoxyCart"
+
+#: sso.php:117
+msgid "Editing is not recommended"
+msgstr "Edição não é Recomendada"
+
+#: sso.php:134
+msgid "FoxyCart Subscriptions"
+msgstr "Assinaturas FoxyCart"
+
+#: sso.php:140 subscriptions.php:92 subscriptions.php:295
+msgid "Active"
+msgstr "Ativo"
+
+#: sso.php:141
+msgid "Actions"
+msgstr "Ações"
+
+#: sso.php:152
+msgid "Yes"
+msgstr "Sim"
+
+#: sso.php:153
+msgid "Update Info"
+msgstr "Informações de Atualização"
+
+#: sso.php:153 subscriptions.php:337
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: subscriptions.php:8
+msgid "Subscription Management"
+msgstr "Gerenciar Assinaturas"
+
+#: subscriptions.php:78
+msgid "Manage Subscriptions"
+msgstr "Gerenciar Assinaturas"
+
+#: subscriptions.php:89
+msgid "Subscription Type"
+msgstr "Tipo de Inscrição"
+
+#: subscriptions.php:92
+msgid "Disabled"
+msgstr "Desabilitados"
+
+#: subscriptions.php:99
+msgid "Past Due Status"
+msgstr "Status de Atraso"
+
+#: subscriptions.php:102
+msgid "Show Past Due Only"
+msgstr "Mostr"
+
+#: subscriptions.php:109 subscriptions.php:217 subscriptions.php:228
+#: subscriptions.php:312
+msgid "Frequency"
+msgstr "Frequência"
+
+#: subscriptions.php:112
+msgid "Third Party ID"
+msgstr "ID de Terceiro"
+
+#: subscriptions.php:116
+msgid "Last Transaction ID"
+msgstr "ID da Última Transação"
+
+#: subscriptions.php:145 subscriptions.php:304
+msgid "Next Transaction Date"
+msgstr "Próxima Data de Transação"
+
+#: subscriptions.php:213 subscriptions.php:224
+msgid "Next Date"
+msgstr "Próxima Data"
+
+#: subscriptions.php:215 subscriptions.php:226
+msgid "Past Due"
+msgstr "Atrasado"
+
+#: subscriptions.php:293
+msgid "Subscription Status"
+msgstr "Situação da assinatura"
+
+#: subscriptions.php:297
+msgid "In-active"
+msgstr "Em atividade"
+
+#: subscriptions.php:316
+msgid "Past Due Amount"
+msgstr "Valor Em Atraso"
+
+#: subscriptions.php:320
+msgid "Update URL"
+msgstr "Atualizar URL"
+
+#: subscriptions.php:324
+msgid "Cancellation URL"
+msgstr "URL de cancelamento"
+
+#: subscriptions.php:328
+msgid "Transaction Template"
+msgstr "Transação Completa"
+
+#: subscriptions.php:330
+msgid "Select Option Below"
+msgstr "Selecionar Opção Abaixo"
+
+#: themefiles/foxyshop-custom-upload.php:40
+msgid "Invalid File Type"
+msgstr "Tipo de Arquivo Inválido"
+
+#: themefiles/foxyshop-custom-upload.php:54
+msgid "File Uploaded Successfuly."
+msgstr "Transferência Concluída com Sucesso."
+
+#: themefiles/foxyshop-custom-upload.php:54
+msgid "Click here to view."
+msgstr "Clique aqui para ver."
+
+#: tools-page.php:164
+msgid "Tools"
+msgstr "Ferramentas"
+
+#: tools-page.php:191
+msgid "Your Settings Have Been Imported"
+msgstr "Suas configurações foram importadas"
+
+#: tools-page.php:194
+msgid ""
+"There was an error with your import settings and they could not be imported. "
+"The decrypted value was invalid."
+msgstr ""
+"Existe um erro nas suas configurações de importação e elas não puderam ser "
+"importadas. O valor decifrado era inválido."
+
+#: tools-page.php:197
+msgid ""
+"Your API Key Has Been Reset: \"%s\". Please Update FoxyCart With Your New "
+"Key."
+msgstr ""
+"Sua chave de API foi reiniciada: \"%s\". Por favor, atualize o FoxyCart com "
+"sua nova chave."
+
+#: tools-page.php:200
+msgid "Scan for old variations has been successfully completed."
+msgstr "A busca por variações antigas foi completada com sucesso."
+
+#: tools-page.php:203
+msgid "WordPress rewrite rules have been flushed."
+msgstr "As regras de reescrita do WordPress foram limpas."
+
+#: tools-page.php:206
+msgid "Saved variations have been successfully updated."
+msgstr "Variações salvas foram atualizadas com sucesso."
+
+#: tools-page.php:213
+msgid "Your saved URLs have been cleared."
+msgstr "Suas URLs salvas foram limpas."
+
+#: tools-page.php:215
+msgid "The %s template has been successfully updated."
+msgstr "O template %s foi atualizado com sucesso."
+
+#: tools-page.php:243
+msgid "Recommended Companion Plugins"
+msgstr "Plugins Recomendados"
+
+#: tools-page.php:319
+msgid "Import/Export FoxyShop Settings"
+msgstr "Configurações de Importação/Exportação do FoxyShop"
+
+#: tools-page.php:326
+msgid "Copy String To Your Clipboard to Export FoxyShop Settings"
+msgstr ""
+"Copiar String para sua área de transferência para Exportar Configurações do "
+"FoxyShop"
+
+#: tools-page.php:333
+msgid "Paste Settings String to Import"
+msgstr "Colar String de Configurações para Importar"
+
+#: tools-page.php:337
+msgid "Import Settings"
+msgstr "Configurações de Importação"
+
+#: tools-page.php:358
+msgid "Misc Tools"
+msgstr "Ferramentas "
+
+#: tools-page.php:371
+msgid "Update Cart Cache"
+msgstr "Atualizar Cache de Carrinho"
+
+#: tools-page.php:377
+msgid "Update Checkout Cache"
+msgstr "Atualizar Cache de Caixa"
+
+#: tools-page.php:383
+msgid "Update Receipt Cache"
+msgstr "Atualizar Cache de Recibos"
+
+#: tools-page.php:397
+msgid "Flush Rewrite Rules"
+msgstr "Limpar Regras de Reescrita"
+
+#: tools-page.php:402
+msgid "Scan For Old Variations"
+msgstr "Procurar Variações Antigas"
+
+#: tools-page.php:407
+msgid "Reset API Key"
+msgstr "Reiniciar Chave de API"
+
+#: tools-page.php:479 tools-page.php:752
+msgid "Reference Name"
+msgstr "Nome de Referência"
+
+#: tools-page.php:481
+msgid "Displayed in Dropdown Menu"
+msgstr "Exibido no Menu suspenso"
+
+#: tools-page.php:534 tools-page.php:832
+msgid "default is"
+msgstr "padrão é"
+
+#: tools-page.php:603
+msgid "Save These Variations"
+msgstr "Salvar estas Variações"
+
+#: tools-page.php:616
+msgid "Uninstall FoxyShop"
+msgstr "Desinstalar FoxyShop"
+
+#: uploadprocessor.php:19
+msgid "unsupported file type"
+msgstr "tipo de arquivo não suportado"
+
+#: uploadprocessor.php:107
+msgid "invalid request"
+msgstr "requisição inválida"
+
+#: widgetcode.php:18
+msgid "Show the contents of a FoxyShop %s category."
+msgstr "Mostrar os conteúdos de uma categoria de %s FoxyShop."
+
+#: widgetcode.php:20
+msgid "FoxyShop Category"
+msgstr "Categoria FoxyShop"
+
+#: widgetcode.php:106
+msgid "Max %s to Show"
+msgstr "Máximo de %s a mostrar"
+
+#: widgetcode.php:107
+msgid "optional"
+msgstr "opcional"
+
+#: widgetcode.php:113
+msgid "Show Simple View"
+msgstr "Mostrar Visualização Simples"
+
+#: widgetcode.php:119
+msgid "Show Add To Cart Button"
+msgstr "Mostrar botão de Adicionar ao Carrinho"
+
+#: widgetcode.php:123
+msgid "Show More Details Button"
+msgstr "Mostrar botão de Mais Detalhes"
+
+#: widgetcode.php:138
+msgid "Show a link to view shopping cart."
+msgstr "Mostrar um link para ver o carrinho de compras."
+
+#: widgetcode.php:140
+msgid "FoxyShop Cart Link"
+msgstr "Link do Carrinho FoxyShop"
+
+#: widgetcode.php:180
+msgid "Your Shopping Cart"
+msgstr "Seu Carrinho de Compras"
+
+#: widgetcode.php:181
+msgid "View Cart"
+msgstr "Ver Carrinho"
+
+#: widgetcode.php:194
+msgid "Link Text:"
+msgstr "Texto do link:"
+
+#: widgetcode.php:196
+msgid "Example"
+msgstr "Exemplo"
+
+#: widgetcode.php:201
+msgid "Hide Link if Cart is Empty"
+msgstr "Ocultar link se o Carrinho estiver vazio"
+
+#: widgetcode.php:212
+msgid "Show the FoxyShop category list."
+msgstr "Mostrar a lista de categorias FoxyShop."
+
+#: widgetcode.php:214
+msgid "FoxyShop Category List"
+msgstr "Lista de Categorias FoxyShop"
+
+#: widgetcode.php:283
+msgid "Depth"
+msgstr "Profundidade"
+
+#: widgetcode.php:284
+msgid "(default: 1)"
+msgstr "(padrão: 1)"
+
+#: widgetcode.php:303
+msgid "FoxyShop Statistics"
+msgstr "Estatísticas FoxyShop"
+
+#: widgetcode.php:319
+msgid "Order History"
+msgstr "Histórico de Pedidos"
+
+#: widgetcode.php:321
+msgid "Loading"
+msgstr "Carregando"
+
+#: widgetcode.php:327
+msgid "Summary"
+msgstr "Resumo"
+
+#: widgetcode.php:383
+msgid "One Day"
+msgstr "Um Dia"
+
+#: widgetcode.php:383 widgetcode.php:384 widgetcode.php:385
+msgid "order"
+msgid_plural "orders"
+msgstr[0] "ordem"
+msgstr[1] "Ordens"
+
+#: widgetcode.php:384
+msgid "Seven Days"
+msgstr "Sete Dias"
+
+#: widgetcode.php:385
+msgid "30 Days"
+msgstr "30 Dias"
+
+#. Plugin Name of the plugin/theme
+msgid "FoxyShop"
+msgstr "FoxyShop"
+
+#. Plugin URI of the plugin/theme
+#. Author URI of the plugin/theme
+msgid "http://www.foxy-shop.com/"
+msgstr "http://www.foxy-shop.com/"
+
+#. Description of the plugin/theme
+msgid ""
+"FoxyShop is a full integration for FoxyCart and WordPress, providing a "
+"robust shopping cart and inventory management tool."
+msgstr ""
+"FoxyShop é uma integração completa para FoxyCart e WordPress, fornecendo uma "
+"ferramenta robusta de carrinho de compras e gerenciamento de inventário."
+
+#. Author of the plugin/theme
+msgid "SparkWeb Interactive, Inc."
+msgstr "SparkWeb Interactive, Inc."
