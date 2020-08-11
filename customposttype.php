@@ -594,6 +594,7 @@ function foxyshop_product_pricing_setup() {
 			<?php
 			foreach ($discount_types as $key => $val) {
 				echo '<option value="' . $key . '"';
+				$current_discount_type = get_post_meta($post->ID, '_discount_type', 1);
 				if ($current_discount_type == $key) echo ' selected="selected"';
 				echo ">$val</option>\n";
 			}
