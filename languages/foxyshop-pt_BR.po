@@ -8,7 +8,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2020-08-11 19:48-0300\n"
+"PO-Revision-Date: 2020-08-11 20:18-0300\n"
 "Language-Team: \n"
 "X-Generator: Poedit 2.2.1\n"
 "Last-Translator: \n"
@@ -963,7 +963,7 @@ msgstr "Gerenciamento de Pedido"
 
 #: orders.php:153
 msgid "Launch Order Desk"
-msgstr "Lançar Mesa de Pedido"
+msgstr "Lançar Order Desk"
 
 #: orders.php:161
 msgid "Manage Orders"
@@ -1535,7 +1535,7 @@ msgstr ""
 
 #: settings-page.php:559
 msgid "Use FoxyTools Order Desk"
-msgstr "Usar Mesa de Pedido FoxyTools"
+msgstr "Usar Order Desk FoxyTools"
 
 #: settings-page.php:560
 msgid "more info"
@@ -1543,7 +1543,7 @@ msgstr "mais informações"
 
 #: settings-page.php:562
 msgid "Your Order Desk Datafeed URL"
-msgstr "Sua URL do Datafeed da Mesa de Pedidos"
+msgstr "Sua URL do Datafeed da Order Desk"
 
 #: settings-page.php:570
 msgid "Show FoxyShop Stats on Dashboard"
