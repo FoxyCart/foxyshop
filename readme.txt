@@ -3,7 +3,7 @@ Contributors: foxycart
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2AHG2QMABF8SG
 Tags: foxycart, shopping, cart, inventory, management, ecommerce, selling, subscription, foxy
 Requires at least: 3.1
-Tested up to: 5.0
+Tested up to: 5.5
 Stable tag: 4.7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -67,6 +67,12 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 
 == Changelog ==
+
+= 4.7.5 =
+
+* Fixing style issue with quantity field
+* Fixing error retrieving current custom type
+* Add Brazilian Portuguese translation
 
 = 4.7.4 =
 * Fixing small jQuery error with validation javascript
@@ -241,5 +247,6 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 == Upgrade Notice ==
 
-= 4.7.4 =
-A number of small improvements and bugfixes for issues that have been reported recently.
+= 4.7.5 =
+Fixing minor issues. 
+Adding Brazilian Portuguese
