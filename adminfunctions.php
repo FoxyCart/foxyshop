@@ -978,7 +978,7 @@ function foxyshop_manage_attributes_jquery($att_type) {
 	});
 
 	//Cancel New Form
-	$(".foxyshop_cancel_new_attribute").live("click", function(e) {
+	$(".foxyshop_attribute_list").on("click", ".foxyshop_cancel_new_attribute", function(e) {
 		var id = $(this).attr("rel");
 		$("#new_attribute_container_" + id).remove();
 		$(".foxyshop_add_attribute[rel='" + id + "']").show();
@@ -987,7 +987,7 @@ function foxyshop_manage_attributes_jquery($att_type) {
 	});
 
 	//Cancel Edit Form
-	$(".foxyshop_cancel_save_attribute").live("click", function(e) {
+	$(".foxyshop_attribute_list").on("click", ".foxyshop_cancel_save_attribute", function(e) {
 		var id = $(this).attr("rel");
 		var original_text = $(this).attr("original_text").replace("\n", "<br />\n");
 		var parent_tr = $(this).parents(".foxyshop_attribute_list tr");
@@ -998,7 +998,7 @@ function foxyshop_manage_attributes_jquery($att_type) {
 	});
 
 	//Add New
-	$(".foxyshop_add_new_attribute").live("click", function(e) {
+	$(".foxyshop_attribute_list").on("click", ".foxyshop_add_new_attribute", function(e) {
 		var id = $(this).attr("rel");
 		var att_name = $(".new_attribute_name[rel='" + id + "']").val();
 		var att_value = $(".new_attribute_value[rel='" + id + "']").val();
@@ -1018,7 +1018,7 @@ function foxyshop_manage_attributes_jquery($att_type) {
 	});
 
 	//Save Attribute
-	$(".foxyshop_save_attribute").live("click", function(e) {
+	$(".foxyshop_attribute_list").on("click", ".foxyshop_save_attribute", function(e) {
 		var id = $(this).attr("rel");
 		var parent_tr = $(this).parents(".foxyshop_attribute_list tr");
 		var att_name = parent_tr.children(".col1").text();
@@ -1037,7 +1037,7 @@ function foxyshop_manage_attributes_jquery($att_type) {
 	});
 
 	//Start Editing
-	$(".foxyshop_attribute_edit").live("click", function(e) {
+	$(".foxyshop_attribute_list").on("click", ".foxyshop_attribute_edit", function(e) {
 		var id = $(this).attr("rel");
 		var parent_tr = $(this).parents(".foxyshop_attribute_list tr");
 		var att_value = parent_tr.find(".col2 div").text();
@@ -1050,7 +1050,7 @@ function foxyshop_manage_attributes_jquery($att_type) {
 	});
 
 	//Delete
-	$(".foxyshop_attribute_delete").live("click", function(e) {
+	$(".foxyshop_attribute_list").on("click", ".foxyshop_attribute_delete", function(e) {
 		var id = $(this).attr("rel");
 		var att_name = $(this).attr("attname");
 		var parent_tr = $(this).parents(".foxyshop_attribute_list tr");

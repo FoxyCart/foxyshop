@@ -298,7 +298,7 @@ function foxyshop_order_management() {
 
 		<script type="text/javascript">
 		jQuery(document).ready(function($) {
-			$("#foxyshop_searchform button").live("click", function() {
+			$("#foxyshop_searchform").on("click", "button", function() {
 				if ($("#transaction_search_type option:selected").attr("target") == "_blank") {
 					$("#foxyshop_searchform").attr("target","_blank");
 				} else {
