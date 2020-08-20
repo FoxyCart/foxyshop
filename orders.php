@@ -363,7 +363,11 @@ function foxyshop_order_management() {
 		<?php
 		$holder = "";
 		$hide_transaction_filter = isset($_REQUEST['hide_transaction_filter']) ? $_REQUEST['hide_transaction_filter'] : 0;
-		foreach($xml->transactions->transaction as $transaction) {
+		$transactions = $xml->transactions->transaction ? $xml->transactions->transaction : [];
+		if (!count($transactions)) {
+		  echo '<tr><td colspan="5">'.__('No transaction found.').'</td></tr>';
+		}
+		foreach($transactions as $transaction) {
 			$transaction_id = (string)$transaction->id;
 			$customer_first_name = (string)$transaction->customer_first_name;
 			$customer_last_name = (string)$transaction->customer_last_name;
