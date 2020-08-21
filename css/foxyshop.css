@@ -227,11 +227,7 @@ http://www.foxy-shop.com/documentation/theme-customization/
 	margin-bottom: 7px;
 }
 input[type="text"].foxyshop_quantity {
-	width: 30px;
-}
-input[id^=quantity][name$=\|\|open] {
-	padding: 0.5em;
-	display: inline;
+	width: calc( 5ch + 1.5rem * 2 );
 }
 .foxyshop_oldprice {
 	text-decoration: line-through;
