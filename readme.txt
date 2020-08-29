@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: foxycart, shopping, cart, inventory, management, ecommerce, selling, subscription, foxy
 Requires at least: 3.1
 Tested up to: 5.5
-Stable tag: 4.7.4
+Stable tag: 4.7.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 FoxyShop provides a robust shopping cart and inventory management tool for use with FoxyCart's hosted e-commerce solution.
@@ -73,6 +73,7 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 * Fixing style issue with quantity field
 * Fixing error retrieving current custom type
 * Add Brazilian Portuguese translation
+* Update for PHP deprecated live function 
 
 = 4.7.4 =
 * Fixing small jQuery error with validation javascript
