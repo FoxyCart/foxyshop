@@ -3,8 +3,8 @@ Contributors: foxycart
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2AHG2QMABF8SG
 Tags: foxycart, shopping, cart, inventory, management, ecommerce, selling, subscription, foxy
 Requires at least: 3.1
-Tested up to: 5.5
-Stable tag: 4.7.5
+Tested up to: 5.6.2
+Stable tag: 4.7.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 FoxyShop provides a robust shopping cart and inventory management tool for use with FoxyCart's hosted e-commerce solution.
@@ -67,6 +67,14 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 
 == Changelog ==
+
+= 4.7.6 =
+
+* Switching some ID's to classes to remove potential for duplicate ID's if using shortcodes
+* Updating some styles to improve contrast
+* Adding unique ID to select quantity dropdown, as it is for the quantity input
+* Adding radiogroup role and aria-labelledby to radio group variations
+* Fixes a bug with update_inventory_alert_language() that wasn't correctly updating the name, it now passes the name in as an additional argument
 
 = 4.7.5 =
 
@@ -247,6 +255,11 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 
 == Upgrade Notice ==
+
+= 4.7.6 =
+Testing for compatibility with WP 5.6.2 
+Adding a11y improvements
+Fixing minor issues
 
 = 4.7.5 =
 Fixing minor issues. 
