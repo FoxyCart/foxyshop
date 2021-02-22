@@ -53,7 +53,7 @@ body {
 
 <?php get_header(); ?>
 <?php foxyshop_include('header'); ?>
-<div id="foxyshop_container">
+<div class="foxyshop_container">
 
 
 

@@ -8,7 +8,7 @@ This will allow you to upgrade FoxyShop without breaking your customizations. Mo
 <?php get_header(); ?>
 
 <?php foxyshop_include('header'); ?>
-<div id="foxyshop_container">
+<div class="foxyshop_container">
 	<?php
 	global $product;
 

@@ -8,7 +8,7 @@ This will allow you to upgrade FoxyShop without breaking your customizations. Mo
 <?php get_header(); ?>
 
 <?php foxyshop_include('header'); ?>
-<div id="foxyshop_container">
+<div class="foxyshop_container">
 <?php
 while (have_posts()) : the_post();
 
@@ -65,10 +65,10 @@ while (have_posts()) : the_post();
 	foxyshop_addon_products();
 
 	//Add To Cart Button
-	echo '<button type="submit" name="x:productsubmit" id="productsubmit" class="foxyshop_button">Add To Cart</button>';
+	echo '<button type="submit" name="x:productsubmit" class="productsubmit foxyshop_button">Add To Cart</button>';
 
 	//Shows the Price (includes sale price if applicable)
-	echo '<div id="foxyshop_main_price">';
+	echo '<div class="foxyshop_main_price">';
 	foxyshop_price();
 	echo '</div>';
 

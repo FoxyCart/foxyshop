@@ -60,7 +60,7 @@ get_header(); ?>
 {% include 'svg.inc.twig' %}
 
 <?php foxyshop_include('header'); ?>
-<div id="foxyshop_container">
+<div class="foxyshop_container">
 
 
 {% import "utils.inc.twig" as utils %}

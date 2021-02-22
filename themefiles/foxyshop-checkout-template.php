@@ -50,7 +50,7 @@ body {
 
 get_header(); ?>
 <?php foxyshop_include('header'); ?>
-<div id="foxyshop_container">
+<div class="foxyshop_container">
 
 
 <?php if (version_compare($foxyshop_settings['version'], '1.1', "<=")) { ?>

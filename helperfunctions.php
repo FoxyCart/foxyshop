@@ -381,7 +381,6 @@ function foxyshop_product_variations($showQuantity = 0, $showPriceVariations = t
 			$variationName = substr($variationName, strpos($variationName,"{")+1, strpos($variationName,"}") - (strpos($variationName,"{")+1));
 		}
 
-
 		$className = "variation-" . sanitize_title_with_dashes($variationName);
 		$writeBeforeVariation = $beforeVariation ? str_replace("%c", $className, $beforeVariation) . "\n" : "";
 		$writeAfterVariation = $afterVariation ? $afterVariation . "\n" : "";
@@ -439,8 +438,8 @@ function foxyshop_product_variations($showQuantity = 0, $showPriceVariations = t
 			//Radio Buttons
 			} elseif ($variationType == "radio") {
 				$write .= $writeBeforeVariation;
-				$write .= '<div class="foxyshop_radio_wrapper">';
-				$write .= '<div class="foxyshop_radio_title' . $dkeyclass . '"'. $dkey . '>' . str_replace("_", " ", $variationDisplayName) . '</div>';
+				$write .= '<div role="radiogroup" aria-labelledby="' . esc_attr($product['code']) . '_' . $i . '" class="foxyshop_radio_wrapper">';
+				$write .= '<div id="' . esc_attr($product['code']) . '_' . $i . '" class="foxyshop_radio_title' . $dkeyclass . '"'. $dkey . '>' . str_replace("_", " ", $variationDisplayName) . '</div>';
 				$write .= foxyshop_run_variations($variationValue, $variationName, $showPriceVariations, $variationType, $dkey, $dkeyclass, $i, $className);
 				$write .= '</div>';
 				$write .= $writeAfterVariation;
@@ -640,9 +639,9 @@ function foxyshop_quantity($qty = 1, $beforeVariation = "", $afterVariation = '<
 	$write .= '<label class="foxyshop_quantity" for="quantity_' . $product['id'] . '">' . $quantity_title . '</label>'."\n";
 	if ($product['quantity_max_original'] > 0) {
 		if ($numberPrefix) {
-			$write .= '<select class="foxyshop_quantity foxyshop_addon_fields" originalname="quantity"  name="x:quantity" rel="' . $numberPrefix . '">';
+			$write .= '<select class="foxyshop_quantity foxyshop_addon_fields" originalname="quantity" name="x:quantity" rel="' . $numberPrefix . '" id="quantity_' . $product['id'] . '">';
 		} else {
-			$write .= '<select class="foxyshop_quantity" name="quantity">';
+			$write .= '<select class="foxyshop_quantity" name="quantity" id="quantity_' . $product['id'] . '">';
 		}
 		for ($i=($product['quantity_min'] > 0 ? $product['quantity_min'] : 1); $i <= $product['quantity_max_original']; $i++) {
 			$write .= '<option value="' . $i . foxyshop_get_verification('quantity',$i) . '">' . $i . '</option>'."\n";
@@ -843,7 +842,7 @@ function foxyshop_build_image_slideshow($slideshow_type = "prettyPhoto", $use_in
 		echo '<div class="foxyshop_product_image_holder">'."\n";
 
 		if ($use_link) echo '<a href="' . foxyshop_get_main_image('large') . '" rel="foxyshop_gallery' . ($imagecount > 1 ? '[' . $product['id'] . ']' : '') . '"  title="' . esc_attr(apply_filters('foxyshop_image_link_title', '')) . '">';
-		echo '<img src="' . foxyshop_get_main_image('medium') . '" id="foxyshop_main_product_image" alt="' . esc_attr(foxyshop_get_main_image('title')) . '" title="" />';
+		echo '<img src="' . foxyshop_get_main_image('medium') . '" class="foxyshop_main_product_image" alt="' . esc_attr(foxyshop_get_main_image('title')) . '" title="" />';
 		if ($use_link) echo "</a>\n";
 
 		echo "</div>\n";
@@ -898,7 +897,7 @@ function foxyshop_build_image_slideshow($slideshow_type = "prettyPhoto", $use_in
 		echo '<div class="foxyshop_product_image_holder magnific-gallery">'."\n";
 
 		if ($use_link) echo '<a href="' . foxyshop_get_main_image('large') . '" rel="foxyshop_gallery' . ($imagecount > 1 ? '[' . $product['id'] . ']' : '') . '"  title="' . esc_attr(foxyshop_get_main_image('title')) . '">';
-		echo '<img src="' . foxyshop_get_main_image('medium') . '" id="foxyshop_main_product_image" alt="' . esc_attr(foxyshop_get_main_image('title')) . '" title="" />';
+		echo '<img src="' . foxyshop_get_main_image('medium') . '" class="foxyshop_main_product_image" alt="' . esc_attr(foxyshop_get_main_image('title')) . '" title="" />';
 		if ($use_link) echo "</a>\n";
 
 		echo "</div>\n";
@@ -930,7 +929,7 @@ function foxyshop_build_image_slideshow($slideshow_type = "prettyPhoto", $use_in
 		echo '<div class="foxyshop_product_image_holder">'."\n";
 
 		if ($use_link) echo '<a href="' . foxyshop_get_main_image('large') . '" rel="foxyshop_gallery' . ($imagecount > 1 ? '[' . $product['id'] . ']' : '') . '"  title="' . esc_attr(apply_filters('foxyshop_image_link_title', '')) . '">';
-		echo '<img src="' . foxyshop_get_main_image('medium') . '" id="foxyshop_main_product_image" alt="' . esc_attr(foxyshop_get_main_image('title')) . '" title="" />';
+		echo '<img src="' . foxyshop_get_main_image('medium') . '" class="foxyshop_main_product_image" alt="' . esc_attr(foxyshop_get_main_image('title')) . '" title="" />';
 		if ($use_link) echo "</a>\n";
 
 		echo "</div>\n";
@@ -960,7 +959,7 @@ function foxyshop_build_image_slideshow($slideshow_type = "prettyPhoto", $use_in
 		echo '<div class="foxyshop_product_image_holder">'."\n";
 
 		if ($use_link) echo '<a href="' . foxyshop_get_main_image("full") . '" id="foxyshop_main_product_image_link_' . $product['id'] . '" class="cloud-zoom" rel="adjustX: 10, adjustY:-4"  title="' . esc_attr(apply_filters('foxyshop_image_link_title', '')) . '">';
-		echo '<img src="' . foxyshop_get_main_image("medium") . '" id="foxyshop_main_product_image" alt="' . esc_attr(foxyshop_get_main_image("title")) . '" title="" />';
+		echo '<img src="' . foxyshop_get_main_image("medium") . '" class="foxyshop_main_product_image" alt="' . esc_attr(foxyshop_get_main_image("title")) . '" title="" />';
 		if ($use_link) echo "</a>\n";
 
 		echo "</div>\n";
@@ -1192,7 +1191,7 @@ function foxyshop_breadcrumbs($sep = " &raquo; ", $product_fallback = "&laquo; B
 				$url = get_term_link($terminfo, "foxyshop_categories");
 				$write1 .= '<li class="foxyshop_breadcrumb_' . $terminfo->term_id . '"><a href="' . $url . '">' . str_replace("_","",$terminfo->name) . '</a></li>';
 			} else {
-				$write1 .= '<li class="foxyshop_breadcrumb_' . $terminfo->term_id . ' foxyshop_breadcrumb_current">' . str_replace("_","",$terminfo->name) . '</li>';
+				$write1 .= '<li class="foxyshop_breadcrumb_' . $terminfo->term_id . ' foxyshop_breadcrumb_current" aria-current="page">' . str_replace("_","",$terminfo->name) . '</li>';
 			}
 		}
 		//Put product at end if this is a product page
@@ -1201,11 +1200,11 @@ function foxyshop_breadcrumbs($sep = " &raquo; ", $product_fallback = "&laquo; B
 			$write1 .= '<li>'.$post->post_title.'</li>';
 		}
 
-		if ($write1) echo '<ul id="foxyshop_breadcrumbs">' . $write1 . apply_filters('foxyshop_breadcrumb_nofloat', '<li style="float: none; text-indent: -99999px; width: 1px; margin: 0;">-</li>') . '</ul>';
+		if ($write1) echo '<ul id="foxyshop_breadcrumbs" aria-label="Breadcrumb">' . $write1 . apply_filters('foxyshop_breadcrumb_nofloat', '<li style="float: none; text-indent: -99999px; width: 1px; margin: 0;">-</li>') . '</ul>';
 
 	//Product Fallback
 	} elseif ($post->ID && $product_fallback != "") {
-		echo '<ul id="foxyshop_breadcrumbs"><li><a href="' . get_bloginfo('url') . FOXYSHOP_URL_BASE . '/' . apply_filters('foxyshop_template_redirect_product_slug', FOXYSHOP_PRODUCTS_SLUG) . '/">'. $product_fallback . '</a></li>' . apply_filters('foxyshop_breadcrumb_nofloat', '<li style="float: none; text-indent: -99999px; width: 1px; margin: 0;">-</li>') . '</ul>';
+		echo '<ul id="foxyshop_breadcrumbs" aria-label="Breadcrumb"><li><a href="' . get_bloginfo('url') . FOXYSHOP_URL_BASE . '/' . apply_filters('foxyshop_template_redirect_product_slug', FOXYSHOP_PRODUCTS_SLUG) . '/">'. $product_fallback . '</a></li>' . apply_filters('foxyshop_breadcrumb_nofloat', '<li style="float: none; text-indent: -99999px; width: 1px; margin: 0;">-</li>') . '</ul>';
 	}
 
 }
@@ -1241,7 +1240,7 @@ function foxyshop_inventory_management($alertMessage = "There are %c of these it
 	}
 	if ($stockStatus == -1 && !$allowBackOrder) {
 		echo 'jQuery(document).ready(function($){'."\n";
-		echo '$("#foxyshop_product_form_' . $product['id'] . ' #productsubmit").attr("disabled","disabled").addClass("foxyshop_disabled");'."\n";
+		echo '$("#foxyshop_product_form_' . $product['id'] . ' .productsubmit").attr("disabled","disabled").addClass("foxyshop_disabled");'."\n";
 		echo '});'."\n";
 	}
 	echo '</script>'."\n";

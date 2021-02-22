@@ -8,7 +8,7 @@ This will allow you to upgrade FoxyShop without breaking your customizations. Mo
 <?php get_header(); ?>
 
 <?php foxyshop_include('header'); ?>
-<div id="foxyshop_container">
+<div class="foxyshop_container">
 	<h1 id="foxyshop_category_title">Product Search</h1>
 
 	<form class="searchform" action="<?php bloginfo("url"); ?>/product-search/" method="get">
@@ -28,13 +28,13 @@ This will allow you to upgrade FoxyShop without breaking your customizations. Mo
 	echo '<ul class="foxyshop_product_list">';
 	while (have_posts()) :
 		the_post();
-		
+
 		//Product Display
 		foxyshop_include('product-loop');
 
 	endwhile;
 	echo '</ul>';
-	
+
 	//Pagination
 	foxyshop_get_pagination();
 	?>
