@@ -948,12 +948,12 @@ msgid "Transaction Status"
 msgstr "Transaktionsstatus"
 
 #: orders.php:170
-msgid "Unfilled"
-msgstr "Ungefüllt"
+msgid "Visible"
+msgstr "Sichtbar"
 
 #: orders.php:173
-msgid "Filled"
-msgstr "Gefüllt"
+msgid "Hidden"
+msgstr "Versteckt"
 
 #: orders.php:176 orders.php:189 orders.php:202 subscriptions.php:89
 msgid "Both"
@@ -1086,12 +1086,12 @@ msgid "Receipt"
 msgstr "Quittung"
 
 #: orders.php:390
-msgid "Un-Archive"
-msgstr "Aus dem Archiv entfernen"
+msgid "Unhide Transaction"
+msgstr "Transaktion anzeigen"
 
 #: orders.php:392
-msgid "Archive"
-msgstr "Archivieren"
+msgid "Hide Transaction"
+msgstr "Transaktion ausblenden"
 
 #: orders.php:407
 msgid "Transaction Details"

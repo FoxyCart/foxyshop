@@ -961,11 +961,11 @@ msgid "Transaction Status"
 msgstr ""
 
 #: orders.php:177
-msgid "Unfilled"
+msgid "Visible"
 msgstr ""
 
 #: orders.php:180
-msgid "Filled"
+msgid "Hidden"
 msgstr ""
 
 #: orders.php:183 orders.php:196 orders.php:209 subscriptions.php:92
@@ -1099,11 +1099,11 @@ msgid "Receipt"
 msgstr ""
 
 #: orders.php:397
-msgid "Un-Archive"
+msgid "Unhide Transaction"
 msgstr ""
 
 #: orders.php:399
-msgid "Archive"
+msgid "Hide Transaction"
 msgstr ""
 
 #: orders.php:414
