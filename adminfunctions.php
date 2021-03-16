@@ -864,8 +864,8 @@ function foxyshop_api_paging_nav($type, $position, $xml, $querystring) {
 		echo '<div class="alignleft actions">'."\n";
 		echo '<select name="action-' . $position . '">';
 		echo '<option selected="selected" value="-1">Bulk Actions</option>';
-		echo '<option value="archive">Archive</option>';
-		echo '<option value="unarchive">Unarchive</option>';
+		echo '<option value="archive">Hide</option>';
+		echo '<option value="unarchive">Unhide</option>';
 		echo '</select>'."\n";
 		echo '<input type="submit" value="Apply" class="button-secondary action" id="doaction" name="">'."\n";
 		echo '</div>'."\n";
