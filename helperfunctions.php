@@ -1240,7 +1240,7 @@ function foxyshop_inventory_management($alertMessage = "There are %c of these it
 	}
 	if ($stockStatus == -1 && !$allowBackOrder) {
 		echo 'jQuery(document).ready(function($){'."\n";
-		echo '$("#foxyshop_product_form_' . $product['id'] . ' .productsubmit").attr("disabled","disabled").addClass("foxyshop_disabled");'."\n";
+		echo '$("#foxyshop_product_form_' . $product['id'] . ' .productsubmit", "#foxyshop_product_form_' . $product['id'] . ' #productsubmit").attr("disabled","disabled").addClass("foxyshop_disabled");'."\n";
 		echo '});'."\n";
 	}
 	echo '</script>'."\n";
