@@ -240,7 +240,7 @@ function foxyshop_settings_page() {
 					<label for="foxyshop_key"><?php _e('API Key', 'foxyshop'); ?>:</label>
 					<input type="text" id="foxyshop_key" name="api_key" value="<?php echo esc_attr($foxyshop_settings['api_key']); ?>" readonly="readonly" />
 					<a href="#" class="foxyshophelp">The API key is saved here and stored on your FoxyCart account so that your cart information can be encrypted to avoid link tampering. The API key is also used to communicate with FoxyCart and retrieve your order information.<br /><br />This API key is generated automatically and cannot be edited. Go to the tools page if you need to reset this key.</a>
-					<div style="clear: both; padding: 5px 0; font-style: italic;"><strong style="color: #BB1E1E;">Required Setup:</strong> Enter this API key on the advanced menu of your <a href="http://affiliate.foxycart.com/idevaffiliate.php?id=211&url=http://admin.foxycart.com/" target="_blank">FoxyCart admin</a> and check the box to enable cart validation.</div>
+					<div style="clear: both; padding: 5px 0; font-style: italic;"><strong style="color: #BB1E1E;">Required Setup:</strong> Enter this API key in the <b>store secret</b> field on the advanced menu of your <a href="http://affiliate.foxycart.com/idevaffiliate.php?id=211&url=http://admin.foxycart.com/" target="_blank">FoxyCart admin</a> and check the box to enable cart validation.</div>
 
 					<div style="clear: both;"></div>
 

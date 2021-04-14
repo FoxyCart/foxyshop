@@ -3,8 +3,8 @@ Contributors: foxycart
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2AHG2QMABF8SG
 Tags: foxycart, shopping, cart, inventory, management, ecommerce, selling, subscription, foxy
 Requires at least: 3.1
-Tested up to: 5.6.2
-Stable tag: 4.7.8
+Tested up to: 5.7
+Stable tag: 4.7.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 FoxyShop provides a robust shopping cart and inventory management tool for use with FoxyCart's hosted e-commerce solution.
@@ -67,6 +67,11 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 
 == Changelog ==
+
+= 4.7.9 =
+
+* Modify help text for API key in settings
+* Set backwards compatibility for recent changes
 
 = 4.7.8 =
 
@@ -263,6 +268,11 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 
 == Upgrade Notice ==
+
+= 4.7.9 =
+
+* Modify help text for API key in settings
+* Set backwards compatibility for recent changes
 
 = 4.7.8 =
 
