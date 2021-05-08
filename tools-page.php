@@ -649,7 +649,7 @@ function apiresetcheck() {
 }
 
 jQuery(document).ready(function($){
-	$('.deleteVariation').live("click", function() {
+	$("#product_variations_meta").on("click", ".deleteVariation", function() {
 		variationID = $(this).attr("rel");
 		$("#variation" + variationID).slideUp(function() {
 			$(this).remove();
@@ -684,7 +684,7 @@ jQuery(document).ready(function($){
 	addLoadEvent(foxyshop_variation_order_load_event);
 
 	//Check For Illegal Titles
-	$("input.variation_name").live("blur", function() {
+	$("#product_variations_meta").on("blur", "input.variation_name", function() {
 		var thisval = $(this).val().toLowerCase();
 		if (thisval == "code" || thisval == "codes" || thisval == "price" || thisval == "name" || thisval == "category" || thisval == "weight" || thisval == "shipto") {
 			alert("Sorry! The title '" + thisval + "' cannot be used as a variation name.");
@@ -693,7 +693,7 @@ jQuery(document).ready(function($){
 	});
 
 	//Check For Illegal Titles
-	$("input.variation_name").live("keypress", function(e) {
+	$("#product_variations_meta").on("keypress", "input.variation_name", function(e) {
 		if (e.which !== 0 && (e.charCode == 46 || e.charCode == 34)) {
 			alert("Sorry! You can't use this character in a variation name: " + String.fromCharCode(e.keyCode|e.charCode));
 			return false;
@@ -701,7 +701,7 @@ jQuery(document).ready(function($){
 	});
 
 	//On Change Listener
-	$(".variationtype").live("change", function() {
+	$("#product_variations_meta").on("click", ".variationtype", function() {
 		new_type = $(this).val();
 		this_id = $(this).parents(".product_variation").attr("rel");
 

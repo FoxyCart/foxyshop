@@ -8,7 +8,7 @@ This will allow you to upgrade FoxyShop without breaking your customizations. Mo
 global $product, $foxyshop_category_slug, $post;
 ?>
 <?php foxyshop_include('header'); ?>
-<div id="foxyshop_container">
+<div class="foxyshop_container">
 	<?php
 	//-------------------------------------------------------------------------------------------------
 	// Remember that the products on these category pages link to the generated page links (permalinks)

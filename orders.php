@@ -42,6 +42,7 @@ function foxyshop_print_invoice() {
 		"hide_transaction_filter" => "0",
 		"data_is_fed_filter" => "",
 		"id_filter" => "",
+		"display_id_filter" => "",
 		"order_total_filter" => "",
 		"coupon_code_filter" => "",
 		"transaction_date_filter_begin" => date("Y-m-d", strtotime("-10 days")),
@@ -56,12 +57,13 @@ function foxyshop_print_invoice() {
 		"product_code_filter" => "",
 		"product_name_filter" => "",
 		"product_option_name_filter" => "",
-		"product_option_value_filter" => ""
+		"product_option_value_filter" => "",
+		"status_filter" => "all"
 	);
 	$foxy_data = wp_parse_args(array("api_action" => "transaction_list"), $foxy_data_defaults);
 
 	if (isset($_GET['foxyshop_search'])) {
-		$fields = array("is_test_filter", "hide_transaction_filter", "data_is_fed_filter", "id_filter", "order_total_filter", "coupon_code_filter", "transaction_date_filter_begin", "transaction_date_filter_end", "customer_id_filter", "customer_email_filter", "customer_first_name_filter", "customer_last_name_filter","customer_state_filter", "shipping_state_filter", "customer_ip_filter", "product_code_filter", "product_name_filter", "product_option_name_filter", "product_option_value_filter");
+		$fields = array("is_test_filter", "hide_transaction_filter", "data_is_fed_filter", "id_filter", "display_id_filter", "order_total_filter", "coupon_code_filter", "transaction_date_filter_begin", "transaction_date_filter_end", "customer_id_filter", "customer_email_filter", "customer_first_name_filter", "customer_last_name_filter","customer_state_filter", "shipping_state_filter", "customer_ip_filter", "product_code_filter", "product_name_filter", "product_option_name_filter", "product_option_value_filter");
 		foreach ($fields as $field) {
 			if (isset($_GET[$field])) {
 				$foxy_data[$field] = $_GET[$field];
@@ -103,6 +105,7 @@ function foxyshop_order_management() {
 		"hide_transaction_filter" => "0",
 		"data_is_fed_filter" => "",
 		"id_filter" => "",
+		"display_id_filter" => "",
 		"order_total_filter" => "",
 		"coupon_code_filter" => "",
 		"transaction_date_filter_begin" => date("Y-m-d", strtotime("-10 days")),
@@ -117,7 +120,8 @@ function foxyshop_order_management() {
 		"product_code_filter" => "",
 		"product_name_filter" => "",
 		"product_option_name_filter" => "",
-		"product_option_value_filter" => ""
+		"product_option_value_filter" => "",
+		"status_filter" => "all"
 	);
 	if (version_compare($foxyshop_settings['version'], '0.7.2', ">=")) {
 		$foxy_data_defaults["custom_field_name_filter"] = "";
@@ -129,7 +133,7 @@ function foxyshop_order_management() {
 
 
 	if (isset($_GET['foxyshop_search']) || !defined('FOXYSHOP_AUTO_API_DISABLED')) {
-		$fields = array("is_test_filter", "hide_transaction_filter", "data_is_fed_filter", "id_filter", "order_total_filter", "coupon_code_filter", "transaction_date_filter_begin", "transaction_date_filter_end", "customer_id_filter", "customer_email_filter", "customer_first_name_filter", "customer_last_name_filter","customer_state_filter", "shipping_state_filter", "customer_ip_filter", "product_code_filter", "product_name_filter", "product_option_name_filter", "product_option_value_filter", "custom_field_name_filter", "custom_field_value_filter");
+		$fields = array("is_test_filter", "hide_transaction_filter", "data_is_fed_filter", "id_filter", "display_id_filter", "order_total_filter", "coupon_code_filter", "transaction_date_filter_begin", "transaction_date_filter_end", "customer_id_filter", "customer_email_filter", "customer_first_name_filter", "customer_last_name_filter","customer_state_filter", "shipping_state_filter", "customer_ip_filter", "product_code_filter", "product_name_filter", "product_option_name_filter", "product_option_value_filter", "custom_field_name_filter", "custom_field_value_filter");
 		foreach ($fields as $field) {
 			if (isset($_GET[$field])) {
 				$foxy_data[$field] = $_GET[$field];
@@ -174,10 +178,10 @@ function foxyshop_order_management() {
 				<label><?php _e('Transaction Status', 'foxyshop'); ?></label>
 
 				<input type="radio" id="hide_transaction_filter0" name="hide_transaction_filter" value="0"<?php echo $foxy_data['hide_transaction_filter'] == 0 ? ' checked="checked"' : ''; ?> />
-				<label for="hide_transaction_filter0"><?php _e('Unfilled', 'foxyshop'); ?></label>
+				<label for="hide_transaction_filter0"><?php _e('Visible', 'foxyshop'); ?></label>
 
 				<input type="radio" id="hide_transaction_filter1" name="hide_transaction_filter" value="1"<?php echo $foxy_data['hide_transaction_filter'] == 1 ? ' checked="checked"' : ''; ?> />
-				<label for="hide_transaction_filter1"><?php _e('Filled', 'foxyshop'); ?></label>
+				<label for="hide_transaction_filter1"><?php _e('Hidden', 'foxyshop'); ?></label>
 
 				<input type="radio" id="hide_transaction_filter" name="hide_transaction_filter" value=""<?php echo $foxy_data['hide_transaction_filter'] == '' ? ' checked="checked"' : ''; ?> />
 				<label for="hide_transaction_filter"><?php _e('Both', 'foxyshop'); ?></label>
@@ -211,6 +215,10 @@ function foxyshop_order_management() {
 
 			<div class="foxyshop_field_control">
 				<label for="order_id_filter"><?php _e('Order ID', 'foxyshop'); ?></label><input type="text" name="id_filter" id="id_filter" value="<?php echo $foxy_data['id_filter']; ?>" />
+			</div>
+
+			<div class="foxyshop_field_control">
+				<label for="display_id_filter"><?php _e('Display ID', 'foxyshop'); ?></label><input type="text" name="display_id_filter" id="display_id_filter" value="<?php echo $foxy_data['display_id_filter']; ?>" />
 			</div>
 
 			<div class="foxyshop_field_control">
@@ -298,7 +306,7 @@ function foxyshop_order_management() {
 
 		<script type="text/javascript">
 		jQuery(document).ready(function($) {
-			$("#foxyshop_searchform button").live("click", function() {
+			$("#foxyshop_searchform").on("click", "button", function() {
 				if ($("#transaction_search_type option:selected").attr("target") == "_blank") {
 					$("#foxyshop_searchform").attr("target","_blank");
 				} else {
@@ -363,7 +371,11 @@ function foxyshop_order_management() {
 		<?php
 		$holder = "";
 		$hide_transaction_filter = isset($_REQUEST['hide_transaction_filter']) ? $_REQUEST['hide_transaction_filter'] : 0;
-		foreach($xml->transactions->transaction as $transaction) {
+		$transactions = $xml->transactions->transaction ? $xml->transactions->transaction : [];
+		if (!count($transactions)) {
+		  echo '<tr><td colspan="5">'.__('No transaction found.').'</td></tr>';
+		}
+		foreach($transactions as $transaction) {
 			$transaction_id = (string)$transaction->id;
 			$customer_first_name = (string)$transaction->customer_first_name;
 			$customer_last_name = (string)$transaction->customer_last_name;
@@ -423,9 +435,9 @@ function foxyshop_order_management() {
 					$is_hidden = (string)$transaction->is_hidden;
 				}
 				if ($is_hidden == 1) {
-					echo '<span> | <a href="#" class="set_order_hidden_status" rel="0">' . __('Un-Archive', 'foxyshop') . '</a></span>';
+					echo '<span> | <a href="#" class="set_order_hidden_status" rel="0">' . __('Unhide Transaction', 'foxyshop') . '</a></span>';
 				} else {
-					echo '<span> | <a href="#" class="set_order_hidden_status" rel="1">' . __('Archive', 'foxyshop') . '</a></span>';
+					echo '<span> | <a href="#" class="set_order_hidden_status" rel="1">' . __('Hide Transaction', 'foxyshop') . '</a></span>';
 				}
 				do_action("foxyshop_order_line_item", $transaction);
 			echo '</div>';

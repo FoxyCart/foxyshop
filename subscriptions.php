@@ -232,7 +232,11 @@ function foxyshop_subscription_management() {
 
 		<?php
 		$holder = "";
-		foreach($xml->subscriptions->subscription as $subscription) {
+		$subs = $xml->subscriptions->subscription ? $xml->subscriptions->subscription : [];
+		if (!count($subs)) {
+		  echo '<tr><td colspan="7">'.__('No subscription found.').'</td></tr>';
+		}
+		foreach($subs as $subscription) {
 			$sub_token = (string)$subscription->sub_token;
 			$customer_id = (string)$subscription->customer_id;
 			$customer_first_name = (string)$subscription->customer_first_name;

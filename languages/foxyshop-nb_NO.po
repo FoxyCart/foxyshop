@@ -1119,12 +1119,12 @@ msgid "Transaction Status"
 msgstr "Betalings Status"
 
 #: orders.php:170
-msgid "Unfilled"
-msgstr "Ikke Utfylt"
+msgid "Visible"
+msgstr "Synlig"
 
 #: orders.php:173
-msgid "Filled"
-msgstr "Utfylt"
+msgid "Hidden"
+msgstr "Skjult"
 
 #: orders.php:176
 #: orders.php:189
@@ -1271,12 +1271,12 @@ msgid "Receipt"
 msgstr "Kvittering"
 
 #: orders.php:390
-msgid "Un-Archive"
-msgstr "Ikke Arkiver"
+msgid "Unhide Transaction"
+msgstr "Vis transaksjon"
 
 #: orders.php:392
-msgid "Archive"
-msgstr "Arkiver"
+msgid "Hide Transaction"
+msgstr "Skjul transaksjon"
 
 #: orders.php:407
 msgid "Transaction Details"

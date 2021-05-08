@@ -143,7 +143,7 @@ jQuery(document).ready(function($){
 			//Plugin Function Here
 			if (typeof window.foxyshop_before_image_change == 'function') foxyshop_before_image_change(new_ikey);
 
-			$(parentForm + " #foxyshop_main_product_image").attr("src",ikey[new_ikey][2]).attr("alt",ikey[new_ikey][4]).parent().attr("href",ikey[new_ikey][3]);
+			$(parentForm + " .foxyshop_main_product_image").attr("src",ikey[new_ikey][2]).attr("alt",ikey[new_ikey][4]).parent().attr("href",ikey[new_ikey][3]);
 
 			//Cloud-zoom
 			if (typeof window.foxyshop_cloudzoom_image_change == 'function') {
@@ -184,20 +184,20 @@ jQuery(document).ready(function($){
 				$("#fs_quantity_max_" + current_product_id).remove();
 			}
 			if (newcount > 0 && newcount <= newalert) {
-				$(parentForm + " .foxyshop_stock_alert").removeClass("foxyshop_out_of_stock").html(update_inventory_alert_language(arr_foxyshop_inventory_stock_alert[current_product_id],newcount,inventory_code)).show();
-				$(parentForm + " #productsubmit").removeAttr("disabled").removeClass("foxyshop_disabled");
+				$(parentForm + " .foxyshop_stock_alert").removeClass("foxyshop_out_of_stock").html(update_inventory_alert_language(arr_foxyshop_inventory_stock_alert[current_product_id],newcount,inventory_code,$('#fs_name_' + current_product_id).val())).show();
+				$(parentForm + " .productsubmit, " + parentForm + " #productsubmit").removeAttr("disabled").removeClass("foxyshop_disabled");
 			} else if (newcount <= 0) {
-				$(parentForm + " .foxyshop_stock_alert").addClass("foxyshop_out_of_stock").html(update_inventory_alert_language(arr_foxyshop_inventory_stock_none[current_product_id],inventory_match_count,inventory_code)).show();
-				if (!foxyshop_allow_backorder) $(parentForm + " #productsubmit").attr("disabled","disabled").addClass("foxyshop_disabled");
+				$(parentForm + " .foxyshop_stock_alert").addClass("foxyshop_out_of_stock").html(update_inventory_alert_language(arr_foxyshop_inventory_stock_none[current_product_id],inventory_match_count,inventory_code,$('#fs_name_' + current_product_id).val())).show();
+				if (!foxyshop_allow_backorder) $(parentForm + " .productsubmit, " + parentForm + " #productsubmit").attr("disabled","disabled").addClass("foxyshop_disabled");
 			} else {
-				$(parentForm + " #productsubmit").removeAttr("disabled").removeClass("foxyshop_disabled");
+				$(parentForm + " .productsubmit, " + parentForm + " #productsubmit").removeAttr("disabled").removeClass("foxyshop_disabled");
 				$(parentForm + " .foxyshop_stock_alert").hide();
 			}
 		} else if (typeof arr_foxyshop_inventory[current_product_id] != 'undefined') {
 			if (!foxyshop_allow_backorder) {
 				$("#fs_quantity_max_" + current_product_id).val($("#original_quantity_max_" + current_product_id).val());
 			}
-			$(parentForm + " #productsubmit").removeAttr("disabled").removeClass("foxyshop_disabled");
+			$(parentForm + " .productsubmit, " + parentForm + " #productsubmit").removeAttr("disabled").removeClass("foxyshop_disabled");
 			$(parentForm + " .foxyshop_stock_alert").removeClass("foxyshop_out_of_stock").hide();
 		}
 
@@ -228,15 +228,15 @@ jQuery(document).ready(function($){
 		n_sep_by_space = arrl18n_settings[4];
 		new_price += addOnTotal;
 		new_price_original += addOnTotal;
-		$(parentForm + " #foxyshop_main_price .foxyshop_currentprice").text(toCurrency(new_price, currencySymbol, thousandsSeparator, decimalSeparator, p_precedes, n_sep_by_space));
-		$(parentForm + " #foxyshop_main_price .foxyshop_oldprice").text(toCurrency(new_price_original, currencySymbol, thousandsSeparator, decimalSeparator, p_precedes, n_sep_by_space));
+		$(parentForm + " .foxyshop_main_price .foxyshop_currentprice, " + parentForm + " #foxyshop_main_price .foxyshop_currentprice").text(toCurrency(new_price, currencySymbol, thousandsSeparator, decimalSeparator, p_precedes, n_sep_by_space));
+		$(parentForm + " .foxyshop_main_price .foxyshop_oldprice, " + parentForm + " #foxyshop_main_price .foxyshop_oldprice").text(toCurrency(new_price_original, currencySymbol, thousandsSeparator, decimalSeparator, p_precedes, n_sep_by_space));
 
 		//Plugin Function Here - AFTER CHANGE VARIATIONS
 		if (typeof window.foxyshop_after_variation_modifiers == 'function') foxyshop_after_variation_modifiers(new_code, new_codeadd, new_price, new_price_original, new_ikey, current_product_id);
 
 	}
 
-	function update_inventory_alert_language(strlang, itemcount, itemcode) {
+	function update_inventory_alert_language(strlang, itemcount, itemcode, itemname) {
 		strlang = strlang.replace('%code',itemcode);
 		strlang = strlang.replace('%c',itemcount);
 		if (itemcount == 1) {
@@ -244,7 +244,8 @@ jQuery(document).ready(function($){
 		} else {
 			strlang = strlang.replace('%s',"s");
 		}
-		strlang = strlang.replace('%n',$("#input[name^='name||']").val());
+		itemname = itemname || "";
+		strlang = strlang.replace('%n',itemname);
 		return strlang;
 	}
 
@@ -298,7 +299,7 @@ jQuery(document).ready(function($){
 			e.stopPropagation();
 			e.preventDefault();
 		} else {
-			if (jQuery("#foxyshop_product_form_" + current_product_id + " #productsubmit").attr("disabled")) return false;
+			if (jQuery("#foxyshop_product_form_" + current_product_id + " .productsubmit, #foxyshop_product_form_" + current_product_id + " #productsubmit").attr("disabled")) return false;
 			return true;
 		}
 
