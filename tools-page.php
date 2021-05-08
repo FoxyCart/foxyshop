@@ -12,7 +12,15 @@ function foxyshop_save_tools() {
 
 		$encrypt_key = "foxyshop_encryption_key_16";
 		$foxyshop_import_settings = str_replace("\n","",$_POST['foxyshop_import_settings']);
-		$decrypted = explode("|-|", rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($encrypt_key), base64_decode($foxyshop_import_settings), MCRYPT_MODE_CBC, md5(md5($encrypt_key))), "\0"));
+
+		$decrypted = array();
+
+		if (substr($foxyshop_import_settings, 0, 3) == "$2$") {
+			$decrypted = explode("|-|", rtrim(openssl_decrypt(base64_decode(substr($foxyshop_import_settings, 3)), 'AES-256-CBC', md5($encrypt_key), OPENSSL_RAW_DATA, substr(md5(md5($encrypt_key)), 0, 16))));
+		} else {
+			wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&importerror=2');
+			exit;
+		}
 		if (count($decrypted) != 3) {
 			wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&importerror=1');
 			exit;
@@ -191,7 +199,13 @@ function foxyshop_tools() {
 	if (isset($_GET['import'])) echo '<div class="updated"><p>' . __('Your Settings Have Been Imported', 'foxyshop') . '.</p></div>';
 
 	//Import Error
-	if (isset($_GET['importerror'])) echo '<div class="error"><p>' . __('There was an error with your import settings and they could not be imported. The decrypted value was invalid.', 'foxyshop') . '</p></div>';
+	if (isset($_GET['importerror'])) {
+		$import_error = __('There was an error with your import settings and they could not be imported. The decrypted value was invalid.', 'foxyshop');
+		if ($_GET['importerror'] == 2) {
+			$import_error = __('There was an error with your import settings and they could not be imported. It appears you attempted to import settings from an older version of FoxyShop. Unfortunately this is not supported. Please contact Foxy support for assistance.', 'foxyshop');
+		}
+		echo '<div class="error"><p>' . $import_error . '</p></div>';
+	}
 
 	//Confirmation Key Reset
 	if (isset($_GET['key'])) echo '<div class="updated"><p>' . sprintf(__('Your API Key Has Been Reset: "%s". Please Update FoxyCart With Your New Key.', 'foxyshop'), $foxyshop_settings['api_key']) . '</p></div>';
@@ -218,13 +232,13 @@ function foxyshop_tools() {
 
 
 	//Get Export Settings
-	if (function_exists('mcrypt_encrypt')) {
+	if (function_exists('openssl_encrypt')) {
 		$encrypt_key = "foxyshop_encryption_key_16";
 		$foxyshop_export_settings = serialize(get_option('foxyshop_settings')) . "|-|";
 		$foxyshop_export_settings .= serialize(get_option('foxyshop_category_sort')) . "|-|";
 		$foxyshop_export_settings .= serialize(get_option('foxyshop_saved_variations'));
-		$foxyshop_export_settings = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($encrypt_key), $foxyshop_export_settings, MCRYPT_MODE_CBC, md5(md5($encrypt_key))));
-		$foxyshop_export_settings = wordwrap($foxyshop_export_settings, 58, "\n", true);
+		$foxyshop_export_settings = base64_encode(openssl_encrypt($foxyshop_export_settings, 'AES-256-CBC', md5($encrypt_key), OPENSSL_RAW_DATA, substr(md5(md5($encrypt_key)), 0, 16)));
+		$foxyshop_export_settings = wordwrap("$2$".$foxyshop_export_settings, 58, "\n", true);
 	}
 
 	$recommend_icon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAApRJREFUeNqEU01IVFEUPu9n3nszvjuvGadGBpswLZIJzR8mslXQIiiICJxKpVwULiKI2oWb0iBo06YgKWih6KJFbUrDwlxYDISRkQtNKcbNkGY6+pr37rud+3xOo/Rz4Hvv3HvP951z7o8Am+z2EQlqokLxVIPDIEUZiNRhA+in1xeO99ogt+0T3QGntNSs+YwVyGF0U4eu3utYys4tjT64rrAiAW5ya63okkX8CAgJYdqF9dbyhsP1jArEH4wItg2S44nr6lqVMvzdLkmanqg4cCzJB9Pp4YmfFMa5QFQXQPWY8r/ITRe6TwsgE9sylyfHhifzlA3uDIsbAv8k0EGCpLK+vfuUICpk8cvEx2d9D6eIkLMMTejE9e9e3AvEULFADHFC1Eh13bmuNsakIKMUSnc3Js7ebEpszvKy64y0LtDIdxpLJtHqZOX25NH91AYCsLaTq4uLUBIKQW5hoUD+MTeVsR2gbgsWZS0NzVea9bKKWN40YSVnAsXtppjdQaiaBhoh7lz/rcuP10XwDJ66AjYFUrI1HsthJtuywMrnN4AYBoRw3q/r0H6j5+TyfHZ5tOfao6U8jLoCeQd8FAMcDsziAjMzx3FvFPf5+uynDwuDfXfTXvZCJSK2oPAAm5ddRGZI5neG+1w8XrUnlLrYeXCbLmT8ivAqoHgXybSAZb9OfwtGYqU2D/ZQqAD/PMHI8yeZ929HMkjrn8GDnME9Pc8FchbrGRy4r5fFd5UbkWhQUQOqviWi+9SAH0TRJ6LxtvbWJUs/j79+d+cNG5r5fSDuM5Bqy6DCUCHhk6BqhwHhqA4hTYawJIKBATJCx3ZWR2ahd2gaxpCTRcxjm9R9Rwg/IoDwwf/NQqzwK4ICzi8BBgBdLjNedsdOVgAAAABJRU5ErkJggg==";
@@ -269,7 +283,7 @@ function foxyshop_tools() {
 						</li>
 
 						<li><h3><a href="plugin-install.php?tab=search&type=term&s=csv+importer">CSV Importer</a></h3>
-						(import products - <a href="http://www.foxy-shop.com/2011/03/importing-products/" target="_blank">guide here</a>)
+						(import products - <a href="https://www.foxy-shop.com/importing-products/" target="_blank">guide here</a>)
 						<?php
 						foxyshop_check_plugin_status("csv-importer");
 						?>
@@ -572,7 +586,7 @@ echo "</div>";
 			</tr>
 		</thead>
 		<tbody>
-			<?php if (function_exists('mcrypt_encrypt')) : ?>
+			<?php if (function_exists('openssl_encrypt')) : ?>
 			<tr>
 				<td>
 					<label for="foxyshop_export_settings"><?php echo __('Copy String To Your Clipboard to Export FoxyShop Settings', 'foxyshop'); ?>:</label>
@@ -592,7 +606,7 @@ echo "</div>";
 			<?php else : ?>
 			<tr>
 				<td>
-					<p><em>In order to use this feature you need to enable the mcrypt library in your php.ini. More info <a href="http://stackoverflow.com/questions/2604435/what-causes-this-error-fatal-error-call-to-undefined-function-mcrypt-encrypt" target="_blank">here</a>.</em></p>
+					<p><em>In order to use this feature you need to be on PHP 5.3.0 or greater.</em></p>
 				</td>
 			</tr>
 			<?php endif; ?>
