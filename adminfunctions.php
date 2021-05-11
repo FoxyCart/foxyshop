@@ -54,9 +54,16 @@ function foxyshop_load_admin_scripts($hook) {
 	foxyshop_date_picker();
 }
 
+//Add filter to allow blocking the CSS on non-product pages
+function foxyshop_load_css() {
+	return apply_filters( 'foxyshop_load_css', true );
+}
+
 //Loading in Public Style
 function foxyshop_load_site_scripts() {
-	wp_enqueue_style('foxyshop_css', FOXYSHOP_DIR . '/css/foxyshop.css', array(), FOXYSHOP_VERSION);
+	if (foxyshop_load_css()) {
+		wp_enqueue_style('foxyshop_css', FOXYSHOP_DIR . '/css/foxyshop.css', array(), FOXYSHOP_VERSION);
+	}
 }
 
 //Checking For Includes To Be Removed
