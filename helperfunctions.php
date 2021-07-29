@@ -1578,13 +1578,18 @@ function foxyshop_get_template_file($filename) {
 
 //Show Orders For A Customer
 //Sample Usage: foxyshop_customer_order_history(get_user_meta(wp_get_current_user()->ID, 'foxycart_customer_id', 1));
-function foxyshop_customer_order_history($customer_id = 0, $date_filter = 'n/j/Y', $no_results_message = "No Records Found.") {
+function foxyshop_customer_order_history($customer_id = 0, $date_filter = 'n/j/Y', $no_results_message = "No Records Found.", $filter_options = array()) {
 	global $foxyshop_settings;
 
 	//Setup Fields and Defaults
 	$foxy_data_defaults = array("customer_id_filter" => $customer_id);
 	$foxy_data = wp_parse_args(array("api_action" => "transaction_list"), $foxy_data_defaults);
 	$foxy_data['pagination_start'] = (isset($_GET['pagination_start']) ? $_GET['pagination_start'] : 0);
+	
+	if(!empty($filter_options)){
+		$foxy_data = wp_parse_args( $foxy_data, $filter_options );
+	}
+	
 	if (version_compare($foxyshop_settings['version'], '0.7.0', ">")) $foxy_data['entries_per_page'] = 50;
 	$foxy_response = foxyshop_get_foxycart_data($foxy_data);
 	$xml = simplexml_load_string($foxy_response, NULL, LIBXML_NOCDATA);
