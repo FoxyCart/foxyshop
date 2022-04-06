@@ -231,8 +231,7 @@ function foxyshop_start_form() {
 	global $product, $foxyshop_settings, $foxyshop_skip_url_link, $foxyshop_skip_cart_image;
 	$localsettings = localeconv();
 
-	//Check for UTF-8
-	$currency_symbol = strpos(strtolower($foxyshop_settings['locale_code']), "utf") !== false ? $localsettings['currency_symbol'] : utf8_encode($localsettings['currency_symbol']);
+	$currency_symbol = $localsettings['currency_symbol'];
 	$l18n_value = $currency_symbol . '|' . $localsettings['mon_decimal_point'] . '|' . $localsettings['mon_thousands_sep'] . '|' . $localsettings['p_cs_precedes'] . '|' . $localsettings['n_sep_by_space'];
 	if ($localsettings['n_sep_by_space'] == 127) $l18n_value = "$|.|,|1|0";
 
@@ -737,7 +736,7 @@ function foxyshop_product_link($AddText = "Add To Cart", $linkOnly = false, $var
 
 
 //Set Social Media Meta Tags In Header (Facebook, Google+)
-//Google+ suggests you to put this in your <html> tag on the product pages: <html itemscope itemtype="http://schema.org/Product">
+//Google+ suggests you to put this in your <html> tag on the product pages: <html itemscope itemtype="https://schema.org/Product">
 function foxyshop_social_media_header_meta() {
 	global $product;
 	$product = foxyshop_setup_product();
@@ -1746,17 +1745,22 @@ function foxyshop_get_pagination($range = 4) {
 	}
 }
 
+function format_money($ignore, $value, $locale_code) {
+	$format = numfmt_create($locale_code, NumberFormatter::CURRENCY);
+	$symbol = $format->getSymbol(NumberFormatter::INTL_CURRENCY_SYMBOL);
+	return $format->formatCurrency($value, $symbol);
+}
+
 function foxyshop_currency($input, $currencysymbol = true) {
 	global $foxyshop_settings;
-	if (function_exists('money_format')) {
+	if (method_exists('NumberFormatter','formatCurrency')) {
 		$money_format_string = "%" . ($currencysymbol ? "" : "!") . "." . FOXYSHOP_DECIMAL_PLACES . "n";
-		$currency = money_format(apply_filters("foxyshop_money_format_string", $money_format_string), (double)$input);
+		$currency = format_money(apply_filters("foxyshop_money_format_string", $money_format_string), (double)$input, $foxyshop_settings['locale_code']);
 	} else {
 		//Windows: no internationalisation support
 		$currency_code = ($foxyshop_settings['locale_code'] == "en_GB" ? "&pound;" : "$");
 		$currency = $currency_code . number_format((double)$input, FOXYSHOP_DECIMAL_PLACES, ".", ",");
 	}
-	if (strpos($foxyshop_settings['locale_code'], "utf8") === false) $currency = utf8_encode($currency);
 	return apply_filters("foxyshop_currency", $currency);
 }
 
