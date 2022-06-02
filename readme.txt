@@ -72,6 +72,7 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 = 4.8.2 =
 
 * Replace deprecated `money_format` function
+* Sanitize error parameter
 
 = 4.8.1 =
 
@@ -285,6 +286,7 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 = 4.8.2 =
 
 * Replace deprecated `money_format` function
+* Sanitize error parameter
 
 = 4.8.1 =
 
