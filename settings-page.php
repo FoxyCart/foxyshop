@@ -92,7 +92,7 @@ function foxyshop_save_settings() {
 	$domain = $_POST['foxyshop_domain'];
 	if ($domain && get_option("foxyshop_setup_required")) delete_option("foxyshop_setup_required"); //Delete the setup prompt if domain entered
 	if ($domain && strpos($domain, ".") === false) $domain .= ".foxycart.com";
-	$foxyshop_settings["domain"] = trim(stripslashes(str_replace("https://","",$domain)));
+	$foxyshop_settings["domain"] = trim(stripslashes(str_replace("http://","",$domain)));
 
 	//Set Setup Prompt If FoxyCart API Version Available
 	//if ($domain && version_compare($foxyshop_settings['version'], '1.1', ">=") && !$foxyshop_settings['api']['store_access_token']) add_option("foxyshop_setup_required", 1);
@@ -145,13 +145,13 @@ function foxyshop_settings_page() {
 	<?php
 	//Headway Sniffer
 	if (class_exists("Headway")) {
-		if (is_plugin_active("foxyshop-headway/foxyshop-block.php")) echo '<div class="updated"><p><strong>Hello Headway User!</strong> Be sure to install the <a href="https://www.foxy-shop.com/2012/04/installing-foxyshop-on-headway/" target="_blank">FoxyShop Headway plugin</a> for full Headway compatability.</p></div>';
+		if (is_plugin_active("foxyshop-headway/foxyshop-block.php")) echo '<div class="updated"><p><strong>Hello Headway User!</strong> Be sure to install the <a href="http://www.foxy-shop.com/2012/04/installing-foxyshop-on-headway/" target="_blank">FoxyShop Headway plugin</a> for full Headway compatability.</p></div>';
 
 	//Thesis Sniffer
 	} elseif (defined("THESIS_ADMIN")) {
 		if (!defined('FOXYSHOP_TEMPLATE_PATH')) define('FOXYSHOP_TEMPLATE_PATH',STYLESHEETPATH);
 		if (!file_exists(FOXYSHOP_TEMPLATE_PATH . '/foxyshop-single-product.php') && !file_exists(TEMPLATEPATH . '/foxyshop-single-product.php')) {
-			echo '<div class="updated"><p><strong>Hello Thesis User!</strong> Please be sure to install <a href="https://www.foxy-shop.com/wp-content/uploads/2012/04/foxyshop-template-files-for-thesis.zip">these files</a> in your theme folder (or preferably your child theme folder) for Thesis compatibility.</p></div>';
+			echo '<div class="updated"><p><strong>Hello Thesis User!</strong> Please be sure to install <a href="http://www.foxy-shop.com/wp-content/uploads/2012/04/foxyshop-template-files-for-thesis.zip">these files</a> in your theme folder (or preferably your child theme folder) for Thesis compatibility.</p></div>';
 		} else {
 			$skip_header_warning = 1;
 		}
@@ -205,7 +205,7 @@ function foxyshop_settings_page() {
 		<tbody>
 			<tr>
 				<td style="border-bottom: 0 none;">
-					<a href="https://www.foxy-shop.com/?utm_source=plugin&amp;utm_medium=app&amp;utm_campaign=pluginlink_<?php echo FOXYSHOP_VERSION ?>" target="_blank"><img src="<?php echo FOXYSHOP_DIR; ?>/images/logo.png" alt="FoxyShop" style="float: right; margin-left: 20px;" /></a>
+					<a href="http://www.foxy-shop.com/?utm_source=plugin&amp;utm_medium=app&amp;utm_campaign=pluginlink_<?php echo FOXYSHOP_VERSION ?>" target="_blank"><img src="<?php echo FOXYSHOP_DIR; ?>/images/logo.png" alt="FoxyShop" style="float: right; margin-left: 20px;" /></a>
 
 					<p>Stay up to date with the latest updates from FoxyShop by following on Twitter and Facebook.</p>
 					<a href="https://twitter.com/FoxyShopWP" class="twitter-follow-button">Follow @FoxyShopWP</a>
@@ -213,10 +213,10 @@ function foxyshop_settings_page() {
 					<iframe src="https://www.facebook.com/plugins/like.php?href=<?php echo urlencode('https://www.facebook.com/pages/FoxyShop/188079417920111'); ?>&amp;layout=button_count&amp;show_faces=false&amp;width=190&amp;action=like&amp;colorscheme=light&amp;font=arial" scrolling="no" frameborder="0" allowTransparency="true" style="border:none; overflow:hidden; width:190px; height:26px;"></iframe>
 
 					<p>
-					<a href="https://www.foxy-shop.com/documentation/?utm_source=plugin&amp;utm_medium=app&amp;utm_campaign=pluginlink_<?php echo FOXYSHOP_VERSION ?>" target="_blank" class="button"><?php _e('FoxyShop Documentation', 'foxyshop'); ?></a>
-					<a href="https://affiliate.foxycart.com/idevaffiliate.php?id=211&amp;url=https://www.foxycart.com/" target="_blank" class="button"><?php _e('FoxyCart Information', 'foxyshop'); ?></a>
-					<a href="https://affiliate.foxycart.com/idevaffiliate.php?id=211&amp;url=https://wiki.foxycart.com/" target="_blank" class="button"><?php _e('FoxyCart Wiki', 'foxyshop'); ?></a>
-					<a href="https://affiliate.foxycart.com/idevaffiliate.php?id=211&amp;url=https://admin.foxycart.com/" target="_blank" class="button"><?php _e('FoxyCart Admin Panel', 'foxyshop'); ?></a>
+					<a href="http://www.foxy-shop.com/documentation/?utm_source=plugin&amp;utm_medium=app&amp;utm_campaign=pluginlink_<?php echo FOXYSHOP_VERSION ?>" target="_blank" class="button"><?php _e('FoxyShop Documentation', 'foxyshop'); ?></a>
+					<a href="http://affiliate.foxycart.com/idevaffiliate.php?id=211&amp;url=http://www.foxycart.com/" target="_blank" class="button"><?php _e('FoxyCart Information', 'foxyshop'); ?></a>
+					<a href="http://affiliate.foxycart.com/idevaffiliate.php?id=211&amp;url=http://wiki.foxycart.com/" target="_blank" class="button"><?php _e('FoxyCart Wiki', 'foxyshop'); ?></a>
+					<a href="http://affiliate.foxycart.com/idevaffiliate.php?id=211&amp;url=http://admin.foxycart.com/" target="_blank" class="button"><?php _e('FoxyCart Admin Panel', 'foxyshop'); ?></a>
 
 					</p>
 				</td>
@@ -240,7 +240,7 @@ function foxyshop_settings_page() {
 					<label for="foxyshop_key"><?php _e('API Key', 'foxyshop'); ?>:</label>
 					<input type="text" id="foxyshop_key" name="api_key" value="<?php echo esc_attr($foxyshop_settings['api_key']); ?>" readonly="readonly" />
 					<a href="#" class="foxyshophelp">The API key is saved here and stored on your FoxyCart account so that your cart information can be encrypted to avoid link tampering. The API key is also used to communicate with FoxyCart and retrieve your order information.<br /><br />This API key is generated automatically and cannot be edited. Go to the tools page if you need to reset this key.</a>
-					<div style="clear: both; padding: 5px 0; font-style: italic;"><strong style="color: #BB1E1E;">Required Setup:</strong> Enter this API key in the <b>store secret</b> field on the advanced menu of your <a href="https://affiliate.foxycart.com/idevaffiliate.php?id=211&url=https://admin.foxycart.com/" target="_blank">FoxyCart admin</a> and check the box to enable cart validation.</div>
+					<div style="clear: both; padding: 5px 0; font-style: italic;"><strong style="color: #BB1E1E;">Required Setup:</strong> Enter this API key in the <b>store secret</b> field on the advanced menu of your <a href="http://affiliate.foxycart.com/idevaffiliate.php?id=211&url=http://admin.foxycart.com/" target="_blank">FoxyCart admin</a> and check the box to enable cart validation.</div>
 
 					<div style="clear: both;"></div>
 
@@ -263,7 +263,7 @@ function foxyshop_settings_page() {
 					<?php if ($foxyshop_settings['generate_product_sitemap']) { ?>
 						<div style="clear: both;margin-bottom: 5px;"></div>
 						<label for="foxyshop_sitemap"><?php _e('Sitemap', 'foxyshop'); ?>:</label>
-						<input type="text" id="foxyshop_sitemap" name="foxyshop_sitemap" value="https://<?php echo esc_attr($_SERVER['SERVER_NAME']) . '/' . FOXYSHOP_PRODUCT_SITEMAP_SLUG . '/'; ?>" readonly="readonly" onclick="this.select();" />
+						<input type="text" id="foxyshop_sitemap" name="foxyshop_sitemap" value="http://<?php echo esc_attr($_SERVER['SERVER_NAME']) . '/' . FOXYSHOP_PRODUCT_SITEMAP_SLUG . '/'; ?>" readonly="readonly" onclick="this.select();" />
 						<a href="#" class="foxyshophelp">This is the url where you can find your sitemap for submitting to search engines.</a>
 					<?php } ?>
 
@@ -295,7 +295,7 @@ function foxyshop_settings_page() {
 				<td class="foxycartdomain <?php echo $foxycart_domain_class; ?>">
 					<label for="foxyshop_domain"><?php _e('Your FoxyCart Domain', 'foxyshop'); ?>:</label> <input type="text" name="foxyshop_domain" id="foxyshop_domain" value="<?php echo esc_attr($foxycart_domain); ?>" size="50" />
 					<label id="foxydomainsimplelabel">.foxycart.com</label>
-					<a href="#" class="foxyshophelp">If you have your own custom domain, you may enter that as well (store.yoursite.com). Do not include the "https://". The FoxyCart include files will be inserted automatically so you won't need to add anything to the header of your site.</a>
+					<a href="#" class="foxyshophelp">If you have your own custom domain, you may enter that as well (store.yoursite.com). Do not include the "http://". The FoxyCart include files will be inserted automatically so you won't need to add anything to the header of your site.</a>
 					<div id="foxydomain_simple">Have a customized FoxyCart domain like store.yoursite.com? <a href="#" class="foxydomainpicker" rel="advanced">Click here.</a></div>
 					<div id="foxydomain_advanced">Have a regular FoxyCart domain like yourstore.foxycart.com? <a href="#" class="foxydomainpicker" rel="simple">Click here.</a></div>
 				</td>
@@ -543,8 +543,8 @@ function foxyshop_settings_page() {
 				<td>
 					<label for="foxyshop_locale_code"><?php _e('Currency Locale Code', 'foxyshop'); ?>:</label> <input type="text" id="foxyshop_locale_code" name="foxyshop_locale_code" value="<?php echo esc_attr($foxyshop_settings['locale_code']); ?>" style="width: 150px;" />
 					<a href="#" class="foxyshophelp"><?php _e('If you would like to use something other than $ for your currency, enter your locale code here. For the British Pound, enter "en_GB".', 'foxyshop'); ?></a>
-					<small><a href="https://www.roseindia.net/tutorials/I18N/locales-list.shtml" target="_blank" tabindex="99999">full list of locale codes</a></small>
-					<?php if (!method_exists('NumberFormatter','formatCurrency')) echo '<div style="clear: both; padding-top: 5px;"><em>' . __('Attention: you are using Windows which does not support internationalization. You will be limited to $ (en_US) or &pound; (en_GB).', 'foxyshop') . '</em></div>'; ?>
+					<small><a href="http://www.roseindia.net/tutorials/I18N/locales-list.shtml" target="_blank" tabindex="99999">full list of locale codes</a></small>
+					<?php if (!function_exists('money_format')) echo '<div style="clear: both; padding-top: 5px;"><em>' . __('Attention: you are using Windows which does not support internationalization. You will be limited to $ (en_US) or &pound; (en_GB).', 'foxyshop') . '</em></div>'; ?>
 				</td>
 			</tr>
 			<tr>
@@ -590,7 +590,7 @@ function foxyshop_settings_page() {
 				<td>
 					<input type="checkbox" id="foxyshop_set_orderdesk_url" name="foxyshop_set_orderdesk_url"<?php if ($foxyshop_settings['orderdesk_url']) echo ' checked="checked"'; ?> />
 					<label for="foxyshop_set_orderdesk_url"><?php _e('Use FoxyTools Order Desk', 'foxyshop'); ?></label>
-					<small>(<a href="https://www.orderdesk.me/" target="_blank"><?php _e("more info", "foxyshop"); ?></a>)</small>
+					<small>(<a href="http://www.orderdesk.me/" target="_blank"><?php _e("more info", "foxyshop"); ?></a>)</small>
 					<div id="orderdesk_url_holder"<?php if (!$foxyshop_settings['orderdesk_url']) echo ' style="display:none;"'; ?>>
 						<label for="foxyshop_orderdesk_url"><?php echo __('Your Order Desk Datafeed URL', 'foxyshop'); ?>:</label>
 						<input type="text" id="foxyshop_orderdesk_url" name="foxyshop_orderdesk_url" value="<?php echo esc_attr($foxyshop_settings['orderdesk_url']); ?>" style="width: 400px;" />

@@ -2,11 +2,11 @@
 
 **************************************************************************
 Plugin Name: FoxyShop
-Plugin URI: https://www.foxy-shop.com/
+Plugin URI: http://www.foxy-shop.com/
 Description: FoxyShop is a full integration for FoxyCart and WordPress, providing a robust shopping cart and inventory management tool.
 Author: SparkWeb Interactive, Inc.
-Version: 4.8.2
-Author URI: https://www.foxy-shop.com/
+Version: 4.8.1
+Author URI: http://www.foxy-shop.com/
 
 **************************************************************************
 
@@ -28,7 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 **************************************************************************
 
-Thanks you for using this plugin. Please see https://www.foxy-shop.com/ for
+Thanks you for using this plugin. Please see http://www.foxy-shop.com/ for
 installation instructions and lots of helpful advice on how to get
 the most out of FoxyShop.
 
@@ -38,8 +38,8 @@ the most out of FoxyShop.
 if (!defined('ABSPATH')) exit();
 
 //Setup Plugin Variables
-define('FOXYSHOP_VERSION', "4.8.2");
-define('FOXYSHOP_DIR', (is_ssl() ? str_replace("https://", "https://", WP_PLUGIN_URL) : WP_PLUGIN_URL) . "/foxyshop");
+define('FOXYSHOP_VERSION', "4.8.1");
+define('FOXYSHOP_DIR', (is_ssl() ? str_replace("http://", "https://", WP_PLUGIN_URL) : WP_PLUGIN_URL) . "/foxyshop");
 define('FOXYSHOP_PATH', dirname(__FILE__));
 $foxyshop_document_root = $_SERVER['DOCUMENT_ROOT'];
 if ($foxyshop_document_root == "" || $foxyshop_document_root == "/") $foxyshop_document_root = str_replace("/wp-content/plugins/foxyshop", "", FOXYSHOP_PATH);
