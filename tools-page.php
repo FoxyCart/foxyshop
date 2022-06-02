@@ -222,7 +222,7 @@ function foxyshop_tools() {
 	//Update Template
 	if (isset($_GET['updatetemplate'])) {
 		if ($_GET['updatetemplate'] == "error") {
-			echo '<div class="updated"><p>' .  $_GET['error'] . '</p></div>';
+			echo '<div class="updated"><p>' .  sanitize_text_field($_GET['error']) . '</p></div>';
 		} elseif ($_GET['updatetemplate'] == "clear") {
 			echo '<div class="updated"><p>' . __('Your saved URLs have been cleared.', 'foxyshop') . '</p></div>';
 		} else {
