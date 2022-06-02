@@ -3,7 +3,7 @@ Contributors: foxycart
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2AHG2QMABF8SG
 Tags: foxycart, shopping, cart, inventory, management, ecommerce, selling, subscription, foxy
 Requires at least: 3.1
-Tested up to: 5.8.2
+Tested up to: 6.0
 Requires PHP: 5.3
 Stable tag: 4.8.2
 License: GPLv2 or later
