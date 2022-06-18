@@ -17,6 +17,7 @@ if (empty($_FILES)) die('1');
 $upload_dir = wp_upload_dir();
 
 $unsupported_file_type_text = __('unsupported file type', 'foxyshop');
+$upload_runtime_error = __('An inner error has happened during file upload.', 'foxyshop');
 
 //Allowed Extensions
 $allowed_extensions = array("jpg","gif","jpeg","png","doc","docx","odt","xmls","xlsx","txt","tif","psd","pdf","mp3");
@@ -25,7 +26,7 @@ if (defined('FOXYSHOP_ALLOWED_EXTENSIONS')) $allowed_extensions = array_merge($a
 //Admin Upload
 if (isset($_GET['foxyshop_product_id'])) {
 
-	$product_id = (isset($_GET['foxyshop_product_id']) ? $_GET['foxyshop_product_id'] : 0);
+	$product_id = (isset($_GET['foxyshop_product_id']) ? sanitize_text_field($_GET['foxyshop_product_id']) : 0);
 
 	$images = get_children(array('post_parent' => $product_id, 'post_type' => 'attachment', "post_mime_type" => "image"));
 	if (empty($images)) {
@@ -34,34 +35,24 @@ if (isset($_GET['foxyshop_product_id'])) {
 		$product_count = count($images);
 	}
 
-	$tempFile = $_FILES['file']['tmp_name'];
-	$targetPath = $upload_dir['path'];
+	//$tempFile = $_FILES['file']['tmp_name'];
 
 	$filename = urldecode($_FILES['file']['name']);
 	$filename = str_replace(array('[1]','[2]','[3]','[4]','[5]','[6]','[7]','[8]','[9]','[10]'),'',$filename);
 	$filename = sanitize_file_name($filename);
 
-	$targetFile =  $targetPath . '/' . $filename;
-
 	$ext = strtolower(substr($filename, strrpos($filename, '.') + 1));
 	if (!in_array($ext, $allowed_extensions)) {
 		die($unsupported_file_type_text);
+	} 
+
+	$results = wp_handle_upload('file');
+
+	if(!is_array($results) || isset($results['error'])){
+		die($upload_runtime_error);
 	}
 
-	$i = 0;
-	while (file_exists($targetFile)) {
-		$i++;
-		if (stristr($filename, '.')) {
-			$ext = preg_replace('/^.*\./', '', $filename);
-			$name = substr($filename, 0, strrpos($filename, '.')) . '_' . $i . '.' . $ext;
-			$targetFile =  $targetPath . '/' . $name;
-		} else {
-			$name = $filename . '_' . $i . '';
-			$targetFile =  $targetPath . '/' . $name;
-		}
-	}
-
-	move_uploaded_file($tempFile,$targetFile);
+	$targetFile = $results['file'];
 
 	$targetFile = apply_filters("foxyshop_image_upload_file", $targetFile);
 	if (is_array($targetFile)) {
@@ -75,7 +66,7 @@ if (isset($_GET['foxyshop_product_id'])) {
 	$attachment = array(
 		'post_mime_type' => $wp_filetype['type'],
 		'post_title' => $product_title,
-		'guid' => $upload_dir['url'] . "/" . basename($targetFile),
+		'guid' => $results['url'],
 		'menu_order' => $product_count + 1,
 		'post_content' => '',
 		'post_status' => 'inherit'
@@ -89,27 +80,31 @@ if (isset($_GET['foxyshop_product_id'])) {
 		update_post_meta($product_id,"_thumbnail_id",$attach_id);
 	}
 
-	echo 'success';
+	echo ('success');
 
 
 //User Upload
 } elseif (isset($_POST['newfilename']) && !defined('FOXYSHOP_DISABLE_USER_UPLOAD')) {
 
-	$tempFile = $_FILES['Filedata']['tmp_name'];
-	$targetPath = $upload_dir['basedir'] . '/customuploads/';
-
 	$ext = strtolower(substr($_FILES['Filedata']['name'], strrpos($_FILES['Filedata']['name'], '.') + 1));
 	if (!in_array($ext, $allowed_extensions)) die($unsupported_file_type_text);
 
-	$newfilename = str_replace(array('.','/','\\',' '),'',$_POST['newfilename']).'.'.$ext;
-	$targetFile =  $targetPath . $newfilename;
-	move_uploaded_file($tempFile,$targetFile);
 
-	echo $newfilename;
+	$newfilename = str_replace(array('.','/','\\',' '),'',sanitize_text_field($_POST['newfilename'])).'.'.$ext;
+	$_FILES['Filedata']['name'] = $newfilename;
+	$results = wp_handle_upload('Filedata'); 
+
+	if(!is_array($results) || isset($results['error'])){
+		die($upload_runtime_error);
+	}
+
+	$targetFile = $results['file']; 
+
+	echo wp_kses($newfilename);
 
 //Nothing Requested
 } else {
-	echo __('invalid request', 'foxyshop');
+	echo wp_kses(__('invalid request', 'foxyshop'));
 }
 
 

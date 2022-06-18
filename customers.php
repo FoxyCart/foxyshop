@@ -30,18 +30,18 @@ function foxyshop_customer_management() {
 		$fields = array("customer_id_filter", "customer_email_filter", "customer_first_name_filter", "customer_last_name_filter", "customer_state_filter", "custom_field_name_filter", "custom_field_value_filter");
 		foreach ($fields as $field) {
 			if (isset($_GET[$field])) {
-				$foxy_data[$field] = $_GET[$field];
-				$foxyshop_querystring .= "&amp;$field=" . urlencode($_GET[$field]);
-				$foxyshop_hidden_input .= '<input type="hidden" name="' . $field . '" value="' . htmlspecialchars($_GET[$field]) . '" />' . "\n";
+				$foxy_data[$field] = sanitize_text_field($_GET[$field]);
+				$foxyshop_querystring .= "&amp;$field=" . urlencode(sanitize_text_field($_GET[$field]));
+				$foxyshop_hidden_input .= ('<input type="hidden" name="' . esc_attr($field) . '" value="' . htmlspecialchars(sanitize_text_field($_GET[$field])) . '" />' . "\n");
 			}
 		}
-		$foxy_data['pagination_start'] = (isset($_GET['pagination_start']) ? $_GET['pagination_start'] : 0);
+		$foxy_data['pagination_start'] = (isset($_GET['pagination_start']) ? sanitize_text_field($_GET['pagination_start']) : 0);
 		$p = (int)(version_compare($foxyshop_settings['version'], '0.7.1', "<") ? 50 : FOXYSHOP_API_ENTRIES_PER_PAGE);
 		if (version_compare($foxyshop_settings['version'], '0.7.0', ">")) $foxy_data['entries_per_page'] = $p;
 		$start_offset = (int)(version_compare($foxyshop_settings['version'], '0.7.1', "<=") ? -1 : 0);
 		if (isset($_GET['paged-top']) || isset($_GET['paged-bottom'])) {
-			if ($_GET['paged-top'] != $_GET['paged-top-original']) $foxy_data['pagination_start'] = $p * ((int)$_GET['paged-top'] - 1) + 1 + $start_offset;
-			if ($_GET['paged-bottom'] != $_GET['paged-bottom-original']) $foxy_data['pagination_start'] = $p * ((int)$_GET['paged-bottom'] - 1) + 1 + $start_offset;
+			if ($_GET['paged-top'] != $_GET['paged-top-original']) $foxy_data['pagination_start'] = $p * ((int)sanitize_text_field($_GET['paged-top']) - 1) + 1 + $start_offset;
+			if ($_GET['paged-bottom'] != $_GET['paged-bottom-original']) $foxy_data['pagination_start'] = $p * ((int)sanitize_text_field($_GET['paged-bottom']) - 1) + 1 + $start_offset;
 		}
 	}
 
@@ -60,26 +60,26 @@ function foxyshop_customer_management() {
 		<tbody><tr><td>
 
 			<div class="foxyshop_field_control">
-				<label for="customer_id_filter"><?php _e('Customer ID', 'foxyshop'); ?></label><input type="text" name="customer_id_filter" id="customer_id_filter" value="<?php echo $foxy_data['customer_id_filter']; ?>" />
+				<label for="customer_id_filter"><?php _e('Customer ID', 'foxyshop'); ?></label><input type="text" name="customer_id_filter" id="customer_id_filter" value="<?php echo esc_attr($foxy_data['customer_id_filter']); ?>" />
 			</div>
 			<div class="foxyshop_field_control">
-				<label for="customer_first_name_filter"><?php _e('Customer First Name', 'foxyshop'); ?></label><input type="text" name="customer_first_name_filter" id="customer_first_name_filter" value="<?php echo $foxy_data['customer_first_name_filter']; ?>" />
+				<label for="customer_first_name_filter"><?php _e('Customer First Name', 'foxyshop'); ?></label><input type="text" name="customer_first_name_filter" id="customer_first_name_filter" value="<?php echo esc_attr($foxy_data['customer_first_name_filter']); ?>" />
 			</div>
 			<div class="foxyshop_field_control">
-				<label for="customer_last_name_filter"><?php _e('Customer Last Name', 'foxyshop'); ?></label><input type="text" name="customer_last_name_filter" id="customer_last_name_filter" value="<?php echo $foxy_data['customer_last_name_filter']; ?>" />
+				<label for="customer_last_name_filter"><?php _e('Customer Last Name', 'foxyshop'); ?></label><input type="text" name="customer_last_name_filter" id="customer_last_name_filter" value="<?php echo esc_attr($foxy_data['customer_last_name_filter']); ?>" />
 			</div>
 			<?php if (version_compare($foxyshop_settings['version'], '0.7.2', ">=")) { ?>
 			<div class="foxyshop_field_control">
-				<label for="custom_field_name_filter"><?php _e('Custom Field Name', 'foxyshop'); ?></label><input type="text" name="custom_field_name_filter" id="custom_field_name_filter" value="<?php echo $foxy_data['custom_field_name_filter']; ?>" />
-				<label for="custom_field_value_filter" style="margin-left: 15px; margin-top: 4px; width: 34px;"><?php _e('Value', 'foxyshop'); ?></label><input type="text" name="custom_field_value_filter" id="custom_field_value_filter" value="<?php echo $foxy_data['custom_field_value_filter']; ?>" />
+				<label for="custom_field_name_filter"><?php _e('Custom Field Name', 'foxyshop'); ?></label><input type="text" name="custom_field_name_filter" id="custom_field_name_filter" value="<?php echo esc_attr($foxy_data['custom_field_name_filter']); ?>" />
+				<label for="custom_field_value_filter" style="margin-left: 15px; margin-top: 4px; width: 34px;"><?php _e('Value', 'foxyshop'); ?></label><input type="text" name="custom_field_value_filter" id="custom_field_value_filter" value="<?php echo esc_attr($foxy_data['custom_field_value_filter']); ?>" />
 			</div>
 			<?php } ?>
 		</td><td>
 			<div class="foxyshop_field_control">
-				<label for="customer_email_filter"><?php _e('Customer Email', 'foxyshop'); ?></label><input type="text" name="customer_email_filter" id="customer_email_filter" value="<?php echo $foxy_data['customer_email_filter']; ?>" />
+				<label for="customer_email_filter"><?php _e('Customer Email', 'foxyshop'); ?></label><input type="text" name="customer_email_filter" id="customer_email_filter" value="<?php echo esc_attr($foxy_data['customer_email_filter']); ?>" />
 			</div>
 			<div class="foxyshop_field_control">
-				<label for="customer_state_filter"><?php _e('Customer State', 'foxyshop'); ?></label><input type="text" name="customer_state_filter" id="customer_state_filter" value="<?php echo $foxy_data['customer_state_filter']; ?>" />
+				<label for="customer_state_filter"><?php _e('Customer State', 'foxyshop'); ?></label><input type="text" name="customer_state_filter" id="customer_state_filter" value="<?php echo esc_attr($foxy_data['customer_state_filter']); ?>" />
 			</div>
 
 			<div style="clear: both;"></div>
@@ -97,7 +97,7 @@ function foxyshop_customer_management() {
 	//echo "<pre>" . substr($foxy_response,1,2000) . "</pre>";
 
 	if ((string)$xml->result == "ERROR") {
-		echo '<h3>' . (string)$xml->messages->message . '</h3>';
+		echo ('<h3>' . wp_kses((string)$xml->messages->message) . '</h3>');
 		return;
 	} else {
 		?>
@@ -108,7 +108,7 @@ function foxyshop_customer_management() {
 		<input type="hidden" name="page" value="foxyshop_customer_management" />
 
 		<?php
-		echo $foxyshop_hidden_input;
+		echo wp_kses($foxyshop_hidden_input);
 		foxyshop_api_paging_nav('customers', 'top', $xml, $foxyshop_querystring);
 		?>
 
@@ -121,7 +121,7 @@ function foxyshop_customer_management() {
 					<th><span><?php _e('First Name', 'foxyshop'); ?></span><span class="sorting-indicator"></span></th>
 					<th><span><?php _e('Email', 'foxyshop'); ?></span><span class="sorting-indicator"></span></th>
 					<th><span><?php _e('Orders', 'foxyshop'); ?></span><span class="sorting-indicator"></span></th>
-					<?php if ($foxyshop_settings['enable_subscriptions']) echo "<th><span>" . __('Subscriptions', 'foxyshop') . "</span><span class=\"sorting-indicator\"></span></th>\n"; ?>
+					<?php if ($foxyshop_settings['enable_subscriptions']) echo ("<th><span>" . __('Subscriptions', 'foxyshop') . "</span><span class=\"sorting-indicator\"></span></th>\n"); ?>
 				</tr>
 			</thead>
 			<tfoot>
@@ -131,7 +131,7 @@ function foxyshop_customer_management() {
 					<th><?php _e('First Name', 'foxyshop'); ?></th>
 					<th><?php _e('Email', 'foxyshop'); ?></th>
 					<th><?php _e('Orders', 'foxyshop'); ?></th>
-					<?php if ($foxyshop_settings['enable_subscriptions']) echo "<th>" . __('Subscriptions', 'foxyshop') . "</th>\n"; ?>
+					<?php if ($foxyshop_settings['enable_subscriptions']) echo ("<th>" . __('Subscriptions', 'foxyshop') . "</th>\n"); ?>
 				</tr>
 			</tfoot>
 			<tbody id="the-list">
@@ -147,14 +147,14 @@ function foxyshop_customer_management() {
 			$last_modified_date = (string)$customer->last_modified_date;
 			$last_modified_date = date(apply_filters("foxyshop_date_time_format", "Y-m-d H:i"), strtotime($last_modified_date));
 
-			echo '<tr rel="' . $customer_id . '">';
-			echo '<td><strong><a href="#" class="view_detail">' . (string)$customer_id . '</a></strong></td>';
-			echo '<td>' . (string)$customer_last_name . '</td>';
-			echo '<td>' . (string)$customer_first_name . '</td>';
-			echo '<td>' .(string) $customer_email . '</td>';
-			echo '<td><a href="edit.php?post_type=foxyshop_product&page=foxyshop_order_management&customer_id_filter=' . (string)$customer->customer_id . '&transaction_date_filter_begin=&transaction_date_filter_end=&hide_transaction_filter=&foxyshop_search=1">' . __('Orders', 'foxyshop') . '</a></td>';
-			if ($foxyshop_settings['enable_subscriptions']) echo '<td><a href="edit.php?post_type=foxyshop_product&page=foxyshop_subscription_management&customer_id_filter=' . (string)$customer->customer_id . '&start_date_filter_begin=&start_date_filter_end=&&foxyshop_search=1">' . __('Subscriptions', 'foxyshop') . '</a></td>';
-			echo '</tr>'."\n";
+			echo ('<tr rel="' . esc_attr($customer_id) . '">');
+			echo ('<td><strong><a href="#" class="view_detail">' . esc_attr((string)$customer_id) . '</a></strong></td>');
+			echo ('<td>' . esc_attr((string)$customer_last_name) . '</td>');
+			echo ('<td>' . esc_attr((string)$customer_first_name) . '</td>');
+			echo ('<td>' . esc_attr((string) $customer_email) . '</td>');
+			echo ('<td><a href="edit.php?post_type=foxyshop_product&page=foxyshop_order_management&customer_id_filter=' . esc_attr((string)$customer->customer_id) . '&transaction_date_filter_begin=&transaction_date_filter_end=&hide_transaction_filter=&foxyshop_search=1">' . __('Orders', 'foxyshop') . '</a></td>');
+			if ($foxyshop_settings['enable_subscriptions']) echo ('<td><a href="edit.php?post_type=foxyshop_product&page=foxyshop_subscription_management&customer_id_filter=' . (string)$customer->customer_id . '&start_date_filter_begin=&start_date_filter_end=&&foxyshop_search=1">' . __('Subscriptions', 'foxyshop') . '</a></td>');
+			echo ('</tr>'."\n");
 
 
 			$holder .= '<div class="detail_holder" id="holder_' . $customer_id. '">'."\n";
@@ -229,16 +229,16 @@ function foxyshop_customer_management() {
 
 		}
 
-		echo '</tbody></table>';
+		echo ('</tbody></table>');
 
 		foxyshop_api_paging_nav('customers', 'bottom', $xml, $foxyshop_querystring);
 		?>
 		</form>
 	<?php } ?>
 
-	<div id="details_holder"><?php echo $holder; ?></div>
+	<div id="details_holder"><?php echo wp_kses($holder); ?></div>
 
-	<script type="text/javascript" src="<?php echo FOXYSHOP_DIR; ?>/js/jquery.tablesorter.js"></script>
+	<script type="text/javascript" src="<?php echo FOXYSHOP_DIR; ?>/js/tablesorter.js"></script>
 	<script type="text/javascript">
 	jQuery(document).ready(function($){
 		$(".foxyshop-list-table thead th").click(function() {
@@ -274,5 +274,5 @@ function foxyshop_customer_management() {
 
 
 	<?php
-	echo '</div>';
+	echo ('</div>');
 }

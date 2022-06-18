@@ -7,6 +7,9 @@ if (!defined('ABSPATH')) exit();
 add_action('wp_ajax_save_inventory_values', 'foxyshop_save_inventory_values_ajax');
 function foxyshop_save_inventory_values_ajax() {
 	if (!check_admin_referer('update-foxyshop-inventory')) return;
+	$_POST['code'] = sanitize_text_field($_POST['code']);
+	$_POST['new_count'] = sanitize_text_field($_POST['new_count']);
+	$_POST['product_id'] = sanitize_text_field($_POST['product_id']);
 	foxyshop_inventory_count_update($_POST['code'], $_POST['new_count'], $_POST['product_id'], true);
 	die;
 }
@@ -18,6 +21,8 @@ function foxyshop_inventory_update() {
 
 	//Saving Values From Uploaded Data
 	if (isset($_POST['foxyshop_inventory_updates'])) {
+	$_POST['foxyshop_inventory_updates'] = sanitize_text_field($_POST['foxyshop_inventory_updates']);
+
 		if (!check_admin_referer('import-foxyshop-inventory-updates')) return;
 
 		$lines = preg_split("/(\r\n|\n|\r)/", $_POST['foxyshop_inventory_updates']);
@@ -58,7 +63,11 @@ function foxyshop_inventory_management_page() {
 		if (isset($_GET['saved'])) echo '<div class="updated"><p>' . __('Your New Inventory Levels Have Been Saved.') . '</p></div>';
 
 		//Import Completed
-		if (isset($_GET['importcompleted'])) echo '<div class="updated"><p>' . sprintf(__('Import completed: %s records updated.'), (int)$_GET['importcompleted']) . '</p></div>';
+		if (isset($_GET['importcompleted'])) echo '<div class="updated"><p>' 
+			. sprintf(
+				__('Import completed: %s records updated.'), 
+				(int)sanitize_text_field($_GET['importcompleted']) 
+			) . '</p></div>';
 		?>
 
 		<table cellpadding="0" cellspacing="0" border="0" class="wp-list-table widefat foxyshop-list-table" id="inventory_level" style="margin-top: 14px;">
@@ -157,7 +166,7 @@ function foxyshop_inventory_management_page() {
 		<table class="widefat">
 			<thead>
 				<tr>
-					<th><img src="<?php echo $export_icon; ?>" alt="" /><?php _e('Import New Inventory Values'); ?></th>
+					<th><img src="<?php echo esc_url($export_icon); ?>" alt="" /><?php _e('Import New Inventory Values'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -167,7 +176,7 @@ function foxyshop_inventory_management_page() {
 							Copy and paste these values into Excel. Make your changes, then copy and paste back in and click update.<br />
 							You can also add new inventory levels by using the template to add new rows with code and inventory fields.
 						</p>
-						<textarea id="foxyshop_inventory_updates" name="foxyshop_inventory_updates" wrap="auto" style="float: left; width:650px;height: 200px;"><?php echo $exported; ?></textarea>
+						<textarea id="foxyshop_inventory_updates" name="foxyshop_inventory_updates" wrap="auto" style="float: left; width:650px;height: 200px;"><?php echo esc_textarea($exported); ?></textarea>
 						<div style="clear: both;"></div>
 						<p><input type="submit" class="button-primary" value="<?php _e('Update Inventory Values'); ?>" /></p>
 					</td>
@@ -180,7 +189,7 @@ function foxyshop_inventory_management_page() {
 
 	</div>
 
-<script type="text/javascript" src="<?php echo FOXYSHOP_DIR; ?>/js/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="<?php echo FOXYSHOP_DIR; ?>/js/tablesorter.js"></script>
 <script type="text/javascript">
 jQuery(document).ready(function($){
 	$(".inventory_update_width").blur(function() {

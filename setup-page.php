@@ -7,8 +7,8 @@ if (get_option("foxyshop_setup_required")) {
 }
 function foxyshop_show_setup_prompt() {
 	if (isset($_GET['hide_setup_prompt']) || isset($_GET['setup']) || !current_user_can('manage_options')) return;
-	$page = (isset($_GET['page']) ? $_GET['page'] : "");
-	if ($page != "foxyshop_setup") echo '<div class="updated"><p style="height: 16px;"><img src="' . FOXYSHOP_DIR . '/images/icon.png" alt="" style="float: left; margin: 0 4px 0 0;" /><strong style="float: left; margin-top: 1px;">Your FoxyShop store needs to be synced with your FoxyCart account: <a href="admin.php?page=foxyshop_setup">Setup Now</a></strong><small style="float: right;"><a href="edit.php?post_type=foxyshop_product&page=foxyshop_settings_page&hide_setup_prompt=1">I&rsquo;ll Do It Later</a></small></p></div>';
+	$page = (isset($_GET['page']) ? sanitize_text_field($_GET['page']) : "");
+	if ($page != "foxyshop_setup") echo ('<div class="updated"><p style="height: 16px;"><img src="' . FOXYSHOP_DIR . '/images/icon.png" alt="" style="float: left; margin: 0 4px 0 0;" /><strong style="float: left; margin-top: 1px;">Your FoxyShop store needs to be synced with your FoxyCart account: <a href="admin.php?page=foxyshop_setup">Setup Now</a></strong><small style="float: right;"><a href="edit.php?post_type=foxyshop_product&page=foxyshop_settings_page&hide_setup_prompt=1">I&rsquo;ll Do It Later</a></small></p></div>');
 }
 
 
@@ -20,18 +20,18 @@ function foxyshop_setup_menu() {
 }
 
 function save_foxyshop_setup() {
-	$foxyshop_settings_update_key = (isset($_POST['action']) ? $_POST['action'] : "");
+	$foxyshop_settings_update_key = (isset($_POST['action']) ? sanitize_text_field($_POST['action']) : "");
 	if ($foxyshop_settings_update_key != "foxyshop_setup_save") return;
 	if (!check_admin_referer('save-foxyshop-setup')) return;
 
 	global $foxyshop_settings;
 
-	$domain = $_POST['foxyshop_domain'];
+	$domain = sanitize_text_field($_POST['foxyshop_domain']);
 	if ($domain) delete_option("foxyshop_setup_required"); //Delete the setup prompt if domain entered
 	if ($domain && strpos($domain, ".") === false) $domain .= ".foxycart.com";
 	$foxyshop_settings["domain"] = trim(stripslashes(str_replace("http://","",$domain)));
 
-	$foxyshop_settings['version'] = $_POST['foxyshop_version'];
+	$foxyshop_settings['version'] = sanitize_text_field($_POST['foxyshop_version']);
 
 	//Get Category List if >= 0.7.2
 	if ($cached_shipping_categories = foxyshop_get_category_list()) $foxyshop_settings['ship_categories'] = $cached_shipping_categories;
@@ -49,7 +49,7 @@ function foxyshop_setup_legacy() {
 <div class="icon32" id="icon-options-general"><br></div>
 <h2><?php _e('FoxyShop Setup Wizard', 'foxyshop'); ?></h2>
 
-<a href="http://www.foxy-shop.com/?utm_source=plugin&utm_medium=app&utm_campaign=pluginlink_<?php echo FOXYSHOP_VERSION ?>" target="_blank"><img src="<?php echo FOXYSHOP_DIR; ?>/images/logo.png" alt="FoxyShop" style="float: right; margin-left: 20px;" /></a>
+<a href="http://www.foxy-shop.com/?utm_source=plugin&utm_medium=app&utm_campaign=pluginlink_<?php echo FOXYSHOP_VERSION ?>" target="_blank"><img src="<?php echo esc_url(FOXYSHOP_DIR); ?>/images/logo.png" alt="FoxyShop" style="float: right; margin-left: 20px;" /></a>
 <h3>Cool! You've got your new FoxyShop store installed and you are ready to get started.</h3>
 
 <p>The first thing you'll need to do is open up your FoxyCart account in another window so we can copy some information over there. If you don't have a FoxyCart account yet, that's no problem. Here's a short video overview that may help.</p>
@@ -92,7 +92,7 @@ function foxyshop_setup_legacy() {
 					$foxycart_domain = $foxyshop_settings['domain'];
 				}
 				?>
-				<td class="foxycartdomain <?php echo $foxycart_domain_class; ?>">
+				<td class="foxycartdomain <?php echo esc_attr($foxycart_domain_class); ?>">
 					<label for="foxyshop_domain"><?php _e('Enter Your FoxyCart Domain'); ?>:</label> <input type="text" name="foxyshop_domain" id="foxyshop_domain" value="<?php echo htmlspecialchars($foxycart_domain); ?>" size="50" />
 					<label id="foxydomainsimplelabel">.foxycart.com</label>
 					<div id="foxydomain_simple">Have a customized FoxyCart domain like store.yoursite.com? <a href="#" class="foxydomainpicker" rel="advanced">Click here.</a></div>
@@ -128,7 +128,7 @@ function foxyshop_setup_legacy() {
 			<td><h3>2A</h3></td>
 			<td>
 				<div>Check the Box to Enable Cart Validation (REQUIRED). Then replace the existing API key with this one:</div>
-				<input type="text" id="foxyshop_key" name="key" value="<?php echo $foxyshop_settings['api_key']; ?>" readonly="readonly" onclick="this.select();" />
+				<input type="text" id="foxyshop_key" name="key" value="<?php echo esc_attr($foxyshop_settings['api_key']); ?>" readonly="readonly" onclick="this.select();" />
 			</td>
 		</tr>
 		<tr>

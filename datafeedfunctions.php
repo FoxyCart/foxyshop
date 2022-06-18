@@ -25,18 +25,30 @@ function foxyshop_run_external_datafeeds($external_datafeeds) {
 
 	foreach($external_datafeeds as $feedurl) {
 		if ($feedurl) {
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $feedurl);
-			if (isset($_POST["FoxyData"])) {
-				curl_setopt($ch, CURLOPT_POSTFIELDS, array("FoxyData" => $_POST["FoxyData"]));
-			} elseif (isset($_POST["FoxySubscriptionData"])) {
-				curl_setopt($ch, CURLOPT_POSTFIELDS, array("FoxySubscriptionData" => $_POST["FoxySubscriptionData"]));
+			$payload = [];
+			if(isset($_POST["FoxyData"]))
+				$payload = array("FoxyData" => $_POST["FoxyData"]);
+			elseif(isset($_POST["FoxySubscriptionData"]))
+				$payload = array("FoxySubscriptionData" => $_POST["FoxySubscriptionData"]);
+
+			$args = [
+					'headers' =>  ["Content-Type" => "application/x-www-form-urlencoded"],
+					'body' => $payload
+				];
+
+			if (defined('FOXYSHOP_CURL_SSL_VERIFYPEER')){
+				$args['sslverify'] = FOXYSHOP_CURL_SSL_VERIFYPEER;
 			}
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, FOXYSHOP_CURL_CONNECTTIMEOUT);
-			curl_setopt($ch, CURLOPT_TIMEOUT, FOXYSHOP_CURL_TIMEOUT);
-			if (defined('FOXYSHOP_CURL_SSL_VERIFYPEER')) curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FOXYSHOP_CURL_SSL_VERIFYPEER);
-			$response = trim(curl_exec($ch));
+
+
+			$response = wp_remote_post($feedurl,
+				$args);
+
+			if ( is_wp_error( $response ) ) {
+				    die('Error');	 
+			}
+	
+			$response = trim($response['body']);
 
 			//If Error, Send Email and Kill Process
 			if ($response != 'foxy' && $response != 'foxysub') {

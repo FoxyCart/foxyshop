@@ -48,7 +48,7 @@ while (have_posts()) : the_post();
 	//if (foxyshop_is_product_new(14)) echo '<p class="new-product">NEW!</p>';
 
 	//Main Product Description
-	echo $product['description'];
+	echo wp_kses($product['description']);
 
 
 	//Show Variations (showQuantity: 0 = Do Not Show Qty, 1 = Show Before Variations, 2 = Show Below Variations)

@@ -5,11 +5,11 @@ if (!defined('ABSPATH')) exit();
 if (isset($_GET['action-top']) && isset($_GET['action-bottom'])) add_action('admin_init', 'foxyshop_multi_api_edit');
 function foxyshop_multi_api_edit() {
 	if (!isset($_GET['post'])) return;
-	if ($_GET['action-top'] == -1) $act = $_GET['action-bottom'];
-	if ($_GET['action-bottom'] == -1) $act = $_GET['action-top'];
+	if ($_GET['action-top'] == -1) $act = sanitize_text_field($_GET['action-bottom']);
+	if ($_GET['action-bottom'] == -1) $act = sanitize_text_field($_GET['action-top']);
 	if ($act == -1) return;
 	$posts = $_GET['post'];
-	if (!is_array($posts)) $posts = array($_POST['post']);
+	if (!is_array($posts)) $posts = array(sanitize_text_field($_POST['post']));
 
 	if ($act == "archive" || $act == "unarchive") {
 		$hide_transaction = $act == "archive" ? 1 : 0;
@@ -23,7 +23,7 @@ function foxyshop_multi_api_edit() {
 if (isset($_GET['foxyshop_print_invoice'])) add_action('admin_init', 'foxyshop_print_invoice');
 
 if (isset($_GET['transaction_search_type'])) {
-	$transaction_search_type = $_GET['transaction_search_type'];
+	$transaction_search_type = sanitize_text_field($_GET['transaction_search_type']);
 	if ($transaction_search_type == "print_recipts") {
 		add_action('admin_init', 'foxyshop_print_invoice');
 	} elseif ($transaction_search_type == "export_csv" || $transaction_search_type == "export_tab") {
@@ -66,10 +66,10 @@ function foxyshop_print_invoice() {
 		$fields = array("is_test_filter", "hide_transaction_filter", "data_is_fed_filter", "id_filter", "display_id_filter", "order_total_filter", "coupon_code_filter", "transaction_date_filter_begin", "transaction_date_filter_end", "customer_id_filter", "customer_email_filter", "customer_first_name_filter", "customer_last_name_filter","customer_state_filter", "shipping_state_filter", "customer_ip_filter", "product_code_filter", "product_name_filter", "product_option_name_filter", "product_option_value_filter");
 		foreach ($fields as $field) {
 			if (isset($_GET[$field])) {
-				$foxy_data[$field] = $_GET[$field];
+				$foxy_data[$field] = sanitize_text_field($_GET[$field]);
 			}
 		}
-		$foxy_data['pagination_start'] = (isset($_GET['pagination_start']) ? $_GET['pagination_start'] : 0);
+		$foxy_data['pagination_start'] = (isset($_GET['pagination_start']) ? sanitize_text_field($_GET['pagination_start']) : 0);
 		if (version_compare($foxyshop_settings['version'], '0.7.0', ">")) $foxy_data['entries_per_page'] = FOXYSHOP_API_ENTRIES_PER_PAGE;
 	}
 
@@ -136,12 +136,13 @@ function foxyshop_order_management() {
 		$fields = array("is_test_filter", "hide_transaction_filter", "data_is_fed_filter", "id_filter", "display_id_filter", "order_total_filter", "coupon_code_filter", "transaction_date_filter_begin", "transaction_date_filter_end", "customer_id_filter", "customer_email_filter", "customer_first_name_filter", "customer_last_name_filter","customer_state_filter", "shipping_state_filter", "customer_ip_filter", "product_code_filter", "product_name_filter", "product_option_name_filter", "product_option_value_filter", "custom_field_name_filter", "custom_field_value_filter");
 		foreach ($fields as $field) {
 			if (isset($_GET[$field])) {
+				$_GET[$field] = sanitize_text_field($_GET[$field]);
 				$foxy_data[$field] = $_GET[$field];
 				$foxyshop_querystring .= "&amp;$field=" . urlencode($_GET[$field]);
 				$foxyshop_hidden_input .= '<input type="hidden" name="' . $field . '" value="' . htmlspecialchars($_GET[$field]) . '" />' . "\n";
 			}
 		}
-		$foxy_data['pagination_start'] = (isset($_GET['pagination_start']) ? $_GET['pagination_start'] : 0);
+		$foxy_data['pagination_start'] = (isset($_GET['pagination_start']) ? sanitize_text_field($_GET['pagination_start']) : 0);
 		$p = (int)(version_compare($foxyshop_settings['version'], '0.7.1', "<") ? 50 : FOXYSHOP_API_ENTRIES_PER_PAGE);
 		if (version_compare($foxyshop_settings['version'], '0.7.0', ">")) $foxy_data['entries_per_page'] = $p;
 		$start_offset = (int)(version_compare($foxyshop_settings['version'], '0.7.1', "<=") ? -1 : 0);
@@ -151,7 +152,7 @@ function foxyshop_order_management() {
 		}
 	}
 
-	$transaction_search_type = isset($_GET['transaction_search_type']) ? $_GET['transaction_search_type'] : '';
+	$transaction_search_type = isset($_GET['transaction_search_type']) ? sanitize_text_field($_GET['transaction_search_type']) : '';
 
 	if ($foxyshop_settings["orderdesk_url"]) {
 		$orderdesk_link = ' <a class="' . (version_compare(get_bloginfo('version'), '3.2', "<") ? "button " : '') . 'add-new-h2" href="https://app.orderdesk.me/" target="_blank">' . __('Launch Order Desk', 'foxyshop') . '</a>';
@@ -162,7 +163,7 @@ function foxyshop_order_management() {
 
 	<div class="wrap">
 		<div class="icon32 icon32-posts-page" id="icon-edit-pages"><br></div>
-		<h2><?php _e('Manage Orders', 'foxyshop'); echo $orderdesk_link; ?></h2>
+		<h2><?php _e('Manage Orders', 'foxyshop'); echo wp_kses($orderdesk_link); ?></h2>
 
 
 		<form action="edit.php" method="get" id="foxyshop_searchform" name="foxyshop_searchform" style="display: block; margin: 14px 0 20px 0;">
@@ -177,105 +178,105 @@ function foxyshop_order_management() {
 			<div class="foxyshop_field_control foxyshop_radio_label_container">
 				<label><?php _e('Transaction Status', 'foxyshop'); ?></label>
 
-				<input type="radio" id="hide_transaction_filter0" name="hide_transaction_filter" value="0"<?php echo $foxy_data['hide_transaction_filter'] == 0 ? ' checked="checked"' : ''; ?> />
+				<input type="radio" id="hide_transaction_filter0" name="hide_transaction_filter" value="0" <?php echo wp_kses($foxy_data['hide_transaction_filter'] == 0 ? ' checked="checked"' : ''); ?> />
 				<label for="hide_transaction_filter0"><?php _e('Visible', 'foxyshop'); ?></label>
 
-				<input type="radio" id="hide_transaction_filter1" name="hide_transaction_filter" value="1"<?php echo $foxy_data['hide_transaction_filter'] == 1 ? ' checked="checked"' : ''; ?> />
+				<input type="radio" id="hide_transaction_filter1" name="hide_transaction_filter" value="1" <?php echo wp_kses($foxy_data['hide_transaction_filter'] == 1 ? ' checked="checked"' : ''); ?> />
 				<label for="hide_transaction_filter1"><?php _e('Hidden', 'foxyshop'); ?></label>
 
-				<input type="radio" id="hide_transaction_filter" name="hide_transaction_filter" value=""<?php echo $foxy_data['hide_transaction_filter'] == '' ? ' checked="checked"' : ''; ?> />
+				<input type="radio" id="hide_transaction_filter" name="hide_transaction_filter" value="" <?php echo wp_kses($foxy_data['hide_transaction_filter'] == '' ? ' checked="checked"' : ''); ?> />
 				<label for="hide_transaction_filter"><?php _e('Both', 'foxyshop'); ?></label>
 			</div>
 
 			<div class="foxyshop_field_control foxyshop_radio_label_container">
 				<label><?php _e('Datafeed Status', 'foxyshop'); ?></label>
 
-				<input type="radio" id="data_is_fed_filter0" name="data_is_fed_filter" value="0"<?php echo $foxy_data['data_is_fed_filter'] == 0 ? ' checked="checked"' : ''; ?> />
+				<input type="radio" id="data_is_fed_filter0" name="data_is_fed_filter" value="0" <?php echo wp_kses($foxy_data['data_is_fed_filter'] == 0 ? ' checked="checked"' : ''); ?> />
 				<label for="data_is_fed_filter0"><?php _e('Fed', 'foxyshop'); ?></label>
 
-				<input type="radio" id="data_is_fed_filter1" name="data_is_fed_filter" value="1"<?php echo $foxy_data['data_is_fed_filter'] == 1 ? ' checked="checked"' : ''; ?> />
+				<input type="radio" id="data_is_fed_filter1" name="data_is_fed_filter" value="1" <?php echo wp_kses($foxy_data['data_is_fed_filter'] == 1 ? ' checked="checked"' : ''); ?> />
 				<label for="data_is_fed_filter1"><?php _e('Unfed', 'foxyshop'); ?></label>
 
-				<input type="radio" id="data_is_fed_filter" name="data_is_fed_filter" value=""<?php echo $foxy_data['data_is_fed_filter'] == '' ? ' checked="checked"' : ''; ?> />
+				<input type="radio" id="data_is_fed_filter" name="data_is_fed_filter" value="" <?php echo wp_kses($foxy_data['data_is_fed_filter'] == '' ? ' checked="checked"' : ''); ?> />
 				<label for="data_is_fed_filter"><?php _e('Both', 'foxyshop'); ?></label>
 			</div>
 
 			<div class="foxyshop_field_control foxyshop_radio_label_container">
 				<label><?php _e('Test Transactions', 'foxyshop'); ?></label>
 
-				<input type="radio" id="is_test_filter0" name="is_test_filter" value="0"<?php echo $foxy_data['is_test_filter'] == 0 ? ' checked="checked"' : ''; ?> />
+				<input type="radio" id="is_test_filter0" name="is_test_filter" value="0" <?php echo wp_kses($foxy_data['is_test_filter'] == 0 ? ' checked="checked"' : ''); ?> />
 				<label for="is_test_filter0"><?php _e('Live', 'foxyshop'); ?></label>
 
-				<input type="radio" id="is_test_filter1" name="is_test_filter" value="1"<?php echo $foxy_data['is_test_filter'] == 1 ? ' checked="checked"' : ''; ?> />
+				<input type="radio" id="is_test_filter1" name="is_test_filter" value="1" <?php echo wp_kses($foxy_data['is_test_filter'] == 1 ? ' checked="checked"' : ''); ?> />
 				<label for="is_test_filter1"><?php _e('Test', 'foxyshop'); ?></label>
 
-				<input type="radio" id="is_test_filter" name="is_test_filter" value=""<?php echo $foxy_data['is_test_filter'] == '' ? ' checked="checked"' : ''; ?> />
+				<input type="radio" id="is_test_filter" name="is_test_filter" value="" <?php echo wp_kses($foxy_data['is_test_filter'] == '' ? ' checked="checked"' : ''); ?> />
 				<label for="is_test_filter"><?php _e('Both', 'foxyshop'); ?></label>
 			</div>
 
 			<div class="foxyshop_field_control">
-				<label for="order_id_filter"><?php _e('Order ID', 'foxyshop'); ?></label><input type="text" name="id_filter" id="id_filter" value="<?php echo $foxy_data['id_filter']; ?>" />
+				<label for="order_id_filter"><?php _e('Order ID', 'foxyshop'); ?></label><input type="text" name="id_filter" id="id_filter" value="<?php echo esc_attr($foxy_data['id_filter']); ?>" />
 			</div>
 
 			<div class="foxyshop_field_control">
-				<label for="display_id_filter"><?php _e('Display ID', 'foxyshop'); ?></label><input type="text" name="display_id_filter" id="display_id_filter" value="<?php echo $foxy_data['display_id_filter']; ?>" />
+				<label for="display_id_filter"><?php _e('Display ID', 'foxyshop'); ?></label><input type="text" name="display_id_filter" id="display_id_filter" value="<?php echo esc_attr($foxy_data['display_id_filter']); ?>" />
 			</div>
 
 			<div class="foxyshop_field_control">
-				<label for="order_total_filter"><?php _e('Order Total', 'foxyshop'); ?></label><input type="text" name="order_total_filter" id="order_total_filter" value="<?php echo $foxy_data['order_total_filter']; ?>" />
+				<label for="order_total_filter"><?php _e('Order Total', 'foxyshop'); ?></label><input type="text" name="order_total_filter" id="order_total_filter" value="<?php echo esc_attr($foxy_data['order_total_filter']); ?>" />
 			</div>
 
 			<div class="foxyshop_field_control">
-				<label for="coupon_code_filter"><?php _e('Coupon Code', 'foxyshop'); ?></label><input type="text" name="coupon_code_filter" id="coupon_code_filter" value="<?php echo $foxy_data['coupon_code_filter']; ?>" />
+				<label for="coupon_code_filter"><?php _e('Coupon Code', 'foxyshop'); ?></label><input type="text" name="coupon_code_filter" id="coupon_code_filter" value="<?php echo esc_attr($foxy_data['coupon_code_filter']); ?>" />
 			</div>
 
 			<div class="foxyshop_field_control">
-				<label for="product_code_filter"><?php echo FOXYSHOP_PRODUCT_NAME_SINGULAR . ' ' . __('Code', 'foxyshop'); ?></label><input type="text" name="product_code_filter" id="product_code_filter" value="<?php echo $foxy_data['product_code_filter']; ?>" />
+				<label for="product_code_filter"><?php echo FOXYSHOP_PRODUCT_NAME_SINGULAR . ' ' . __('Code', 'foxyshop'); ?></label><input type="text" name="product_code_filter" id="product_code_filter" value="<?php echo esc_attr($foxy_data['product_code_filter']); ?>" />
 			</div>
 			<div class="foxyshop_field_control">
-				<label for="product_name_filter"><?php echo FOXYSHOP_PRODUCT_NAME_SINGULAR . ' ' . __('Name', 'foxyshop'); ?></label><input type="text" name="product_name_filter" id="product_name_filter" value="<?php echo $foxy_data['product_name_filter']; ?>" />
+				<label for="product_name_filter"><?php echo FOXYSHOP_PRODUCT_NAME_SINGULAR . ' ' . __('Name', 'foxyshop'); ?></label><input type="text" name="product_name_filter" id="product_name_filter" value="<?php echo esc_attr($foxy_data['product_name_filter']); ?>" />
 			</div>
 			<div class="foxyshop_field_control">
-				<label for="product_option_name_filter"><?php echo FOXYSHOP_PRODUCT_NAME_SINGULAR . ' ' . __('Option Name', 'foxyshop'); ?></label><input type="text" name="product_option_name_filter" id="product_option_name_filter" value="<?php echo $foxy_data['product_option_name_filter']; ?>" />
-				<label for="product_option_value_filter" style="margin-left: 15px; margin-top: 4px; width: 34px;"><?php _e('Value', 'foxyshop'); ?></label><input type="text" name="product_option_value_filter" id="product_option_value_filter" value="<?php echo $foxy_data['product_option_value_filter']; ?>" />
+				<label for="product_option_name_filter"><?php echo FOXYSHOP_PRODUCT_NAME_SINGULAR . ' ' . __('Option Name', 'foxyshop'); ?></label><input type="text" name="product_option_name_filter" id="product_option_name_filter" value="<?php echo esc_attr($foxy_data['product_option_name_filter']); ?>" />
+				<label for="product_option_value_filter" style="margin-left: 15px; margin-top: 4px; width: 34px;"><?php _e('Value', 'foxyshop'); ?></label><input type="text" name="product_option_value_filter" id="product_option_value_filter" value="<?php echo esc_attr($foxy_data['product_option_value_filter']); ?>" />
 			</div>
 
 			<?php if (version_compare($foxyshop_settings['version'], '0.7.2', ">=")) { ?>
 			<div class="foxyshop_field_control">
-				<label for="custom_field_name_filter"><?php _e('Custom Field Name', 'foxyshop'); ?></label><input type="text" name="custom_field_name_filter" id="custom_field_name_filter" value="<?php echo $foxy_data['custom_field_name_filter']; ?>" />
-				<label for="custom_field_value_filter" style="margin-left: 15px; margin-top: 4px; width: 34px;"><?php _e('Value', 'foxyshop'); ?></label><input type="text" name="custom_field_value_filter" id="custom_field_value_filter" value="<?php echo $foxy_data['custom_field_value_filter']; ?>" />
+				<label for="custom_field_name_filter"><?php _e('Custom Field Name', 'foxyshop'); ?></label><input type="text" name="custom_field_name_filter" id="custom_field_name_filter" value="<?php echo esc_attr($foxy_data['custom_field_name_filter']); ?>" />
+				<label for="custom_field_value_filter" style="margin-left: 15px; margin-top: 4px; width: 34px;"><?php _e('Value', 'foxyshop'); ?></label><input type="text" name="custom_field_value_filter" id="custom_field_value_filter" value="<?php echo esc_attr($foxy_data['custom_field_value_filter']); ?>" />
 			</div>
 			<?php } ?>
 
 		</td><td>
 
 			<div class="foxyshop_field_control">
-				<label for="transaction_date_filter_begin"><?php _e('Date Range', 'foxyshop'); ?></label><input type="text" name="transaction_date_filter_begin" id="transaction_date_filter_begin" value="<?php echo $foxy_data['transaction_date_filter_begin']; ?>" class="foxyshop_date_field" />
-				<span><?php _e('to', 'foxyshop'); ?></span><input type="text" name="transaction_date_filter_end" id="transaction_date_filter_end" value="<?php echo $foxy_data['transaction_date_filter_end']; ?>" class="foxyshop_date_field" />
+				<label for="transaction_date_filter_begin"><?php _e('Date Range', 'foxyshop'); ?></label><input type="text" name="transaction_date_filter_begin" id="transaction_date_filter_begin" value="<?php echo esc_attr($foxy_data['transaction_date_filter_begin']); ?>" class="foxyshop_date_field" />
+				<span><?php _e('to', 'foxyshop'); ?></span><input type="text" name="transaction_date_filter_end" id="transaction_date_filter_end" value="<?php echo esc_attr($foxy_data['transaction_date_filter_end']); ?>" class="foxyshop_date_field" />
 			</div>
 
 
 
 			<div class="foxyshop_field_control">
-				<label for="customer_id_filter"><?php _e('Customer ID', 'foxyshop'); ?></label><input type="text" name="customer_id_filter" id="customer_id_filter" value="<?php echo $foxy_data['customer_id_filter']; ?>" />
+				<label for="customer_id_filter"><?php _e('Customer ID', 'foxyshop'); ?></label><input type="text" name="customer_id_filter" id="customer_id_filter" value="<?php echo esc_attr($foxy_data['customer_id_filter']); ?>" />
 			</div>
 			<div class="foxyshop_field_control">
-				<label for="customer_email_filter"><?php _e('Customer Email', 'foxyshop'); ?></label><input type="text" name="customer_email_filter" id="customer_email_filter" value="<?php echo $foxy_data['customer_email_filter']; ?>" />
+				<label for="customer_email_filter"><?php _e('Customer Email', 'foxyshop'); ?></label><input type="text" name="customer_email_filter" id="customer_email_filter" value="<?php echo esc_attr($foxy_data['customer_email_filter']); ?>" />
 			</div>
 			<div class="foxyshop_field_control">
-				<label for="customer_first_name_filter"><?php _e('Customer First Name', 'foxyshop'); ?></label><input type="text" name="customer_first_name_filter" id="customer_first_name_filter" value="<?php echo $foxy_data['customer_first_name_filter']; ?>" />
+				<label for="customer_first_name_filter"><?php _e('Customer First Name', 'foxyshop'); ?></label><input type="text" name="customer_first_name_filter" id="customer_first_name_filter" value="<?php echo esc_attr($foxy_data['customer_first_name_filter']); ?>" />
 			</div>
 			<div class="foxyshop_field_control">
-				<label for="customer_last_name_filter"><?php _e('Customer Last Name', 'foxyshop'); ?></label><input type="text" name="customer_last_name_filter" id="customer_last_name_filter" value="<?php echo $foxy_data['customer_last_name_filter']; ?>" />
+				<label for="customer_last_name_filter"><?php _e('Customer Last Name', 'foxyshop'); ?></label><input type="text" name="customer_last_name_filter" id="customer_last_name_filter" value="<?php echo esc_attr($foxy_data['customer_last_name_filter']); ?>" />
 			</div>
 			<div class="foxyshop_field_control">
-				<label for="customer_state_filter"><?php _e('Customer State', 'foxyshop'); ?></label><input type="text" name="customer_state_filter" id="customer_state_filter" value="<?php echo $foxy_data['customer_state_filter']; ?>" />
+				<label for="customer_state_filter"><?php _e('Customer State', 'foxyshop'); ?></label><input type="text" name="customer_state_filter" id="customer_state_filter" value="<?php echo esc_attr($foxy_data['customer_state_filter']); ?>" />
 			</div>
 			<div class="foxyshop_field_control">
-				<label for="shipping_state_filter"><?php _e('Shipping State', 'foxyshop'); ?></label><input type="text" name="shipping_state_filter" id="shipping_state_filter" value="<?php echo $foxy_data['shipping_state_filter']; ?>" />
+				<label for="shipping_state_filter"><?php _e('Shipping State', 'foxyshop'); ?></label><input type="text" name="shipping_state_filter" id="shipping_state_filter" value="<?php echo esc_attr($foxy_data['shipping_state_filter']); ?>" />
 			</div>
 			<div class="foxyshop_field_control">
-				<label for="customer_ip_filter"><?php _e('Customer IP', 'foxyshop'); ?></label><input type="text" name="customer_ip_filter" id="customer_ip_filter" value="<?php echo $foxy_data['customer_ip_filter']; ?>" />
+				<label for="customer_ip_filter"><?php _e('Customer IP', 'foxyshop'); ?></label><input type="text" name="customer_ip_filter" id="customer_ip_filter" value="<?php echo esc_attr($foxy_data['customer_ip_filter']); ?>" />
 			</div>
 
 			<div style="clear: both;"></div>
@@ -341,7 +342,7 @@ function foxyshop_order_management() {
 		<input type="hidden" name="page" value="foxyshop_order_management" />
 
 		<?php
-		echo $foxyshop_hidden_input;
+		echo wp_kses($foxyshop_hidden_input);
 		foxyshop_api_paging_nav('transactions', 'top', $xml, $foxyshop_querystring);
 		?>
 
@@ -370,7 +371,7 @@ function foxyshop_order_management() {
 
 		<?php
 		$holder = "";
-		$hide_transaction_filter = isset($_REQUEST['hide_transaction_filter']) ? $_REQUEST['hide_transaction_filter'] : 0;
+		$hide_transaction_filter = isset($_REQUEST['hide_transaction_filter']) ? sanitize_text_field($_REQUEST['hide_transaction_filter']) : 0;
 		$transactions = $xml->transactions->transaction ? $xml->transactions->transaction : [];
 		if (!count($transactions)) {
 		  echo '<tr><td colspan="5">'.__('No transaction found.').'</td></tr>';
@@ -629,9 +630,9 @@ function foxyshop_order_management() {
 	<?php } ?>
 
 
-	<div id="details_holder"><?php echo $holder; ?></div>
+	<div id="details_holder"><?php echo wp_kses($holder); ?></div>
 
-	<script type="text/javascript" src="<?php echo FOXYSHOP_DIR; ?>/js/jquery.tablesorter.js"></script>
+	<script type="text/javascript" src="<?php echo FOXYSHOP_DIR; ?>/js/tablesorter.js"></script>
 	<script type="text/javascript">
 	jQuery(document).ready(function($){
 		$(".foxyshop-list-table thead th").click(function() {

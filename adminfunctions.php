@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) exit();
 //Insert jQuery
 function foxyshop_insert_jquery() {
 
-	$jquery_url = "http" . ($_SERVER['SERVER_PORT'] == 443 ? 's' : '') . "://ajax.googleapis.com/ajax/libs/jquery/" . foxyshop_get_jquery_version() . "/jquery.min.js";
+	$jquery_url = "//ajax.googleapis.com/ajax/libs/jquery/" . foxyshop_get_jquery_version() . "/jquery.min.js";
 	wp_deregister_script('jquery');
 	wp_register_script('jquery', apply_filters('foxyshop_jquery_url', $jquery_url), array(), NULL, false);
 	wp_enqueue_script('jquery');
@@ -30,7 +30,7 @@ function foxyshop_remove_jquery() {
 function foxyshop_load_admin_scripts($hook) {
 	global $foxyshop_settings;
 
-	$page = isset($_REQUEST['page']) ? $_REQUEST['page'] : '';
+	$page = isset($_REQUEST['page']) ? sanitize_text_field($_REQUEST['page']) : '';
 
 	//Style - Always Do This
 	wp_enqueue_style('foxyshop_admin_css', FOXYSHOP_DIR . '/css/foxyshop-admin.css');
@@ -48,7 +48,7 @@ function foxyshop_load_admin_scripts($hook) {
 	if ($hook !== 'post.php' && $hook !== 'post-new.php' && $page !== 'cfbe_editor-foxyshop_product' && $page !== 'foxyshop_setup') return;
 	wp_enqueue_script('swfobject');
 	if ($foxyshop_settings['related_products_custom'] || $foxyshop_settings['related_products_tags'] || $foxyshop_settings['enable_addon_products']) {
-		wp_enqueue_script('chosenScript', FOXYSHOP_DIR . '/js/chosen.jquery.min.js', array('jquery'));
+		wp_enqueue_script('chosenScript', FOXYSHOP_DIR . '/js/chosen.min.js', array('jquery'));
 		wp_enqueue_style('chosenStyle', FOXYSHOP_DIR . '/css/chosen.css');
 	}
 	foxyshop_date_picker();
@@ -92,9 +92,9 @@ function foxyshop_date_picker() {
 //Check Permalinks on all admin pages and warn if incorrect
 add_action('admin_notices', 'foxyshop_check_permalinks');
 function foxyshop_check_permalinks() {
-	$permalink_structure = (isset($_POST['permalink_structure']) ? $_POST['permalink_structure'] : get_option('permalink_structure'));
+	$permalink_structure = (isset($_POST['permalink_structure']) ? $_POST['permalink_structure'] : get_option('permalink_structure')); 
 	if ($permalink_structure == '' && current_user_can('manage_options')) {
-		echo '<div class="error"><p><strong>Warning:</strong> Your <a href="options-permalink.php">permalink structure</a> is set to default. Your product links will not work correctly until you have turned on Permalink support. It is recommend that you set to "Month and Name".</p></div>';
+		echo ('<div class="error"><p><strong>Warning:</strong> Your <a href="options-permalink.php">permalink structure</a> is set to default. Your product links will not work correctly until you have turned on Permalink support. It is recommend that you set to "Month and Name".</p></div>');
 	}
 }
 
@@ -162,7 +162,7 @@ function foxyshop_insert_google_analytics() {
 		?><script type="text/javascript" charset="utf-8">
 	var _gaq = _gaq || [];
 	_gaq.push(['_setAccount', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>']);
-	_gaq.push(['_setDomainName', '<?php echo $_SERVER['SERVER_NAME']; ?>']);
+	_gaq.push(['_setDomainName', '<?php echo ($_SERVER['SERVER_NAME']); ?>']);
 	_gaq.push(['_setAllowHash', 'false']);
 	<?php if (strpos($foxyshop_settings['domain'], '.foxycart.com') !== false) echo "_gaq.push(['_setAllowLinker', true]);\n"; ?>
 	_gaq.push(['_trackPageview']);
@@ -208,7 +208,7 @@ function foxyshop_insert_google_analytics() {
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>', 'auto');
+  ga('create', '<?php echo wp_kses(htmlspecialchars($foxyshop_settings['ga']) ) ; ?>', 'auto');
   <?php if ($foxyshop_settings['ga_demographics']) echo "ga('require', 'displayfeatures');\n" ?>
   ga('send', 'pageview');
 </script>
@@ -221,7 +221,7 @@ function foxyshop_insert_google_analytics() {
 
 		<script type="text/javascript">
 var _gaq = _gaq || [];
-_gaq.push(['_setAccount', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>']);
+_gaq.push(['_setAccount', '<?php echo wp_kses(htmlspecialchars($foxyshop_settings['ga'])); ?>']);
 _gaq.push(['_trackPageview']);
 (function() {
 	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
@@ -232,7 +232,7 @@ _gaq.push(['_trackPageview']);
 		}
 
 		} else {
-			echo "\n<!-- Google Analytics Not Loaded Because This is a Logged-In User -->\n";
+			echo ("\n<!-- Google Analytics Not Loaded Because This is a Logged-In User -->\n");
 		}
 	}
 }
@@ -253,7 +253,7 @@ function foxyshop_insert_google_analytics_checkout() {
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>', 'auto', {
+  ga('create', '<?php echo wp_kses(htmlspecialchars($foxyshop_settings['ga'])); ?>', 'auto', {
     'clientId': fc_json.custom_fields['ga'],
     'storage': 'none'
   });
@@ -320,7 +320,7 @@ function foxyshop_insert_google_analytics_checkout() {
 	<script type="text/javascript">
 
 	  var _gaq = _gaq || [];
-	  _gaq.push(['_setAccount', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>']);
+	  _gaq.push(['_setAccount', '<?php echo wp_kses(htmlspecialchars($foxyshop_settings['ga'])); ?>']);
 	  _gaq.push(['_setDomainName', 'none']);
 	  _gaq.push(['_setAllowLinker', true]);
 	  _gaq.push(['_setAllowAnchor', true]);
@@ -364,7 +364,7 @@ function foxyshop_insert_google_analytics_receipt() {
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>', 'auto', {
+  ga('create', '<?php echo wp_kses(htmlspecialchars($foxyshop_settings['ga'])); ?>', 'auto', {
     'clientId': fc_json.custom_fields['ga'],
     'storage': 'none'
   });
@@ -395,7 +395,7 @@ function foxyshop_insert_google_analytics_receipt() {
 	<script type="text/javascript">
 
 	  var _gaq = _gaq || [];
-	  _gaq.push(['_setAccount', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>']);
+	  _gaq.push(['_setAccount', '<?php echo wp_kses(htmlspecialchars($foxyshop_settings['ga'])); ?>']);
 	  _gaq.push(['_setDomainName', 'none']);
 	  _gaq.push(['_setAllowLinker', true]);
 	  _gaq.push(['_setAllowAnchor', true]);
@@ -566,7 +566,7 @@ function foxyshop_activation() {
 		if ($foxyshop_settings['sso_account_required'] == "on") $foxyshop_settings['sso_account_required'] = 1;
 		if (!array_key_exists('enable_dashboard_stats',$foxyshop_settings)) $foxyshop_settings['enable_dashboard_stats'] = ""; //3.0
 		if (!array_key_exists('checkout_customer_create',$foxyshop_settings)) $foxyshop_settings['checkout_customer_create'] = ""; //3.2?
-		if ($foxyshop_settings['default_image'] == WP_PLUGIN_URL."/foxyshop/images/no-photo.png") $foxyshop_settings['default_image'] = ""; //3.3
+		if ($foxyshop_settings['default_image'] == FOXYSHOP_PLUGIN_URL."images/no-photo.png") $foxyshop_settings['default_image'] = ""; //3.3
 		if (!$foxyshop_settings['domain']) add_option("foxyshop_setup_required", 1); //3.3
 		if (!array_key_exists('foxycart_include_cache',$foxyshop_settings)) $foxyshop_settings['foxycart_include_cache'] = ""; //3.3
 		if (!array_key_exists('related_products_custom',$foxyshop_settings)) $foxyshop_settings['related_products_custom'] = "on"; //3.3
@@ -812,12 +812,11 @@ function foxyshop_get_downloadable_list() {
 //Access the FoxyCart API
 function foxyshop_get_foxycart_data($foxyData, $silent_fail = true) {
 	global $foxyshop_settings;
-	$foxyData = array_merge(array("api_token" => $foxyshop_settings['api_key']), $foxyData);
-	$args = array(
-		"redirection" => !defined('FOXYSHOP_CURL_CONNECTTIMEOUT') ? 10 : FOXYSHOP_CURL_CONNECTTIMEOUT,
+	$foxyData = array_merge(array("api_token" => esc_attr($foxyshop_settings['api_key'])), $foxyData);
+	$args = array( 
 		"timeout" => !defined('FOXYSHOP_CURL_TIMEOUT') ? 15 : FOXYSHOP_CURL_TIMEOUT,
 		"method" => "POST",
-		"sslverify" => defined('FOXYSHOP_CURL_SSL_VERIFYPEER') ? FOXYSHOP_CURL_SSL_VERIFYPEER : 1,
+		"sslverify" => 0,
 		"body" => $foxyData,
 	);
 	$response = wp_remote_post("https://" . $foxyshop_settings['domain'] . "/api", $args);
@@ -857,43 +856,43 @@ function foxyshop_api_paging_nav($type, $position, $xml, $querystring) {
 	$current_page = $pagination_start >= 1 ? ceil($pagination_start / $p) : 1;
 	$total_pages = $filtered_total > 0 ? ceil($filtered_total / $p) : 0;
 
-	echo '<div class="tablenav ' . $position . '">';
+	echo ('<div class="tablenav ' . esc_attr($position) . '">');
 
 	//All Transaction
 	if ($type == "transactions") {
-		echo '<div class="alignleft actions">'."\n";
-		echo '<select name="action-' . $position . '">';
-		echo '<option selected="selected" value="-1">Bulk Actions</option>';
-		echo '<option value="archive">Hide</option>';
-		echo '<option value="unarchive">Unhide</option>';
-		echo '</select>'."\n";
-		echo '<input type="submit" value="Apply" class="button-secondary action" id="doaction" name="">'."\n";
-		echo '</div>'."\n";
+		echo ('<div class="alignleft actions">'."\n");
+		echo ('<select name="action-' . esc_attr($position) . '">');
+		echo ('<option selected="selected" value="-1">Bulk Actions</option>');
+		echo ('<option value="archive">Hide</option>');
+		echo ('<option value="unarchive">Unhide</option>');
+		echo ('</select>'."\n");
+		echo ('<input type="submit" value="Apply" class="button-secondary action" id="doaction" name="">'."\n");
+		echo ('</div>'."\n");
 	}
 
-	echo '<input type="hidden" name="paged-' . $position . '-original" value="' . $current_page . '" />'."\n";
-	echo '<div class="tablenav-pages"><span class="displaying-num">' . $filtered_total . ' item' . ($filtered_total == 1 ? '' : 's') . '</span>'."\n";
+	echo ('<input type="hidden" name="paged-' . esc_attr($position) . '-original" value="' . esc_attr($current_page) . '" />'."\n");
+	echo ('<div class="tablenav-pages"><span class="displaying-num">' . esc_attr($filtered_total) . ' item' . ($filtered_total == 1 ? '' : 's') . '</span>'."\n");
 
 	if ($pagination_start > 1 || $filtered_total > $pagination_end) {
 		//First
-		echo '<span class="pagination-links"><a href="edit.php' . $querystring . '&amp;pagination_start=' . (1 + $start_offset) . '" title="Go to the first page" class="first-page' . ($current_page == 1 ? ' disabled' : '') . '">&laquo;</a>'."\n";
+		echo ('<span class="pagination-links"><a href="edit.php' . $querystring . '&amp;pagination_start=' . (1 + $start_offset) . '" title="Go to the first page" class="first-page' . ($current_page == 1 ? ' disabled' : '') . '">&laquo;</a>'."\n");
 
 		//Previous
-		echo '<a href="edit.php' . $querystring . '&amp;pagination_start=' . ($pagination_start - $p + $start_offset) . '" title="Go to the previous page" class="prev-page' . ($current_page == 1 ? ' disabled' : '') . '">&lsaquo;</a>'."\n";
+		echo ('<a href="edit.php' . $querystring . '&amp;pagination_start=' . ($pagination_start - $p + $start_offset) . '" title="Go to the previous page" class="prev-page' . ($current_page == 1 ? ' disabled' : '') . '">&lsaquo;</a>'."\n");
 
 		//Enter Page
-		echo '<span class="paging-input"><input type="text" size="1" class="foxyshop_paged_number" value="' . $current_page . '" name="paged-' . $position . '" title="Current page" class="current-page"> of <span class="total-pages">' . $total_pages . '</span></span>'."\n";
+		echo ('<span class="paging-input"><input type="text" size="1" class="foxyshop_paged_number" value="' . $current_page . '" name="paged-' . $position . '" title="Current page" class="current-page"> of <span class="total-pages">' . $total_pages . '</span></span>'."\n");
 
 		//Next
-		echo '<a href="edit.php' . $querystring . '&amp;pagination_start=' . ($pagination_end + 1 + $start_offset) . '" title="Go to the next page" class="next-page' . ($filtered_total <= $pagination_end ? ' disabled' : '') . '">&rsaquo;</a>'."\n";
+		echo ('<a href="edit.php' . $querystring . '&amp;pagination_start=' . ($pagination_end + 1 + $start_offset) . '" title="Go to the next page" class="next-page' . ($filtered_total <= $pagination_end ? ' disabled' : '') . '">&rsaquo;</a>'."\n");
 
 		//Last
-		echo '<a href="edit.php' . $querystring . '&amp;pagination_start=' . ((($total_pages - 1) * $p) + 1 + $start_offset) . '" title="Go to the last page" class="last-page' . ($filtered_total <= $pagination_end ? ' disabled' : '') . '">&raquo;</a></span>'."\n";
+		echo ('<a href="edit.php' . $querystring . '&amp;pagination_start=' . ((($total_pages - 1) * $p) + 1 + $start_offset) . '" title="Go to the last page" class="last-page' . ($filtered_total <= $pagination_end ? ' disabled' : '') . '">&raquo;</a></span>'."\n");
 	}
 
-	echo '</div>'."\n";
+	echo ('</div>'."\n");
 
-	echo '</div>'."\n";
+	echo ('</div>'."\n");
 }
 
 
@@ -1005,7 +1004,7 @@ function foxyshop_manage_attributes_jquery($att_type) {
 		var manage_buttons = '<a href="#" class="foxyshop_attribute_delete" attname="' + att_name + '" title="Delete" rel="' + id + '">Delete</a><a href="#" class="foxyshop_attribute_edit" rel="' + id + '" title="Edit">Edit</a>';
 
 		if (att_name && att_value) {
-			$.post(ajaxurl, {action: "foxyshop_attribute_manage", foxyshop_action: "save_attribute", security: "<?php echo wp_create_nonce("foxyshop-save-attribute"); ?>", att_type: "<?php echo $att_type; ?>", id: id, att_name: att_name, att_value: att_value }, function(response) {
+			$.post(ajaxurl, {action: "foxyshop_attribute_manage", foxyshop_action: "save_attribute", security: "<?php echo wp_create_nonce("foxyshop-save-attribute"); ?>", att_type: "<?php echo esc_attr($att_type); ?>", id: id, att_name: att_name, att_value: att_value }, function(response) {
 				$(".foxyshop_add_attribute[rel='" + id + "']").show();
 				$("#new_attribute_container_" + id).remove();
 				$(".foxyshop_attribute_list[rel='" + id + "']").append('<tr class="viewing"><td class="col1">' + att_name + '</td><td class="col2"><div>' + att_value.replace("\n", "<br />\n") + '</div> ' + manage_buttons + '</td></tr>');
@@ -1025,7 +1024,7 @@ function foxyshop_manage_attributes_jquery($att_type) {
 		var att_value = parent_tr.find(".col2 div").children("textarea").val();
 
 		if (att_value) {
-			$.post(ajaxurl, {action: "foxyshop_attribute_manage", foxyshop_action: "save_attribute", security: "<?php echo wp_create_nonce("foxyshop-save-attribute"); ?>", att_type: "<?php echo $att_type; ?>", id: id, att_name: att_name, att_value: att_value }, function(response) {
+			$.post(ajaxurl, {action: "foxyshop_attribute_manage", foxyshop_action: "save_attribute", security: "<?php echo wp_create_nonce("foxyshop-save-attribute"); ?>", att_type: "<?php echo esc_attr($att_type); ?>", id: id, att_name: att_name, att_value: att_value }, function(response) {
 				parent_tr.addClass("viewing");
 				parent_tr.find(".col2 div").html(att_value.replace(/\n/g, "<br />\n"));
 			});
@@ -1055,7 +1054,7 @@ function foxyshop_manage_attributes_jquery($att_type) {
 		var att_name = $(this).attr("attname");
 		var parent_tr = $(this).parents(".foxyshop_attribute_list tr");
 
-		$.post(ajaxurl, {action: "foxyshop_attribute_manage", foxyshop_action: "delete_attribute", security: "<?php echo wp_create_nonce("foxyshop-save-attribute"); ?>", att_type: "<?php echo $att_type; ?>", id: id, att_name: att_name }, function(response) {
+		$.post(ajaxurl, {action: "foxyshop_attribute_manage", foxyshop_action: "delete_attribute", security: "<?php echo wp_create_nonce("foxyshop-save-attribute"); ?>", att_type: "<?php echo esc_attr($att_type); ?>", id: id, att_name: att_name }, function(response) {
 			parent_tr.remove();
 		});
 
