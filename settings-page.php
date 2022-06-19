@@ -176,10 +176,7 @@ function foxyshop_settings_page() {
 	//Warning Header/Footer Missing
 	if ((!file_exists(TEMPLATEPATH.'/header.php') || !file_exists(TEMPLATEPATH.'/footer.php')) && !isset($skip_header_warning)) echo '<div class="error"><p>' . __('<strong>Warning:</strong> Your theme does not appear to be using header.php or footer.php. Without these files FoxyShop pages will show up unstyled. This error can often show up if you are using a WordPress framework that is bypassing the get_header() and get_footer() functions.', 'foxyshop') . '</p></div>';
 
-	//Warning About cURL Installation
-	// Should we omit this?
-/*	if (!in_array('curl', get_loaded_extensions())) echo '<div class="error"><p>' . __('<strong>Warning:</strong> Your web server does not have cURL installed. Without cURL, FoxyShop will not be able to sync settings with FoxyCart and you will experience errors while saving.', 'foxyshop') . '</p></div>';*/
-
+ 
 	//Warning Upload Folders
 	$upload_dir = wp_upload_dir();
 	if ($upload_dir['error'] != '') {

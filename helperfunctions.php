@@ -802,7 +802,7 @@ function foxyshop_get_main_image($size = "thumbnail") {
 	}
 	if (!$image && count($product['images']) > 0) $image = $product['images'][0][$size];
 	if (!$image) $image = $foxyshop_settings['default_image'];
-	if (!$image) $image = FOXYSHOP_PLUGIN_URL."/foxyshop/images/no-photo.png";
+	if (!$image) $image = FOXYSHOP_PLUGIN_URL."images/no-photo.png";
 	if ($image == "none") $image = "";
 	return $image;
 }

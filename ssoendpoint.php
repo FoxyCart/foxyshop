@@ -34,7 +34,7 @@ if (isset($_GET['fcsid']) && isset($_GET['timestamp'])) {
 			$args = array( 
 				"timeout" => !defined('FOXYSHOP_CURL_TIMEOUT') ? 15 : FOXYSHOP_CURL_TIMEOUT,
 				"method" => "POST",
-				"sslverify" => 0,
+				"sslverify" => defined('FOXYSHOP_CURL_SSL_VERIFYPEER') ? FOXYSHOP_CURL_SSL_VERIFYPEER : 1,
 				"body" => $foxyData,
 			);
 			$response = wp_remote_get("https://" . esc_attr($foxyshop_settings['domain']) . "/cart?fcsid=" . sanitize_text_field($_GET['fcsid']) . "&output=json", $args);

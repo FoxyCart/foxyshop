@@ -816,7 +816,7 @@ function foxyshop_get_foxycart_data($foxyData, $silent_fail = true) {
 	$args = array( 
 		"timeout" => !defined('FOXYSHOP_CURL_TIMEOUT') ? 15 : FOXYSHOP_CURL_TIMEOUT,
 		"method" => "POST",
-		"sslverify" => 0,
+		"sslverify" => defined('FOXYSHOP_CURL_SSL_VERIFYPEER') ? FOXYSHOP_CURL_SSL_VERIFYPEER : 1,
 		"body" => $foxyData,
 	);
 	$response = wp_remote_post("https://" . $foxyshop_settings['domain'] . "/api", $args);

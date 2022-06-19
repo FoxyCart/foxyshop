@@ -350,50 +350,50 @@ function foxyshop_transaction_export() {
 
 		//Start Writing
 		echo (string)$transaction->id;
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->store_id) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->transaction_date) . '"';
-		echo esc_attr($field)_delimiter . $product_total;
-		echo esc_attr($field)_delimiter . $tax_total;
-		echo esc_attr($field)_delimiter . $shipping_total;
-		echo esc_attr($field)_delimiter . $discount_total;
-		echo esc_attr($field)_delimiter . $order_total;
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->purchase_order) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->cc_type) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->cc_number_masked) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->cc_exp_month) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->cc_exp_year) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->processor_response) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->customer_id) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->is_anonymous) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->minfraud_score) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->customer_first_name) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->customer_last_name) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->customer_company) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->customer_address1) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->customer_address2) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->customer_city) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->customer_state) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->customer_postal_code) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->customer_country) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->customer_phone) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->customer_email) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->customer_ip) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->store_id) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->transaction_date) . '"';
+		echo esc_attr($field_delimiter) . $product_total;
+		echo esc_attr($field_delimiter) . $tax_total;
+		echo esc_attr($field_delimiter) . $shipping_total;
+		echo esc_attr($field_delimiter) . $discount_total;
+		echo esc_attr($field_delimiter) . $order_total;
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->purchase_order) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->cc_type) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->cc_number_masked) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->cc_exp_month) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->cc_exp_year) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->processor_response) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->customer_id) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->is_anonymous) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->minfraud_score) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->customer_first_name) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->customer_last_name) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->customer_company) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->customer_address1) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->customer_address2) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->customer_city) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->customer_state) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->customer_postal_code) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->customer_country) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->customer_phone) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->customer_email) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->customer_ip) . '"';
 
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes($custom_fields) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes($attributes1) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes($discounts) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes($custom_fields) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes($attributes1) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes($discounts) . '"';
 
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->shipto_shipping_service_description) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->shipping_first_name) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->shipping_last_name) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->shipping_company) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->shipping_address1) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->shipping_address2) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->shipping_city) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->shipping_state) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->shipping_postal_code) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->shipping_country) . '"';
-		echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction->shipping_phone) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->shipto_shipping_service_description) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->shipping_first_name) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->shipping_last_name) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->shipping_company) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->shipping_address1) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->shipping_address2) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->shipping_city) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->shipping_state) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->shipping_postal_code) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->shipping_country) . '"';
+		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->shipping_phone) . '"';
 
 		//Products
 		$product_count = 1;
@@ -403,7 +403,7 @@ function foxyshop_transaction_export() {
 			if ($product_count > 1) {
 				echo (string)$transaction->id;
 				for ($i=1;$i<=42;$i++) {
-					echo esc_attr($field)_delimiter . '""';
+					echo esc_attr($field_delimiter) . '""';
 				}
 			}
 
@@ -415,14 +415,14 @@ function foxyshop_transaction_export() {
 			}
 
 
-			echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction_detail->sub_token_url) . '"';
-			echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction_detail->category_code) . '"';
-			echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction_detail->product_name) . '"';
-			echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction_detail->product_code) . '"';
-			echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction_detail->product_price) . '"';
-			echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction_detail->product_quantity) . '"';
-			echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes((string)$transaction_detail->product_weight) . '"';
-			echo esc_attr($field)_delimiter . '"' . foxyshop_dblquotes($product_options) . '"';
+			echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction_detail->sub_token_url) . '"';
+			echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction_detail->category_code) . '"';
+			echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction_detail->product_name) . '"';
+			echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction_detail->product_code) . '"';
+			echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction_detail->product_price) . '"';
+			echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction_detail->product_quantity) . '"';
+			echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction_detail->product_weight) . '"';
+			echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes($product_options) . '"';
 
 			echo "\n";
 			$product_count++;
