@@ -33,7 +33,7 @@ if (isset($_GET['fcsid']) && isset($_GET['timestamp'])) {
 
 			$args = array( 
 				"timeout" => !defined('FOXYSHOP_CURL_TIMEOUT') ? 15 : FOXYSHOP_CURL_TIMEOUT,
-				"method" => "POST",
+				"method" => "POST", 
 				"sslverify" => defined('FOXYSHOP_CURL_SSL_VERIFYPEER') ? FOXYSHOP_CURL_SSL_VERIFYPEER : 1,
 				"body" => $foxyData,
 			);

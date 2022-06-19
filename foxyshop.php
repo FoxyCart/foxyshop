@@ -41,7 +41,7 @@ if (!defined('ABSPATH')) exit();
 define('FOXYSHOP_VERSION', "4.8.2");
 define('FOXYSHOP_DIR', substr(plugin_dir_url(__FILE__),0, strlen(plugin_dir_url(__FILE__))-1) );
 define('FOXYSHOP_PATH', substr(plugin_dir_path(__FILE__),0, strlen(plugin_dir_path(__FILE__))-1) );
-define('FOXYSHOP_PLUGIN_PATH', plugin_dir_path(__FILE__));
+define('FOXYSHOP_PLUGIN_PATH', plugin_dir_path(__FILE__)); 
 define('FOXYSHOP_PLUGIN_URL', plugin_dir_url(__FILE__));
 $foxyshop_document_root = $_SERVER['DOCUMENT_ROOT'];
 if ($foxyshop_document_root == "" || $foxyshop_document_root == "/") $foxyshop_document_root = str_replace("/wp-content/plugins/foxyshop", "", FOXYSHOP_PATH);
