@@ -369,7 +369,7 @@ function foxyshop_product_details_setup() {
 		<span style="float: left; margin: 9px 0 0 5px; width: 21px;"><?php echo ($foxyshop_settings['weight_type'] == "metric" ? 'kg' : 'lbs'); ?></span>
 		<input type="text" name="_weight2" id="_weight2" value="<?php echo esc_attr($_weight[1]); ?>"<?php if ($disable_weight_checked) echo ' disabled="disabled"'; ?> />
 		<span style="float: left; margin: 9px 0 0 5px; width: 23px;"><?php echo ($foxyshop_settings['weight_type'] == "metric" ? 'gm' : 'oz'); ?></span>
-		<input type="checkbox" name="weight_disable" id="weight_disable" title="<?php _e('Disable Weight', 'foxyshop'); ?>" style="float: left; margin-top: 7px;"<?php echo wp_kses($disable_weight_checked); ?> />
+		<input type="checkbox" name="weight_disable" id="weight_disable" title="<?php _e('Disable Weight', 'foxyshop'); ?>" style="float: left; margin-top: 7px;"<?php echo foxy_wp_html($disable_weight_checked); ?> />
 		<label id="weight_disable_label" for="weight_disable" style="float: left; margin: 6px 0 0 2px; width: 16px;" title="<?php _e('Disable Weight', 'foxyshop'); ?>" class="iconsprite <?php echo ($disable_weight_checked ? "hide_color" : "hide_gray"); ?>"></label>
 	</div>
 	<div id="foxyshop_quantity" class="foxyshop_field_control">
@@ -670,11 +670,11 @@ function foxyshop_product_pricing_setup() {
 
 	<h4 style="margin-bottom: 3px;"><?php _e('Other Product Features', 'foxyshop'); ?></h4>
 	<div class="foxyshop_field_control">
-		<input type="checkbox" style="float: left; margin: 5px 0 0 10px;" id="_cart" name="_cart" value="checkout"<?php echo wp_kses($_cart); ?>>
+		<input type="checkbox" style="float: left; margin: 5px 0 0 10px;" id="_cart" name="_cart" value="checkout"<?php echo foxy_wp_html($_cart); ?>>
 		<label for="_cart" style="width: 210px;"><?php _e('Force Immediate Checkout', 'foxyshop'); ?></label>
 	</div>
 	<div class="foxyshop_field_control">
-		<input type="checkbox" style="float: left; margin: 5px 0 0 10px;" id="_empty" name="_empty" value="true"<?php echo wp_kses($_empty); ?>>
+		<input type="checkbox" style="float: left; margin: 5px 0 0 10px;" id="_empty" name="_empty" value="true"<?php echo foxy_wp_html($_empty); ?>>
 		<label for="_empty" style="width: 210px;"><?php _e('Empty Cart Before Adding Product', 'foxyshop'); ?></label>
 	</div>
 	<div class="foxyshop_field_control">
@@ -718,7 +718,7 @@ function foxyshop_related_products_setup() {
 		if ($foxyshop_settings['enable_addon_products']) $addonList .= '<option value="' . $product->ID . '"'. (in_array($product->ID, $arr_addon_products) ? ' selected="selected"' : '') . '>' . $product->post_title . ' (' . $product->ID . ')</option>'."\n";
 	} ?>
 	<select name="_related_products_list[]" id="_related_products_list" data-placeholder="Search for <?php echo FOXYSHOP_PRODUCT_NAME_PLURAL; ?>" style="width: 100%;" class="chzn-select" multiple="multiple">
-		<?php echo wp_kses($relatedList); ?>
+		<?php echo foxy_wp_html($relatedList); ?>
 	</select>
 	<p style="color: #999999; margin-bottom: 2px;"><?php echo sprintf(__("Click the box above for a drop-down menu showing all %s. Type to search and click or press enter to select.", 'foxyshop'), strtolower(FOXYSHOP_PRODUCT_NAME_PLURAL)); ?></p>
 	<div class="foxyshop_field_control">
@@ -746,7 +746,7 @@ function foxyshop_bundled_products_setup() {
 	}
 	?>
 	<select name="_bundled_products_list[]" id="_bundled_products_list" data-placeholder="Search for <?php echo FOXYSHOP_PRODUCT_NAME_PLURAL; ?>" style="width: 100%;" class="chzn-select" multiple="multiple">
-		<?php echo wp_kses($bundledList); ?>
+		<?php echo foxy_wp_html($bundledList); ?>
 	</select>
 	<p style="color: #999999;"><?php echo sprintf(__('Click the box above for a drop-down menu showing all %s. Type to search and click or press enter to select.', 'foxyshop'), strtolower(FOXYSHOP_PRODUCT_NAME_PLURAL)); ?></p>
 	<?php
@@ -768,7 +768,7 @@ function foxyshop_addon_products_setup() {
 	}
 	?>
 	<select name="_addon_products_list[]" id="_addon_products_list" data-placeholder="Search for <?php echo FOXYSHOP_PRODUCT_NAME_PLURAL; ?>" style="width: 100%;" class="chzn-select" multiple="multiple">
-		<?php echo wp_kses($addonList); ?>
+		<?php echo foxy_wp_html($addonList); ?>
 	</select>
 	<p style="color: #999999;"><?php echo sprintf(__('Click the box above for a drop-down menu showing all %s. Type to search and click or press enter to select.', 'foxyshop'), strtolower(FOXYSHOP_PRODUCT_NAME_PLURAL)); ?></p>
 	<div class="foxyshop_field_control">
@@ -928,7 +928,7 @@ function foxyshop_product_variations_setup() {
 					<div class="foxyshop_field_control dropdown variationoptions">
 						<label for="_variation_value_<?php echo esc_attr($i); ?>"><?php _e('Items in Dropdown', 'foxyshop'); ?></label>
 						<textarea name="_variation_value_<?php echo esc_attr($i); ?>" id="_variation_value_<?php echo esc_attr($i); ?>"><?php echo esc_textarea($_variationValue); ?></textarea>
-						<div class="variationkey"><?php echo wp_kses($variation_key); ?></div>
+						<div class="variationkey"><?php echo foxy_wp_html($variation_key); ?></div>
 					</div>
 
 				<?php elseif($_variation_type == "radio") : ?>
@@ -936,7 +936,7 @@ function foxyshop_product_variations_setup() {
 					<div class="foxyshop_field_control radio variationoptions">
 						<label for="_variation_radio_<?php echo esc_attr($i); ?>"><?php _e('Radio Button Options', 'foxyshop'); ?></label>
 						<textarea name="_variation_radio_<?php echo esc_attr($i); ?>" id="_variation_radio_<?php echo esc_attr($i); ?>"><?php echo esc_textarea($_variationValue); ?></textarea>
-						<div class="variationkey"><?php echo wp_kses($variation_key); ?></div>
+						<div class="variationkey"><?php echo foxy_wp_html($variation_key); ?></div>
 					</div>
 
 				<?php elseif($_variation_type == "text") : ?>
@@ -973,7 +973,7 @@ function foxyshop_product_variations_setup() {
 					<div class="foxyshop_field_control checkbox variationoptions" style="background-color: transparent;">
 						<label for="_variation_checkbox_<?php echo esc_attr($i); ?>"><?php _e('Value', 'foxyshop'); ?></label>
 						<input type="text" name="_variation_checkbox_<?php echo esc_attr($i); ?>" id="_variation_checkbox_<?php echo esc_attr($i); ?>" value="<?php echo esc_attr($_variationValue); ?>" class="variation_checkbox_text" />
-						<div class="variationkey"><?php echo wp_kses($variation_key); ?></div>
+						<div class="variationkey"><?php echo foxy_wp_html($variation_key); ?></div>
 					</div>
 
 				<?php elseif($_variation_type == "upload") : ?>
@@ -988,7 +988,7 @@ function foxyshop_product_variations_setup() {
 					<div class="foxyshop_field_control hiddenfield variationoptions">
 						<div class="foxyshop_field_control">
 							<label for="_variation_hiddenfield_<?php echo esc_attr($i); ?>"><?php _e('Value', 'foxyshop'); ?></label>
-							<input type="text" name="_variation_hiddenfield_<?php echo esc_attr($i); ?>" id="_variation_hiddenfield_<?php echo esc_attr($i); ?>" value="<?php echo wp_kses($_variationValue); ?>" />
+							<input type="text" name="_variation_hiddenfield_<?php echo esc_attr($i); ?>" id="_variation_hiddenfield_<?php echo esc_attr($i); ?>" value="<?php echo foxy_wp_html($_variationValue); ?>" />
 						</div>
 					</div>
 					<?php $dkeyhide = ' style="display: none;"'; ?>

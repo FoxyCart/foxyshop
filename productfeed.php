@@ -133,7 +133,7 @@ function foxyshop_create_feed() {
 
 
 	}
-	echo wp_kses($write);
+	echo foxy_wp_html($write);
 }
 
 function foxyshop_google_product_xml($id, $batch_process = "") {
@@ -351,7 +351,7 @@ function foxyshop_google_products_page() {
 		//Display Confirmations and Errors
 		if (isset($_GET['error'])) {
 			echo '<div class="error"><p><strong>Error!</strong><br /><ul style="margin: 0 10px;">';
-			$error_list = explode("||", wp_kses($_GET['error']));
+			$error_list = explode("||", foxy_wp_html($_GET['error']));
 			foreach($error_list as $the_error) {
 				if ($the_error) echo "<li style=\"list-style: disc inside none;\">$the_error</li>\n";
 			}
@@ -625,7 +625,7 @@ function foxyshop_google_products_page() {
 	<table class="widefat">
 		<thead>
 			<tr>
-				<th><img src="<?php echo wp_kses($google_icon); ?>" alt="" /><?php _e("Create Manual Export File", 'foxyshop'); ?></th>
+				<th><img src="<?php echo foxy_wp_html($google_icon); ?>" alt="" /><?php _e("Create Manual Export File", 'foxyshop'); ?></th>
 			</tr>
 		</thead>
 		<tbody>

@@ -49,7 +49,7 @@ global $foxyshop_prettyphoto_included;
 	//if (foxyshop_is_product_new(14)) echo '<p>NEW!</p>';
 
 	//Main Product Description
-	echo wp_kses($product['description']);
+	echo foxy_wp_html($product['description']);
 
 
 	//Show Variations (showQuantity: 0 = Do Not Show Qty, 1 = Show Before Variations, 2 = Show Below Variations)

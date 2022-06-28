@@ -196,7 +196,7 @@ function foxyshop_settings_page() {
 		<thead>
 			<tr>
 				<th>
-					<div id="settings_title">FoxyShop <?php echo wp_kses($foxyshop_settings['foxyshop_version']); ?></div>
+					<div id="settings_title">FoxyShop <?php echo foxy_wp_html($foxyshop_settings['foxyshop_version']); ?></div>
 				</th>
 			</tr>
 		</thead>

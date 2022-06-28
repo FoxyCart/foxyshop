@@ -93,8 +93,8 @@ function foxyshop_custom_sort() {
 
 	<div class="wrap">
 	<div class="icon32" id="icon-tools"><br></div>
-	<h2><?php echo wp_kses(sprintf(__('Custom %s Order'), FOXYSHOP_PRODUCT_NAME_SINGULAR)); ?></h2>
-	<?php if ($success) echo wp_kses($success); ?>
+	<h2><?php echo foxy_wp_html(sprintf(__('Custom %s Order'), FOXYSHOP_PRODUCT_NAME_SINGULAR)); ?></h2>
+	<?php if ($success) echo foxy_wp_html($success); ?>
 
 	<?php
 	$product_categories = get_terms('foxyshop_categories', 'hide_empty=0&hierarchical=0&orderby=name&order=ASC');

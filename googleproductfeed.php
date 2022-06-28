@@ -174,7 +174,7 @@ function foxyshop_create_feed() {
 		}
 		$write .= "\n";
 	}
-	echo wp_kses($write);
+	echo foxy_wp_html($write);
 }
 
 function foxyshop_google_product_xml($id, $batch_process = "") {

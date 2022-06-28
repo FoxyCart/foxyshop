@@ -2,6 +2,11 @@
 //Exit if not called in proper context
 if (!defined('ABSPATH')) exit();
 
+//validating HTML using WordPress functions
+function foxy_wp_html($string){
+	return htmlspecialchars_decode( esc_html( $string ) );
+}
+
 //Insert jQuery
 function foxyshop_insert_jquery() {
 
@@ -208,7 +213,7 @@ function foxyshop_insert_google_analytics() {
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', '<?php echo wp_kses(htmlspecialchars($foxyshop_settings['ga']) ) ; ?>', 'auto');
+  ga('create', '<?php echo foxy_wp_html(htmlspecialchars($foxyshop_settings['ga']) ) ; ?>', 'auto');
   <?php if ($foxyshop_settings['ga_demographics']) echo "ga('require', 'displayfeatures');\n" ?>
   ga('send', 'pageview');
 </script>
@@ -221,7 +226,7 @@ function foxyshop_insert_google_analytics() {
 
 		<script type="text/javascript">
 var _gaq = _gaq || [];
-_gaq.push(['_setAccount', '<?php echo wp_kses(htmlspecialchars($foxyshop_settings['ga'])); ?>']);
+_gaq.push(['_setAccount', '<?php echo foxy_wp_html(htmlspecialchars($foxyshop_settings['ga'])); ?>']);
 _gaq.push(['_trackPageview']);
 (function() {
 	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
@@ -253,7 +258,7 @@ function foxyshop_insert_google_analytics_checkout() {
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', '<?php echo wp_kses(htmlspecialchars($foxyshop_settings['ga'])); ?>', 'auto', {
+  ga('create', '<?php echo foxy_wp_html(htmlspecialchars($foxyshop_settings['ga'])); ?>', 'auto', {
     'clientId': fc_json.custom_fields['ga'],
     'storage': 'none'
   });
@@ -320,7 +325,7 @@ function foxyshop_insert_google_analytics_checkout() {
 	<script type="text/javascript">
 
 	  var _gaq = _gaq || [];
-	  _gaq.push(['_setAccount', '<?php echo wp_kses(htmlspecialchars($foxyshop_settings['ga'])); ?>']);
+	  _gaq.push(['_setAccount', '<?php echo foxy_wp_html(htmlspecialchars($foxyshop_settings['ga'])); ?>']);
 	  _gaq.push(['_setDomainName', 'none']);
 	  _gaq.push(['_setAllowLinker', true]);
 	  _gaq.push(['_setAllowAnchor', true]);
@@ -364,7 +369,7 @@ function foxyshop_insert_google_analytics_receipt() {
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', '<?php echo wp_kses(htmlspecialchars($foxyshop_settings['ga'])); ?>', 'auto', {
+  ga('create', '<?php echo foxy_wp_html(htmlspecialchars($foxyshop_settings['ga'])); ?>', 'auto', {
     'clientId': fc_json.custom_fields['ga'],
     'storage': 'none'
   });
@@ -395,7 +400,7 @@ function foxyshop_insert_google_analytics_receipt() {
 	<script type="text/javascript">
 
 	  var _gaq = _gaq || [];
-	  _gaq.push(['_setAccount', '<?php echo wp_kses(htmlspecialchars($foxyshop_settings['ga'])); ?>']);
+	  _gaq.push(['_setAccount', '<?php echo foxy_wp_html(htmlspecialchars($foxyshop_settings['ga'])); ?>']);
 	  _gaq.push(['_setDomainName', 'none']);
 	  _gaq.push(['_setAllowLinker', true]);
 	  _gaq.push(['_setAllowAnchor', true]);

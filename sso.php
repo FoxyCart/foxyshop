@@ -211,7 +211,7 @@ function foxyshop_reverse_sso_login() {
 	global $foxyshop_settings;
 	$timestamp = sanitize_text_field($_GET['timestamp']);
 	$current_timestamp = date("U");
-	$calculated_auth_token = sha1(wp_kses($_GET['foxycart_customer_id']) . '|' . wp_kses($_GET['timestamp']) . '|' . sanitize_text_field($foxyshop_settings['api_key']));
+	$calculated_auth_token = sha1(foxy_wp_html($_GET['foxycart_customer_id']) . '|' . foxy_wp_html($_GET['timestamp']) . '|' . sanitize_text_field($foxyshop_settings['api_key']));
 
 	//Token Matches, Do Login
 	if ($calculated_auth_token === $_GET['fc_auth_token'] && $timestamp >= $current_timestamp) {

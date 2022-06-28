@@ -768,9 +768,9 @@ function foxyshop_price($skip_sale_price = false, $echo_output = true) {
 	}
 	$write .= '</div>';
 	if ($echo_output) {
-		echo wp_kses($write);
+		echo foxy_wp_html($write);
 	} else {
-		return wp_kses($write);
+		return foxy_wp_html($write);
 	}
 }
 
@@ -1069,7 +1069,7 @@ function foxyshop_simple_category_children($category_id = 0, $depth = 1) {
 	$foxyshop_category_depth = $depth;
 	$foxyshop_category_write = "";
 	foxyshop_category_writer($category_id, 1);
-	if ($foxyshop_category_write) echo wp_kses($foxyshop_category_write);
+	if ($foxyshop_category_write) echo foxy_wp_html($foxyshop_category_write);
 }
 
 function foxyshop_category_writer($category_id, $depth) {
@@ -1632,7 +1632,7 @@ function foxyshop_customer_order_history($customer_id = 0, $date_filter = 'n/j/Y
 	$pagination_end = (int)$xml->statistics->pagination_end;
 	if ($pagination_start > 1 || $filtered_total > $pagination_end) {
 		echo '<div id="foxyshop_list_pagination">';
-		echo wp_kses($xml->messages->message[1]) . '<br />';
+		echo foxy_wp_html($xml->messages->message[1]) . '<br />';
 		if ($pagination_start > 1) echo '<a href="edit.php' . $querystring . '&amp;pagination_start=' . ($pagination_start - $p - 1) . '">&laquo; Previous</a>';
 		if ($pagination_end < $filtered_total) {
 			if ($pagination_start > 1) echo ' | ';

@@ -36,7 +36,7 @@ function foxyshop_display_ajax() {
 		$foxy_response = foxyshop_get_foxycart_data($foxy_data);
 		$xml = simplexml_load_string($foxy_response, NULL, LIBXML_NOCDATA);
 		do_action("foxyshop_after_subscription_modify", $xml);
-		echo wp_kses((string)$xml->result) . ": " . wp_kses((string)$xml->messages->message);
+		echo foxy_wp_html((string)$xml->result) . ": " . foxy_wp_html((string)$xml->messages->message);
 		die;
 
 	//Hide/Unhide Transaction
@@ -46,7 +46,7 @@ function foxyshop_display_ajax() {
 		$foxy_response = foxyshop_get_foxycart_data($foxy_data);
 		$xml = simplexml_load_string($foxy_response, NULL, LIBXML_NOCDATA);
 		do_action("foxyshop_after_transaction_archive", $xml);
-		echo wp_kses((string)$xml->result . ": " . (string)$xml->messages->message);
+		echo foxy_wp_html((string)$xml->result . ": " . (string)$xml->messages->message);
 		die;
 	}
 	die;
@@ -142,11 +142,11 @@ function foxyshop_ajax_set_google_auth() {
 	foreach($response_line as $response) {
 		$r = explode("=", $response);
 		if ($r[0] == "Error") {
-			die(wp_kses("Error"));
+			die(foxy_wp_html("Error"));
 		} elseif ($r[0] == "Auth") {
 			$foxyshop_settings['google_product_auth'] = strip_tags($r[1]);
 			update_option("foxyshop_settings", $foxyshop_settings);
-			die(wp_kses("Success"));
+			die(foxy_wp_html("Success"));
 		}
 	}
 	die;
@@ -173,16 +173,16 @@ function foxyshop_product_ajax() {
 
 	if ($_POST['foxyshop_action'] == "add_new_image") {
 
-		echo wp_kses(foxyshop_redraw_images($productID));
+		echo foxy_wp_html(foxyshop_redraw_images($productID));
 
 	} elseif ($_POST['foxyshop_action'] == "delete_image") {
 		wp_delete_attachment($imageID);
-		echo wp_kses(foxyshop_redraw_images($productID));
+		echo foxy_wp_html(foxyshop_redraw_images($productID));
 
 	} elseif ($_POST['foxyshop_action'] == "featured_image") {
 		delete_post_meta($productID,"_thumbnail_id");
 		update_post_meta($productID,"_thumbnail_id",$imageID);
-		echo wp_kses(foxyshop_redraw_images($productID));
+		echo foxy_wp_html(foxyshop_redraw_images($productID));
 
 	} elseif ($_POST['foxyshop_action'] == "toggle_visible") {
 		if (get_post_meta($imageID, "_foxyshop_hide_image", 1)) {
@@ -190,7 +190,7 @@ function foxyshop_product_ajax() {
 		} else {
 			add_post_meta($imageID,"_foxyshop_hide_image", 1);
 		}
-		echo wp_kses(foxyshop_redraw_images($productID));
+		echo foxy_wp_html(foxyshop_redraw_images($productID));
 
 	} elseif ($_POST['foxyshop_action'] == "rename_image") {
 		$update_post = array();
@@ -210,10 +210,10 @@ function foxyshop_product_ajax() {
 			wp_update_post($update_post);
 		}
 
-		echo wp_kses(foxyshop_redraw_images($productID));
+		echo foxy_wp_html(foxyshop_redraw_images($productID));
 
 	} elseif ($_POST['foxyshop_action'] == "refresh_images") {
-		echo wp_kses(foxyshop_redraw_images($productID));
+		echo foxy_wp_html(foxyshop_redraw_images($productID));
 	}
 	die;
 }
@@ -251,5 +251,5 @@ function foxyshop_redraw_images($id) {
 			}
 		}
 	}
-	return wp_kses($write);
+	return foxy_wp_html($write);
 }

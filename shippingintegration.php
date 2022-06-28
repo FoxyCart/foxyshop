@@ -292,7 +292,7 @@ function foxyshop_transaction_export() {
 		'product_options'
 	);
 
-	echo wp_kses(implode($field_delimiter, $fields) . "\n");
+	echo foxy_wp_html(implode($field_delimiter, $fields) . "\n");
 
 	foreach($xml_return->transactions->transaction as $transaction) {
 

@@ -474,7 +474,7 @@ for ($i=1;$i<=$max_variations;$i++) {
 				<div class="foxyshop_field_control dropdown variationoptions">
 					<label for="_variation_value_<?php echo esc_attr($i); ?>"><?php _e('Items in Dropdown', 'foxyshop'); ?></label>
 					<textarea name="_variation_value_<?php echo esc_attr($i); ?>" id="_variation_value_<?php echo esc_attr($i); ?>"><?php echo esc_textarea($_variationValue); ?></textarea>
-					<div class="variationkey"><?php echo wp_kses($variation_key); ?></div>
+					<div class="variationkey"><?php echo foxy_wp_html($variation_key); ?></div>
 				</div>
 
 			<?php elseif($_variation_type == "radio") : ?>
@@ -529,7 +529,7 @@ for ($i=1;$i<=$max_variations;$i++) {
 				<div class="foxyshop_field_control checkbox variationoptions" style="background-color: transparent;">
 					<label for="_variation_checkbox_<?php echo esc_attr($i); ?>"><?php _e('Value', 'foxyshop'); ?></label>
 					<input type="text" name="_variation_checkbox_<?php echo esc_attr($i); ?>" id="_variation_checkbox_<?php echo esc_attr($i); ?>" value="<?php echo esc_attr($_variationValue); ?>" class="variation_checkbox_text" />
-					<div class="variationkey"><?php echo wp_kses($variation_key); ?></div>
+					<div class="variationkey"><?php echo foxy_wp_html($variation_key); ?></div>
 				</div>
 
 			<?php elseif($_variation_type == "upload") : ?>
@@ -543,7 +543,7 @@ for ($i=1;$i<=$max_variations;$i++) {
 		</div>
 
 		<!-- //// DISPLAY KEY //// -->
-		<div class="foxyshop_field_control dkeycontainer"<?php echo wp_kses($dkeyhide); ?>>
+		<div class="foxyshop_field_control dkeycontainer"<?php echo foxy_wp_html($dkeyhide); ?>>
 			<label class="dkeylabel" title="Enter a value here if you want your variation to be invisible until called by another variation."><?php _e('Display Key'); ?></label>
 			<input type="text" name="_variation_dkey_<?php echo esc_attr($i); ?>" id="_variation_dkey_<?php echo esc_attr($i); ?>" value="<?php echo esc_attr($_variationDisplayKey); ?>" class="dkeynamefield" />
 
@@ -805,7 +805,7 @@ jQuery(document).ready(function($){
 
 	function getVariationContents(new_type, this_id) {
 		new_contents = "";
-		variationkeyhtml = '<div class="variationkey"><?php echo wp_kses($variation_key); ?></div>';
+		variationkeyhtml = '<div class="variationkey"><?php echo foxy_wp_html($variation_key); ?></div>';
 
 		//Dropdown
 		if (new_type == "dropdown") {

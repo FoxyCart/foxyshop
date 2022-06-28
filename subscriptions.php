@@ -362,7 +362,7 @@ function foxyshop_subscription_management() {
 		</form>
 	<?php } ?>
 
-	<div id="details_holder"><?php echo wp_kses($holder); ?></div>
+	<div id="details_holder"><?php echo foxy_wp_html($holder); ?></div>
 
 	<script type="text/javascript" src="<?php echo FOXYSHOP_DIR; ?>/js/tablesorter.js"></script>
 	<script type="text/javascript">
