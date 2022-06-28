@@ -46,11 +46,11 @@ function foxyshop_run_external_datafeeds($external_datafeeds) {
 
 			 
 	
-			$response = trim($response['body']);
+		//	$response = trim($response['body']);
 
 			//If Error, Send Email and Kill Process
 			if ($response != 'foxy' && $response != 'foxysub') {
-				$error_msg = (! is_wp_error( $response ) ? "Datafeed Processing Error: " . $response  : $response);
+				$error_msg = (! is_wp_error( $response ) ? "Datafeed Processing Error: " . $response  : $response->get_error_message());
 				$to_email = get_bloginfo('admin_email');
 				$message = "A FoxyCart datafeed error was encountered at " . date("F j, Y, g:i a") . ".\n\n";
 				$message .= "The feed that failed was $feedurl\n\n";
