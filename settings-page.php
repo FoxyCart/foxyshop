@@ -89,7 +89,7 @@ function foxyshop_save_settings() {
 
 
 	//Set FoxyCart Domain Name
-	$domain = esc_url($_POST['foxyshop_domain']);
+	$domain = foxy_wp_html($_POST['foxyshop_domain']);
 	if ($domain && get_option("foxyshop_setup_required")) delete_option("foxyshop_setup_required"); //Delete the setup prompt if domain entered
 	if ($domain && strpos($domain, ".") === false) $domain .= ".foxycart.com";
 	$foxyshop_settings["domain"] = trim(stripslashes(str_replace("https://","",$domain)));
@@ -418,7 +418,7 @@ function foxyshop_settings_page() {
 						<a href="#" class="foxyshophelp">These categories should correspond to the category codes you set up in your FoxyCart admin and will be available in a drop-down on your <?php echo strtolower(FOXYSHOP_PRODUCT_NAME_SINGULAR); ?> setup page. Separate each category with a line break. If you would like to also display a nice name in the dropdown menu, use a pipe sign "|" like this: free_shipping|Free Shipping. There's also an optional third entry you can put with the product delivery type (shipped, downloaded, not_shipped, flat_rate).</a>
 						<?php if (version_compare($foxyshop_settings['version'], '0.7.2', ">=") && $foxyshop_settings['domain']) echo '<button type="button" class="button" id="ajax_get_category_list">Pull Category List From FoxyCart</button><div id="foxyshop_category_list_waiter"></div>'; ?>
 					</div>
-					<textarea id="foxyshop_ship_categories" name="foxyshop_ship_categories" wrap="auto" style="float: left; width:640px;height: <?php echo strlen($foxyshop_settings['ship_categories']) > 110 ? "160px" : "80px" ?>;"><?php echo esc_textarea($foxyshop_settings['ship_categories']); ?></textarea>
+					<textarea id="foxyshop_ship_categories" name="foxyshop_ship_categories" wrap="auto" style="float: left; width:640px;height: <?php echo strlen($foxyshop_settings['ship_categories']) > 110 ? "160px" : "80px" ?>;"><?php echo foxy_wp_html($foxyshop_settings['ship_categories']); ?></textarea>
 					<span style="display:block; clear: both; padding-top: 3px;"><strong>Syntax:</strong> category_code<strong>|</strong>category_description<strong>|</strong>product_delivery_type</span>
 				</td>
 			</tr>
