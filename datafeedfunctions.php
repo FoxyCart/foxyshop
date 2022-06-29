@@ -50,7 +50,7 @@ function foxyshop_run_external_datafeeds($external_datafeeds) {
 
 			//If Error, Send Email and Kill Process
 			if ($response != 'foxy' && $response != 'foxysub') {
-				$error_msg = ( is_wp_error( $response ) ? "Datafeed Processing Error: " . $response->get_error_message() : $response  );
+				$error_msg = ( is_wp_error( $response ) ? "Datafeed Processing Error: " . $response->get_error_message() : $response['body']  );
 				$to_email = get_bloginfo('admin_email');
 				$message = "A FoxyCart datafeed error was encountered at " . date("F j, Y, g:i a") . ".\n\n";
 				$message .= "The feed that failed was $feedurl\n\n";
