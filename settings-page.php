@@ -50,7 +50,12 @@ function foxyshop_save_settings() {
 		"locale_code"
 	);
 	foreach ($fields as $field1) {
-		$foxyshop_settings[$field1] = isset($_POST['foxyshop_'.$field1]) ? trim(sanitize_text_field($_POST['foxyshop_'.$field1])) : '';
+		if($field1=='ship_categories'){
+			$foxyshop_settings[$field1] = isset($_POST['foxyshop_'.$field1]) ? trim(foxy_wp_html($_POST['foxyshop_'.$field1])) : '';
+		}
+		else{
+			$foxyshop_settings[$field1] = isset($_POST['foxyshop_'.$field1]) ? trim(sanitize_text_field($_POST['foxyshop_'.$field1])) : '';
+		}
 	}
 	//Loop Through No Trim Fields
 	$fields = array(
