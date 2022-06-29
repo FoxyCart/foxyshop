@@ -163,7 +163,7 @@ foreach($xml->transactions->transaction as $transaction) {
 				if ((string)$transaction->customer_address2) echo foxy_wp_html($transaction->customer_address2 . "<br />");
 				echo foxy_wp_html((string)$transaction->customer_city . ', ' . (string)$transaction->customer_state . ' ' . (string)$transaction->customer_postal_code . '<br />');
 				if ($show_country) echo foxy_wp_html((string)$transaction->customer_country . '<br />');
-				echo "&nbsp;</td>\n\n");
+				echo ("&nbsp;</td>\n\n");
 				
 				//Show Shipping Address If Entered
 				if ((string)$transaction->shipping_address1 && !isset($transaction->shipto_addresses->shipto_address)) {
