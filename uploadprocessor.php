@@ -2,6 +2,11 @@
 //Exit if not called in proper context
 if (!defined('ABSPATH')) exit();
 
+ if (!function_exists('media_handle_upload')){
+        require_once(ABSPATH . 'wp-admin/includes/image.php');
+        require_once(ABSPATH . 'wp-admin/includes/file.php');
+        require_once(ABSPATH . 'wp-admin/includes/media.php');
+}
 
 /*
 This is the uploadify uploader. It is being processed through WordPress so has access to all the WordPress security functions.
