@@ -51,7 +51,7 @@ if (isset($_GET['foxyshop_product_id'])) {
 		die($unsupported_file_type_text);
 	} 
 
-	$results = wp_handle_upload('file');
+	$results = wp_handle_upload($_FILES['file']);
 
 	if(!is_array($results) || isset($results['error'])){
 		die($upload_runtime_error);
@@ -97,7 +97,7 @@ if (isset($_GET['foxyshop_product_id'])) {
 
 	$newfilename = str_replace(array('.','/','\\',' '),'',sanitize_text_field($_POST['newfilename'])).'.'.$ext;
 	$_FILES['Filedata']['name'] = $newfilename;
-	$results = wp_handle_upload('Filedata'); 
+	$results = wp_handle_upload($_FILES['Filedata']); 
 
 	if(!is_array($results) || isset($results['error'])){
 		die($upload_runtime_error);
