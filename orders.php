@@ -304,23 +304,7 @@ function foxyshop_order_management() {
 		</td></tr></tbody></table>
 
 		</form>
-
-		<script type="text/javascript">
-		jQuery(document).ready(function($) {
-			$("#foxyshop_searchform").on("click", "button", function() {
-				if ($("#transaction_search_type option:selected").attr("target") == "_blank") {
-					$("#foxyshop_searchform").attr("target","_blank");
-				} else {
-					$("#foxyshop_searchform").attr("target","_self");
-				}
-			});
-			$(".tablenav a.disabled").click(function() {
-				return false;
-			});
-
-			$(".foxyshop_date_field").datepicker({ dateFormat: 'yy-mm-dd' });
-		});
-		</script>
+ 
 
 	<?php
 	if (!isset($_GET['foxyshop_search']) && defined('FOXYSHOP_AUTO_API_DISABLED')) return;
@@ -372,6 +356,7 @@ function foxyshop_order_management() {
 		<?php
 		$holder = "";
 		$hide_transaction_filter = isset($_REQUEST['hide_transaction_filter']) ? sanitize_text_field($_REQUEST['hide_transaction_filter']) : 0;
+		if($hide_transaction_filter) echo '<div id="hide_transaction_filter"></div>';
 		$transactions = $xml->transactions->transaction ? $xml->transactions->transaction : [];
 		if (!count($transactions)) {
 		  echo '<tr><td colspan="5">'.__('No transaction found.').'</td></tr>';
@@ -631,64 +616,7 @@ function foxyshop_order_management() {
 
 
 	<div id="details_holder"><?php echo foxy_wp_html($holder); ?></div>
-
-	<script type="text/javascript" src="<?php echo FOXYSHOP_DIR; ?>/js/tablesorter.js"></script>
-	<script type="text/javascript">
-	jQuery(document).ready(function($){
-		$(".foxyshop-list-table thead th").click(function() {
-			$("#foxyshop-list-inline .detail_holder").appendTo("#details_holder");
-			$("#foxyshop-list-inline").remove();
-		});
-		$(".foxyshop-list-table").tablesorter({
-			'cssDesc': 'asc sorted',
-			'cssAsc': 'desc sorted',
-			'headers': { 0: { sorter: false} }
-		});
-		$(".view_detail").click(function() {
-			var id = $(this).parents("tr").attr("rel");
-
-			if ($("#foxyshop-list-inline #holder_" + id).length > 0) {
-				$("#foxyshop-list-inline .detail_holder").appendTo("#details_holder");
-				$("#foxyshop-list-inline").remove();
-			} else {
-				$("#foxyshop-list-inline .detail_holder").appendTo("#details_holder");
-				$("#foxyshop-list-inline").remove();
-
-				$(this).parents("tr").after('<tr id="foxyshop-list-inline"><td colspan="7"></td></tr>');
-				$("#holder_"+id).appendTo("#foxyshop-list-inline td");
-			}
-
-			return false;
-		});
-
-
-
-		$(".set_order_hidden_status").click( function() {
-			var hide_transaction = $(this).attr("rel");
-			var transaction_id = $(this).parents("tr").attr("rel");
-			var data = {
-				action: 'foxyshop_display_list_ajax_action',
-				security: '<?php echo wp_create_nonce("foxyshop-display-list-function"); ?>',
-				hide_transaction: hide_transaction,
-				foxyshop_action: 'hide_transaction',
-				id: transaction_id
-			};
-			$.post(ajaxurl, data, function(response) {
-			<?php if ($hide_transaction_filter == "0") { ?>
-				$("tr[rel="+transaction_id+"]").remove();
-				$("#foxyshop-list-inline #holder_" + transaction_id).remove();
-			<?php } else { ?>
-				alert(response);
-			<?php } ?>
-			});
-
-			return false;
-		});
-
-		<?php foxyshop_manage_attributes_jquery('transaction'); ?>
-
-	});
-	</script>
+  
 
 
 	<?php

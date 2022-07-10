@@ -237,42 +237,7 @@ function foxyshop_customer_management() {
 	<?php } ?>
 
 	<div id="details_holder"><?php echo foxy_wp_html($holder); ?></div>
-
-	<script type="text/javascript" src="<?php echo FOXYSHOP_DIR; ?>/js/tablesorter.js"></script>
-	<script type="text/javascript">
-	jQuery(document).ready(function($){
-		$(".foxyshop-list-table thead th").click(function() {
-			$("#foxyshop-list-inline .detail_holder").appendTo("#details_holder");
-			$("#foxyshop-list-inline").remove();
-		});
-		$(".foxyshop-list-table").tablesorter({
-			'cssDesc': 'asc sorted',
-			'cssAsc': 'desc sorted'
-		});
-		$(".view_detail").click(function() {
-			var id = $(this).parents("tr").attr("rel");
-
-			if ($("#foxyshop-list-inline #holder_" + id).length > 0) {
-				$("#foxyshop-list-inline .detail_holder").appendTo("#details_holder");
-				$("#foxyshop-list-inline").remove();
-			} else {
-				$("#foxyshop-list-inline .detail_holder").appendTo("#details_holder");
-				$("#foxyshop-list-inline").remove();
-
-				$(this).parents("tr").after('<tr id="foxyshop-list-inline"><td colspan="7"></td></tr>');
-				$("#holder_"+id).appendTo("#foxyshop-list-inline td");
-			}
-
-			return false;
-		});
-
-
-		<?php foxyshop_manage_attributes_jquery('customer'); ?>
-
-	});
-	</script>
-
-
+ 
 	<?php
 	echo ('</div>');
 }

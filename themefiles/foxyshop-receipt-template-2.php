@@ -19,12 +19,13 @@ global $foxyshop_settings;
 add_action('wp_enqueue_scripts', 'foxyshop_remove_jquery', 99);
 wp_deregister_script('jquery');
 remove_action('init', 'foxyshop_insert_jquery');
-remove_action('wp_footer', 'foxyshop_insert_google_analytics', 100);
+remove_action('wp_enqueue_scripts', 'foxyshop_insert_google_analytics', 100);
 remove_action('wp_footer', 'foxyshop_insert_foxycart_loader');
 
 //Wrap RAW tags
 add_action('wp_head', 'foxycart_template_start_raw', 2);
 add_action('wp_head', 'foxycart_template_end_raw', 999);
+add_action('wp_head', 'foxyshop_insert_allfrontend', 2);
 function foxycart_template_start_raw() { echo "{% raw %}"; }
 function foxycart_template_end_raw() { echo "{% endraw %}<style></style>"; }
 
@@ -37,15 +38,7 @@ function foxycart_template_header_includes() {
 <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
 <meta name="ROBOTS" content="NOINDEX">
 <link rel="stylesheet" href="{{ config.css_file }}" media="screen">
-<!-- FC script insertion -->{{ fc_header_content|raw }}<!-- /FC script insertion -->
-<!--[if lt IE 9 ]>
-    <script type="text/javascript">
-        var IEElms = ['article', 'aside', 'header', 'main', 'nav', 'section'];
-        for (var i = 0; i < IEElms.length; i++) {
-            document.createElement(IEElms[i]);
-        };
-    </script>
-<![endif]-->
+
 <style type="text/css">
 
 
@@ -70,12 +63,6 @@ get_header(); ?>
 
 </div>
 <?php foxyshop_include('footer'); ?>
-
-<script type="text/javascript">
-jQuery(document).ready(function($){
-	$("html").attr("id", "fc");
-});
-</script>
 
 <!-- FC footer script insertion -->{% include template_from_string(fc_footer_content) %}<!-- /FC footer scripts -->
 

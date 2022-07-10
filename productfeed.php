@@ -302,34 +302,7 @@ function foxyshop_google_products_page() {
 						</form>
 
 						<div id="error" style="color: red; margin-top: 10px; font-weight: bold; display: none;"></div>
-
-
-						<script type="text/javascript">
-						jQuery(document).ready(function($){
-
-							$("#authnow").click(function() {
-								var data = {
-									action: 'foxyshop_set_google_auth',
-									security: '<?php echo wp_create_nonce("foxyshop-ajax-set-google-auth"); ?>',
-									Email: $("#Email").val(),
-									Passwd: $("#Passwd").val()
-								};
-								$("#error").hide();
-								$.post(ajaxurl, data, function(response) {
-									if (!response) {
-										$("#error").text("Error: No Response").show();
-									} else if (response == "Error") {
-										$("#error").text("Error: Login Failed. Please try again.").show();
-									} else if (response == "Success") {
-										$("#error").hide();
-										location.reload();
-									} else {
-										$("#error").text("Error: " + response).show();
-									}
-								});
-							});
-						});
-						</script>
+ 
 
 
 					</td>
@@ -643,18 +616,8 @@ function foxyshop_google_products_page() {
 
 	</div>
 
-
-
-<script type="text/javascript" src="<?php echo FOXYSHOP_DIR; ?>/js/tablesorter.js"></script>
-<script type="text/javascript">
-jQuery(document).ready(function($){
-	$("#product_feed_view").tablesorter({
-		'cssDesc': 'asc sorted',
-		'cssAsc': 'desc sorted',
-		'headers': { 0: { sorter: false} }
-	});
-});
-</script>
+ 
+ 
 
 	<?php
 
