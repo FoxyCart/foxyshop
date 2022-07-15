@@ -10,7 +10,7 @@ function apiresetcheck() {
 	function foxyshop_format_number_single(num) { num = num.toString().replace(/\$|\,/g,''); if(isNaN(num)) num = "0"; sign = (num == (num = Math.abs(num))); num = Math.floor(num*100+0.50000000001); cents = num%100; num = Math.floor(num/100).toString(); if(cents<10) cents = "0" + cents; for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++) num = num.substring(0,num.length-(4*i+3))+','+ num.substring(num.length-(4*i+3)); return (((sign)?'':'-') + num); }
 
 jQuery(document).ready(function($){
-
+		if($("#product_variations_meta").length)
 		$("#product_variations_meta").on("click", ".deleteVariation", function() {
 		variationID = $(this).attr("rel");
 		$("#variation" + variationID).slideUp(function() {
@@ -46,6 +46,7 @@ jQuery(document).ready(function($){
 	addLoadEvent(foxyshop_variation_order_load_event);
 
 	//Check For Illegal Titles
+		if($("#product_variations_meta").length)
 	$("#product_variations_meta").on("blur", "input.variation_name", function() {
 		var thisval = $(this).val().toLowerCase();
 		if (thisval == "code" || thisval == "codes" || thisval == "price" || thisval == "name" || thisval == "category" || thisval == "weight" || thisval == "shipto") {
@@ -55,6 +56,7 @@ jQuery(document).ready(function($){
 	});
 
 	//Check For Illegal Titles
+		if($("#product_variations_meta").length)
 	$("#product_variations_meta").on("keypress", "input.variation_name", function(e) {
 		if (e.which !== 0 && (e.charCode == 46 || e.charCode == 34)) {
 			alert("Sorry! You can't use this character in a variation name: " + String.fromCharCode(e.keyCode|e.charCode));
@@ -63,6 +65,7 @@ jQuery(document).ready(function($){
 	});
 
 	//On Change Listener
+		if($("#product_variations_meta").length)
 	$("#product_variations_meta").on("click", ".variationtype", function() {
 		new_type = $(this).val();
 		this_id = $(this).parents(".product_variation").attr("rel");
@@ -103,6 +106,7 @@ jQuery(document).ready(function($){
 
 
 	//New Variation
+	if($("#AddVariation").length)
 	$("#AddVariation").click(function() {
 		var this_id = parseInt($("#max_variations").val()) + 1;
 
@@ -234,6 +238,9 @@ jQuery(document).ready(function($){
 		return new_contents;
 	}
 
+
+
+		if($("input[name='foxyshop_weight_type']").length)
 	$("input[name='foxyshop_weight_type']").change(function() {
 		if ($("#foxyshop_weight_type_english").is(":checked")) {
 			$("#weight_title1").text("lbs");
@@ -244,6 +251,7 @@ jQuery(document).ready(function($){
 		}
 	});
 
+		if($("#foxyshop_weight_type_english").length)
 	if ($("#foxyshop_weight_type_english").is(":checked")) {
 		$("#weight_title1").text("lbs");
 		$("#weight_title2").text("oz");
@@ -252,12 +260,14 @@ jQuery(document).ready(function($){
 		$("#weight_title2").text("gm");
 	}
 
+		if($("#foxyshop_key").length)
 	$("#foxyshop_key").click(function(e) {
 		if ($(this).prop("readonly")) {
 			$(this).select();
 		}
 	});
 
+		if($(".customise-api-key").length)
 	$(".customise-api-key").click(function(e) {
 		e.preventDefault();
 		$("#foxyshop_key").prop("readonly", false);
@@ -265,10 +275,12 @@ jQuery(document).ready(function($){
 		$(".customise-api-key-save").show();
 	});
 
+		if($("#resetimage").length)
 	$("#resetimage").click(function() {
 		$("#foxyshop_default_image").val("<?php echo FOXYSHOP_DIR."/images/no-photo.png"; ?>");
 		return false;
 	});
+		if($("#foxyshop_google_product_support").length)
 	$("#foxyshop_google_product_support").click(function() {
 		if ($(this).is(":checked")) {
 			$("#google_merchant_id_holder").show();
@@ -276,6 +288,7 @@ jQuery(document).ready(function($){
 			$("#google_merchant_id_holder").hide();
 		}
 	});
+		if($("#foxyshop_set_orderdesk_url").length)
 	$("#foxyshop_set_orderdesk_url").click(function() {
 		if ($(this).is(":checked")) {
 			$("#orderdesk_url_holder").show();
@@ -288,6 +301,7 @@ jQuery(document).ready(function($){
 	//Tooltip
 	xOffset = -10;
 	yOffset = 10;
+		if($("a.foxyshophelp").length)
 	$("a.foxyshophelp").hover(function(e) {
 		var tooltip_text = $(this).html();
 		$("body").append("<p id='tooltip'>"+ tooltip_text +"</p>");
@@ -306,6 +320,8 @@ jQuery(document).ready(function($){
 		return false;
 	}).attr("tabindex", "99999");
 
+
+		if($(".foxydomainpicker").length)
 	$(".foxydomainpicker").click(function(e) {
 		$(".foxycartdomain").removeClass("simple advanced");
 		$(".foxycartdomain").addClass($(this).attr("rel"));
@@ -315,6 +331,7 @@ jQuery(document).ready(function($){
 	});
 
 
+		if($(".inventory_update_width").length)
 	$(".inventory_update_width").blur(function() {
 		current_field_id = $(this).attr("id");
 		current_id = $("#" + current_field_id).attr("data-id");
@@ -348,12 +365,16 @@ jQuery(document).ready(function($){
 			});
 		}
   	});
+
+		if($(".inventory_update_width").length)
 	$(".inventory_update_width").keypress(function(e) {
 		if (e.which == 13) {
 			$(this).trigger("blur");
 			return false;
 		}
 	});
+
+		if($(".inventory_update_width").length)
 	$(".inventory_update_width").focus(function() {
 		$(this).parents("tr").addClass("inventory_update_width_highlight");
 	});
@@ -364,6 +385,7 @@ jQuery(document).ready(function($){
 
 
 
+		if($("#product_feed_view").length)
 	$("#product_feed_view").tablesorter({
 		'cssDesc': 'asc sorted',
 		'cssAsc': 'desc sorted',
@@ -372,9 +394,11 @@ jQuery(document).ready(function($){
 
 
 
+		if($(".foxyshop_date_field").length)
 			$(".foxyshop_date_field").datepicker({ dateFormat: 'yy-mm-dd' });
 
 			
+		if($("#foxyshop_searchform").length)
 $("#foxyshop_searchform").on("click", "button", function() {
 				if ($("#transaction_search_type option:selected").attr("target") == "_blank") {
 					$("#foxyshop_searchform").attr("target","_blank");
@@ -392,6 +416,7 @@ $.post(ajaxurl, { action: 'foxyshop_order_history_dashboard_action', security: '
 		});
 }
 
+		if($(".foxyshop-list-table").length){
 	$(".foxyshop-list-table").tablesorter({
 			'cssDesc': 'asc sorted',
 			'cssAsc': 'desc sorted'
@@ -401,7 +426,9 @@ $.post(ajaxurl, { action: 'foxyshop_order_history_dashboard_action', security: '
 			$("#foxyshop-list-inline .detail_holder").appendTo("#details_holder");
 			$("#foxyshop-list-inline").remove();
 		});
+	}
 	
+		if($(".view_detail").length)
 		$(".view_detail").click(function() {
 			var id = $(this).parents("tr").attr("rel");
 
@@ -419,11 +446,14 @@ $.post(ajaxurl, { action: 'foxyshop_order_history_dashboard_action', security: '
 
 			return false;
 		});
+		if($(".detail_close").length)
 		$(".detail_close").click(function() {
 			$("#foxyshop-list-inline .detail_holder").appendTo("#details_holder");
 			$("#foxyshop-list-inline").remove();
 			return false;
 		});
+
+		if($(".subscription_save").length)
 		$(".subscription_save").click(function() {
 			var id = $(this).parents("form").children("input[name='sub_token']").val();
 			$.post(ajaxurl, $(this).parents("form").serialize(), function(response) {
@@ -454,6 +484,7 @@ $.post(ajaxurl, { action: 'foxyshop_order_history_dashboard_action', security: '
 		});
 
 
+		if($(".foxydomainpicker").length)
 $(".foxydomainpicker").click(function(e) {
 		$(".foxycartdomain").removeClass("simple advanced");
 		$(".foxycartdomain").addClass($(this).attr("rel"));
@@ -462,6 +493,8 @@ $(".foxydomainpicker").click(function(e) {
 		return false;
 	});
 
+
+		if($("#authnow").length)
 							$("#authnow").click(function() {
 								var data = {
 									action: 'foxyshop_set_google_auth',

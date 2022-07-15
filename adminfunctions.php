@@ -147,6 +147,9 @@ function foxyshop_check_permalinks() {
 
 function foxyshop_insert_allfrontend(){
 	wp_enqueue_script('foxyshop_public',FOXYSHOP_PLUGIN_URL.'js/all-public.js',['jquery'],FOXYSHOP_VERSION);
+	wp_enqueue_script('variationp',FOXYSHOP_PLUGIN_URL.'js/variation.process.js',['jquery'],FOXYSHOP_VERSION);
+	wp_enqueue_script('prettyphoto',FOXYSHOP_PLUGIN_URL.'js/prettyphoto/prettyPhoto.js',['jquery'],FOXYSHOP_VERSION);
+	wp_enqueue_style('prettyphoto',FOXYSHOP_PLUGIN_URL.'css/prettyphoto/prettyPhoto.css',[],FOXYSHOP_VERSION);
 	wp_enqueue_script('foxyshop_public_header',FOXYSHOP_PLUGIN_URL.'js/all-public-header.js',['jquery'],FOXYSHOP_VERSION);
 	wp_script_add_data( 'foxyshop_public_header', 'conditional', 'lt IE 9' );
 }

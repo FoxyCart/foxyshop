@@ -1,6 +1,8 @@
 jQuery(document).ready(function($){
-	$(".foxyshop_product_list>li:nth-child(odd)").css("clear","left");
-	$(".foxyshop_categories>li:nth-child(3n+1)").css("clear","left");
+	if($(".foxyshop_product_list>li:nth-child(odd)").length) 
+		$(".foxyshop_product_list>li:nth-child(odd)").css("clear","left");
+	if($(".foxyshop_categories>li:nth-child(3n+1)").length)
+		$(".foxyshop_categories>li:nth-child(3n+1)").css("clear","left");
 });
 
 	function foxyshop_sort_dropdown(el) {
