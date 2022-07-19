@@ -45,7 +45,7 @@ function foxyshop_load_admin_scripts($hook) {
 	$inlinesorter = 'var thenonce="'.wp_create_nonce('update-foxyshop-inventory').'";
 
 
-	jQuery(document).ready(function($){ '.foxyshop_manage_attributes_jquery('transaction');.' });
+	jQuery(document).ready(function($){ '.foxyshop_manage_attributes_jquery('transaction').' });
 	';
 
 
@@ -187,7 +187,7 @@ function foxyshop_insert_google_analytics() {
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>', 'auto');";
+  ga('create', '".htmlspecialchars($foxyshop_settings['ga'])."', 'auto');";
    if ($foxyshop_settings['ga_demographics']) $toadd .= "ga('require', 'displayfeatures');\n";
   $toadd .= "ga('send', 'pageview');
  
@@ -265,8 +265,8 @@ function foxyshop_insert_google_analytics() {
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', '<?php echo foxy_wp_html(htmlspecialchars($foxyshop_settings['ga']) ) ; ?>', 'auto');
-  <?php if ($foxyshop_settings['ga_demographics']) echo "ga('require', 'displayfeatures');\n" ?>
+  ga('create', '".foxy_wp_html(htmlspecialchars($foxyshop_settings['ga']) )."', 'auto');
+  ".(($foxyshop_settings['ga_demographics']) ? "ga('require', 'displayfeatures');\n" : "")."
   ga('send', 'pageview');";
 		//Legacy
 		} else {
@@ -998,8 +998,7 @@ function foxyshop_manage_attributes($xml, $id, $att_type) {
 function foxyshop_manage_attributes_jquery($att_type) {
 	global $foxyshop_settings;
 	if (version_compare($foxyshop_settings['version'], '0.7.2', "<")) return "";
-	?>
-
+	return `
 	//Show New Form
 	$(".foxyshop_add_attribute").click(function(e) {
 		var id = $(this).attr("rel");
@@ -1094,8 +1093,6 @@ function foxyshop_manage_attributes_jquery($att_type) {
 
 		e.preventDefault();
 		return false;
-	});
-
-<?php
+	});`;
 
 }
