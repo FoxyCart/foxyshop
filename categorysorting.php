@@ -129,4 +129,29 @@ function foxyshop_category_sort() {
 	?>
 	</div>
 <?php
+
+function inline_categorysorting_js() {
+   echo "<script type='text/javascript'>
+function foxyshop_custom_order_load_event(){
+	jQuery(\"#foxyshop_category_order_list\").sortable({
+		placeholder: \"sortable-placeholder-category\",
+		revert: false,
+		tolerance: \"pointer\",
+		update: function() {
+			var counter = 1;
+			jQuery(\"#foxyshop_category_order_list li\").each(function() {
+				jQuery(this).find('.counter').html(counter);
+				counter++;
+			});
+		}
+	});
+};
+addLoadEvent(foxyshop_custom_order_load_event);
+function orderPages() {
+	jQuery(\"#updateText\").html(\"" . __('Updating Category Order...', 'foxyshop') . "\");
+	jQuery(\"#foxyshop_category_order_value\").val(jQuery(\"#foxyshop_category_order_list\").sortable(\"toArray\"));
+}
+</script>";
+}
+add_action( 'admin_print_footer_scripts', 'inline_categorysorting_js' );
 }

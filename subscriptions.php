@@ -174,7 +174,7 @@ function foxyshop_subscription_management() {
 		</td></tr></tbody></table>
 
 
-		</form> 
+		</form>
 
 	<?php
 	if (!isset($_GET['foxyshop_search']) && defined('FOXYSHOP_AUTO_API_DISABLED')) return;
@@ -358,8 +358,83 @@ function foxyshop_subscription_management() {
 	<?php } ?>
 
 	<div id="details_holder"><?php echo foxy_wp_html($holder); ?></div>
-  
+
 	<?php
+
+function inline_subscriptions_js() {
+   echo "<script type='text/javascript'>
+jQuery(document).ready(function($){
+	$(\".foxyshop-list-table thead th\").click(function() {
+		$(\"#foxyshop-list-inline .detail_holder\").appendTo(\"#details_holder\");
+		$(\"#foxyshop-list-inline\").remove();
+	});
+	$(\".foxyshop-list-table\").tablesorter({
+		'cssDesc': 'asc sorted',
+		'cssAsc': 'desc sorted'
+	});
+	$(\".view_detail\").click(function() {
+		var id = $(this).parents(\"tr\").attr(\"rel\");
+
+		if ($(\"#foxyshop-list-inline #holder_\" + id).length > 0) {
+			$(\"#foxyshop-list-inline .detail_holder\").appendTo(\"#details_holder\");
+			$(\"#foxyshop-list-inline\").remove();
+		} else {
+			$(\"#details_holder select\").prop('selectedIndex', 0);
+			$(\"#foxyshop-list-inline .detail_holder\").appendTo(\"#details_holder\");
+			$(\"#foxyshop-list-inline\").remove();
+
+			$(this).parents(\"tr\").after('<tr id=\"foxyshop-list-inline\"><td colspan=\"7\"></td></tr>');
+			$(\"#holder_\"+id).appendTo(\"#foxyshop-list-inline td\");
+		}
+
+		return false;
+	});
+	$(\".detail_close\").click(function() {
+		$(\"#foxyshop-list-inline .detail_holder\").appendTo(\"#details_holder\");
+		$(\"#foxyshop-list-inline\").remove();
+		return false;
+	});
+	$(\".subscription_save\").click(function() {
+		var id = $(this).parents(\"form\").children(\"input[name='sub_token']\").val();
+		$.post(ajaxurl, $(this).parents(\"form\").serialize(), function(response) {
+
+			$(\"#foxyshop-list-inline .detail_holder\").appendTo(\"#details_holder\");
+			$(\"#foxyshop-list-inline\").remove();
+
+			if (response.indexOf(\"ERROR\") < 0) {
+				$(\"tr[rel='\" + id + \"']\").css(\"background-color\", \"#FFFFE0\").delay(500).animate({ backgroundColor: 'transparent' }, 500);
+				if ($(\"#is_active_0_\" + id).is(\":checked\")) {
+					$(\"tr[rel='\" + id + \"'] td.customer_name strong\").addClass(\"strikethrough\");
+				} else {
+					$(\"tr[rel='\" + id + \"'] td.customer_name strong\").removeClass(\"strikethrough\");
+				}
+				$(\"tr[rel='\" + id + \"'] td.start_date\").text($(\"#start_date\" + id).val());
+				$(\"tr[rel='\" + id + \"'] td.next_transaction_date\").text($(\"#next_transaction_date_\" + id).val());
+				$(\"tr[rel='\" + id + \"'] td.end_date\").text($(\"#end_date_\" + id).val());
+				$(\"tr[rel='\" + id + \"'] td.past_due_amount\").text($(\"#past_due_amount_\" + id).val());
+				$(\"tr[rel='\" + id + \"'] td.frequency\").text($(\"#frequency_\" + id).val());
+				if ($(\"#transaction_template_id_\" + id).prop(\"selectedIndex\") > 0) {
+					$(\"tr[rel='\" + id + \"'] td.product_description\").text($(\"#transaction_template_id_\" + id + \" option:selected\").text());
+				}
+			} else {
+				alert(response);
+			}
+		});
+		return false;
+	});
+	";
+
+	echo foxyshop_manage_attributes_jquery('subscription');
+
+	echo "
+
+});
+
+function foxyshop_format_number(num) { num = num.toString().replace(/\$|\,/g,''); if(isNaN(num)) num = \"0\"; sign = (num == (num = Math.abs(num))); num = Math.floor(num*100+0.50000000001); cents = num%100; num = Math.floor(num/100).toString(); if(cents<10) cents = \"0\" + cents; for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++) num = num.substring(0,num.length-(4*i+3))+','+ num.substring(num.length-(4*i+3)); return (((sign)?'':'-') + num + '.' + cents); }
+function foxyshop_check_number(el) { el.value = foxyshop_format_number(el.value); }
+</script>";
+}
+add_action( 'admin_print_footer_scripts', 'inline_subscriptions_js' );
 
 	echo '</div>';
 }

@@ -21,6 +21,11 @@ This will allow you to upgrade FoxyShop without breaking your customizations. Mo
 </div>
 <?php foxyshop_include('footer'); ?>
 
- 
+<script type="text/javascript">
+jQuery(document).ready(function($){
+	//This is set up for a three-column display. For a two column you need to do: nth-child(odd)
+	$(".foxyshop_categories>li:nth-child(3n+1)").css("clear","left");
+});
+</script>
 
 <?php get_footer(); ?>

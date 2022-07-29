@@ -237,7 +237,42 @@ function foxyshop_customer_management() {
 	<?php } ?>
 
 	<div id="details_holder"><?php echo foxy_wp_html($holder); ?></div>
- 
 	<?php
 	echo ('</div>');
+
+function inline_customers_js() {
+   echo "<script type='text/javascript'>
+	jQuery(document).ready(function($){
+		$(\".foxyshop-list-table thead th\").click(function() {
+			$(\"#foxyshop-list-inline .detail_holder\").appendTo(\"#details_holder\");
+			$(\"#foxyshop-list-inline\").remove();
+		});
+		$(\".foxyshop-list-table\").tablesorter({
+			'cssDesc': 'asc sorted',
+			'cssAsc': 'desc sorted'
+		});
+		$(\".view_detail\").click(function() {
+			var id = $(this).parents(\"tr\").attr(\"rel\");
+
+			if ($(\"#foxyshop-list-inline #holder_\" + id).length > 0) {
+				$(\"#foxyshop-list-inline .detail_holder\").appendTo(\"#details_holder\");
+				$(\"#foxyshop-list-inline\").remove();
+			} else {
+				$(\"#foxyshop-list-inline .detail_holder\").appendTo(\"#details_holder\");
+				$(\"#foxyshop-list-inline\").remove();
+
+				$(this).parents(\"tr\").after('<tr id=\"foxyshop-list-inline\"><td colspan=\"7\"></td></tr>');
+				$(\"#holder_\"+id).appendTo(\"#foxyshop-list-inline td\");
+			}
+
+			return false;
+		});
+	";
+
+	echo foxyshop_manage_attributes_jquery('customer');
+
+	echo "});
+</script>";
+}
+add_action( 'admin_print_footer_scripts', 'inline_customers_js' );
 }

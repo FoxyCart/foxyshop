@@ -63,10 +63,10 @@ function foxyshop_inventory_management_page() {
 		if (isset($_GET['saved'])) echo '<div class="updated"><p>' . __('Your New Inventory Levels Have Been Saved.') . '</p></div>';
 
 		//Import Completed
-		if (isset($_GET['importcompleted'])) echo '<div class="updated"><p>' 
+		if (isset($_GET['importcompleted'])) echo '<div class="updated"><p>'
 			. sprintf(
-				__('Import completed: %s records updated.'), 
-				(int)sanitize_text_field($_GET['importcompleted']) 
+				__('Import completed: %s records updated.'),
+				(int)sanitize_text_field($_GET['importcompleted'])
 			) . '</p></div>';
 		?>
 
@@ -188,9 +188,64 @@ function foxyshop_inventory_management_page() {
 
 
 	</div>
- 
 
 
 <?php
+function inline_inventory_js() {
+   echo "<script type='text/javascript'>
+jQuery(document).ready(function($){
+	$(\".inventory_update_width\").blur(function() {
+		current_field_id = $(this).attr(\"id\");
+		current_id = $(\"#\" + current_field_id).attr(\"data-id\");
+		new_count = $(\"#\" + current_field_id).val();
+
+		$(\"#\" + current_field_id).val(new_count);
+		$(\"#\" + current_field_id).parents(\"tr\").removeClass(\"inventory_update_width_highlight\");
+
+		if (new_count != $(\"#original_count_\" + current_id).val()) {
+
+			var data = {
+				action: 'save_inventory_values',
+				\"_wpnonce\": \"" . wp_create_nonce('update-foxyshop-inventory') . "\",
+				\"code\": $(\"#code_\" + current_id).val(),
+				\"product_id\": $(\"#productid_\" + current_id).val(),
+				\"new_count\": new_count
+			};
+
+			$(\"#wait_\" + current_id).addClass(\"waiting\");
+			$.post(ajaxurl, data, function() {
+				$(\"#wait_\" + current_id).removeClass(\"waiting\");
+				$(\"#original_count_\" + current_id).val(new_count);
+				$(\"#current_inventory_\" + current_id).text(new_count);
+				if (new_count <= 0) {
+					$(\"#current_inventory_\" + current_id).removeClass().addClass(\"inventoryU\");
+				} else if (new_count <= parseInt($(\"#current_inventory_alert_\" + current_id).text())) {
+					$(\"#current_inventory_\" + current_id).removeClass().addClass(\"inventoryX\");
+				} else {
+					$(\"#current_inventory_\" + current_id).removeClass().addClass(\"inventoryA\");
+				}
+			});
+		}
+  	});
+	$(\".inventory_update_width\").keypress(function(e) {
+		if (e.which == 13) {
+			$(this).trigger(\"blur\");
+			return false;
+		}
+	});
+	$(\".inventory_update_width\").focus(function() {
+		$(this).parents(\"tr\").addClass(\"inventory_update_width_highlight\");
+	});
+	$(\"#inventory_level\").tablesorter({
+		'cssDesc': 'asc sorted',
+		'cssAsc': 'desc sorted'
+	});
+
+
+});
+function foxyshop_format_number_single(num) { num = num.toString().replace(/\$|\,/g,''); if(isNaN(num)) num = \"0\"; sign = (num == (num = Math.abs(num))); num = Math.floor(num*100+0.50000000001); cents = num%100; num = Math.floor(num/100).toString(); if(cents<10) cents = \"0\" + cents; for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++) num = num.substring(0,num.length-(4*i+3))+','+ num.substring(num.length-(4*i+3)); return (((sign)?'':'-') + num); }
+</script>";
+}
+add_action( 'admin_print_footer_scripts', 'inline_inventory_js' );
 }
 ?>

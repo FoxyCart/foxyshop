@@ -302,7 +302,6 @@ function foxyshop_google_products_page() {
 						</form>
 
 						<div id="error" style="color: red; margin-top: 10px; font-weight: bold; display: none;"></div>
- 
 
 
 					</td>
@@ -312,6 +311,36 @@ function foxyshop_google_products_page() {
 
 
 	<?php
+
+		function inline_productfeed_js() {
+   			echo "<script type='text/javascript'>
+jQuery(document).ready(function($){
+	$(\"#authnow\").click(function() {
+		var data = {
+			action: 'foxyshop_set_google_auth',
+			security: '" . wp_create_nonce("foxyshop-ajax-set-google-auth") . "',
+			Email: $(\"#Email\").val(),
+			Passwd: $(\"#Passwd\").val()
+		};
+		$(\"#error\").hide();
+		$.post(ajaxurl, data, function(response) {
+			if (!response) {
+				$(\"#error\").text(\"Error: No Response\").show();
+			} else if (response == \"Error\") {
+				$(\"#error\").text(\"Error: Login Failed. Please try again.\").show();
+			} else if (response == \"Success\") {
+				$(\"#error\").hide();
+				location.reload();
+			} else {
+				$(\"#error\").text(\"Error: \" + response).show();
+			}
+		});
+	});
+});
+</script>";
+}
+add_action( 'admin_print_footer_scripts', 'inline_productfeed_js' );
+
 	} else {
 
 
@@ -352,11 +381,11 @@ function foxyshop_google_products_page() {
 		$response = wp_remote_get($url, ['headers' => $header_array]);
 
 		if ( is_wp_error( $response ) ) {
-				die('Error');	 
+				die('Error');
 		}
 
 		$response = trim($response['body']);
- 
+
 		$xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $response);
 		$xml = simplexml_load_string($xml, NULL, LIBXML_NOCDATA);
 
@@ -616,8 +645,7 @@ function foxyshop_google_products_page() {
 
 	</div>
 
- 
- 
+
 
 	<?php
 
@@ -702,7 +730,7 @@ function foxyshop_manage_google_feed() {
 		}
 
 
-		$payload = $writexml; 
+		$payload = $writexml;
 		$args = [
 					'headers' =>  $header_array,
 					'body' => $payload
@@ -712,11 +740,11 @@ function foxyshop_manage_google_feed() {
 				$args);
 
 		if ( is_wp_error( $response ) ) {
-				    die('Error');	 
+				    die('Error');
 		}
-	
+
 		$response = trim($response['body']);
- 
+
 		$xml = $response;
 		//$xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $xml);
 		$xml = simplexml_load_string($xml, NULL, LIBXML_NOCDATA);

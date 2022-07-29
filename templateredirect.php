@@ -162,6 +162,7 @@ function foxyshop_theme_redirect() {
 		status_header(200);
 		$wp_query->is_404 = false;
 		if (!defined("IS_FOXYSHOP")) define("IS_FOXYSHOP", 1);
+		add_action( 'wp_print_scripts', 'foxyshop_dequeue_scripts_for_templates', 100 );
 		if (version_compare($foxyshop_settings['version'], '2.0', ">=")) {
 			include foxyshop_get_template_file('foxyshop-checkout-template-2.php');
 		} else {
@@ -176,6 +177,7 @@ function foxyshop_theme_redirect() {
 		status_header(200);
 		$wp_query->is_404 = false;
 		if (!defined("IS_FOXYSHOP")) define("IS_FOXYSHOP", 1);
+		add_action( 'wp_print_scripts', 'foxyshop_dequeue_scripts_for_templates', 100 );
 		if (version_compare($foxyshop_settings['version'], '2.0', ">=")) {
 			include foxyshop_get_template_file('foxyshop-receipt-template-2.php');
 		} else {
