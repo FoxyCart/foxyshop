@@ -106,7 +106,9 @@ function foxyshop_setup_legacy() {
 				<select name="foxyshop_version" id="foxyshop_version" style="min-width: 100px;">
 				<?php
 				foreach ($foxycart_version_array as $key => $val) {
-					echo '<option value="' . $key . '"' . ($foxyshop_settings['version'] == $key ? ' selected="selected"' : '') . '>' . $val . '  </option>'."\n";
+					if (version_compare($key, '0.7.2', ">")) {
+						echo '<option value="' . $key . '"' . ($foxyshop_settings['version'] == $key ? ' selected="selected"' : '') . '>' . $val . '  </option>'."\n";
+					}
 				} ?>
 				</select>
 				<small>Version 2.0 is recommended.</small>
@@ -155,12 +157,16 @@ function foxyshop_setup_legacy() {
 <?php wp_nonce_field('save-foxyshop-setup'); ?>
 </form>
 
-<script type="text/javascript">
+</div>
+<?php
+
+function inline_setup_page_js() {
+   echo "<script type='text/javascript'>
 jQuery(document).ready(function($){
-	$(".foxydomainpicker").click(function(e) {
-		$(".foxycartdomain").removeClass("simple advanced");
-		$(".foxycartdomain").addClass($(this).attr("rel"));
-		$("#foxyshop_domain").focus().select();
+	$(\".foxydomainpicker\").click(function(e) {
+		$(\".foxycartdomain\").removeClass(\"simple advanced\");
+		$(\".foxycartdomain\").addClass($(this).attr(\"rel\"));
+		$(\"#foxyshop_domain\").focus().select();
 		e.preventDefault();
 		return false;
 	});
@@ -169,7 +175,11 @@ jQuery(document).ready(function($){
 function foxyshop_check_settings_form() {
 	return true;
 }
-</script>
+</script>";
+}
+add_action( 'admin_print_footer_scripts', 'inline_setup_page_js' );
 
-</div>
-<?php } ?>
+
+}
+
+?>

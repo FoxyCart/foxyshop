@@ -333,14 +333,19 @@ function foxyshop_dashboard_stats() {
 	echo '</div>'."\n";
 	?>
 
-	<script type="text/javascript">
-	jQuery(document).ready(function($){
-		$.post(ajaxurl, { action: 'foxyshop_order_history_dashboard_action', security: '<?php echo wp_create_nonce("foxyshop-order-info-dashboard"); ?>' }, function(response) {
-			$("#foxyshop_dashboard_order_history").html(response)
+	<?php
+
+function inline_dashboard_stats_js() {
+   echo "<script type='text/javascript'>
+jQuery(document).ready(function($){
+		$.post(ajaxurl, { action: 'foxyshop_order_history_dashboard_action', security: '" . wp_create_nonce("foxyshop-order-info-dashboard") . "' }, function(response) {
+			$(\"#foxyshop_dashboard_order_history\").html(response)
 		});
 	});
-	</script>
-	<?php
+</script>";
+}
+add_action( 'admin_print_footer_scripts', 'inline_dashboard_stats_js' );
+
 	echo '<div style="clear: both;"></div>'."\n";
 }
 

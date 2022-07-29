@@ -262,7 +262,58 @@ function foxyshop_updated_messages($messages) {
 //-------------------------------------------
 add_action('admin_init','foxyshop_product_meta_init');
 function foxyshop_product_meta_init() {
-	global $foxyshop_settings;
+	global $post, $foxyshop_settings;
+
+	function inline_customposttype_init_js() {
+		global $post, $foxyshop_settings;
+
+		if (get_post_type($post) != "foxyshop_product") return;
+
+		// There is some duplication here for creating the variables lifted from foxyshop_product_details_setup()
+		if ($foxyshop_settings['downloadables_sync'] && version_compare($foxyshop_settings['version'], '0.7.2', ">=") && $foxyshop_settings['domain']) {
+			$show_downloadables = 1;
+		} else {
+			$show_downloadables = 0;
+		}
+		$defaultweight = explode(" ",$foxyshop_settings['default_weight']);
+		$defaultweight1 = (int)$defaultweight[0];
+		$defaultweight2 = (count($defaultweight) > 1 ? number_format($defaultweight[1],1) : "0.0");
+
+		//Get Max Upload Limit
+		$max_upload = (int)(ini_get('upload_max_filesize'));
+		$max_post = (int)(ini_get('post_max_size'));
+		$memory_limit = (int)(ini_get('memory_limit'));
+		$upload_mb = min($max_upload, $max_post, $memory_limit);
+		$foxyshop_max_upload = $upload_mb * 1048576;
+		if ($foxyshop_max_upload == 0) {
+			$foxyshop_max_upload = "8000000";
+		}
+
+		echo "<script type='text/javascript'>
+
+	//Setup Vars For Use Later
+	var FOXYSHOP_PRODUCT_NAME_SINGULAR = '" . esc_attr(strtolower(str_replace("'", "\'", FOXYSHOP_PRODUCT_NAME_SINGULAR))) . "';
+	var show_downloadables = " . ($show_downloadables ? 1 : 0) . ";
+	var nonce_downloadable_list = '" . wp_create_nonce("foxyshop-ajax-get-downloadable-list") . "';
+	var defaultweight1 = '" . esc_attr($defaultweight1) . "';
+	var defaultweight2 = '" . esc_attr($defaultweight2) . "';
+	var weight_dividend = " . ($foxyshop_settings['weight_type'] == 'metric' ? 1000 : 16) . ";
+	var use_chozen = " . ($foxyshop_settings['related_products_custom'] || $foxyshop_settings['related_products_tags'] || $foxyshop_settings['enable_addon_products'] ? 1 : 0) . ";
+
+	var renameLive = false;
+	var post_id = " . esc_attr($post->ID) . ";
+	var nonce_images = '" . wp_create_nonce("foxyshop-product-image-functions-".$post->ID) . "';
+	var foxyshop_max_upload = '" . esc_attr($foxyshop_max_upload) . "';
+
+	var FOXYSHOP_DIR = '" . esc_attr(FOXYSHOP_DIR) . "';
+	var FOXYSHOP_URL_BASE = '" . esc_attr(FOXYSHOP_URL_BASE) . "';
+	var bloginfo_url = '" . esc_attr(is_ssl() ? str_replace("http://", "https://", get_bloginfo("url")) : get_bloginfo("url")) . "';
+	var datafeed_url_key = '" . esc_attr($foxyshop_settings['datafeed_url_key']) . "';
+
+</script>";
+	}
+	add_action( 'admin_print_scripts', 'inline_customposttype_init_js' );
+
 	add_meta_box('product_details_meta', FOXYSHOP_PRODUCT_NAME_SINGULAR.' '.__('Details', 'foxyshop'), 'foxyshop_product_details_setup', 'foxyshop_product', 'side', 'high');
 	add_meta_box('product_pricing_meta', __('Pricing Details', 'foxyshop'), 'foxyshop_product_pricing_setup', 'foxyshop_product', 'side', 'low');
 	add_meta_box('product_images_meta', FOXYSHOP_PRODUCT_NAME_SINGULAR.' ' . __('Images', 'foxyshop'), 'foxyshop_product_images_setup', 'foxyshop_product', 'normal', 'high');
@@ -460,39 +511,6 @@ function foxyshop_product_details_setup() {
 		<label style="width: 210px;" for="_hide_product"><?php echo sprintf(__('Hide This %s From List View', 'foxyshop'), FOXYSHOP_PRODUCT_NAME_SINGULAR); ?></label>
 	</div>
 	<div style="clear:both"></div>
-
-	<script type="text/javascript">
-
-	//Setup Vars For Use Later
-	var FOXYSHOP_PRODUCT_NAME_SINGULAR = '<?php echo strtolower(str_replace("'", "\'", FOXYSHOP_PRODUCT_NAME_SINGULAR)); ?>';
-	var show_downloadables = <?php echo ($show_downloadables ? 1 : 0); ?>;
-	var nonce_downloadable_list = '<?php echo wp_create_nonce("foxyshop-ajax-get-downloadable-list"); ?>';
-	var defaultweight1 = '<?php echo esc_attr($defaultweight1); ?>';
-	var defaultweight2 = '<?php echo esc_attr($defaultweight2); ?>';
-	var weight_dividend = <?php echo ($foxyshop_settings['weight_type'] == 'metric' ? 1000 : 16); ?>;
-	var use_chozen = <?php echo ($foxyshop_settings['related_products_custom'] || $foxyshop_settings['related_products_tags'] || $foxyshop_settings['enable_addon_products'] ? 1 : 0); ?>;
-
-	var renameLive = false;
-	var post_id = <?php echo esc_attr($post->ID); ?>;
-	var nonce_images = '<?php echo wp_create_nonce("foxyshop-product-image-functions-".$post->ID); ?>';
-
-	<?php
-	//Get Max Upload Limit
-	$max_upload = (int)(ini_get('upload_max_filesize'));
-	$max_post = (int)(ini_get('post_max_size'));
-	$memory_limit = (int)(ini_get('memory_limit'));
-	$upload_mb = min($max_upload, $max_post, $memory_limit);
-	$foxyshop_max_upload = $upload_mb * 1048576;
-	if ($foxyshop_max_upload == 0) $foxyshop_max_upload = "8000000"; ?>
-	var foxyshop_max_upload = '<?php echo esc_attr($foxyshop_max_upload);
-	?>';
-
-	var FOXYSHOP_DIR = '<?php echo FOXYSHOP_DIR; ?>';
-	var FOXYSHOP_URL_BASE = '<?php echo FOXYSHOP_URL_BASE; ?>';
-	var bloginfo_url = '<?php echo is_ssl() ? str_replace("http://", "https://", get_bloginfo("url")) : get_bloginfo("url"); ?>';
-	var datafeed_url_key = '<?php echo esc_html($foxyshop_settings['datafeed_url_key']); ?>';
-
-	</script>
 
 	<?php
 	//Add Action For Product Details (For Other Integrations)
@@ -824,8 +842,6 @@ function foxyshop_product_images_setup() {
 			return;
 		}
 	}
-	echo '<script type="text/javascript" src="' . FOXYSHOP_DIR . '/js/dropzone.js"></script>'."\n";
-	echo '<link rel="stylesheet" href="' . FOXYSHOP_DIR . '/css/dropzone.css" type="text/css" media="screen" />'."\n";
 
 	echo '<div id="foxyshop_new_product_image_container" class="dropzone"></div>'."\n";
 	echo '<input type="hidden" id="foxyshop_sortable_value" name="foxyshop_sortable_value" />'."\n";
@@ -1023,13 +1039,17 @@ function foxyshop_product_variations_setup() {
 	<button type="button" id="VariationMaximizeAll" class="button" style="display:none; float: right;"><?php _e('Maximize All', 'foxyshop'); ?></button>
 	<input type="hidden" name="max_variations" id="max_variations" value="<?php echo esc_attr($max_variations); ?>" />
 
-<script type="text/javascript">
-
-var variation_key = '<?php echo esc_attr($variation_key); ?>';
-var variation_select_options = "";
 <?php
+
+function inline_tools_page_js($var_type_array, $variation_key, $saved_variations) {
+
+   echo "<script type='text/javascript'>
+var variation_key = '" . esc_attr($variation_key) . "';
+var variation_select_options = \"\";
+";
+
 foreach ($var_type_array as $var_name => $var_val) {
-	echo "variation_select_options += '<option value=\"" . $var_name . '">' . $var_val . "  </option>';\n";
+	echo "variation_select_options += '<option value=\"" . esc_attr($var_name) . '">' . esc_html($var_val) . "  </option>';\n";
 }
 if (is_array($saved_variations)) {
 	echo "\t\tvariation_select_options += '<optgroup label=\"" . __('Saved Variations', 'foxyshop') . "\">';\n";
@@ -1039,12 +1059,10 @@ if (is_array($saved_variations)) {
 	}
 	echo "\t\tvariation_select_options += '</optgroup>';\n";
 }
+echo "</script>";
+}
+add_action( 'admin_print_footer_scripts', function() use ($var_type_array, $variation_key, $saved_variations) { inline_tools_page_js($var_type_array, $variation_key, $saved_variations); } );
 
-?>
-</script>
-<script type="text/javascript" src="<?php echo FOXYSHOP_DIR . '/js/products-admin.js'; ?>"></script>
-
-<?php
 }
 
 

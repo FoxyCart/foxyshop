@@ -641,10 +641,13 @@ echo "</div>";
 
 
 
+<?php
 
-<script type="text/javascript">
+function inline_tools_page_js($var_type_array, $variation_key) {
+
+   echo "<script type='text/javascript'>
 function apiresetcheck() {
-	if (confirm ("Are you sure you want to reset your API Key?\nYou will not be able to recover your old key.")) {
+	if (confirm (\"Are you sure you want to reset your API Key?\\nYou will not be able to recover your old key.\")) {
 		return true;
 	} else {
 		return false;
@@ -652,12 +655,12 @@ function apiresetcheck() {
 }
 
 jQuery(document).ready(function($){
-	$("#product_variations_meta").on("click", ".deleteVariation", function() {
-		variationID = $(this).attr("rel");
-		$("#variation" + variationID).slideUp(function() {
+	$(\"#product_variations_meta\").on(\"click\", \".deleteVariation\", function() {
+		variationID = $(this).attr(\"rel\");
+		$(\"#variation\" + variationID).slideUp(function() {
 			$(this).remove();
 			var counter = 1;
-			$("div.product_variation").each(function() {
+			$(\"div.product_variation\").each(function() {
 				$(this).find('.variationsort').val(counter);
 				$(this).find('.variationsortnum').html(counter);
 				counter++;
@@ -668,15 +671,15 @@ jQuery(document).ready(function($){
 
 
 	function foxyshop_variation_order_load_event() {
-		$("#variation_sortable").sortable({
-			placeholder: "sortable-variation-placeholder",
+		$(\"#variation_sortable\").sortable({
+			placeholder: \"sortable-variation-placeholder\",
 			revert: false,
-			items: "div.product_variation",
-			tolerance: "pointer",
+			items: \"div.product_variation\",
+			tolerance: \"pointer\",
 			distance: 30,
 			update: function() {
 				var counter = 1;
-				$("div.product_variation").each(function() {
+				$(\"div.product_variation\").each(function() {
 					$(this).find('.variationsort').val(counter);
 					$(this).find('.variationsortnum').html(counter);
 					counter++;
@@ -687,56 +690,56 @@ jQuery(document).ready(function($){
 	addLoadEvent(foxyshop_variation_order_load_event);
 
 	//Check For Illegal Titles
-	$("#product_variations_meta").on("blur", "input.variation_name", function() {
+	$(\"#product_variations_meta\").on(\"blur\", \"input.variation_name\", function() {
 		var thisval = $(this).val().toLowerCase();
-		if (thisval == "code" || thisval == "codes" || thisval == "price" || thisval == "name" || thisval == "category" || thisval == "weight" || thisval == "shipto") {
-			alert("Sorry! The title '" + thisval + "' cannot be used as a variation name.");
+		if (thisval == \"code\" || thisval == \"codes\" || thisval == \"price\" || thisval == \"name\" || thisval == \"category\" || thisval == \"weight\" || thisval == \"shipto\") {
+			alert(\"Sorry! The title '\" + thisval + \"' cannot be used as a variation name.\");
 			return false;
 		}
 	});
 
 	//Check For Illegal Titles
-	$("#product_variations_meta").on("keypress", "input.variation_name", function(e) {
+	$(\"#product_variations_meta\").on(\"keypress\", \"input.variation_name\", function(e) {
 		if (e.which !== 0 && (e.charCode == 46 || e.charCode == 34)) {
-			alert("Sorry! You can't use this character in a variation name: " + String.fromCharCode(e.keyCode|e.charCode));
+			alert(\"Sorry! You can't use this character in a variation name: \" + String.fromCharCode(e.keyCode|e.charCode));
 			return false;
 		}
 	});
 
 	//On Change Listener
-	$("#product_variations_meta").on("click", ".variationtype", function() {
+	$(\"#product_variations_meta\").on(\"click\", \".variationtype\", function() {
 		new_type = $(this).val();
-		this_id = $(this).parents(".product_variation").attr("rel");
+		this_id = $(this).parents(\".product_variation\").attr(\"rel\");
 
 		//Set Temp Values
-		temp_dropdown = $("#_variation_value_"+this_id).val();
-		temp_radio = $("#_variation_radio_"+this_id).val();
-		temp_text1 = $("#_variation_textsize1_"+this_id).val();
-		temp_text2 = $("#_variation_textsize2_"+this_id).val();
-		temp_textarea = $("#_variation_textareasize_"+this_id).val();
-		temp_descriptionfield = $("#_variation_description_"+this_id).val();
-		temp_checkbox = $("#_variation_checkbox_"+this_id).val();
-		temp_upload = $("#_variation_uploadinstructions_"+this_id).val();
-		temp_hiddenfield = $("#_variation_hiddenfield_"+this_id).val();
-		if (temp_dropdown) $("#dropdownradio_value_"+this_id).val(temp_dropdown);
-		if (temp_radio) $("#dropdownradio_value_"+this_id).val(temp_radio);
-		if (temp_text1) $("#text1_value_"+this_id).val(temp_text1);
-		if (temp_text2) $("#text2_value_"+this_id).val(temp_text2);
-		if (temp_textarea) $("#textarea_value_"+this_id).val(temp_textarea);
-		if (temp_descriptionfield) $("#descriptionfield_value_"+this_id).val(temp_descriptionfield);
-		if (temp_checkbox) $("#checkbox_value_"+this_id).val(temp_checkbox);
-		if (temp_upload) $("#upload_value_"+this_id).val(temp_upload);
-		if (temp_hiddenfield) $("#hiddenfield_value_"+this_id).val(temp_upload);
+		temp_dropdown = $(\"#_variation_value_\"+this_id).val();
+		temp_radio = $(\"#_variation_radio_\"+this_id).val();
+		temp_text1 = $(\"#_variation_textsize1_\"+this_id).val();
+		temp_text2 = $(\"#_variation_textsize2_\"+this_id).val();
+		temp_textarea = $(\"#_variation_textareasize_\"+this_id).val();
+		temp_descriptionfield = $(\"#_variation_description_\"+this_id).val();
+		temp_checkbox = $(\"#_variation_checkbox_\"+this_id).val();
+		temp_upload = $(\"#_variation_uploadinstructions_\"+this_id).val();
+		temp_hiddenfield = $(\"#_variation_hiddenfield_\"+this_id).val();
+		if (temp_dropdown) $(\"#dropdownradio_value_\"+this_id).val(temp_dropdown);
+		if (temp_radio) $(\"#dropdownradio_value_\"+this_id).val(temp_radio);
+		if (temp_text1) $(\"#text1_value_\"+this_id).val(temp_text1);
+		if (temp_text2) $(\"#text2_value_\"+this_id).val(temp_text2);
+		if (temp_textarea) $(\"#textarea_value_\"+this_id).val(temp_textarea);
+		if (temp_descriptionfield) $(\"#descriptionfield_value_\"+this_id).val(temp_descriptionfield);
+		if (temp_checkbox) $(\"#checkbox_value_\"+this_id).val(temp_checkbox);
+		if (temp_upload) $(\"#upload_value_\"+this_id).val(temp_upload);
+		if (temp_hiddenfield) $(\"#hiddenfield_value_\"+this_id).val(temp_upload);
 
 		//Set Contents in Container
-		$("#variation_holder_"+this_id).html(getVariationContents(new_type, this_id));
+		$(\"#variation_holder_\"+this_id).html(getVariationContents(new_type, this_id));
 
 		//Hide or Show Required Checkbox Option
 		if (new_type == 'dropdown' || new_type == 'text' || new_type == 'textarea' || new_type == 'upload') {
-			$(this).parents(".product_variation").find(".variation_required_container").show();
+			$(this).parents(\".product_variation\").find(\".variation_required_container\").show();
 		} else {
-			$(this).parents(".product_variation").find(".variation_required_container").hide();
-			$(this).parents(".product_variation").find(".variation_required_container").find('input[type="checkbox"]').not(':checked');
+			$(this).parents(\".product_variation\").find(\".variation_required_container\").hide();
+			$(this).parents(\".product_variation\").find(\".variation_required_container\").find('input[type=\"checkbox\"]').not(':checked');
 		}
 
 
@@ -744,58 +747,61 @@ jQuery(document).ready(function($){
 
 
 	//New Variation
-	$("#AddVariation").click(function() {
-		var this_id = parseInt($("#max_variations").val()) + 1;
+	$(\"#AddVariation\").click(function() {
+		var this_id = parseInt($(\"#max_variations\").val()) + 1;
 
 
-		new_content = '<div class="product_variation" rel="' + this_id + '" id="variation' + this_id + '">';
-		new_content += '<input type="hidden" name="sort' + this_id + '" id="sort' + this_id + '" value="' + this_id + '" class="variationsort" />';
-		new_content += '<input type="hidden" name="dropdownradio_value_' + this_id + '" id="dropdownradio_value_' + this_id + '" value="" />';
-		new_content += '<input type="hidden" name="text1_value_' + this_id + '" id="text1_value_' + this_id + '" value="" />';
-		new_content += '<input type="hidden" name="text2_value_' + this_id + '" id="text2_value_' + this_id + '" value="" />';
-		new_content += '<input type="hidden" name="textarea_value_' + this_id + '" id="textarea_value_' + this_id + '" value="" />';
-		new_content += '<input type="hidden" name="descriptionfield_value_' + this_id + '" id="descriptionfield_value_' + this_id + '" value="" />';
-		new_content += '<input type="hidden" name="checkbox_value_' + this_id + '" id="checkbox_value_' + this_id + '" value="" />';
-		new_content += '<input type="hidden" name="upload_value_' + this_id + '" id="upload_value_' + this_id + '" value="" />';
-		new_content += '<input type="hidden" name="hiddenfield_value_' + this_id + '" id="hiddenfield_value_' + this_id + '" value="" />';
+		new_content = '<div class=\"product_variation\" rel=\"' + this_id + '\" id=\"variation' + this_id + '\">';
+		new_content += '<input type=\"hidden\" name=\"sort' + this_id + '\" id=\"sort' + this_id + '\" value=\"' + this_id + '\" class=\"variationsort\" />';
+		new_content += '<input type=\"hidden\" name=\"dropdownradio_value_' + this_id + '\" id=\"dropdownradio_value_' + this_id + '\" value=\"\" />';
+		new_content += '<input type=\"hidden\" name=\"text1_value_' + this_id + '\" id=\"text1_value_' + this_id + '\" value=\"\" />';
+		new_content += '<input type=\"hidden\" name=\"text2_value_' + this_id + '\" id=\"text2_value_' + this_id + '\" value=\"\" />';
+		new_content += '<input type=\"hidden\" name=\"textarea_value_' + this_id + '\" id=\"textarea_value_' + this_id + '\" value=\"\" />';
+		new_content += '<input type=\"hidden\" name=\"descriptionfield_value_' + this_id + '\" id=\"descriptionfield_value_' + this_id + '\" value=\"\" />';
+		new_content += '<input type=\"hidden\" name=\"checkbox_value_' + this_id + '\" id=\"checkbox_value_' + this_id + '\" value=\"\" />';
+		new_content += '<input type=\"hidden\" name=\"upload_value_' + this_id + '\" id=\"upload_value_' + this_id + '\" value=\"\" />';
+		new_content += '<input type=\"hidden\" name=\"hiddenfield_value_' + this_id + '\" id=\"hiddenfield_value_' + this_id + '\" value=\"\" />';
 		new_content += '<!-- //// VARIATION HEADER //// -->';
-		new_content += '<div class="foxyshop_field_control">';
-		new_content += '<a href="#" class="button deleteVariation" rel="' + this_id + '">Delete</a>';
-		new_content += '<label for="_variation_ref_name_' + this_id + '"><?php _e('Reference Name', 'foxyshop'); ?></label>';
-		new_content += '<input type="text" name="_variation_ref_name_' + this_id + '" class="variation_ref_name" id="_variation_ref_name_' + this_id + '" value="" />';
+		new_content += '<div class=\"foxyshop_field_control\">';
+		new_content += '<a href=\"#\" class=\"button deleteVariation\" rel=\"' + this_id + '\">Delete</a>';
+		new_content += '<label for=\"_variation_ref_name_' + this_id + '\">" . __('Reference Name', 'foxyshop') . "</label>';
+		new_content += '<input type=\"text\" name=\"_variation_ref_name_' + this_id + '\" class=\"variation_ref_name\" id=\"_variation_ref_name_' + this_id + '\" value=\"\" />';
 		new_content += '<span>Displayed in Dropdown Menu</span>';
 		new_content += '</div>';
-		new_content += '<div class="foxyshop_field_control">';
-		new_content += '<label for="_variation_name_' + this_id + '"><?php _e('Variation Name', 'foxyshop'); ?></label>';
-		new_content += '<input type="text" name="_variation_name_' + this_id + '" class="variation_name" id="_variation_name_' + this_id + '" value="" />';
-		new_content += '<label for="_variation_type_' + this_id + '" class="variationtypelabel"><?php _e('Variation Type', 'foxyshop'); ?></label> ';
-		new_content += '<select name="_variation_type_' + this_id + '" id="_variation_type_' + this_id + '" class="variationtype">';
-		<?php
+		new_content += '<div class=\"foxyshop_field_control\">';
+		new_content += '<label for=\"_variation_name_' + this_id + '\">" . __('Variation Name', 'foxyshop') . "</label>';
+		new_content += '<input type=\"text\" name=\"_variation_name_' + this_id + '\" class=\"variation_name\" id=\"_variation_name_' + this_id + '\" value=\"\" />';
+		new_content += '<label for=\"_variation_type_' + this_id + '\" class=\"variationtypelabel\">" . __('Variation Type', 'foxyshop') . "</label> ';
+		new_content += '<select name=\"_variation_type_' + this_id + '\" id=\"_variation_type_' + this_id + '\" class=\"variationtype\">';
+		";
+
 		foreach ($var_type_array as $var_name => $var_val) {
-			echo "\t\tnew_content += '<option value=\"" . $var_name . '">' . $var_val . "  </option>';\n";
-		} ?>
+			echo "new_content += '<option value=\"" . esc_attr($var_name) . '">' . esc_html($var_val) . "</option>';\n";
+		}
+
+		echo "
 		new_content += '</select>';
 		new_content += '</div>';
-		new_content += '<div class="variation_holder" id="variation_holder_' + this_id + '"></div>';
+		new_content += '<div class=\"variation_holder\" id=\"variation_holder_' + this_id + '\"></div>';
 		new_content += '<!-- //// DISPLAY KEY //// -->';
-		new_content += '<div class="foxyshop_field_control dkeycontainer">';
-		new_content += '<label class="dkeylabel" title="Enter a value here if you want your variation to be invisible until called by another variation."><?php _e('Display Key', 'foxyshop'); ?></label>';
-		new_content += '<input type="text" name="_variation_dkey_' + this_id + '" id="_variation_dkey_' + this_id + '" value="" class="dkeynamefield" />';
+		new_content += '<div class=\"foxyshop_field_control dkeycontainer\">';
+		new_content += '<label class=\"dkeylabel\" title=\"Enter a value here if you want your variation to be invisible until called by another variation.\">" . __('Display Key', 'foxyshop') . "</label>';
+		new_content += '<input type=\"text\" name=\"_variation_dkey_' + this_id + '\" id=\"_variation_dkey_' + this_id + '\" value=\"\" class=\"dkeynamefield\" />';
 		new_content += '<!-- Required -->';
-		new_content += '<div class="variation_required_container" rel="' + this_id + '">';
-		new_content += '<input type="checkbox" name="_variation_required_' + this_id + '" id="_variation_required_' + this_id + '" />';
-		new_content += '<label for="_variation_required_' + this_id + '"><?php _e('Make Field Required', 'foxyshop'); ?></label>';
+		new_content += '<div class=\"variation_required_container\" rel=\"' + this_id + '\">';
+		new_content += '<input type=\"checkbox\" name=\"_variation_required_' + this_id + '\" id=\"_variation_required_' + this_id + '\" />';
+		new_content += '<label for=\"_variation_required_' + this_id + '\">" . __('Make Field Required', 'foxyshop') . "</label>';
 		new_content += '</div>';
 		new_content += '</div>';
-		new_content += '<div class="variationsortnum">' + this_id + '</div>';
-		new_content += '<div style="clear: both;"></div>';
+		new_content += '<div class=\"variationsortnum\">' + this_id + '</div>';
+		new_content += '<div style=\"clear: both;\"></div>';
 		new_content += '</div>';
 
-		$("#variation_sortable").append(new_content);
-		$("#variation_holder_"+this_id).html(getVariationContents("dropdown", this_id));
+		$(\"#variation_sortable\").append(new_content);
+		$(\"#variation_holder_\"+this_id).html(getVariationContents(\"dropdown\", this_id));
 
-		$("#max_variations").val(this_id);
-		$("#variation_sortable").sortable("refresh");
+		$(\"#max_variations\").val(this_id);
+		$(\"#variation_sortable\").sortable(\"refresh\");
 		return false;
 	});
 
@@ -804,81 +810,83 @@ jQuery(document).ready(function($){
 
 
 	function getVariationContents(new_type, this_id) {
-		new_contents = "";
-		variationkeyhtml = '<div class="variationkey"><?php echo foxy_wp_html($variation_key); ?></div>';
+		new_contents = \"\";
+		variationkeyhtml = '<div class=\"variationkey\">" . foxy_wp_html($variation_key) . "</div>';
 
 		//Dropdown
-		if (new_type == "dropdown") {
-			new_contents = '<div class="foxyshop_field_control dropdown variationoptions">';
-			new_contents += '<label id="_variation_value_' + this_id + '"><?php _e('Items in Dropdown', 'foxyshop'); ?></label>';
-			new_contents += '<textarea name="_variation_value_' + this_id + '" id="_variation_value_' + this_id + '">' + $("#dropdownradio_value_"+this_id).val() + '</textarea>';
+		if (new_type == \"dropdown\") {
+			new_contents = '<div class=\"foxyshop_field_control dropdown variationoptions\">';
+			new_contents += '<label id=\"_variation_value_' + this_id + '\">" . __('Items in Dropdown', 'foxyshop') . "</label>';
+			new_contents += '<textarea name=\"_variation_value_' + this_id + '\" id=\"_variation_value_' + this_id + '\">' + $(\"#dropdownradio_value_\"+this_id).val() + '</textarea>';
 			new_contents += variationkeyhtml;
 			new_contents += '</div>';
 
 		//Radio Buttons
-		} else if (new_type == "radio") {
-			new_contents = '<div class="foxyshop_field_control radio variationoptions">';
-			new_contents += '<label for="_variation_radio_' + this_id + '"><?php _e('Radio Button Options', 'foxyshop'); ?></label>';
-			new_contents += '<textarea name="_variation_radio_' + this_id + '" id="_variation_radio_' + this_id + '">' + $("#dropdownradio_value_"+this_id).val() + '</textarea>';
+		} else if (new_type == \"radio\") {
+			new_contents = '<div class=\"foxyshop_field_control radio variationoptions\">';
+			new_contents += '<label for=\"_variation_radio_' + this_id + '\">" . __('Radio Button Options', 'foxyshop') . "</label>';
+			new_contents += '<textarea name=\"_variation_radio_' + this_id + '\" id=\"_variation_radio_' + this_id + '\">' + $(\"#dropdownradio_value_\"+this_id).val() + '</textarea>';
 			new_contents += variationkeyhtml;
 			new_contents += '</div>';
 
 		//Text
-		} else if (new_type == "text") {
-			new_contents = '<div class="foxyshop_field_control text variationoptions">';
-			new_contents += '<div class="foxyshop_field_control">';
-			new_contents += '<label for="_variation_textsize1_' + this_id + '"><?php _e('Text Box Size', 'foxyshop'); ?></label>';
-			new_contents += '<input type="text" name="_variation_textsize1_' + this_id + '" id="_variation_textsize1_' + this_id + '" value="' + $("#text1_value_"+this_id).val() + '" /> <span><?php _e('characters'); ?></span>';
+		} else if (new_type == \"text\") {
+			new_contents = '<div class=\"foxyshop_field_control text variationoptions\">';
+			new_contents += '<div class=\"foxyshop_field_control\">';
+			new_contents += '<label for=\"_variation_textsize1_' + this_id + '\">" . __('Text Box Size', 'foxyshop') . "</label>';
+			new_contents += '<input type=\"text\" name=\"_variation_textsize1_' + this_id + '\" id=\"_variation_textsize1_' + this_id + '\" value=\"' + $(\"#text1_value_\"+this_id).val() + '\" /> <span>" . __('characters') . "</span>';
 			new_contents += '</div>';
-			new_contents += '<div class="foxyshop_field_control">';
-			new_contents += '<label for="_variation_textsize2_' + this_id + '"><?php _e('Maximum Chars', 'foxyshop'); ?></label>';
-			new_contents += '<input type="text" name="_variation_textsize2_' + this_id + '" id="_variation_textsize2_' + this_id + '" value="' + $("#text2_value_"+this_id).val() + '" /> <span><?php _e('characters'); ?></span>';
+			new_contents += '<div class=\"foxyshop_field_control\">';
+			new_contents += '<label for=\"_variation_textsize2_' + this_id + '\">" . __('Maximum Chars', 'foxyshop') . "</label>';
+			new_contents += '<input type=\"text\" name=\"_variation_textsize2_' + this_id + '\" id=\"_variation_textsize2_' + this_id + '\" value=\"' + $(\"#text2_value_\"+this_id).val() + '\" /> <span>" . __('characters') . "</span>';
 			new_contents += '</div>';
-			new_contents += '<div style="clear: both;"></div>';
+			new_contents += '<div style=\"clear: both;\"></div>';
 			new_contents += '</div>';
 
 		//Textarea
-		} else if (new_type == "textarea") {
-			new_contents = '<div class="foxyshop_field_control textarea variationoptions">';
-			new_contents += '<label for="_variation_textareasize_' + this_id + '"><?php _e('Lines of Text', 'foxyshop'); ?></label>';
-			new_contents += '<input type="text" name="_variation_textareasize_' + this_id + '" id="_variation_textareasize_' + this_id + '" value="' + $("#textarea_value_"+this_id).val() + '" /> <span>(<?php _e('default is', 'foxyshop'); ?> 3)</span>';
+		} else if (new_type == \"textarea\") {
+			new_contents = '<div class=\"foxyshop_field_control textarea variationoptions\">';
+			new_contents += '<label for=\"_variation_textareasize_' + this_id + '\">" . __('Lines of Text', 'foxyshop') . "</label>';
+			new_contents += '<input type=\"text\" name=\"_variation_textareasize_' + this_id + '\" id=\"_variation_textareasize_' + this_id + '\" value=\"' + $(\"#textarea_value_\"+this_id).val() + '\" /> <span>(" . __('default is', 'foxyshop') . " 3)</span>';
 			new_contents += '</div>';
 
 
 		//Description
-		} else if (new_type == "descriptionfield") {
-			new_contents = '<div class="foxyshop_field_control descriptionfield variationoptions">';
-			new_contents += '<label for="_variation_description_' + this_id + '"><?php _e('Descriptive Text', 'foxyshop'); ?></label>';
-			new_contents += '<textarea name="_variation_description_' + this_id + '" id="_variation_description_' + this_id + '">' + $("#descriptionfield_value_"+this_id).val() + '</textarea>';
+		} else if (new_type == \"descriptionfield\") {
+			new_contents = '<div class=\"foxyshop_field_control descriptionfield variationoptions\">';
+			new_contents += '<label for=\"_variation_description_' + this_id + '\">" . __('Descriptive Text', 'foxyshop') . "</label>';
+			new_contents += '<textarea name=\"_variation_description_' + this_id + '\" id=\"_variation_description_' + this_id + '\">' + $(\"#descriptionfield_value_\"+this_id).val() + '</textarea>';
 			new_contents += '</div>';
 
 		//Checkbox
-		} else if (new_type == "checkbox") {
-			new_contents = '<div class="foxyshop_field_control checkbox variationoptions">';
-			new_contents += '<label for="_variation_description_' + this_id + '"><?php _e('Value', 'foxyshop'); ?></label>';
-			new_contents += '<input type="text" name="_variation_checkbox_' + this_id + '" id="_variation_checkbox_' + this_id + '" value="' + $("#checkbox_value_"+this_id).val() + '" class="variation_checkbox_text" />';
+		} else if (new_type == \"checkbox\") {
+			new_contents = '<div class=\"foxyshop_field_control checkbox variationoptions\">';
+			new_contents += '<label for=\"_variation_description_' + this_id + '\">" . __('Value', 'foxyshop') . "</label>';
+			new_contents += '<input type=\"text\" name=\"_variation_checkbox_' + this_id + '\" id=\"_variation_checkbox_' + this_id + '\" value=\"' + $(\"#checkbox_value_\"+this_id).val() + '\" class=\"variation_checkbox_text\" />';
 			new_contents += variationkeyhtml;
 			new_contents += '</div>';
 
 		//Hidden Field
-		} else if (new_type == "hiddenfield") {
-			new_contents = '<div class="foxyshop_field_control hiddenfield variationoptions">';
-			new_contents += '<label for="_variation_hiddenfield_' + this_id + '">Value</label>';
-			new_contents += '<input type="text" name="_variation_hiddenfield_' + this_id + '" id="_variation_hiddenfield_' + this_id + '" value="' + $("#hiddenfield_value_"+this_id).val() + '" />';
+		} else if (new_type == \"hiddenfield\") {
+			new_contents = '<div class=\"foxyshop_field_control hiddenfield variationoptions\">';
+			new_contents += '<label for=\"_variation_hiddenfield_' + this_id + '\">Value</label>';
+			new_contents += '<input type=\"text\" name=\"_variation_hiddenfield_' + this_id + '\" id=\"_variation_hiddenfield_' + this_id + '\" value=\"' + $(\"#hiddenfield_value_\"+this_id).val() + '\" />';
 			new_contents += '</div>';
 
 		//Custom File Upload
-		} else if (new_type == "upload") {
-			new_contents = '<div class="foxyshop_field_control upload variationoptions">';
-			new_contents += '<label for="_variation_uploadinstructions_' + this_id + '"><?php _e('Instructions', 'foxyshop'); ?></label>';
-			new_contents += '<textarea name="_variation_uploadinstructions_' + this_id + '" id="_variation_uploadinstructions_' + this_id + '">' + $("#upload_value_"+this_id).val() + '</textarea>';
+		} else if (new_type == \"upload\") {
+			new_contents = '<div class=\"foxyshop_field_control upload variationoptions\">';
+			new_contents += '<label for=\"_variation_uploadinstructions_' + this_id + '\">" . __('Instructions', 'foxyshop') . "</label>';
+			new_contents += '<textarea name=\"_variation_uploadinstructions_' + this_id + '\" id=\"_variation_uploadinstructions_' + this_id + '\">' + $(\"#upload_value_\"+this_id).val() + '</textarea>';
 			new_contents += '</div>';
 		}
 
 		return new_contents;
 	}
 });
+</script>";
+}
+add_action( 'admin_print_footer_scripts', function() use ($var_type_array, $variation_key) { inline_tools_page_js($var_type_array, $variation_key); } );
 
-</script>
-<?php }
+}
 ?>

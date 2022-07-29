@@ -337,17 +337,21 @@ function foxyshop_cfbe_metabox($post_type) {
 
 
 
-<script type="text/javascript">
-jQuery(document).ready(function($){
-	$("#_salestartdate, #_saleenddate").datepicker({ dateFormat: 'm/d/yy' });
-	$(".chzn-select").chosen();
-	$(".chzn-container").css("width", "400px");
-	$(".chzn-drop").css("width", "399px");
-});
-</script>
 
 <?php
+	function inline_bulkeditor_js() {
+	echo "<script type='text/javascript'>
+	jQuery(document).ready(function($){
+		$('#_salestartdate, #_saleenddate').datepicker({ dateFormat: 'm/d/yy' });
+		$('.chzn-select').chosen();
+		$('.chzn-container').css('width', '400px');
+		$('.chzn-drop').css('width', '399px');
+	});
+	</script>";
+	}
+	add_action( 'admin_print_footer_scripts', 'inline_bulkeditor_js' );
 }
+
 add_action('cfbe_before_metabox', 'foxyshop_cfbe_metabox');
 
 function foxyshop_cfbe_save($post_type, $post_id) {
