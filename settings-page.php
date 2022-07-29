@@ -225,7 +225,7 @@ function foxyshop_settings_page() {
 
 	<br /><br />
 
-	<form method="post" name="foxycart_settings_form" action="options.php" onsubmit="return true;">
+	<form method="post" name="foxycart_settings_form" action="options.php" onsubmit="return foxyshop_check_settings_form();">
 
 	<table class="widefat infoonly">
 		<thead>
@@ -634,5 +634,109 @@ function foxyshop_settings_page() {
 	<input type="hidden" name="foxyshop_settings_update" value="1" />
 	<?php wp_nonce_field('update-foxyshop-options'); ?>
 	</form>
- 
+
+<script type="text/javascript">
+jQuery(document).ready(function($){
+	$("input[name='foxyshop_weight_type']").change(function() {
+		if ($("#foxyshop_weight_type_english").is(":checked")) {
+			$("#weight_title1").text("lbs");
+			$("#weight_title2").text("oz");
+		} else {
+			$("#weight_title1").text("kg");
+			$("#weight_title2").text("gm");
+		}
+	});
+
+	if ($("#foxyshop_weight_type_english").is(":checked")) {
+		$("#weight_title1").text("lbs");
+		$("#weight_title2").text("oz");
+	} else {
+		$("#weight_title1").text("kg");
+		$("#weight_title2").text("gm");
+	}
+
+	$("#foxyshop_key").click(function(e) {
+		if ($(this).prop("readonly")) {
+			$(this).select();
+		}
+	});
+
+	$(".customise-api-key").click(function(e) {
+		e.preventDefault();
+		$("#foxyshop_key").prop("readonly", false);
+		$(this).hide();
+		$(".customise-api-key-save").show();
+	});
+
+	$("#resetimage").click(function() {
+		$("#foxyshop_default_image").val("<?php echo FOXYSHOP_DIR."/images/no-photo.png"; ?>");
+		return false;
+	});
+	$("#foxyshop_google_product_support").click(function() {
+		if ($(this).is(":checked")) {
+			$("#google_merchant_id_holder").show();
+		} else {
+			$("#google_merchant_id_holder").hide();
+		}
+	});
+	$("#foxyshop_set_orderdesk_url").click(function() {
+		if ($(this).is(":checked")) {
+			$("#orderdesk_url_holder").show();
+			$("#foxyshop_orderdesk_url").select();
+		} else {
+			$("#orderdesk_url_holder").hide();
+		}
+	});
+
+	//Tooltip
+	xOffset = -10;
+	yOffset = 10;
+	$("a.foxyshophelp").hover(function(e) {
+		var tooltip_text = $(this).html();
+		$("body").append("<p id='tooltip'>"+ tooltip_text +"</p>");
+		$("#tooltip")
+			.css("top",(e.pageY - xOffset) + "px")
+			.css("left",(e.pageX + yOffset) + "px")
+			.fadeIn("fast");
+	}, function(){
+		$("#tooltip").remove();
+	}).mousemove(function(e){
+		$("#tooltip")
+			.css("top",(e.pageY - xOffset) + "px")
+			.css("left",(e.pageX + yOffset) + "px");
+	}).click(function(e) {
+		e.preventDefault();
+		return false;
+	}).attr("tabindex", "99999");
+
+	$(".foxydomainpicker").click(function(e) {
+		$(".foxycartdomain").removeClass("simple advanced");
+		$(".foxycartdomain").addClass($(this).attr("rel"));
+		$("#foxyshop_domain").focus().select();
+		e.preventDefault();
+		return false;
+	});
+
+	<?php if (version_compare($foxyshop_settings['version'], '0.7.2', ">=") && $foxyshop_settings['domain']) { ?>
+	$("#ajax_get_category_list").click(function() {
+		var data = {
+			action: 'foxyshop_ajax_get_category_list',
+			security: '<?php echo wp_create_nonce("foxyshop-ajax-get-category-list"); ?>'
+		};
+		$("#foxyshop_category_list_waiter").show();
+		$.post(ajaxurl, data, function(response) {
+			if (response) {
+				$("#foxyshop_ship_categories").val(response);
+			}
+			$("#foxyshop_category_list_waiter").hide();
+		});
+
+	});
+	<?php } ?>
+
+});
+function foxyshop_check_settings_form() {
+	return true;
+}
+</script>
 <?php } ?>

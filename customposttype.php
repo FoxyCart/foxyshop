@@ -460,7 +460,39 @@ function foxyshop_product_details_setup() {
 		<label style="width: 210px;" for="_hide_product"><?php echo sprintf(__('Hide This %s From List View', 'foxyshop'), FOXYSHOP_PRODUCT_NAME_SINGULAR); ?></label>
 	</div>
 	<div style="clear:both"></div>
- 
+
+	<script type="text/javascript">
+
+	//Setup Vars For Use Later
+	var FOXYSHOP_PRODUCT_NAME_SINGULAR = '<?php echo strtolower(str_replace("'", "\'", FOXYSHOP_PRODUCT_NAME_SINGULAR)); ?>';
+	var show_downloadables = <?php echo ($show_downloadables ? 1 : 0); ?>;
+	var nonce_downloadable_list = '<?php echo wp_create_nonce("foxyshop-ajax-get-downloadable-list"); ?>';
+	var defaultweight1 = '<?php echo esc_attr($defaultweight1); ?>';
+	var defaultweight2 = '<?php echo esc_attr($defaultweight2); ?>';
+	var weight_dividend = <?php echo ($foxyshop_settings['weight_type'] == 'metric' ? 1000 : 16); ?>;
+	var use_chozen = <?php echo ($foxyshop_settings['related_products_custom'] || $foxyshop_settings['related_products_tags'] || $foxyshop_settings['enable_addon_products'] ? 1 : 0); ?>;
+
+	var renameLive = false;
+	var post_id = <?php echo esc_attr($post->ID); ?>;
+	var nonce_images = '<?php echo wp_create_nonce("foxyshop-product-image-functions-".$post->ID); ?>';
+
+	<?php
+	//Get Max Upload Limit
+	$max_upload = (int)(ini_get('upload_max_filesize'));
+	$max_post = (int)(ini_get('post_max_size'));
+	$memory_limit = (int)(ini_get('memory_limit'));
+	$upload_mb = min($max_upload, $max_post, $memory_limit);
+	$foxyshop_max_upload = $upload_mb * 1048576;
+	if ($foxyshop_max_upload == 0) $foxyshop_max_upload = "8000000"; ?>
+	var foxyshop_max_upload = '<?php echo esc_attr($foxyshop_max_upload);
+	?>';
+
+	var FOXYSHOP_DIR = '<?php echo FOXYSHOP_DIR; ?>';
+	var FOXYSHOP_URL_BASE = '<?php echo FOXYSHOP_URL_BASE; ?>';
+	var bloginfo_url = '<?php echo is_ssl() ? str_replace("http://", "https://", get_bloginfo("url")) : get_bloginfo("url"); ?>';
+	var datafeed_url_key = '<?php echo esc_html($foxyshop_settings['datafeed_url_key']); ?>';
+
+	</script>
 
 	<?php
 	//Add Action For Product Details (For Other Integrations)
@@ -791,7 +823,8 @@ function foxyshop_product_images_setup() {
 			echo '<p>' . $upload_dir['error'] . '</p>';
 			return;
 		}
-	} 
+	}
+	echo '<script type="text/javascript" src="' . FOXYSHOP_DIR . '/js/dropzone.js"></script>'."\n";
 	echo '<link rel="stylesheet" href="' . FOXYSHOP_DIR . '/css/dropzone.css" type="text/css" media="screen" />'."\n";
 
 	echo '<div id="foxyshop_new_product_image_container" class="dropzone"></div>'."\n";
@@ -989,7 +1022,27 @@ function foxyshop_product_variations_setup() {
 	<button type="button" id="VariationMinimizeAll" class="button" style="float: right;"><?php _e('Minimize All', 'foxyshop'); ?></button>
 	<button type="button" id="VariationMaximizeAll" class="button" style="display:none; float: right;"><?php _e('Maximize All', 'foxyshop'); ?></button>
 	<input type="hidden" name="max_variations" id="max_variations" value="<?php echo esc_attr($max_variations); ?>" />
- 
+
+<script type="text/javascript">
+
+var variation_key = '<?php echo esc_attr($variation_key); ?>';
+var variation_select_options = "";
+<?php
+foreach ($var_type_array as $var_name => $var_val) {
+	echo "variation_select_options += '<option value=\"" . $var_name . '">' . $var_val . "  </option>';\n";
+}
+if (is_array($saved_variations)) {
+	echo "\t\tvariation_select_options += '<optgroup label=\"" . __('Saved Variations', 'foxyshop') . "\">';\n";
+	foreach($saved_variations as $saved_var) {
+		$saved_ref = $saved_var['refname'];
+		echo "\t\tvariation_select_options += '<option value=\"" . sanitize_title($saved_ref) . "\" rel=\"" . esc_attr($saved_var['name']) . "\">" . esc_attr($saved_var['name']) . "  </option>';\n";
+	}
+	echo "\t\tvariation_select_options += '</optgroup>';\n";
+}
+
+?>
+</script>
+<script type="text/javascript" src="<?php echo FOXYSHOP_DIR . '/js/products-admin.js'; ?>"></script>
 
 <?php
 }

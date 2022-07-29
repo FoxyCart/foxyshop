@@ -337,7 +337,14 @@ function foxyshop_cfbe_metabox($post_type) {
 
 
 
-
+<script type="text/javascript">
+jQuery(document).ready(function($){
+	$("#_salestartdate, #_saleenddate").datepicker({ dateFormat: 'm/d/yy' });
+	$(".chzn-select").chosen();
+	$(".chzn-container").css("width", "400px");
+	$(".chzn-drop").css("width", "399px");
+});
+</script>
 
 <?php
 }

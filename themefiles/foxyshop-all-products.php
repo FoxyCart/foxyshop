@@ -45,7 +45,13 @@ global $product;
 	?>
 </div>
 <?php foxyshop_include('footer'); ?>
- 
+
+<script type="text/javascript">
+jQuery(document).ready(function($){
+	//This is set up for a two-column display. For a three column you need to do: nth-child(3n+1)
+	$(".foxyshop_product_list>li:nth-child(odd)").css("clear","left");
+});
+</script>
 
 
 <?php get_footer(); ?>

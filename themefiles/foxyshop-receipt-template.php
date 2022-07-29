@@ -16,7 +16,7 @@ global $foxyshop_settings;
 
 //Remove jQuery and FoxyCart Includes
 add_action('wp_enqueue_scripts', 'foxyshop_remove_jquery', 99);
-remove_action('wp_enqueue_scripts', 'foxyshop_insert_google_analytics', 100);
+remove_action('wp_footer', 'foxyshop_insert_google_analytics', 100);
 remove_action('wp_head', 'foxyshop_insert_foxycart_files');
 remove_action('init', 'foxyshop_insert_jquery');
 

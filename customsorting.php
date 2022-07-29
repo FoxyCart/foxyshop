@@ -187,6 +187,27 @@ function foxyshop_custom_sort() {
 	?>
 
 </div>
- 
+
+<script type="text/javascript">
+function foxyshop_custom_order_load_event(){
+	jQuery("#foxyshop_product_order_list").sortable({
+		placeholder: "sortable-placeholder",
+		revert: false,
+		tolerance: "pointer",
+		update: function() {
+			var counter = 1;
+			jQuery("#foxyshop_product_order_list li").each(function() {
+				jQuery(this).find('.counter').html(counter);
+				counter++;
+			});
+		}
+	});
+};
+addLoadEvent(foxyshop_custom_order_load_event);
+function orderPages() {
+	jQuery("#updateText").html("<?php echo sprintf(__('Updating %s Order...', 'foxyshop'), FOXYSHOP_PRODUCT_NAME_SINGULAR); ?>");
+	jQuery("#foxyshop_product_order_value").val(jQuery("#foxyshop_product_order_list").sortable("toArray"));
+}
+</script>
 <?php
 }

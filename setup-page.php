@@ -70,7 +70,7 @@ function foxyshop_setup_legacy() {
 </table>
 
 
-<form method="post" name="foxycart_settings_form" action="admin.php" onsubmit="return true;">
+<form method="post" name="foxycart_settings_form" action="admin.php" onsubmit="return foxyshop_check_settings_form();">
 <input type="hidden" name="action" value="foxyshop_setup_save" />
 
 <table class="widefat foxyshopsetup">
@@ -154,6 +154,22 @@ function foxyshop_setup_legacy() {
 
 <?php wp_nonce_field('save-foxyshop-setup'); ?>
 </form>
+
+<script type="text/javascript">
+jQuery(document).ready(function($){
+	$(".foxydomainpicker").click(function(e) {
+		$(".foxycartdomain").removeClass("simple advanced");
+		$(".foxycartdomain").addClass($(this).attr("rel"));
+		$("#foxyshop_domain").focus().select();
+		e.preventDefault();
+		return false;
+	});
+});
+
+function foxyshop_check_settings_form() {
+	return true;
+}
+</script>
 
 </div>
 <?php } ?>
