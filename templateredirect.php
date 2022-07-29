@@ -17,9 +17,9 @@ function foxyshop_theme_redirect() {
 	//Troubleshooting (set this variable to 1)
 	$show_to_admin = 0;
 	if ($show_to_admin && is_user_logged_in()) {
-		echo "<h1>Rewrite Rules</h1><pre>";print_r(get_option('rewrite_rules'));echo "</pre>"; //View Rewrite Rules
-		echo "<h1>\$wp Results</h1><pre>";print_r($wp);echo "</pre>";
-		echo "<h1>\$wp_query Results</h1><pre>";print_r($wp_query);echo "</pre>";
+		echo ("<h1>Rewrite Rules</h1><pre>");print_r(get_option('rewrite_rules'));echo ("</pre>"); //View Rewrite Rules
+		echo ("<h1>\$wp Results</h1><pre>");print_r($wp);echo ("</pre>");
+		echo ("<h1>\$wp_query Results</h1><pre>");print_r($wp_query);echo ("</pre>");
 	}
 
 	//Backup Parsing If Not Month/Day or Month/Name

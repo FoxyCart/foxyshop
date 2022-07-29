@@ -7,6 +7,9 @@ if (!defined('ABSPATH')) exit();
 add_action('wp_ajax_save_inventory_values', 'foxyshop_save_inventory_values_ajax');
 function foxyshop_save_inventory_values_ajax() {
 	if (!check_admin_referer('update-foxyshop-inventory')) return;
+	$_POST['code'] = sanitize_text_field($_POST['code']);
+	$_POST['new_count'] = sanitize_text_field($_POST['new_count']);
+	$_POST['product_id'] = sanitize_text_field($_POST['product_id']);
 	foxyshop_inventory_count_update($_POST['code'], $_POST['new_count'], $_POST['product_id'], true);
 	die;
 }
@@ -18,6 +21,8 @@ function foxyshop_inventory_update() {
 
 	//Saving Values From Uploaded Data
 	if (isset($_POST['foxyshop_inventory_updates'])) {
+	$_POST['foxyshop_inventory_updates'] = sanitize_textarea_field($_POST['foxyshop_inventory_updates']);
+
 		if (!check_admin_referer('import-foxyshop-inventory-updates')) return;
 
 		$lines = preg_split("/(\r\n|\n|\r)/", $_POST['foxyshop_inventory_updates']);
@@ -58,7 +63,11 @@ function foxyshop_inventory_management_page() {
 		if (isset($_GET['saved'])) echo '<div class="updated"><p>' . __('Your New Inventory Levels Have Been Saved.') . '</p></div>';
 
 		//Import Completed
-		if (isset($_GET['importcompleted'])) echo '<div class="updated"><p>' . sprintf(__('Import completed: %s records updated.'), (int)$_GET['importcompleted']) . '</p></div>';
+		if (isset($_GET['importcompleted'])) echo '<div class="updated"><p>' 
+			. sprintf(
+				__('Import completed: %s records updated.'), 
+				(int)sanitize_text_field($_GET['importcompleted']) 
+			) . '</p></div>';
 		?>
 
 		<table cellpadding="0" cellspacing="0" border="0" class="wp-list-table widefat foxyshop-list-table" id="inventory_level" style="margin-top: 14px;">
@@ -157,7 +166,7 @@ function foxyshop_inventory_management_page() {
 		<table class="widefat">
 			<thead>
 				<tr>
-					<th><img src="<?php echo $export_icon; ?>" alt="" /><?php _e('Import New Inventory Values'); ?></th>
+					<th><img src="<?php echo esc_url($export_icon); ?>" alt="" /><?php _e('Import New Inventory Values'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -167,7 +176,7 @@ function foxyshop_inventory_management_page() {
 							Copy and paste these values into Excel. Make your changes, then copy and paste back in and click update.<br />
 							You can also add new inventory levels by using the template to add new rows with code and inventory fields.
 						</p>
-						<textarea id="foxyshop_inventory_updates" name="foxyshop_inventory_updates" wrap="auto" style="float: left; width:650px;height: 200px;"><?php echo $exported; ?></textarea>
+						<textarea id="foxyshop_inventory_updates" name="foxyshop_inventory_updates" wrap="auto" style="float: left; width:650px;height: 200px;"><?php echo foxy_wp_html($exported); ?></textarea>
 						<div style="clear: both;"></div>
 						<p><input type="submit" class="button-primary" value="<?php _e('Update Inventory Values'); ?>" /></p>
 					</td>
@@ -179,61 +188,7 @@ function foxyshop_inventory_management_page() {
 
 
 	</div>
-
-<script type="text/javascript" src="<?php echo FOXYSHOP_DIR; ?>/js/jquery.tablesorter.js"></script>
-<script type="text/javascript">
-jQuery(document).ready(function($){
-	$(".inventory_update_width").blur(function() {
-		current_field_id = $(this).attr("id");
-		current_id = $("#" + current_field_id).attr("data-id");
-		new_count = $("#" + current_field_id).val();
-
-		$("#" + current_field_id).val(new_count);
-		$("#" + current_field_id).parents("tr").removeClass("inventory_update_width_highlight");
-
-		if (new_count != $("#original_count_" + current_id).val()) {
-
-			var data = {
-				action: 'save_inventory_values',
-				"_wpnonce": "<?php echo wp_create_nonce('update-foxyshop-inventory'); ?>",
-				"code": $("#code_" + current_id).val(),
-				"product_id": $("#productid_" + current_id).val(),
-				"new_count": new_count
-			};
-
-			$("#wait_" + current_id).addClass("waiting");
-			$.post(ajaxurl, data, function() {
-				$("#wait_" + current_id).removeClass("waiting");
-				$("#original_count_" + current_id).val(new_count);
-				$("#current_inventory_" + current_id).text(new_count);
-				if (new_count <= 0) {
-					$("#current_inventory_" + current_id).removeClass().addClass("inventoryU");
-				} else if (new_count <= parseInt($("#current_inventory_alert_" + current_id).text())) {
-					$("#current_inventory_" + current_id).removeClass().addClass("inventoryX");
-				} else {
-					$("#current_inventory_" + current_id).removeClass().addClass("inventoryA");
-				}
-			});
-		}
-  	});
-	$(".inventory_update_width").keypress(function(e) {
-		if (e.which == 13) {
-			$(this).trigger("blur");
-			return false;
-		}
-	});
-	$(".inventory_update_width").focus(function() {
-		$(this).parents("tr").addClass("inventory_update_width_highlight");
-	});
-	$("#inventory_level").tablesorter({
-		'cssDesc': 'asc sorted',
-		'cssAsc': 'desc sorted'
-	});
-
-
-});
-function foxyshop_format_number_single(num) { num = num.toString().replace(/\$|\,/g,''); if(isNaN(num)) num = "0"; sign = (num == (num = Math.abs(num))); num = Math.floor(num*100+0.50000000001); cents = num%100; num = Math.floor(num/100).toString(); if(cents<10) cents = "0" + cents; for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++) num = num.substring(0,num.length-(4*i+3))+','+ num.substring(num.length-(4*i+3)); return (((sign)?'':'-') + num); }
-</script>
+ 
 
 
 <?php

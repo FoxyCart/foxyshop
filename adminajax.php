@@ -8,18 +8,27 @@ function foxyshop_display_ajax() {
 	global $wpdb, $foxyshop_settings;
 	check_ajax_referer('foxyshop-display-list-function', 'security');
 	if (!isset($_POST['foxyshop_action'])) die;
+	$_POST['foxyshop_action'] = sanitize_text_field($_POST['foxyshop_action']);
 	$id = isset($_POST['id']) ? $_POST['id'] : 0;
-	$transaction_template_id = isset($_POST['transaction_template_id']) ? (int)$_POST['transaction_template_id'] : 0;
+	$transaction_template_id = isset($_POST['transaction_template_id']) ? (int)sanitize_text_field($_POST['transaction_template_id']) : 0;
 
 	//Change Subscription
 	if ($_POST['foxyshop_action'] == 'subscription_modify') {
+		$_POST['sub_token'] = sanitize_text_field($_POST['sub_token']);
+		$_POST['start_date'] = sanitize_text_field($_POST['start_date']);
+		$_POST['frequency'] = sanitize_text_field($_POST['frequency']);
+		$_POST['past_due_amount'] = sanitize_text_field($_POST['past_due_amount']);
+		$_POST['is_active'] = sanitize_text_field($_POST['is_active']);
+		$_POST['end_date'] = sanitize_text_field($_POST['end_date']);
+		$_POST['next_transaction_date'] = sanitize_text_field($_POST['next_transaction_date']); 
+
 		$foxy_data = array(
 			"api_action" => "subscription_modify",
-			"sub_token" => $_POST['sub_token'],
-			"start_date" => $_POST['start_date'],
-			"frequency" => $_POST['frequency'],
-			"past_due_amount" => $_POST['past_due_amount'],
-			"is_active" => $_POST['is_active']
+			"sub_token" => ($_POST['sub_token']),
+			"start_date" => ($_POST['start_date']),
+			"frequency" => ($_POST['frequency']),
+			"past_due_amount" => ($_POST['past_due_amount']),
+			"is_active" => ($_POST['is_active'])
 		);
 		if ($_POST['end_date'] == "0000-00-00" || strtotime($_POST['end_date']) > strtotime("now")) $foxy_data['end_date'] = $_POST['end_date'];
 		if (strtotime($_POST['next_transaction_date']) > strtotime("now")) $foxy_data['next_transaction_date'] = $_POST['next_transaction_date'];
@@ -27,16 +36,17 @@ function foxyshop_display_ajax() {
 		$foxy_response = foxyshop_get_foxycart_data($foxy_data);
 		$xml = simplexml_load_string($foxy_response, NULL, LIBXML_NOCDATA);
 		do_action("foxyshop_after_subscription_modify", $xml);
-		echo (string)$xml->result . ": " . (string)$xml->messages->message;
+		echo foxy_wp_html((string)$xml->result) . ": " . foxy_wp_html((string)$xml->messages->message);
 		die;
 
 	//Hide/Unhide Transaction
 	} elseif ($_POST['foxyshop_action'] == 'hide_transaction') {
+		$_POST['hide_transaction'] = sanitize_text_field($_POST['hide_transaction']);
 		$foxy_data = array("api_action" => "transaction_modify", "transaction_id" => $id, "hide_transaction" => (int)$_POST['hide_transaction']);
 		$foxy_response = foxyshop_get_foxycart_data($foxy_data);
 		$xml = simplexml_load_string($foxy_response, NULL, LIBXML_NOCDATA);
 		do_action("foxyshop_after_transaction_archive", $xml);
-		echo (string)$xml->result . ": " . (string)$xml->messages->message;
+		echo foxy_wp_html((string)$xml->result . ": " . (string)$xml->messages->message);
 		die;
 	}
 	die;
@@ -47,24 +57,26 @@ function foxyshop_display_ajax() {
 add_action('wp_ajax_foxyshop_attribute_manage', 'foxyshop_manage_attribute_ajax');
 function foxyshop_manage_attribute_ajax() {
 	global $wpdb, $foxyshop_settings;
+	$_POST['foxyshop_action'] = sanitize_text_field($_POST['foxyshop_action']);
+
 	check_ajax_referer('foxyshop-save-attribute', 'security');
 	if (!isset($_POST['foxyshop_action'])) die;
 	if (!isset($_POST['att_type'])) die;
 	if (!isset($_POST['id'])) die;
 
-	$id = $_POST['id'];
-	$att_type = $_POST['att_type'];
-	$att_name = $_POST['att_name'];
+	$id = sanitize_text_field($_POST['id']);
+	$att_type = sanitize_text_field($_POST['att_type']);
+	$att_name = sanitize_text_field($_POST['att_name']);
 
 	//Save
 	if ($_POST['foxyshop_action'] == 'save_attribute') {
 		$att_value = str_replace('\"', '"', $_POST['att_value']);
-		echo foxyshop_save_attribute($att_type, $id, $att_name, $att_value);
+		echo (foxyshop_save_attribute($att_type, $id, $att_name, $att_value));
 		die;
 
 	//Delete
 	} elseif ($_POST['foxyshop_action'] == 'delete_attribute') {
-		echo foxyshop_delete_attribute($att_type, $id, $att_name);
+		echo (foxyshop_delete_attribute($att_type, $id, $att_name));
 		die;
 	}
 	die;
@@ -75,7 +87,7 @@ function foxyshop_manage_attribute_ajax() {
 add_action('wp_ajax_foxyshop_ajax_get_category_list', 'foxyshop_ajax_get_category_list');
 function foxyshop_ajax_get_category_list() {
 	check_ajax_referer('foxyshop-ajax-get-category-list', 'security');
-	echo foxyshop_get_category_list();
+	echo (foxyshop_get_category_list());
 	die;
 }
 
@@ -84,7 +96,7 @@ function foxyshop_ajax_get_category_list() {
 add_action('wp_ajax_foxyshop_ajax_get_category_list_select', 'foxyshop_ajax_get_category_list_select');
 function foxyshop_ajax_get_category_list_select() {
 	check_ajax_referer('foxyshop-ajax-get-downloadable-list', 'security');
-	echo foxyshop_get_category_list('select');
+	echo (foxyshop_get_category_list('select'));
 	die;
 }
 
@@ -95,11 +107,11 @@ function foxyshop_ajax_get_downloadable_list() {
 	check_ajax_referer('foxyshop-ajax-get-downloadable-list', 'security');
 	$output = foxyshop_get_downloadable_list();
 	foreach ($output as $downloadable) {
-		echo '<option value="' . esc_attr($downloadable['product_code']) . '"';
-		echo ' category_code="' . esc_attr($downloadable['category_code']) . '"';
-		echo ' product_price="' . esc_attr($downloadable['product_price']) . '"';
-		echo '>' . esc_attr($downloadable['product_name']) . '</option>';
-		echo "\n";
+		echo ('<option value="' . esc_attr($downloadable['product_code']) . '"'.
+		 ' category_code="' . esc_attr($downloadable['category_code']) . '"'.
+		 ' product_price="' . esc_attr($downloadable['product_price']) . '"'.
+		 '>' . esc_attr($downloadable['product_name']) . '</option>'.
+		 "\n");
 	}
 	die;
 }
@@ -111,23 +123,30 @@ add_action('wp_ajax_foxyshop_set_google_auth', 'foxyshop_ajax_set_google_auth');
 function foxyshop_ajax_set_google_auth() {
 	global $foxyshop_settings;
 	check_ajax_referer('foxyshop-ajax-set-google-auth', 'security');
-	$header_array = array("Content-Type: application/x-www-form-urlencoded");
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, "https://www.google.com/accounts/ClientLogin");
-	curl_setopt($ch, CURLOPT_HTTPHEADER, $header_array);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, "Email=" . urlencode($_POST['Email']) . "&Passwd=" . urlencode($_POST['Passwd']) . "&service=structuredcontent&source=FoxyShop");
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-	curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-	$response_line = preg_split("[\r\n|\r|\n]", trim(curl_exec($ch)));
+	
+	$response = wp_remote_post("https://www.google.com/accounts/ClientLogin",
+		[
+			'headers' =>  ["Content-Type" => "application/x-www-form-urlencoded"],
+			'body' => ['Email' =>urlencode(sanitize_email($_POST['Email'])) , 
+						'Passwd' => urlencode($_POST['Passwd']), 
+						'service' => 'structuredcontent',
+						'source' => 'FoxyShop' ]
+		]);
+
+	if ( is_wp_error( $response ) ) {
+		    die('Error');	 
+	}
+
+	$ans = trim($response['body']);
+	$response_line = preg_split("[\r\n|\r|\n]", $ans);
 	foreach($response_line as $response) {
 		$r = explode("=", $response);
 		if ($r[0] == "Error") {
-			die("Error");
+			die(foxy_wp_html("Error"));
 		} elseif ($r[0] == "Auth") {
 			$foxyshop_settings['google_product_auth'] = strip_tags($r[1]);
 			update_option("foxyshop_settings", $foxyshop_settings);
-			die("Success");
+			die(foxy_wp_html("Success"));
 		}
 	}
 	die;
@@ -140,23 +159,30 @@ function foxyshop_ajax_set_google_auth() {
 add_action('wp_ajax_foxyshop_product_ajax_action', 'foxyshop_product_ajax');
 function foxyshop_product_ajax() {
 	global $wpdb;
+
 	$productID = (isset($_POST['foxyshop_product_id']) ? (int)$_POST['foxyshop_product_id'] : 0);
 	$imageID = (isset($_POST['foxyshop_image_id']) ? (int)$_POST['foxyshop_image_id'] : 0);
 	check_ajax_referer('foxyshop-product-image-functions-'.$productID, 'security');
 	if (!isset($_POST['foxyshop_action'])) die;
 
+
+	$_POST['foxyshop_action'] = sanitize_text_field($_POST['foxyshop_action']);
+
+	$productID = sanitize_text_field($productID);
+	$imageID = sanitize_text_field($imageID);
+
 	if ($_POST['foxyshop_action'] == "add_new_image") {
 
-		echo foxyshop_redraw_images($productID);
+		echo foxy_wp_html(foxyshop_redraw_images($productID));
 
 	} elseif ($_POST['foxyshop_action'] == "delete_image") {
 		wp_delete_attachment($imageID);
-		echo foxyshop_redraw_images($productID);
+		echo foxy_wp_html(foxyshop_redraw_images($productID));
 
 	} elseif ($_POST['foxyshop_action'] == "featured_image") {
 		delete_post_meta($productID,"_thumbnail_id");
 		update_post_meta($productID,"_thumbnail_id",$imageID);
-		echo foxyshop_redraw_images($productID);
+		echo foxy_wp_html(foxyshop_redraw_images($productID));
 
 	} elseif ($_POST['foxyshop_action'] == "toggle_visible") {
 		if (get_post_meta($imageID, "_foxyshop_hide_image", 1)) {
@@ -164,7 +190,7 @@ function foxyshop_product_ajax() {
 		} else {
 			add_post_meta($imageID,"_foxyshop_hide_image", 1);
 		}
-		echo foxyshop_redraw_images($productID);
+		echo foxy_wp_html(foxyshop_redraw_images($productID));
 
 	} elseif ($_POST['foxyshop_action'] == "rename_image") {
 		$update_post = array();
@@ -184,10 +210,10 @@ function foxyshop_product_ajax() {
 			wp_update_post($update_post);
 		}
 
-		echo foxyshop_redraw_images($productID);
+		echo foxy_wp_html(foxyshop_redraw_images($productID));
 
 	} elseif ($_POST['foxyshop_action'] == "refresh_images") {
-		echo foxyshop_redraw_images($productID);
+		echo foxy_wp_html(foxyshop_redraw_images($productID));
 	}
 	die;
 }
@@ -225,5 +251,5 @@ function foxyshop_redraw_images($id) {
 			}
 		}
 	}
-	return $write;
+	return foxy_wp_html($write);
 }

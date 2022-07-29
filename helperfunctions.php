@@ -5,36 +5,49 @@ if (!defined('ABSPATH')) exit();
 //Import For The Header
 function foxyshop_insert_foxycart_files() {
 	global $foxyshop_settings;
+	$colorboxcss = '';
+	$colorboxjs = '';
+	$extra = '';
 	if (empty($foxyshop_settings['domain'])) return;
 	if (version_compare($foxyshop_settings['version'], '0.7.2', ">=")) {
 		if ($foxyshop_settings['foxycart_include_cache']) {
 			echo $foxyshop_settings['foxycart_include_cache'];
-		} elseif ($foxyshop_settings['version'] == '0.7.2') {
-			echo "<!-- BEGIN FOXYCART FILES -->\n";
-			echo '<link rel="stylesheet" href="https://cdn.foxycart.com/static/scripts/colorbox/1.3.18/style1_fc/colorbox.css" type="text/css" media="screen" charset="utf-8" />'."\n";
-			echo '<script src="https://cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.colorbox.js" type="text/javascript" charset="utf-8"></script>'."\n";
-			echo "<!-- END FOXYCART FILES -->\n";
+		} elseif ($foxyshop_settings['version'] == '0.7.2') { 
+			$colorboxcss = 'https://cdn.foxycart.com/static/scripts/colorbox/1.3.18/style1_fc/colorbox.css';
+			$colorboxjs = 'https://cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.colorbox.js'; 
+			wp_enqueue_style('colorbox',$colorboxcss,[],FOXYSHOP_VERSION);
+			wp_enqueue_script('colorbox',$colorboxjs,['jquery'],FOXYSHOP_VERSION);
+
 		} elseif ($foxyshop_settings['version'] == '1.0') {
-			echo "<!-- BEGIN FOXYCART FILES -->\n";
-			echo '<link rel="stylesheet" href="https://cdn.foxycart.com/static/scripts/colorbox/1.3.19/style1_fc/colorbox.css" type="text/css" media="screen" charset="utf-8" />'."\n";
-			echo '<script src="https://cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.colorbox.js" type="text/javascript" charset="utf-8"></script>'."\n";
-			echo "<!-- END FOXYCART FILES -->\n";
+
+			$colorboxcss = 'https://cdn.foxycart.com/static/scripts/colorbox/1.3.19/style1_fc/colorbox.css'; 
+			$colorboxjs = 'https://cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.colorbox.js'; 
+			wp_enqueue_style('colorbox',$colorboxcss,[],FOXYSHOP_VERSION);
+			wp_enqueue_script('colorbox',$colorboxjs,['jquery'],FOXYSHOP_VERSION);
+
 		} elseif ($foxyshop_settings['version'] == '1.1') {
-			echo "<!-- BEGIN FOXYCART FILES -->\n";
-			echo '<link rel="stylesheet" href="https://cdn.foxycart.com/static/scripts/colorbox/1.3.23/style1_fc/colorbox.css?ver=1" type="text/css" media="screen" charset="utf-8" />'."\n";
-			echo '<script src="https://cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.colorbox.js?ver=2" type="text/javascript" charset="utf-8"></script>'."\n";
-			echo "<!-- END FOXYCART FILES -->\n";
+
+			$colorboxcss = 'https://cdn.foxycart.com/static/scripts/colorbox/1.3.23/style1_fc/colorbox.css?ver=1';
+			$colorboxjs = 'https://cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.colorbox.js?ver=2'; 
+			wp_enqueue_style('colorbox',$colorboxcss,[],FOXYSHOP_VERSION);
+			wp_enqueue_script('colorbox',$colorboxjs,['jquery'],FOXYSHOP_VERSION);
+
 		}
 	} elseif (version_compare($foxyshop_settings['version'], '0.7.1', "=")) {
-		echo "<!-- BEGIN FOXYCART FILES -->\n";
-		echo '<link rel="stylesheet" href="https://static.foxycart.com/scripts/colorbox/1.3.16/style1_fc/colorbox.css" type="text/css" media="screen" charset="utf-8" />'."\n";
-		echo '<script src="https://cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.complete.3.js" type="text/javascript" charset="utf-8"></script>'."\n";
-		echo "<!-- END FOXYCART FILES -->\n";
+
+			$colorboxcss = 'https://cdn.foxycart.com/static/scripts/colorbox/1.3.16/style1_fc/colorbox.css'; 
+			$colorboxjs = 'https://cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.complete.3.js'; 
+			wp_enqueue_style('colorbox',$colorboxcss,[],FOXYSHOP_VERSION);
+			wp_enqueue_script('colorbox',$colorboxjs,['jquery'],FOXYSHOP_VERSION);
+ 
+
 	} else { // 0.7.0
-		echo "<!-- BEGIN FOXYCART FILES -->\n";
-		echo '<link rel="stylesheet" href="https://static.foxycart.com/scripts/colorbox/1.3.16/style1_fc/colorbox.css" type="text/css" media="screen" charset="utf-8" />'."\n";
-		echo '<script src="https://cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.complete.2.js" type="text/javascript" charset="utf-8"></script>'."\n";
-		echo "<!-- END FOXYCART FILES -->\n";
+
+			$colorboxcss = 'https://static.foxycart.com/scripts/colorbox/1.3.16/style1_fc/colorbox.css';  
+			$colorboxjs = 'https://cdn.foxycart.com/' . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . '/foxycart.complete.2.js'; 
+			wp_enqueue_style('colorbox',$colorboxcss,[],FOXYSHOP_VERSION);
+			wp_enqueue_script('colorbox',$colorboxjs,['jquery'],FOXYSHOP_VERSION);
+
 	}
 }
 
@@ -42,7 +55,7 @@ function foxyshop_insert_foxycart_loader() {
 	global $foxyshop_settings;
 	if (empty($foxyshop_settings['domain'])) return;
 	echo "<!-- FOXYCART -->\n";
-	echo "<script src=\"https://cdn.foxycart.com/" . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . "/loader.js\" async defer></script>\n";
+	 
 	echo "<!-- /FOXYCART -->\n\n";
 }
 
@@ -459,7 +472,7 @@ function foxyshop_product_variations($showQuantity = 0, $showPriceVariations = t
 	}
 
 	if ($write && !isset($foxyshop_write_variation_include)) {
-		$write .= '<script type="text/javascript" src="' . FOXYSHOP_DIR . '/js/variation.process.jquery.js" charset="utf-8"></script>'."\n";
+		 
 		$foxyshop_write_variation_include = 1;
 	}
 	if ($write) {
@@ -613,14 +626,7 @@ function foxyshop_get_shipto() {
 		return $write;
 	}
 	return "";
-}
-
-function foxyshop_insert_multship_js() {
-	global $foxyshop_settings;
-	$v2 = version_compare($foxyshop_settings['version'], '2.0', "<") ? "" : "2";
-	echo '<script type="text/javascript" src="' . FOXYSHOP_DIR . '/js/multiship' . $v2 . '.jquery.js"></script>'."\n";
-}
-
+} 
 
 
 //Writes the Quantity Box
@@ -768,9 +774,9 @@ function foxyshop_price($skip_sale_price = false, $echo_output = true) {
 	}
 	$write .= '</div>';
 	if ($echo_output) {
-		echo $write;
+		echo foxy_wp_html($write);
 	} else {
-		return $write;
+		return foxy_wp_html($write);
 	}
 }
 
@@ -802,7 +808,7 @@ function foxyshop_get_main_image($size = "thumbnail") {
 	}
 	if (!$image && count($product['images']) > 0) $image = $product['images'][0][$size];
 	if (!$image) $image = $foxyshop_settings['default_image'];
-	if (!$image) $image = WP_PLUGIN_URL."/foxyshop/images/no-photo.png";
+	if (!$image) $image = FOXYSHOP_PLUGIN_URL."images/no-photo.png";
 	if ($image == "none") $image = "";
 	return $image;
 }
@@ -817,19 +823,10 @@ function foxyshop_build_image_slideshow($slideshow_type = "prettyPhoto", $use_in
 	if ($slideshow_type == "prettyPhoto") {
 
 		if ($use_includes && !isset($foxyshop_slideshow_includes_set)) {
-			echo '<script type="text/javascript" src="' . FOXYSHOP_DIR . '/js/prettyphoto/jquery.prettyPhoto.js"></script>'."\n";
+			echo ''."\n";
 			echo '<link rel="stylesheet" href="' . FOXYSHOP_DIR . '/js/prettyphoto/prettyPhoto.css" type="text/css" media="screen" />'."\n";
 			?>
-			<script type="text/javascript">
-			jQuery(document).ready(function($) {
-				$("a[rel^='foxyshop_gallery']").prettyPhoto({
-					theme: 'light_square',
-					overlay_gallery: false,
-					slideshow: 3000,
-					social_tools: ''
-				});
-			});
-			</script><?php
+			<?php
 			$foxyshop_slideshow_includes_set = 1;
 		}
 
@@ -853,38 +850,10 @@ function foxyshop_build_image_slideshow($slideshow_type = "prettyPhoto", $use_in
 
 		add_filter("foxyshop_gallery_image_link_title", "__return_true");
 		if ($use_includes && !isset($foxyshop_slideshow_includes_set)) {
-			echo '<script type="text/javascript" src="' . FOXYSHOP_DIR . '/js/jquery.magnific-popup.min.js"></script>'."\n";
+			echo ''."\n";
 			echo '<link rel="stylesheet" href="' . FOXYSHOP_DIR . '/css/magnific-popup.css" type="text/css" media="screen" />'."\n";
 			?>
-			<script type="text/javascript">
-			jQuery(document).ready(function($) {
-				$('.magnific-gallery, .foxyshop_slideshow').magnificPopup({
-					delegate: 'a',
-					type: 'image',
-					closeOnContentClick: false,
-					closeBtnInside: false,
-					mainClass: 'mfp-with-zoom mfp-img-mobile',
-					image: {
-						verticalFit: true,
-						titleSrc: function(item) {
-							return item.el.attr('title');
-						}
-					},
-					gallery: {
-						enabled: true,
-						navigateByImgClick: true,
-						preload: [1,1] // Will preload 1 - before current, and 1 after the current image
-					},
-					zoom: {
-						enabled: true,
-						duration: 300, // don't foget to change the duration also in CSS
-						opener: function(element) {
-							return element.find('img');
-						}
-					}
-				});
-			});
-			</script><?php
+			<?php
 			$foxyshop_slideshow_includes_set = 1;
 		}
 
@@ -908,18 +877,6 @@ function foxyshop_build_image_slideshow($slideshow_type = "prettyPhoto", $use_in
 	//ColorBox (Lightbox)
 	} elseif ($slideshow_type == "colorbox") {
 
-		if ($use_includes && !isset($foxyshop_slideshow_includes_set)) {
-			?>
-			<script type="text/javascript">
-			jQuery(document).ready(function($) {
-				if ($().colorbox) {
-					$("a[rel^='foxyshop_gallery']").colorbox({sldeshow: true, maxHeight: "80%"});
-				}
-			});
-			</script><?php
-			$foxyshop_slideshow_includes_set = 1;
-		}
-
 
 		$imagecount = count($product['images']);
 		$use_link = (foxyshop_get_main_image("medium") != foxyshop_get_main_image("full") || $imagecount > 1 ? 1 : 0);
@@ -940,15 +897,9 @@ function foxyshop_build_image_slideshow($slideshow_type = "prettyPhoto", $use_in
 	//Cloudzoom (inline zooming)
 	} elseif ($slideshow_type == "cloud-zoom") {
 
-		if ($use_includes && !isset($foxyshop_slideshow_includes_set)) {
-			echo '<script type="text/javascript" src="' . FOXYSHOP_DIR . '/js/cloud-zoom.1.0.2.js"></script>'."\n";
+		if ($use_includes && !isset($foxyshop_slideshow_includes_set)) { 
 			echo '<link rel="stylesheet" href="' . FOXYSHOP_DIR . '/css/cloud-zoom.css" type="text/css" />'."\n";
-			?>
-			<script type="text/javascript">
-			function foxyshop_cloudzoom_image_change(new_ikey) {
-				jQuery("#foxyshop_slideshow_thumb_" + ikey[new_ikey][0]).trigger("click");
-			}
-			</script><?php
+			 
 			$foxyshop_slideshow_includes_set = 1;
 		}
 
@@ -1017,7 +968,7 @@ function foxyshop_image_slideshow($size = "thumbnail", $includeFeatured = true, 
 		if ($ikey) {
 			echo '<script type="text/javascript">'."\n";
 			echo "var ikey = [];\n";
-			echo $ikey;
+			echo esc_attr($ikey);
 			echo '</script>'."\n";
 		}
 	}
@@ -1069,7 +1020,7 @@ function foxyshop_simple_category_children($category_id = 0, $depth = 1) {
 	$foxyshop_category_depth = $depth;
 	$foxyshop_category_write = "";
 	foxyshop_category_writer($category_id, 1);
-	if ($foxyshop_category_write) echo $foxyshop_category_write;
+	if ($foxyshop_category_write) echo foxy_wp_html($foxyshop_category_write);
 }
 
 function foxyshop_category_writer($category_id, $depth) {
@@ -1453,13 +1404,13 @@ function foxyshop_addon_products($show_qty = false, $before_entry = "", $after_e
 		if (version_compare($foxyshop_settings['version'], '0.7.0', ">") && !isset($foxyshop_skip_url_link)) echo '<input type="hidden" class="foxyshop_addon_fields" rel="' . $num . '" originalname="url' . foxyshop_get_verification('url') . '" name="x:url' . foxyshop_get_verification('url') . '" id="' . $num . ':url_' . $product['id'] . '" value="' . $product['url'] . '" />'."\n";
 
 		//Output
-		echo $before_entry;
-		echo '<input type="checkbox" name="x:addon_'.$num.'" id="addon_'.$num.'" rel="'.$num.'" class="foxyshop_addon_checkbox" />';
-		echo '<label for="addon_'.$num.'" class="addon_main_label">' . $product['name'] . '</label>';
-		echo '<input type="hidden" name="x:addon_price_'.$num.'" id="addon_price_'.$num.'" value="' . $product['price'] . '" />';
+		echo ($before_entry);
+		echo ('<input type="checkbox" name="x:addon_'.esc_attr($num).'" id="addon_'.esc_attr($num).'" rel="'.esc_attr($num).'" class="foxyshop_addon_checkbox" />');
+		echo ('<label for="addon_'.esc_attr($num).'" class="addon_main_label">' . esc_html($product['name']) . '</label>');
+		echo ('<input type="hidden" name="x:addon_price_'.esc_attr($num).'" id="addon_price_'.esc_attr($num).'" value="' . esc_attr($product['price']) . '" />');
 		foxyshop_price(0, 1);
 		if ($show_qty) echo foxyshop_quantity(apply_filters("foxyshop_default_quantity_value", 1), "", "", $num);
-		echo $after_entry;
+		echo ($after_entry);
 
 
 		$num++;
@@ -1468,31 +1419,7 @@ function foxyshop_addon_products($show_qty = false, $before_entry = "", $after_e
 	echo '</div>'."\n";
 	$product = $original_product;
 	?>
-	<script type="text/javascript">
-	function foxyshop_addon_enable(rel) {
-		if (jQuery("#addon_" + rel).is(":checked")) {
-			jQuery(".foxyshop_addon_fields[rel='" + rel + "']").each(function() {
-				jQuery(this).attr("name", rel + ":" + jQuery(this).attr("originalname"));
-			});
-			jQuery(".foxyshop_quantity.foxyshop_addon_fields[rel=" + rel + "]").prop("disabled", false);
-		} else {
-			jQuery(".foxyshop_addon_fields[rel='" + rel + "']").each(function() {
-				jQuery(this).attr("name", "x:" + jQuery(this).attr("originalname"))
-			});
-			jQuery(".foxyshop_quantity.foxyshop_addon_fields[rel=" + rel + "]").prop("disabled", true);
-		}
-	}
 
-	jQuery(document).ready(function($){
-		$(".foxyshop_addon_checkbox").click(function() {
-			foxyshop_addon_enable($(this).attr("rel"));
-		});
-		$("input.foxyshop_quantity.foxyshop_addon_fields").keyup(function() {
-			$(this).val($(this).val().replace(/\D/g,''));
-			$(".foxyshop_addon_checkbox").trigger("change");
-		});
-	});
-	</script>
 	<?php
 	remove_filter('posts_orderby', 'foxyshop_addon_order');
 }
@@ -1542,18 +1469,6 @@ function foxyshop_sort_dropdown($title = "Sort Products") {
 	}
 	echo '</select>'."\n";
 	echo '</form>'."\n";
-
-	?>
-	<script type="text/javascript">
-	function foxyshop_sort_dropdown(el) {
-		var current_url = document.location.href;
-		var current_sort_key = el.options[el.selectedIndex].value;
-		foxyshop_set_cookie('sort_key',current_sort_key,1);
-		document.location.href = current_url.split('?')[0] + '?sort_key=' + current_sort_key;
-	}
-	function foxyshop_set_cookie(c_name,value,exdays) { var exdate=new Date();exdate.setDate(exdate.getDate() + exdays);var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString()) + '; path=/';document.cookie=c_name + "=" + c_value; }
-	</script>
-	<?php
 
 }
 
@@ -1632,7 +1547,7 @@ function foxyshop_customer_order_history($customer_id = 0, $date_filter = 'n/j/Y
 	$pagination_end = (int)$xml->statistics->pagination_end;
 	if ($pagination_start > 1 || $filtered_total > $pagination_end) {
 		echo '<div id="foxyshop_list_pagination">';
-		echo $xml->messages->message[1] . '<br />';
+		echo foxy_wp_html($xml->messages->message[1]) . '<br />';
 		if ($pagination_start > 1) echo '<a href="edit.php' . $querystring . '&amp;pagination_start=' . ($pagination_start - $p - 1) . '">&laquo; Previous</a>';
 		if ($pagination_end < $filtered_total) {
 			if ($pagination_start > 1) echo ' | ';

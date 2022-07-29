@@ -50,7 +50,12 @@ function foxyshop_save_settings() {
 		"locale_code"
 	);
 	foreach ($fields as $field1) {
-		$foxyshop_settings[$field1] = isset($_POST['foxyshop_'.$field1]) ? trim(stripslashes($_POST['foxyshop_'.$field1])) : '';
+		if($field1=='ship_categories'){
+			$foxyshop_settings[$field1] = isset($_POST['foxyshop_'.$field1]) ? trim(foxy_wp_html($_POST['foxyshop_'.$field1])) : '';
+		}
+		else{
+			$foxyshop_settings[$field1] = isset($_POST['foxyshop_'.$field1]) ? trim(sanitize_text_field($_POST['foxyshop_'.$field1])) : '';
+		}
 	}
 	//Loop Through No Trim Fields
 	$fields = array(
@@ -63,33 +68,33 @@ function foxyshop_save_settings() {
 		"browser_title_7",
 	);
 	foreach ($fields as $field1) {
-		$foxyshop_settings[$field1] = isset($_POST['foxyshop_'.$field1]) ? stripslashes($_POST['foxyshop_'.$field1]) : '';
+		$foxyshop_settings[$field1] = isset($_POST['foxyshop_'.$field1]) ? sanitize_text_field($_POST['foxyshop_'.$field1]) : '';
 	}
 
 	//Default Image
 	if ($_POST['foxyshop_default_image'] == 2) {
 		$foxyshop_settings["default_image"] = "none";
 	} elseif ($_POST['foxyshop_default_image'] == 1 && $_POST['foxyshop_default_image_custom'] != "") {
-		$foxyshop_settings["default_image"] = trim(stripslashes($_POST['foxyshop_default_image_custom']));
+		$foxyshop_settings["default_image"] = trim(sanitize_text_field($_POST['foxyshop_default_image_custom']));
 	} else {
 		$foxyshop_settings["default_image"] = "";
 	}
 
 	//Order Desk URL
 	if (isset($_POST['foxyshop_set_orderdesk_url']) && !empty($_POST['foxyshop_orderdesk_url'])) {
-		$foxyshop_settings["orderdesk_url"] = $_POST['foxyshop_orderdesk_url'];
+		$foxyshop_settings["orderdesk_url"] = sanitize_text_field($_POST['foxyshop_orderdesk_url']);
 	} else {
 		$foxyshop_settings["orderdesk_url"] = "";
 	}
 
 	//Customise API Key
 	if (isset($_POST['api_key']) && !empty($_POST['api_key'])) {
-		$foxyshop_settings["api_key"] = $_POST['api_key'];
+		$foxyshop_settings["api_key"] = sanitize_text_field($_POST['api_key']);
 	}
 
 
 	//Set FoxyCart Domain Name
-	$domain = $_POST['foxyshop_domain'];
+	$domain = foxy_wp_html($_POST['foxyshop_domain']);
 	if ($domain && get_option("foxyshop_setup_required")) delete_option("foxyshop_setup_required"); //Delete the setup prompt if domain entered
 	if ($domain && strpos($domain, ".") === false) $domain .= ".foxycart.com";
 	$foxyshop_settings["domain"] = trim(stripslashes(str_replace("https://","",$domain)));
@@ -98,8 +103,8 @@ function foxyshop_save_settings() {
 	//if ($domain && version_compare($foxyshop_settings['version'], '1.1', ">=") && !$foxyshop_settings['api']['store_access_token']) add_option("foxyshop_setup_required", 1);
 
 	//Other Settings Treated Specially
-	$foxyshop_settings["default_weight"] = (int)$_POST['foxyshop_default_weight1'] . ' ' . (double)$_POST['foxyshop_default_weight2'];
-	$foxyshop_settings["products_per_page"] = ((int)$_POST['foxyshop_products_per_page'] == 0 ? -1 : (int)$_POST['foxyshop_products_per_page']);
+	$foxyshop_settings["default_weight"] = (int)sanitize_text_field($_POST['foxyshop_default_weight1']) . ' ' . (double)sanitize_text_field($_POST['foxyshop_default_weight2']);
+	$foxyshop_settings["products_per_page"] = ((int)$_POST['foxyshop_products_per_page'] == 0 ? -1 : (int)sanitize_text_field($_POST['foxyshop_products_per_page']));
 
 	//Cache the FoxyCart Includes
 	if (version_compare($foxyshop_settings['version'], '0.7.2', ">=") && version_compare($foxyshop_settings['version'], '2.0', "<") && $foxyshop_settings['domain']) {
@@ -176,9 +181,7 @@ function foxyshop_settings_page() {
 	//Warning Header/Footer Missing
 	if ((!file_exists(TEMPLATEPATH.'/header.php') || !file_exists(TEMPLATEPATH.'/footer.php')) && !isset($skip_header_warning)) echo '<div class="error"><p>' . __('<strong>Warning:</strong> Your theme does not appear to be using header.php or footer.php. Without these files FoxyShop pages will show up unstyled. This error can often show up if you are using a WordPress framework that is bypassing the get_header() and get_footer() functions.', 'foxyshop') . '</p></div>';
 
-	//Warning About cURL Installation
-	if (!in_array('curl', get_loaded_extensions())) echo '<div class="error"><p>' . __('<strong>Warning:</strong> Your web server does not have cURL installed. Without cURL, FoxyShop will not be able to sync settings with FoxyCart and you will experience errors while saving.', 'foxyshop') . '</p></div>';
-
+ 
 	//Warning Upload Folders
 	$upload_dir = wp_upload_dir();
 	if ($upload_dir['error'] != '') {
@@ -198,20 +201,16 @@ function foxyshop_settings_page() {
 		<thead>
 			<tr>
 				<th>
-					<div id="settings_title">FoxyShop <?php echo $foxyshop_settings['foxyshop_version']; ?></div>
+					<div id="settings_title">FoxyShop <?php echo foxy_wp_html($foxyshop_settings['foxyshop_version']); ?></div>
 				</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
 				<td style="border-bottom: 0 none;">
-					<a href="https://www.foxy-shop.com/?utm_source=plugin&amp;utm_medium=app&amp;utm_campaign=pluginlink_<?php echo FOXYSHOP_VERSION ?>" target="_blank"><img src="<?php echo FOXYSHOP_DIR; ?>/images/logo.png" alt="FoxyShop" style="float: right; margin-left: 20px;" /></a>
+					<a href="https://www.foxy-shop.com/?utm_source=plugin&amp;utm_medium=app&amp;utm_campaign=pluginlink_<?php echo FOXYSHOP_VERSION ?>" target="_blank"><img src="<?php echo esc_url(FOXYSHOP_DIR); ?>/images/logo.png" alt="FoxyShop" style="float: right; margin-left: 20px;" /></a>
 
-					<p>Stay up to date with the latest updates from FoxyShop by following on Twitter and Facebook.</p>
-					<a href="https://twitter.com/FoxyShopWP" class="twitter-follow-button">Follow @FoxyShopWP</a>
-					<script src="https://platform.twitter.com/widgets.js" type="text/javascript"></script>
-					<iframe src="https://www.facebook.com/plugins/like.php?href=<?php echo urlencode('https://www.facebook.com/pages/FoxyShop/188079417920111'); ?>&amp;layout=button_count&amp;show_faces=false&amp;width=190&amp;action=like&amp;colorscheme=light&amp;font=arial" scrolling="no" frameborder="0" allowTransparency="true" style="border:none; overflow:hidden; width:190px; height:26px;"></iframe>
-
+					 
 					<p>
 					<a href="https://www.foxy-shop.com/documentation/?utm_source=plugin&amp;utm_medium=app&amp;utm_campaign=pluginlink_<?php echo FOXYSHOP_VERSION ?>" target="_blank" class="button"><?php _e('FoxyShop Documentation', 'foxyshop'); ?></a>
 					<a href="https://affiliate.foxycart.com/idevaffiliate.php?id=211&amp;url=https://www.foxycart.com/" target="_blank" class="button"><?php _e('FoxyCart Information', 'foxyshop'); ?></a>
@@ -226,12 +225,12 @@ function foxyshop_settings_page() {
 
 	<br /><br />
 
-	<form method="post" name="foxycart_settings_form" action="options.php" onsubmit="return foxyshop_check_settings_form();">
+	<form method="post" name="foxycart_settings_form" action="options.php" onsubmit="return true;">
 
 	<table class="widefat infoonly">
 		<thead>
 			<tr>
-				<th><img src="<?php echo $info_icon; ?>" alt="" /><?php _e('Setup Information', 'foxyshop'); ?></th>
+				<th><img src="<?php echo esc_url($info_icon); ?>" alt="" /><?php _e('Setup Information', 'foxyshop'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -278,7 +277,7 @@ function foxyshop_settings_page() {
 	<table class="widefat">
 		<thead>
 			<tr>
-				<th><img src="<?php echo $settings_icon; ?>" alt="" /><?php _e('FoxyCart Settings', 'foxyshop'); ?></th>
+				<th><img src="<?php echo esc_url($settings_icon); ?>" alt="" /><?php _e('FoxyCart Settings', 'foxyshop'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -292,7 +291,7 @@ function foxyshop_settings_page() {
 					$foxycart_domain = $foxyshop_settings['domain'];
 				}
 				?>
-				<td class="foxycartdomain <?php echo $foxycart_domain_class; ?>">
+				<td class="foxycartdomain <?php echo esc_attr($foxycart_domain_class); ?>">
 					<label for="foxyshop_domain"><?php _e('Your FoxyCart Domain', 'foxyshop'); ?>:</label> <input type="text" name="foxyshop_domain" id="foxyshop_domain" value="<?php echo esc_attr($foxycart_domain); ?>" size="50" />
 					<label id="foxydomainsimplelabel">.foxycart.com</label>
 					<a href="#" class="foxyshophelp">If you have your own custom domain, you may enter that as well (store.yoursite.com). Do not include the "https://". The FoxyCart include files will be inserted automatically so you won't need to add anything to the header of your site.</a>
@@ -336,7 +335,7 @@ function foxyshop_settings_page() {
 	<table class="widefat">
 		<thead>
 			<tr>
-				<th><img src="<?php echo $display_icon; ?>" alt="" /><?php _e('Display Settings', 'foxyshop'); ?></th>
+				<th><img src="<?php echo esc_url($display_icon); ?>" alt="" /><?php _e('Display Settings', 'foxyshop'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -362,7 +361,7 @@ function foxyshop_settings_page() {
 				<td>
 					<strong><?php _e("What To Show if No Image Is Loaded", 'foxyshop'); ?>:</strong>
 					<div style="clear: both;"></div>
-					<input type="radio" name="foxyshop_default_image" id="foxyshop_default_image_0" value="0"<?php if ($foxyshop_settings['default_image'] == "") echo ' checked="checked"'; ?> /><label for="foxyshop_default_image_0" style="width: 95px;"><?php _e('Default Image'); ?></label> <input type="text" id="foxyshop_default_image_custom" name="foxyshop_default_image_standard" value="<?php echo WP_PLUGIN_URL."/foxyshop/images/no-photo.png";?>" readonly="readonly" style="width:544px;" onclick="jQuery('#foxyshop_default_image_0').prop('checked', true);" />
+					<input type="radio" name="foxyshop_default_image" id="foxyshop_default_image_0" value="0"<?php if ($foxyshop_settings['default_image'] == "") echo ' checked="checked"'; ?> /><label for="foxyshop_default_image_0" style="width: 95px;"><?php _e('Default Image'); ?></label> <input type="text" id="foxyshop_default_image_custom" name="foxyshop_default_image_standard" value="<?php echo FOXYSHOP_PLUGIN_URL."images/no-photo.png";?>" readonly="readonly" style="width:544px;" onclick="jQuery('#foxyshop_default_image_0').prop('checked', true);" />
 					<div style="clear: both;"></div>
 					<input type="radio" name="foxyshop_default_image" id="foxyshop_default_image_1" value="1"<?php if ($foxyshop_settings['default_image'] && $foxyshop_settings['default_image'] != "") echo ' checked="checked"'; ?> /><label for="foxyshop_default_image_1" style="width: 95px;"><?php _e('Custom Image'); ?></label> <input type="text" id="foxyshop_default_image_custom" name="foxyshop_default_image_custom" value="<?php if ($foxyshop_settings['default_image'] != "none") echo esc_attr($foxyshop_settings['default_image']); ?>" style="width:544px;" onclick="jQuery('#foxyshop_default_image_1').prop('checked', true);" />
 					<div style="clear: both;"></div>
@@ -382,7 +381,7 @@ function foxyshop_settings_page() {
 	<table class="widefat">
 		<thead>
 			<tr>
-				<th><img src="<?php echo $pagetitle_icon; ?>" alt="" /><?php _e('Browser Title Bar Settings', 'foxyshop'); ?></th>
+				<th><img src="<?php echo esc_url($pagetitle_icon); ?>" alt="" /><?php _e('Browser Title Bar Settings', 'foxyshop'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -413,7 +412,7 @@ function foxyshop_settings_page() {
 	<table class="widefat">
 		<thead>
 			<tr>
-				<th><img src="<?php echo $advanced_icon; ?>" alt="" /><?php _e('Advanced Settings', 'foxyshop'); ?></th>
+				<th><img src="<?php echo esc_url($advanced_icon); ?>" alt="" /><?php _e('Advanced Settings', 'foxyshop'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -424,7 +423,7 @@ function foxyshop_settings_page() {
 						<a href="#" class="foxyshophelp">These categories should correspond to the category codes you set up in your FoxyCart admin and will be available in a drop-down on your <?php echo strtolower(FOXYSHOP_PRODUCT_NAME_SINGULAR); ?> setup page. Separate each category with a line break. If you would like to also display a nice name in the dropdown menu, use a pipe sign "|" like this: free_shipping|Free Shipping. There's also an optional third entry you can put with the product delivery type (shipped, downloaded, not_shipped, flat_rate).</a>
 						<?php if (version_compare($foxyshop_settings['version'], '0.7.2', ">=") && $foxyshop_settings['domain']) echo '<button type="button" class="button" id="ajax_get_category_list">Pull Category List From FoxyCart</button><div id="foxyshop_category_list_waiter"></div>'; ?>
 					</div>
-					<textarea id="foxyshop_ship_categories" name="foxyshop_ship_categories" wrap="auto" style="float: left; width:640px;height: <?php echo strlen($foxyshop_settings['ship_categories']) > 110 ? "160px" : "80px" ?>;"><?php echo $foxyshop_settings['ship_categories']; ?></textarea>
+					<textarea id="foxyshop_ship_categories" name="foxyshop_ship_categories" wrap="auto" style="float: left; width:640px;height: <?php echo strlen($foxyshop_settings['ship_categories']) > 110 ? "160px" : "80px" ?>;"><?php echo foxy_wp_html($foxyshop_settings['ship_categories']); ?></textarea>
 					<span style="display:block; clear: both; padding-top: 3px;"><strong>Syntax:</strong> category_code<strong>|</strong>category_description<strong>|</strong>product_delivery_type</span>
 				</td>
 			</tr>
@@ -513,7 +512,7 @@ function foxyshop_settings_page() {
 					<label for="foxyshop_manage_inventory_levels"><?php _e('Manage Inventory Levels', 'foxyshop'); ?></label>
 					<a href="#" class="foxyshophelp">If enabled, you will be able to set inventory levels per <?php echo strtolower(FOXYSHOP_PRODUCT_NAME_PLURAL); ?> code. In the FoxyCart admin, you need to check the box to enable your datafeed and enter the datafeed url from the top of this page in the "datafeed url" box.</a>
 					<div class="settings_indent">
-						<label for="foxyshop_inventory_alert_level"><?php _e('Default Inventory Alert Level', 'foxyshop'); ?>:</label> <input type="text" id="foxyshop_inventory_alert_level" name="foxyshop_inventory_alert_level" value="<?php echo $foxyshop_settings['inventory_alert_level']; ?>" style="width: 50px;" />
+						<label for="foxyshop_inventory_alert_level"><?php _e('Default Inventory Alert Level', 'foxyshop'); ?>:</label> <input type="text" id="foxyshop_inventory_alert_level" name="foxyshop_inventory_alert_level" value="<?php echo esc_attr($foxyshop_settings['inventory_alert_level']); ?>" style="width: 50px;" />
 						<input type="checkbox" id="foxyshop_inventory_alert_email" name="foxyshop_inventory_alert_email"<?php checked($foxyshop_settings['inventory_alert_email'], "on"); ?> style="clear: left;" /><label for="foxyshop_inventory_alert_email"><?php _e('Send Email to Admin When Alert Level Reached'); ?></label>
 					</div>
 				</td>
@@ -635,109 +634,5 @@ function foxyshop_settings_page() {
 	<input type="hidden" name="foxyshop_settings_update" value="1" />
 	<?php wp_nonce_field('update-foxyshop-options'); ?>
 	</form>
-
-<script type="text/javascript">
-jQuery(document).ready(function($){
-	$("input[name='foxyshop_weight_type']").change(function() {
-		if ($("#foxyshop_weight_type_english").is(":checked")) {
-			$("#weight_title1").text("lbs");
-			$("#weight_title2").text("oz");
-		} else {
-			$("#weight_title1").text("kg");
-			$("#weight_title2").text("gm");
-		}
-	});
-
-	if ($("#foxyshop_weight_type_english").is(":checked")) {
-		$("#weight_title1").text("lbs");
-		$("#weight_title2").text("oz");
-	} else {
-		$("#weight_title1").text("kg");
-		$("#weight_title2").text("gm");
-	}
-
-	$("#foxyshop_key").click(function(e) {
-		if ($(this).prop("readonly")) {
-			$(this).select();
-		}
-	});
-
-	$(".customise-api-key").click(function(e) {
-		e.preventDefault();
-		$("#foxyshop_key").prop("readonly", false);
-		$(this).hide();
-		$(".customise-api-key-save").show();
-	});
-
-	$("#resetimage").click(function() {
-		$("#foxyshop_default_image").val("<?php echo FOXYSHOP_DIR."/images/no-photo.png"; ?>");
-		return false;
-	});
-	$("#foxyshop_google_product_support").click(function() {
-		if ($(this).is(":checked")) {
-			$("#google_merchant_id_holder").show();
-		} else {
-			$("#google_merchant_id_holder").hide();
-		}
-	});
-	$("#foxyshop_set_orderdesk_url").click(function() {
-		if ($(this).is(":checked")) {
-			$("#orderdesk_url_holder").show();
-			$("#foxyshop_orderdesk_url").select();
-		} else {
-			$("#orderdesk_url_holder").hide();
-		}
-	});
-
-	//Tooltip
-	xOffset = -10;
-	yOffset = 10;
-	$("a.foxyshophelp").hover(function(e) {
-		var tooltip_text = $(this).html();
-		$("body").append("<p id='tooltip'>"+ tooltip_text +"</p>");
-		$("#tooltip")
-			.css("top",(e.pageY - xOffset) + "px")
-			.css("left",(e.pageX + yOffset) + "px")
-			.fadeIn("fast");
-	}, function(){
-		$("#tooltip").remove();
-	}).mousemove(function(e){
-		$("#tooltip")
-			.css("top",(e.pageY - xOffset) + "px")
-			.css("left",(e.pageX + yOffset) + "px");
-	}).click(function(e) {
-		e.preventDefault();
-		return false;
-	}).attr("tabindex", "99999");
-
-	$(".foxydomainpicker").click(function(e) {
-		$(".foxycartdomain").removeClass("simple advanced");
-		$(".foxycartdomain").addClass($(this).attr("rel"));
-		$("#foxyshop_domain").focus().select();
-		e.preventDefault();
-		return false;
-	});
-
-	<?php if (version_compare($foxyshop_settings['version'], '0.7.2', ">=") && $foxyshop_settings['domain']) { ?>
-	$("#ajax_get_category_list").click(function() {
-		var data = {
-			action: 'foxyshop_ajax_get_category_list',
-			security: '<?php echo wp_create_nonce("foxyshop-ajax-get-category-list"); ?>'
-		};
-		$("#foxyshop_category_list_waiter").show();
-		$.post(ajaxurl, data, function(response) {
-			if (response) {
-				$("#foxyshop_ship_categories").val(response);
-			}
-			$("#foxyshop_category_list_waiter").hide();
-		});
-
-	});
-	<?php } ?>
-
-});
-function foxyshop_check_settings_form() {
-	return true;
-}
-</script>
+ 
 <?php } ?>

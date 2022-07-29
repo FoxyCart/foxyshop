@@ -25,22 +25,32 @@ function foxyshop_run_external_datafeeds($external_datafeeds) {
 
 	foreach($external_datafeeds as $feedurl) {
 		if ($feedurl) {
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $feedurl);
-			if (isset($_POST["FoxyData"])) {
-				curl_setopt($ch, CURLOPT_POSTFIELDS, array("FoxyData" => $_POST["FoxyData"]));
-			} elseif (isset($_POST["FoxySubscriptionData"])) {
-				curl_setopt($ch, CURLOPT_POSTFIELDS, array("FoxySubscriptionData" => $_POST["FoxySubscriptionData"]));
+			$payload = [];
+			if(isset($_POST["FoxyData"]))
+				$payload = array("FoxyData" => $_POST["FoxyData"]);
+			elseif(isset($_POST["FoxySubscriptionData"]))
+				$payload = array("FoxySubscriptionData" => $_POST["FoxySubscriptionData"]);
+
+			$args = [
+					'headers' =>  ["Content-Type" => "application/x-www-form-urlencoded"],
+					'body' => $payload
+				];
+
+			if (defined('FOXYSHOP_CURL_SSL_VERIFYPEER')){
+				$args['sslverify'] = FOXYSHOP_CURL_SSL_VERIFYPEER;
 			}
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, FOXYSHOP_CURL_CONNECTTIMEOUT);
-			curl_setopt($ch, CURLOPT_TIMEOUT, FOXYSHOP_CURL_TIMEOUT);
-			if (defined('FOXYSHOP_CURL_SSL_VERIFYPEER')) curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FOXYSHOP_CURL_SSL_VERIFYPEER);
-			$response = trim(curl_exec($ch));
+
+
+			$response = wp_remote_post($feedurl,
+				$args);
+
+			 
+	
+		//	$response = trim($response['body']);
 
 			//If Error, Send Email and Kill Process
 			if ($response != 'foxy' && $response != 'foxysub') {
-				$error_msg = (!$response ? "Datafeed Processing Error: " . curl_error($ch) : $response);
+				$error_msg = ( is_wp_error( $response ) ? "Datafeed Processing Error: " . $response->get_error_message() : $response['body']  );
 				$to_email = get_bloginfo('admin_email');
 				$message = "A FoxyCart datafeed error was encountered at " . date("F j, Y, g:i a") . ".\n\n";
 				$message .= "The feed that failed was $feedurl\n\n";
@@ -51,11 +61,9 @@ function foxyshop_run_external_datafeeds($external_datafeeds) {
 				$message .= "\n\n" . foxyshop_decrypt($_POST["FoxyData"]);
 				$headers = 'From: ' . get_bloginfo('name') . ' Server Admin <' . $to_email . '>' . "\r\n";
 				mail($to_email, 'Data Feed Error on ' . get_bloginfo('name'), $message, $headers);
-				curl_close($ch);
+				 
 				die($error_msg);
-			} else {
-				curl_close($ch);
-			}
+			}  
 		}
 	}
 }

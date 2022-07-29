@@ -40,11 +40,6 @@ This will allow you to upgrade FoxyShop without breaking your customizations. Mo
 	?>
 </div>
 <?php foxyshop_include('footer'); ?>
-
-<script type="text/javascript">
-jQuery(document).ready(function($){
-	$(".foxyshop_product_list>li:nth-child(odd)").css("clear","left");
-});
-</script>
+ 
 
 <?php get_footer(); ?>

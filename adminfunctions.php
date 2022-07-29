@@ -2,10 +2,15 @@
 //Exit if not called in proper context
 if (!defined('ABSPATH')) exit();
 
+//validating HTML using WordPress functions
+function foxy_wp_html($string){
+	return htmlspecialchars_decode( esc_html( $string ) );
+}
+
 //Insert jQuery
 function foxyshop_insert_jquery() {
 
-	$jquery_url = "http" . ($_SERVER['SERVER_PORT'] == 443 ? 's' : '') . "://ajax.googleapis.com/ajax/libs/jquery/" . foxyshop_get_jquery_version() . "/jquery.min.js";
+	$jquery_url = "//ajax.googleapis.com/ajax/libs/jquery/" . foxyshop_get_jquery_version() . "/jquery.min.js";
 	wp_deregister_script('jquery');
 	wp_register_script('jquery', apply_filters('foxyshop_jquery_url', $jquery_url), array(), NULL, false);
 	wp_enqueue_script('jquery');
@@ -30,10 +35,43 @@ function foxyshop_remove_jquery() {
 function foxyshop_load_admin_scripts($hook) {
 	global $foxyshop_settings;
 
-	$page = isset($_REQUEST['page']) ? $_REQUEST['page'] : '';
+	$page = isset($_REQUEST['page']) ? sanitize_text_field($_REQUEST['page']) : '';
 
 	//Style - Always Do This
 	wp_enqueue_style('foxyshop_admin_css', FOXYSHOP_DIR . '/css/foxyshop-admin.css');
+
+	//adding admin tools
+	wp_enqueue_script('sorter', FOXYSHOP_DIR . '/js/tablesorter.js', array('jquery'));
+	$inlinesorter = 'var thenonce="'.wp_create_nonce('update-foxyshop-inventory').'";
+
+
+	jQuery(document).ready(function($){ '.foxyshop_manage_attributes_jquery('transaction').' });
+	';
+
+
+
+	 if (version_compare($foxyshop_settings['version'], '0.7.2', ">=") && $foxyshop_settings['domain']) { 
+$inlinesorter .= "
+
+jQuery(document).ready(function($){
+	$(\"#ajax_get_category_list\").click(function() {
+		var data = {
+			action: 'foxyshop_ajax_get_category_list',
+			security: '".wp_create_nonce("foxyshop-ajax-get-category-list")."'
+		};
+		$(\"#foxyshop_category_list_waiter\").show();
+		$.post(ajaxurl, data, function(response) {
+			if (response) {
+				$(\"#foxyshop_ship_categories\").val(response);
+			}
+			$(\"#foxyshop_category_list_waiter\").hide();
+		});
+
+	});
+
+});";
+	 } 
+
 
 	//Date Picker
 	if ($page == "foxyshop_order_management" || $page == "foxyshop_subscription_management") foxyshop_date_picker();
@@ -48,10 +86,18 @@ function foxyshop_load_admin_scripts($hook) {
 	if ($hook !== 'post.php' && $hook !== 'post-new.php' && $page !== 'cfbe_editor-foxyshop_product' && $page !== 'foxyshop_setup') return;
 	wp_enqueue_script('swfobject');
 	if ($foxyshop_settings['related_products_custom'] || $foxyshop_settings['related_products_tags'] || $foxyshop_settings['enable_addon_products']) {
-		wp_enqueue_script('chosenScript', FOXYSHOP_DIR . '/js/chosen.jquery.min.js', array('jquery'));
+		wp_enqueue_script('chosenScript', FOXYSHOP_DIR . '/js/chosen.min.js', array('jquery'));
 		wp_enqueue_style('chosenStyle', FOXYSHOP_DIR . '/css/chosen.css');
 	}
 	foxyshop_date_picker();
+
+	wp_enqueue_script('foxyshop_tools', FOXYSHOP_DIR . '/js/all.js', array('jquery','sorter','jquery-ui-datepicker'));
+		wp_add_inline_script( 
+	'foxyshop_tools',
+	$inlinesorter,
+	'before' 
+);
+	wp_add_inline_script('foxyshop_tools','jQuery(document).ready(function($){ '. foxyshop_manage_attributes_jquery('subscription').'});','after');
 }
 
 //Loading in Public Style
@@ -78,7 +124,7 @@ function foxyshop_check_include_status() {
 		remove_action('init', 'foxyshop_insert_jquery');
 		if ($foxyshop_settings['include_exception_list'] != "*") {
 			add_action('wp_enqueue_scripts', 'foxyshop_remove_jquery', 99);
-			remove_action('wp_footer', 'foxyshop_insert_google_analytics', 100);
+			remove_action('wp_enqueue_scripts', 'foxyshop_insert_google_analytics', 100);
 		}
 	}
 }
@@ -92,10 +138,36 @@ function foxyshop_date_picker() {
 //Check Permalinks on all admin pages and warn if incorrect
 add_action('admin_notices', 'foxyshop_check_permalinks');
 function foxyshop_check_permalinks() {
-	$permalink_structure = (isset($_POST['permalink_structure']) ? $_POST['permalink_structure'] : get_option('permalink_structure'));
+	$permalink_structure = (isset($_POST['permalink_structure']) ? $_POST['permalink_structure'] : get_option('permalink_structure')); 
 	if ($permalink_structure == '' && current_user_can('manage_options')) {
-		echo '<div class="error"><p><strong>Warning:</strong> Your <a href="options-permalink.php">permalink structure</a> is set to default. Your product links will not work correctly until you have turned on Permalink support. It is recommend that you set to "Month and Name".</p></div>';
+		echo ('<div class="error"><p><strong>Warning:</strong> Your <a href="options-permalink.php">permalink structure</a> is set to default. Your product links will not work correctly until you have turned on Permalink support. It is recommend that you set to "Month and Name".</p></div>');
 	}
+}
+
+
+function foxyshop_insert_allfrontend(){
+	global $foxyshop_settings;
+	if (!empty($foxyshop_settings['domain'])){
+	wp_enqueue_script('loaderforfoxy', "https://cdn.foxycart.com/" . esc_attr(str_replace('.foxycart.com','',$foxyshop_settings['domain'])) . "/loader.js",['jquery'],FOXYSHOP_VERSION);
+	}
+	wp_enqueue_script('foxyshop_public',FOXYSHOP_PLUGIN_URL.'js/all-public.js',['jquery'],FOXYSHOP_VERSION);
+	wp_enqueue_script('variationp',FOXYSHOP_PLUGIN_URL.'js/variation.process.js',['jquery'],FOXYSHOP_VERSION);
+	wp_enqueue_script('prettyphoto',FOXYSHOP_PLUGIN_URL.'js/prettyphoto/prettyPhoto.js',['jquery'],FOXYSHOP_VERSION);
+	wp_enqueue_style('prettyphoto',FOXYSHOP_PLUGIN_URL.'css/prettyphoto/prettyPhoto.css',[],FOXYSHOP_VERSION);
+	wp_enqueue_script('foxyshop_public_header',FOXYSHOP_PLUGIN_URL.'js/all-public-header.js',['jquery'],FOXYSHOP_VERSION);
+	wp_script_add_data( 'foxyshop_public_header', 'conditional', 'lt IE 9' );
+}
+
+
+function foxyshop_setidcheckout(){
+	$toadd = 'jQuery(document).ready(function($){
+	$("html").attr("id", "fc");
+});';
+	wp_add_inline_script( 
+	'foxyshop_public',
+	$toadd,
+	'after' 
+	);
 }
 
 
@@ -103,6 +175,8 @@ function foxyshop_check_permalinks() {
 //Insert Google Analytics
 function foxyshop_insert_google_analytics() {
 	global $foxyshop_settings;
+
+	$toadd = '';
 
 	//Advanced
 	if ($foxyshop_settings['ga_advanced']) {
@@ -112,19 +186,15 @@ function foxyshop_insert_google_analytics() {
 
 		//Universal
 		if ($foxyshop_settings['ga_type'] == "universal") {
-			?>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			$toadd = "(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>', 'auto');
-  <?php if ($foxyshop_settings['ga_demographics']) echo "ga('require', 'displayfeatures');\n" ?>
-  ga('send', 'pageview');
-
-</script>
-<script type="text/javascript" charset="utf-8">
+  ga('create', '".htmlspecialchars($foxyshop_settings['ga'])."', 'auto');";
+   if ($foxyshop_settings['ga_demographics']) $toadd .= "ga('require', 'displayfeatures');\n";
+  $toadd .= "ga('send', 'pageview');
+ 
   fcc.events.cart.preprocess.add(function(e, arr) {
     if (arr['cart'] == 'checkout' || arr['cart'] == 'updateinfo' || arr['output'] == 'json') {
       return true;
@@ -137,7 +207,7 @@ function foxyshop_insert_google_analytics() {
           });
         }
       });
-      return "pause";
+      return 'pause';
     }
     return true;
   });
@@ -147,28 +217,23 @@ function foxyshop_insert_google_analytics() {
         fcc.events.cart.process.resume();
       });
     });
-    return "pause";
-  });
-</script>
-<?php
-
-
+    return 'pause';
+  });";
 
 		//Legacy
 		} else {
 
-
-
-		?><script type="text/javascript" charset="utf-8">
+		$toadd = " 
 	var _gaq = _gaq || [];
-	_gaq.push(['_setAccount', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>']);
-	_gaq.push(['_setDomainName', '<?php echo $_SERVER['SERVER_NAME']; ?>']);
-	_gaq.push(['_setAllowHash', 'false']);
-	<?php if (strpos($foxyshop_settings['domain'], '.foxycart.com') !== false) echo "_gaq.push(['_setAllowLinker', true]);\n"; ?>
-	_gaq.push(['_trackPageview']);
+	_gaq.push(['_setAccount', '".htmlspecialchars($foxyshop_settings['ga'])."']);
+	_gaq.push(['_setDomainName', '".($_SERVER['SERVER_NAME'])."']);
+	_gaq.push(['_setAllowHash', 'false']);";
+	if (strpos($foxyshop_settings['domain'], '.foxycart.com') !== false) 
+		$toadd.= "_gaq.push(['_setAllowLinker', true]);\n"; 
+	$toadd .= "_gaq.push(['_trackPageview']);
 	(function() {
 		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		ga.src = <?php echo apply_filters("ga_classic_src", "('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';"); ?>
+		ga.src = ".apply_filters("ga_classic_src", "('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';")."
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	})();
 	fcc.events.cart.preprocess.add(function(e, arr) {
@@ -187,9 +252,7 @@ function foxyshop_insert_google_analytics() {
 		jQuery.getJSON('https://' + storedomain + '/cart?' + fcc.session_get() + '&h:ga=' + escape(pageTracker._getLinkerUrl('', true)) + '&output=json&callback=?', function(data){});
 		return true;
 	});
-</script><?php
-
-
+</script>";
 		}
 
 
@@ -201,90 +264,83 @@ function foxyshop_insert_google_analytics() {
 
 		//Universal
 		if ($foxyshop_settings['ga_type'] == "universal") {
-		?>
-
-<script>
+		$toadd = "
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>', 'auto');
-  <?php if ($foxyshop_settings['ga_demographics']) echo "ga('require', 'displayfeatures');\n" ?>
-  ga('send', 'pageview');
-</script>
-
-
-		<?php
+  ga('create', '".foxy_wp_html(htmlspecialchars($foxyshop_settings['ga']) )."', 'auto');
+  ".(($foxyshop_settings['ga_demographics']) ? "ga('require', 'displayfeatures');\n" : "")."
+  ga('send', 'pageview');";
 		//Legacy
 		} else {
-		?>
-
-		<script type="text/javascript">
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>']);
+		$toadd = "var _gaq = _gaq || [];
+_gaq.push(['_setAccount', '".foxy_wp_html(htmlspecialchars($foxyshop_settings['ga']))."']);
 _gaq.push(['_trackPageview']);
 (function() {
 	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-	ga.src = <?php echo apply_filters("ga_classic_src", "('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';"); ?>
+	ga.src = ".apply_filters("ga_classic_src", "('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';")."
 	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
-</script><?php
+})();";
 		}
 
 		} else {
-			echo "\n<!-- Google Analytics Not Loaded Because This is a Logged-In User -->\n";
+			$toadd = ("\n<!-- Google Analytics Not Loaded Because This is a Logged-In User -->\n");
 		}
 	}
+	wp_add_inline_script( 
+	'foxyshop_public',
+	$toadd,
+	'after' 
+	);
 }
 
 //Google Analytics For Checkout
 function foxyshop_insert_google_analytics_checkout() {
 	global $foxyshop_settings;
 	if (!$foxyshop_settings['ga_advanced']) return;
+	$toadd = "";
+
 	if (version_compare($foxyshop_settings['version'], '2.0', ">=")) return;
 
 	//Universal
 	if ($foxyshop_settings['ga_type'] == "universal") {
 
-		?>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  $toadd .= "(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>', 'auto', {
+  ga('create', '".foxy_wp_html(htmlspecialchars($foxyshop_settings['ga']))."', 'auto', {
     'clientId': fc_json.custom_fields['ga'],
     'storage': 'none'
-  });
-  <?php if ($foxyshop_settings['ga_demographics']) echo "ga('require', 'displayfeatures');\n" ?>
-  ga('set', 'page', '/checkout');
+  });";
+  if ($foxyshop_settings['ga_demographics']) $toadd .= "ga('require', 'displayfeatures');\n";
+  $toadd.= "ga('set', 'page', '/checkout');
   ga('send', 'pageview');
-
-</script>
-<script type="text/javascript" charset="utf-8">
+ 
   var originalValidateAndSubmit = FC.checkout.validateAndSubmit;
   function ga_tracker() {
     var wait = false;
-    if (typeof(fc_json.custom_fields['ga']) != "undefined") {
-      var method, method_co, source = "";
-      if (typeof(fc_json.custom_fields['_fcpm']) != "undefined" && fc_json.custom_fields['_fcpm'] != "") {
-        var fcpm = fc_json.custom_fields['_fcpm'].split("|");
+    if (typeof(fc_json.custom_fields['ga']) != \"undefined\") {
+      var method, method_co, source = \"\";
+      if (typeof(fc_json.custom_fields['_fcpm']) != \"undefined\" && fc_json.custom_fields['_fcpm'] != \"\") {
+        var fcpm = fc_json.custom_fields['_fcpm'].split(\"|\");
         method = fcpm[0];
         source = fcpm[1];
       }
-      if (jQuery("input[name='fc_payment_method']:first").attr("type") == "radio") {
-        method_co = jQuery("input[name='fc_payment_method']:checked").val();
-      } else if (jQuery("input[name='fc_payment_method']:first").attr("type") == "hidden") {
-        method_co = jQuery("input[name='fc_payment_method']").val();
+      if (jQuery(\"input[name='fc_payment_method']:first\").attr(\"type\") == \"radio\") {
+        method_co = jQuery(\"input[name='fc_payment_method']:checked\").val();
+      } else if (jQuery(\"input[name='fc_payment_method']:first\").attr(\"type\") == \"hidden\") {
+        method_co = jQuery(\"input[name='fc_payment_method']\").val();
       }
-      if (method != method_co || source == "checkout") {
+      if (method != method_co || source == \"checkout\") {
         method = method_co;
-        source = "checkout";
+        source = \"checkout\";
         wait = true;
-        jQuery.getJSON('https://' + document.domain + '/cart?' + FC.checkout.config.session + '&h:_fcpm=' + method + "|" + source + '&output=json&callback=?', function(cart) {
+        jQuery.getJSON('https://' + document.domain + '/cart?' + FC.checkout.config.session + '&h:_fcpm=' + method + \"|\" + source + '&output=json&callback=?', function(cart) {
           fc_json = cart;
-          if (method != "plastic" && method != "purchase_order" && source == "checkout") {
+          if (method != \"plastic\" && method != \"purchase_order\" && source == \"checkout\") {
             ga('send', 'pageview', '/' + method + '_payment');
           }
           originalValidateAndSubmit();
@@ -296,31 +352,19 @@ function foxyshop_insert_google_analytics_checkout() {
       originalValidateAndSubmit();
     }
   }
-  FC.checkout.override('validateAndSubmit', 'ga_tracker');
-</script>
-
-
-
-		<?php
-
-
+  FC.checkout.override('validateAndSubmit', 'ga_tracker');";
 
 	//Legacy
 	} else {
 
-	?>
-	<script type="text/javascript" charset="utf-8">
-		if (window.location.hash.search(/utma/) == -1 && typeof(fc_json.custom_fields['ga']) != "undefined") {
+	$toadd = "if (window.location.hash.search(/utma/) == -1 && typeof(fc_json.custom_fields['ga']) != \"undefined\") {
 			if (fc_json.custom_fields['ga'].length > 0) {
 				window.location.hash = fc_json.custom_fields['ga'].replace( /\&amp;/g, '&' );
 			}
-		}
-	</script>
-
-	<script type="text/javascript">
+		} 
 
 	  var _gaq = _gaq || [];
-	  _gaq.push(['_setAccount', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>']);
+	  _gaq.push(['_setAccount', '".foxy_wp_html(htmlspecialchars($foxyshop_settings['ga']))."']);
 	  _gaq.push(['_setDomainName', 'none']);
 	  _gaq.push(['_setAllowLinker', true]);
 	  _gaq.push(['_setAllowAnchor', true]);
@@ -328,74 +372,65 @@ function foxyshop_insert_google_analytics_checkout() {
 
 	  (function() {
 	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-	    ga.src = <?php echo apply_filters("ga_classic_src", "('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';"); ?>
+	    ga.src = ".apply_filters("ga_classic_src", "('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';")."
 	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
 
-	</script>
-
-	<script type="text/javascript" charset="utf-8">
 		function ga_tracker() {
-			if (typeof(fc_json.custom_fields['ga']) != "undefined" && jQuery('#fc_payment_method_paypal').attr("checked") == true) {
+			if (typeof(fc_json.custom_fields['ga']) != \"undefined\" && jQuery('#fc_payment_method_paypal').attr(\"checked\") == true) {
 				_gaq.push(['_trackPageview', '/paypal_payment']);
 				// setTimeout('return true;', 250); // TODO
 			}
 		}
-		FC.checkout.overload('validateAndSubmit', 'ga_tracker', null);
-	</script>
-	<?php
+		FC.checkout.overload('validateAndSubmit', 'ga_tracker', null);";
 	}
+	wp_add_inline_script( 
+	'foxyshop_public',
+	$toadd,
+	'after' 
+	);
 }
 
 
 //Google Analytics For Receipt
 function foxyshop_insert_google_analytics_receipt() {
 	global $foxyshop_settings;
+	$toadd = "";
 	if (!$foxyshop_settings['ga_advanced']) return;
 	if (version_compare($foxyshop_settings['version'], '2.0', ">=")) return;
 
 	//Universal
 	if ($foxyshop_settings['ga_type'] == "universal") {
 
-		?>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		$toadd="(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>', 'auto', {
+  ga('create', '".foxy_wp_html(htmlspecialchars($foxyshop_settings['ga']))."', 'auto', {
     'clientId': fc_json.custom_fields['ga'],
     'storage': 'none'
   });
-  var pageview = "/receipt";
-  if (typeof(fc_json.custom_fields['_fcpm']) != "undefined" && fc_json.custom_fields['_fcpm'] != "") {
-    var fcpm = fc_json.custom_fields['_fcpm'].split("|");
-    if (fcpm[0] != "plastic" && fcpm[0] != "purchase_order") {
-      pageview += "_" + fcpm[0] + "_from_" + fcpm[1];
+  var pageview = \"/receipt\";
+  if (typeof(fc_json.custom_fields['_fcpm']) != \"undefined\" && fc_json.custom_fields['_fcpm'] != \"\") {
+    var fcpm = fc_json.custom_fields['_fcpm'].split(\"|\");
+    if (fcpm[0] != \"plastic\" && fcpm[0] != \"purchase_order\") {
+      pageview += \"_\" + fcpm[0] + \"_from_\" + fcpm[1];
     }
   }
   ga('set', 'page', pageview);
   {% if first_receipt_display %}
-    <?php if ($foxyshop_settings['ga_demographics']) echo "ga('require', 'displayfeatures');\n" ?>
-    ga('send', 'pageview');
-  {% endif %}
-</script>
+    ";
+    if($foxyshop_settings['ga_demographics']) $toadd.= "ga('require', 'displayfeatures');\n";
+  $toadd .= "ga('send', 'pageview');
+  {% endif %} 
 {% if first_receipt_display %}
   ^^analytics_google_ga_universal^^
-{% endif %}
-	<?php
-
-
-
+{% endif %}";
 	//Legacy
 	} else {
-
-	?>
-	<script type="text/javascript">
-
-	  var _gaq = _gaq || [];
-	  _gaq.push(['_setAccount', '<?php echo htmlspecialchars($foxyshop_settings['ga']); ?>']);
+	$toadd = "var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', '".foxy_wp_html(htmlspecialchars($foxyshop_settings['ga']))."']);
 	  _gaq.push(['_setDomainName', 'none']);
 	  _gaq.push(['_setAllowLinker', true]);
 	  _gaq.push(['_setAllowAnchor', true]);
@@ -403,17 +438,20 @@ function foxyshop_insert_google_analytics_receipt() {
 
 	  (function() {
 	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-	    ga.src = <?php echo apply_filters("ga_classic_src", "('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';"); ?>
+	    ga.src = ".apply_filters("ga_classic_src", "('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';")."
 	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
-
-	</script>
 
 	^^receipt_only_begin^^
 	^^analytics_google_ga_async^^
 	^^receipt_only_end^^
-	<?php
+	";
 	}
+	wp_add_inline_script( 
+	'foxyshop_public',
+	$toadd,
+	'after' 
+	);
 }
 
 //Product Category Comparison
@@ -566,7 +604,7 @@ function foxyshop_activation() {
 		if ($foxyshop_settings['sso_account_required'] == "on") $foxyshop_settings['sso_account_required'] = 1;
 		if (!array_key_exists('enable_dashboard_stats',$foxyshop_settings)) $foxyshop_settings['enable_dashboard_stats'] = ""; //3.0
 		if (!array_key_exists('checkout_customer_create',$foxyshop_settings)) $foxyshop_settings['checkout_customer_create'] = ""; //3.2?
-		if ($foxyshop_settings['default_image'] == WP_PLUGIN_URL."/foxyshop/images/no-photo.png") $foxyshop_settings['default_image'] = ""; //3.3
+		if ($foxyshop_settings['default_image'] == FOXYSHOP_PLUGIN_URL."images/no-photo.png") $foxyshop_settings['default_image'] = ""; //3.3
 		if (!$foxyshop_settings['domain']) add_option("foxyshop_setup_required", 1); //3.3
 		if (!array_key_exists('foxycart_include_cache',$foxyshop_settings)) $foxyshop_settings['foxycart_include_cache'] = ""; //3.3
 		if (!array_key_exists('related_products_custom',$foxyshop_settings)) $foxyshop_settings['related_products_custom'] = "on"; //3.3
@@ -812,9 +850,8 @@ function foxyshop_get_downloadable_list() {
 //Access the FoxyCart API
 function foxyshop_get_foxycart_data($foxyData, $silent_fail = true) {
 	global $foxyshop_settings;
-	$foxyData = array_merge(array("api_token" => $foxyshop_settings['api_key']), $foxyData);
-	$args = array(
-		"redirection" => !defined('FOXYSHOP_CURL_CONNECTTIMEOUT') ? 10 : FOXYSHOP_CURL_CONNECTTIMEOUT,
+	$foxyData = array_merge(array("api_token" => esc_attr($foxyshop_settings['api_key'])), $foxyData);
+	$args = array( 
 		"timeout" => !defined('FOXYSHOP_CURL_TIMEOUT') ? 15 : FOXYSHOP_CURL_TIMEOUT,
 		"method" => "POST",
 		"sslverify" => defined('FOXYSHOP_CURL_SSL_VERIFYPEER') ? FOXYSHOP_CURL_SSL_VERIFYPEER : 1,
@@ -857,43 +894,43 @@ function foxyshop_api_paging_nav($type, $position, $xml, $querystring) {
 	$current_page = $pagination_start >= 1 ? ceil($pagination_start / $p) : 1;
 	$total_pages = $filtered_total > 0 ? ceil($filtered_total / $p) : 0;
 
-	echo '<div class="tablenav ' . $position . '">';
+	echo ('<div class="tablenav ' . esc_attr($position) . '">');
 
 	//All Transaction
 	if ($type == "transactions") {
-		echo '<div class="alignleft actions">'."\n";
-		echo '<select name="action-' . $position . '">';
-		echo '<option selected="selected" value="-1">Bulk Actions</option>';
-		echo '<option value="archive">Hide</option>';
-		echo '<option value="unarchive">Unhide</option>';
-		echo '</select>'."\n";
-		echo '<input type="submit" value="Apply" class="button-secondary action" id="doaction" name="">'."\n";
-		echo '</div>'."\n";
+		echo ('<div class="alignleft actions">'."\n");
+		echo ('<select name="action-' . esc_attr($position) . '">');
+		echo ('<option selected="selected" value="-1">Bulk Actions</option>');
+		echo ('<option value="archive">Hide</option>');
+		echo ('<option value="unarchive">Unhide</option>');
+		echo ('</select>'."\n");
+		echo ('<input type="submit" value="Apply" class="button-secondary action" id="doaction" name="">'."\n");
+		echo ('</div>'."\n");
 	}
 
-	echo '<input type="hidden" name="paged-' . $position . '-original" value="' . $current_page . '" />'."\n";
-	echo '<div class="tablenav-pages"><span class="displaying-num">' . $filtered_total . ' item' . ($filtered_total == 1 ? '' : 's') . '</span>'."\n";
+	echo ('<input type="hidden" name="paged-' . esc_attr($position) . '-original" value="' . esc_attr($current_page) . '" />'."\n");
+	echo ('<div class="tablenav-pages"><span class="displaying-num">' . esc_attr($filtered_total) . ' item' . ($filtered_total == 1 ? '' : 's') . '</span>'."\n");
 
 	if ($pagination_start > 1 || $filtered_total > $pagination_end) {
 		//First
-		echo '<span class="pagination-links"><a href="edit.php' . $querystring . '&amp;pagination_start=' . (1 + $start_offset) . '" title="Go to the first page" class="first-page' . ($current_page == 1 ? ' disabled' : '') . '">&laquo;</a>'."\n";
+		echo ('<span class="pagination-links"><a href="edit.php' . $querystring . '&amp;pagination_start=' . (1 + $start_offset) . '" title="Go to the first page" class="first-page' . ($current_page == 1 ? ' disabled' : '') . '">&laquo;</a>'."\n");
 
 		//Previous
-		echo '<a href="edit.php' . $querystring . '&amp;pagination_start=' . ($pagination_start - $p + $start_offset) . '" title="Go to the previous page" class="prev-page' . ($current_page == 1 ? ' disabled' : '') . '">&lsaquo;</a>'."\n";
+		echo ('<a href="edit.php' . $querystring . '&amp;pagination_start=' . ($pagination_start - $p + $start_offset) . '" title="Go to the previous page" class="prev-page' . ($current_page == 1 ? ' disabled' : '') . '">&lsaquo;</a>'."\n");
 
 		//Enter Page
-		echo '<span class="paging-input"><input type="text" size="1" class="foxyshop_paged_number" value="' . $current_page . '" name="paged-' . $position . '" title="Current page" class="current-page"> of <span class="total-pages">' . $total_pages . '</span></span>'."\n";
+		echo ('<span class="paging-input"><input type="text" size="1" class="foxyshop_paged_number" value="' . $current_page . '" name="paged-' . $position . '" title="Current page" class="current-page"> of <span class="total-pages">' . $total_pages . '</span></span>'."\n");
 
 		//Next
-		echo '<a href="edit.php' . $querystring . '&amp;pagination_start=' . ($pagination_end + 1 + $start_offset) . '" title="Go to the next page" class="next-page' . ($filtered_total <= $pagination_end ? ' disabled' : '') . '">&rsaquo;</a>'."\n";
+		echo ('<a href="edit.php' . $querystring . '&amp;pagination_start=' . ($pagination_end + 1 + $start_offset) . '" title="Go to the next page" class="next-page' . ($filtered_total <= $pagination_end ? ' disabled' : '') . '">&rsaquo;</a>'."\n");
 
 		//Last
-		echo '<a href="edit.php' . $querystring . '&amp;pagination_start=' . ((($total_pages - 1) * $p) + 1 + $start_offset) . '" title="Go to the last page" class="last-page' . ($filtered_total <= $pagination_end ? ' disabled' : '') . '">&raquo;</a></span>'."\n";
+		echo ('<a href="edit.php' . $querystring . '&amp;pagination_start=' . ((($total_pages - 1) * $p) + 1 + $start_offset) . '" title="Go to the last page" class="last-page' . ($filtered_total <= $pagination_end ? ' disabled' : '') . '">&raquo;</a></span>'."\n");
 	}
 
-	echo '</div>'."\n";
+	echo ('</div>'."\n");
 
-	echo '</div>'."\n";
+	echo ('</div>'."\n");
 }
 
 
@@ -965,8 +1002,7 @@ function foxyshop_manage_attributes($xml, $id, $att_type) {
 function foxyshop_manage_attributes_jquery($att_type) {
 	global $foxyshop_settings;
 	if (version_compare($foxyshop_settings['version'], '0.7.2', "<")) return "";
-	?>
-
+	return `
 	//Show New Form
 	$(".foxyshop_add_attribute").click(function(e) {
 		var id = $(this).attr("rel");
@@ -1005,7 +1041,7 @@ function foxyshop_manage_attributes_jquery($att_type) {
 		var manage_buttons = '<a href="#" class="foxyshop_attribute_delete" attname="' + att_name + '" title="Delete" rel="' + id + '">Delete</a><a href="#" class="foxyshop_attribute_edit" rel="' + id + '" title="Edit">Edit</a>';
 
 		if (att_name && att_value) {
-			$.post(ajaxurl, {action: "foxyshop_attribute_manage", foxyshop_action: "save_attribute", security: "<?php echo wp_create_nonce("foxyshop-save-attribute"); ?>", att_type: "<?php echo $att_type; ?>", id: id, att_name: att_name, att_value: att_value }, function(response) {
+			$.post(ajaxurl, {action: "foxyshop_attribute_manage", foxyshop_action: "save_attribute", security: "<?php echo wp_create_nonce("foxyshop-save-attribute"); ?>", att_type: "<?php echo esc_attr($att_type); ?>", id: id, att_name: att_name, att_value: att_value }, function(response) {
 				$(".foxyshop_add_attribute[rel='" + id + "']").show();
 				$("#new_attribute_container_" + id).remove();
 				$(".foxyshop_attribute_list[rel='" + id + "']").append('<tr class="viewing"><td class="col1">' + att_name + '</td><td class="col2"><div>' + att_value.replace("\n", "<br />\n") + '</div> ' + manage_buttons + '</td></tr>');
@@ -1025,7 +1061,7 @@ function foxyshop_manage_attributes_jquery($att_type) {
 		var att_value = parent_tr.find(".col2 div").children("textarea").val();
 
 		if (att_value) {
-			$.post(ajaxurl, {action: "foxyshop_attribute_manage", foxyshop_action: "save_attribute", security: "<?php echo wp_create_nonce("foxyshop-save-attribute"); ?>", att_type: "<?php echo $att_type; ?>", id: id, att_name: att_name, att_value: att_value }, function(response) {
+			$.post(ajaxurl, {action: "foxyshop_attribute_manage", foxyshop_action: "save_attribute", security: "<?php echo wp_create_nonce("foxyshop-save-attribute"); ?>", att_type: "<?php echo esc_attr($att_type); ?>", id: id, att_name: att_name, att_value: att_value }, function(response) {
 				parent_tr.addClass("viewing");
 				parent_tr.find(".col2 div").html(att_value.replace(/\n/g, "<br />\n"));
 			});
@@ -1055,14 +1091,12 @@ function foxyshop_manage_attributes_jquery($att_type) {
 		var att_name = $(this).attr("attname");
 		var parent_tr = $(this).parents(".foxyshop_attribute_list tr");
 
-		$.post(ajaxurl, {action: "foxyshop_attribute_manage", foxyshop_action: "delete_attribute", security: "<?php echo wp_create_nonce("foxyshop-save-attribute"); ?>", att_type: "<?php echo $att_type; ?>", id: id, att_name: att_name }, function(response) {
+		$.post(ajaxurl, {action: "foxyshop_attribute_manage", foxyshop_action: "delete_attribute", security: "<?php echo wp_create_nonce("foxyshop-save-attribute"); ?>", att_type: "<?php echo esc_attr($att_type); ?>", id: id, att_name: att_name }, function(response) {
 			parent_tr.remove();
 		});
 
 		e.preventDefault();
 		return false;
-	});
-
-<?php
+	});`;
 
 }

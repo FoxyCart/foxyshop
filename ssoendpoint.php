@@ -21,21 +21,30 @@ if (isset($_GET['fcsid']) && isset($_GET['timestamp'])) {
 
 		//Force a Straight Redirect
 		if ($foxyshop_settings['sso_account_required'] == 1) {
-			$redirect_to = get_bloginfo('url') . '/foxycart-sso-' . $foxyshop_settings['datafeed_url_key'] . '/?timestamp=' . $_GET['timestamp'] . '&fcsid=' . $_GET['fcsid'];
+			$redirect_to = get_bloginfo('url') . '/foxycart-sso-' . $foxyshop_settings['datafeed_url_key'] . '/?timestamp=' . sanitize_text_field($_GET['timestamp']) . '&fcsid=' . sanitize_text_field($_GET['fcsid']);
 			header('Location: ' . $login_url . '?redirect_to=' . urlencode($redirect_to) . '&foxycart_checkout=1&reauth=1');
 			die;
 
 		//Check Cart Contents to Decide on Redirect
 		} elseif ($foxyshop_settings['sso_account_required'] == 2 && !isset($_GET['checkout_type'])) {
-			$ch = curl_init();
+
 			if (!defined('FOXYSHOP_CURL_CONNECTTIMEOUT')) define('FOXYSHOP_CURL_CONNECTTIMEOUT', 10);
 			if (!defined('FOXYSHOP_CURL_TIMEOUT')) define('FOXYSHOP_CURL_TIMEOUT', 15);
-			curl_setopt($ch, CURLOPT_URL, "https://" . esc_attr($foxyshop_settings['domain']) . "/cart?fcsid=" . $_GET['fcsid'] . "&output=json");
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, FOXYSHOP_CURL_CONNECTTIMEOUT);
-			curl_setopt($ch, CURLOPT_TIMEOUT, FOXYSHOP_CURL_TIMEOUT);
-			if (defined('FOXYSHOP_CURL_SSL_VERIFYPEER')) curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FOXYSHOP_CURL_SSL_VERIFYPEER);
-			$curlout = trim(curl_exec($ch));
+
+			$args = array( 
+				"timeout" => !defined('FOXYSHOP_CURL_TIMEOUT') ? 15 : FOXYSHOP_CURL_TIMEOUT,
+				"method" => "POST", 
+				"sslverify" => defined('FOXYSHOP_CURL_SSL_VERIFYPEER') ? FOXYSHOP_CURL_SSL_VERIFYPEER : 1,
+				"body" => $foxyData,
+			);
+			$response = wp_remote_get("https://" . esc_attr($foxyshop_settings['domain']) . "/cart?fcsid=" . sanitize_text_field($_GET['fcsid']) . "&output=json", $args);
+
+			//WP Error
+			if (is_wp_error($response)) {
+				die();
+			}
+  
+			$curlout = trim($response['body']);
 			$sso_required = 0;
 			if ($curlout) {
 				$response = json_decode($curlout, true);
@@ -72,7 +81,7 @@ if (isset($_GET['fcsid']) && isset($_GET['timestamp'])) {
 
 			//Do the Signup Redirect
 			if ($sso_required) {
-				$redirect_to = get_bloginfo('url') . '/foxycart-sso-' . $foxyshop_settings['datafeed_url_key'] . '/?timestamp=' . $_GET['timestamp'] . '&fcsid=' . $_GET['fcsid'];
+				$redirect_to = get_bloginfo('url') . '/foxycart-sso-' . $foxyshop_settings['datafeed_url_key'] . '/?timestamp=' . sanitize_text_field($_GET['timestamp']) . '&fcsid=' . sanitize_text_field($_GET['fcsid']);
 				header('Location: ' . $login_url . '?redirect_to=' . urlencode($redirect_to) . '&foxycart_checkout=1&reauth=1');
 				die;
 
@@ -101,8 +110,8 @@ if (isset($_GET['fcsid']) && isset($_GET['timestamp'])) {
 
 
 	//Redirect to FoxyCart
-	$fcsid = $_GET['fcsid'];
-	$timestamp = $_GET['timestamp'];
+	$fcsid = sanitize_text_field($_GET['fcsid']);
+	$timestamp = sanitize_text_field($_GET['timestamp']);
 	$newtimestamp = strtotime("+60 minutes", $timestamp);
 	$auth_token = sha1($customer_id . '|' . $newtimestamp . '|' . $foxyshop_settings['api_key']);
 	$redirect_complete = 'https://' . $foxyshop_settings['domain'] . '/checkout?fc_auth_token=' . $auth_token . '&fc_customer_id=' . $customer_id . '&timestamp=' . $newtimestamp . '&fcsid=' . $fcsid;

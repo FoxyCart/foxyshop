@@ -51,16 +51,4 @@ global $product, $foxyshop_category_slug, $post;
 	?>
 </div>
 <?php foxyshop_include('footer'); ?>
-
-<script type="text/javascript">
-jQuery(document).ready(function($){
-	//Products
-	//This is set up for a two-column display. For a three column you need to do: nth-child(3n+1)
-	$(".foxyshop_product_list>li:nth-child(odd)").css("clear","left");
-
-	//Subcategories
-	//This is set up for a three-column display. For a two column you need to do: nth-child(odd)
-	$(".foxyshop_categories>li:nth-child(3n+1)").css("clear","left");
-
-});
-</script>
+ 

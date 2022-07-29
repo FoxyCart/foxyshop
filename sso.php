@@ -170,9 +170,9 @@ function action_show_user_profile($user) {
 		$sub_token = str_replace('https://'.$foxyshop_settings['domain'].'/cart?sub_token=', "", $val['sub_token_url']);
 	?>
         <tr class="alternate">
-            <td class="column-columnname"><?php echo $key; ?></td>
+            <td class="column-columnname"><?php echo esc_attr($key); ?></td>
             <td class="column-columnname"><?php echo ($val['is_active'] == 1 ? __('Yes', 'foxyshop') : __('No', 'foxyshop')); ?></td>
-            <td class="column-columnname"><a href="<?php echo $val['sub_token_url']; ?>&amp;cart=checkout" target="_blank"><?php _e('Update Info', 'foxyshop');?></a> | <a href="<?php echo $val['sub_token_url']; ?>&amp;sub_cancel=true&amp;cart=checkout" target="_blank"><?php _e('Cancel', 'foxyshop');?></a></td>
+            <td class="column-columnname"><a href="<?php echo esc_url($val['sub_token_url']); ?>&amp;cart=checkout" target="_blank"><?php _e('Update Info', 'foxyshop');?></a> | <a href="<?php echo $val['sub_token_url']; ?>&amp;sub_cancel=true&amp;cart=checkout" target="_blank"><?php _e('Cancel', 'foxyshop');?></a></td>
         </tr>
      <?php
      }
@@ -185,14 +185,14 @@ function action_show_user_profile($user) {
 
 function action_process_option_update($user_id) {
 	if (!current_user_can('administrator')) return;
-	if (isset($_POST['foxycart_customer_id'])) update_user_meta($user_id, 'foxycart_customer_id', $_POST['foxycart_customer_id']);
+	if (isset($_POST['foxycart_customer_id'])) update_user_meta($user_id, 'foxycart_customer_id', sanitize_text_field($_POST['foxycart_customer_id']));
 }
 
 //Keep redirect_to in URL
 add_filter('site_url', 'foxyshop_add_registration_redirect', 5);
 function foxyshop_add_registration_redirect($path) {
-	if ((strpos($path, "action=register") !== false || strpos($path, "action=lostpassword") !== false) && isset($_REQUEST['redirect_to'])) return $path . '&amp;redirect_to='.urlencode($_REQUEST['redirect_to']);
-	if (substr($path, strlen($path)-12) == "wp-login.php" && isset($_REQUEST['redirect_to'])) return $path . '?redirect_to='.urlencode($_REQUEST['redirect_to']);
+	if ((strpos($path, "action=register") !== false || strpos($path, "action=lostpassword") !== false) && isset($_REQUEST['redirect_to'])) return $path . '&amp;redirect_to='.urlencode(esc_url($_REQUEST['redirect_to']));
+	if (substr($path, strlen($path)-12) == "wp-login.php" && isset($_REQUEST['redirect_to'])) return $path . '?redirect_to='.urlencode(esc_url($_REQUEST['redirect_to']));
 	return $path;
 }
 
@@ -209,16 +209,16 @@ function foxyshop_reverse_sso_login() {
 
 	//Build Token
 	global $foxyshop_settings;
-	$timestamp = $_GET['timestamp'];
+	$timestamp = sanitize_text_field($_GET['timestamp']);
 	$current_timestamp = date("U");
-	$calculated_auth_token = sha1($_GET['foxycart_customer_id'] . '|' . $_GET['timestamp'] . '|' . $foxyshop_settings['api_key']);
+	$calculated_auth_token = sha1(foxy_wp_html($_GET['foxycart_customer_id']) . '|' . foxy_wp_html($_GET['timestamp']) . '|' . sanitize_text_field($foxyshop_settings['api_key']));
 
 	//Token Matches, Do Login
 	if ($calculated_auth_token === $_GET['fc_auth_token'] && $timestamp >= $current_timestamp) {
 
 		//Lookup ID By FoxyCart Customer ID
 		$wp_user_id = 0;
-		$user_data = get_users(array('meta_key' => 'foxycart_customer_id', 'meta_value' => $_GET['foxycart_customer_id']));
+		$user_data = get_users(array('meta_key' => 'foxycart_customer_id', 'meta_value' => sanitize_text_field($_GET['foxycart_customer_id'])));
 		foreach ($user_data as $user) {
 			$wp_user_id = $user->ID;
 		}

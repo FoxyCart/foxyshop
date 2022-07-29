@@ -46,4 +46,4 @@ if ($termchildren) {
 $write .= '</urlset>';
 
 header ("Content-Type:text/xml");
-echo $write;
+echo foxy_wp_html($write);

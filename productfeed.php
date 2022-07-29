@@ -133,7 +133,7 @@ function foxyshop_create_feed() {
 
 
 	}
-	echo $write;
+	echo foxy_wp_html($write);
 }
 
 function foxyshop_google_product_xml($id, $batch_process = "") {
@@ -276,7 +276,7 @@ function foxyshop_google_products_page() {
 		<table class="widefat" style="margin-top: 14px;">
 			<thead>
 				<tr>
-					<th><img src="<?php echo $google_icon; ?>" alt="" /><?php _e("Google Authentication Required", 'foxyshop'); ?></th>
+					<th><img src="<?php echo esc_url($google_icon); ?>" alt="" /><?php _e("Google Authentication Required", 'foxyshop'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -302,34 +302,7 @@ function foxyshop_google_products_page() {
 						</form>
 
 						<div id="error" style="color: red; margin-top: 10px; font-weight: bold; display: none;"></div>
-
-
-						<script type="text/javascript">
-						jQuery(document).ready(function($){
-
-							$("#authnow").click(function() {
-								var data = {
-									action: 'foxyshop_set_google_auth',
-									security: '<?php echo wp_create_nonce("foxyshop-ajax-set-google-auth"); ?>',
-									Email: $("#Email").val(),
-									Passwd: $("#Passwd").val()
-								};
-								$("#error").hide();
-								$.post(ajaxurl, data, function(response) {
-									if (!response) {
-										$("#error").text("Error: No Response").show();
-									} else if (response == "Error") {
-										$("#error").text("Error: Login Failed. Please try again.").show();
-									} else if (response == "Success") {
-										$("#error").hide();
-										location.reload();
-									} else {
-										$("#error").text("Error: " + response).show();
-									}
-								});
-							});
-						});
-						</script>
+ 
 
 
 					</td>
@@ -351,7 +324,7 @@ function foxyshop_google_products_page() {
 		//Display Confirmations and Errors
 		if (isset($_GET['error'])) {
 			echo '<div class="error"><p><strong>Error!</strong><br /><ul style="margin: 0 10px;">';
-			$error_list = explode("||", $_GET['error']);
+			$error_list = explode("||", foxy_wp_html($_GET['error']));
 			foreach($error_list as $the_error) {
 				if ($the_error) echo "<li style=\"list-style: disc inside none;\">$the_error</li>\n";
 			}
@@ -369,20 +342,21 @@ function foxyshop_google_products_page() {
 		}
 
 		//Get Feed
-		$header_array = array(
-			"Authorization: GoogleLogin auth=" . $foxyshop_settings['google_product_auth']
-		);
+		$header_array = [
+			"Authorization" => "GoogleLogin auth=" . $foxyshop_settings['google_product_auth']
+		];
 
-		$url = "https://content.googleapis.com/content/v1/" . $foxyshop_settings['google_product_merchant_id'] . "/items/products/schema?performance.start=" . date("Y-m-d", strtotime("-30 days")) . "&max-results=250&performance.end=" . date("Y-m-d", strtotime("now"));
-		if (isset($_GET['nextlink'])) $url = $_GET['nextlink'];
+		$url = "https://content.googleapis.com/content/v1/" . esc_attr($foxyshop_settings['google_product_merchant_id']) . "/items/products/schema?performance.start=" . esc_attr(date("Y-m-d", strtotime("-30 days"))) . "&max-results=250&performance.end=" . esc_attr(date("Y-m-d", strtotime("now")));
+		if (isset($_GET['nextlink'])) $url = sanitize_text_field($_GET['nextlink']);
 
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $header_array);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-		$response = trim(curl_exec($ch));
+		$response = wp_remote_get($url, ['headers' => $header_array]);
+
+		if ( is_wp_error( $response ) ) {
+				die('Error');	 
+		}
+
+		$response = trim($response['body']);
+ 
 		$xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $response);
 		$xml = simplexml_load_string($xml, NULL, LIBXML_NOCDATA);
 
@@ -624,7 +598,7 @@ function foxyshop_google_products_page() {
 	<table class="widefat">
 		<thead>
 			<tr>
-				<th><img src="<?php echo $google_icon; ?>" alt="" /><?php _e("Create Manual Export File", 'foxyshop'); ?></th>
+				<th><img src="<?php echo foxy_wp_html($google_icon); ?>" alt="" /><?php _e("Create Manual Export File", 'foxyshop'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -642,18 +616,8 @@ function foxyshop_google_products_page() {
 
 	</div>
 
-
-
-<script type="text/javascript" src="<?php echo FOXYSHOP_DIR; ?>/js/jquery.tablesorter.js"></script>
-<script type="text/javascript">
-jQuery(document).ready(function($){
-	$("#product_feed_view").tablesorter({
-		'cssDesc': 'asc sorted',
-		'cssAsc': 'desc sorted',
-		'headers': { 0: { sorter: false} }
-	});
-});
-</script>
+ 
+ 
 
 	<?php
 
@@ -666,16 +630,16 @@ function foxyshop_manage_google_feed() {
 	global $foxyshop_settings;
 	$url = 'https://content.googleapis.com/content/v1/' . $foxyshop_settings['google_product_merchant_id'] . '/items/products/schema/batch?dry-run';
 	$url = 'https://content.googleapis.com/content/v1/' . $foxyshop_settings['google_product_merchant_id'] . '/items/products/schema/batch?';
-	$header_array = array(
-		"Authorization: GoogleLogin auth=" . $foxyshop_settings['google_product_auth'],
-		"Content-Type: application/atom+xml"
-	);
+	$header_array = [
+		"Authorization" => "GoogleLogin auth=" . $foxyshop_settings['google_product_auth'],
+		"Content-Type" => "application/atom+xml"
+	];
 	$error = "";
 	$xml = "";
 
 	//Add Items in Bulk
 	if (isset($_POST['add_checked_google_products']) && isset($_POST['post'])) {
-		$posts = $_POST['post'];
+		$posts = sanitize_text_field($_POST['post']);
 		if (!is_array($posts)) $posts = array();
 		foreach ($posts as $post) {
 			$xml .= foxyshop_google_product_xml($post, "INSERT");
@@ -685,7 +649,7 @@ function foxyshop_manage_google_feed() {
 
 	//Update Items in Bulk
 	} elseif (isset($_POST['update_checked_google_products']) && isset($_POST['post'])) {
-		$posts = $_POST['post'];
+		$posts = sanitize_text_field($_POST['post']);
 		if (!is_array($posts)) $posts = array();
 		foreach ($posts as $post) {
 			$xml .= foxyshop_google_product_xml($post, "UPDATE");
@@ -694,7 +658,7 @@ function foxyshop_manage_google_feed() {
 
 	//Delete Items in Bulk
 	} elseif (isset($_POST['delete_checked_google_products']) && isset($_POST['post'])) {
-		$posts = $_POST['post'];
+		$posts = sanitize_text_field($_POST['post']);
 		if (!is_array($posts)) $posts = array();
 		foreach ($posts as $post) {
 			$xml .= foxyshop_google_product_xml($post, "DELETE");
@@ -706,22 +670,22 @@ function foxyshop_manage_google_feed() {
 	//Add Single Item
 	} elseif (isset($_GET['addid'])) {
 
-		$xml = foxyshop_google_product_xml((int)$_GET['addid'], "INSERT");
-		update_post_meta((int)$_GET['addid'], '_google_product_listed', strtotime('+30 days'));
+		$xml = foxyshop_google_product_xml((int)sanitize_text_field($_GET['addid']), "INSERT");
+		update_post_meta((int)sanitize_text_field($_GET['addid']), '_google_product_listed', strtotime('+30 days'));
 
 
 	//Update Single Item
 	} elseif (isset($_GET['editid'])) {
 
 		$xml = foxyshop_google_product_xml((int)$_GET['editid'], "UPDATE");
-		update_post_meta((int)$_GET['editid'], '_google_product_listed', strtotime('+30 days'));
+		update_post_meta((int)sanitize_text_field($_GET['editid']), '_google_product_listed', strtotime('+30 days'));
 
 
 	//Delete Single Item
 	} elseif (isset($_GET['deleteid'])) {
 
 		$xml = foxyshop_google_product_xml((int)$_GET['deleteid'], "DELETE");
-		delete_post_meta((int)$_GET['deleteid'], '_google_product_listed');
+		delete_post_meta((int)sanitize_text_field($_GET['deleteid']), '_google_product_listed');
 	}
 
 
@@ -734,18 +698,25 @@ function foxyshop_manage_google_feed() {
 		$writexml .= '</feed>';
 		if (isset($_REQUEST['debug'])) {
 			echo "<form><button type=\"button\" onclick=\"location.href = 'edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1&debug=1$error';\">Continue</button></form>";
-			echo "<b>Submitted XML:</b><br /><br /><form><textarea style=\"width: 80%; height: 350px;\">$writexml</textarea></form><br /><br />";
+			echo "<b>Submitted XML:</b><br /><br /><form><textarea style=\"width: 80%; height: 350px;\">".esc_textarea($writexml)."</textarea></form><br /><br />";
 		}
 
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $header_array);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $writexml);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-		$response = trim(curl_exec($ch));
+
+		$payload = $writexml; 
+		$args = [
+					'headers' =>  $header_array,
+					'body' => $payload
+			];
+
+		$response = wp_remote_post($url,
+				$args);
+
+		if ( is_wp_error( $response ) ) {
+				    die('Error');	 
+		}
+	
+		$response = trim($response['body']);
+ 
 		$xml = $response;
 		//$xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $xml);
 		$xml = simplexml_load_string($xml, NULL, LIBXML_NOCDATA);
@@ -766,11 +737,11 @@ function foxyshop_manage_google_feed() {
 			echo "<b>Returned Data:</b><br /><br />";
 
 			echo "<form><textarea style=\"width: 80%; height: 350px;\">";
-			print_r($xml);
+			print_r(esc_textarea($xml));
 			echo "</textarea></form><br /><br />";
 
 			echo "<b>Returned Data (raw XML):</b><br /><br />";
-			echo "<form><textarea style=\"width: 80%; height: 350px;\">" . $response;
+			echo "<form><textarea style=\"width: 80%; height: 350px;\">" . esc_textarea($response);
 			echo "</textarea></form>";
 
 			echo "<br /><form><button type=\"button\" onclick=\"location.href = 'edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1&debug=1$error';\">Continue</button></form>";
