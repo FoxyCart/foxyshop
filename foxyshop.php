@@ -5,7 +5,7 @@ Plugin Name: FoxyShop
 Plugin URI: https://www.foxy-shop.com/
 Description: FoxyShop is a full integration for FoxyCart and WordPress, providing a robust shopping cart and inventory management tool.
 Author: SparkWeb Interactive, Inc.
-Version: 4.8.2
+Version: 4.9
 Author URI: https://www.foxy-shop.com/
 
 **************************************************************************
@@ -38,7 +38,7 @@ the most out of FoxyShop.
 if (!defined('ABSPATH')) exit();
 
 //Setup Plugin Variables
-define('FOXYSHOP_VERSION', "4.8.2");
+define('FOXYSHOP_VERSION', "4.9");
 define('FOXYSHOP_DIR', substr(plugin_dir_url(__FILE__),0, strlen(plugin_dir_url(__FILE__))-1) );
 define('FOXYSHOP_PATH', substr(plugin_dir_path(__FILE__),0, strlen(plugin_dir_path(__FILE__))-1) );
 define('FOXYSHOP_PLUGIN_PATH', plugin_dir_path(__FILE__));

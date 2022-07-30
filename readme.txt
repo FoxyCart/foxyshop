@@ -5,7 +5,7 @@ Tags: foxycart, shopping, cart, inventory, management, ecommerce, selling, subsc
 Requires at least: 3.1
 Tested up to: 6.0
 Requires PHP: 5.3
-Stable tag: 4.8.2
+Stable tag: 4.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 FoxyShop provides a robust shopping cart and inventory management tool for use with FoxyCart's hosted e-commerce solution.
@@ -68,6 +68,13 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 
 == Changelog ==
+
+= 4.9 =
+
+* Significant improvements across the plugin to move some of the legacy code to modern Wordpress standards
+* Renaming of some plugin javascript files
+* Deprecated: Support for Foxy versions 0.7.2 and older (these are also unsupported versions of Foxy, and should not be in use)
+* Deprecated: Legacy Google Analytics tracking code is no longer output on the checkout and receipt templates. If you use this, please consider upgrading to Foxy 2.0 to use the native integration options
 
 = 4.8.2 =
 
@@ -282,6 +289,13 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 
 == Upgrade Notice ==
+
+= 4.9 =
+
+* Significant improvements across the plugin to move some of the legacy code to modern Wordpress standards
+* Renaming of some plugin javascript files
+* Deprecated: Support for Foxy versions 0.7.2 and older (these are also unsupported versions of Foxy, and should not be in use)
+* Deprecated: Legacy Google Analytics tracking code is no longer output on the checkout and receipt templates. If you use this, please consider upgrading to Foxy 2.0 to use the native integration options
 
 = 4.8.2 =
 
