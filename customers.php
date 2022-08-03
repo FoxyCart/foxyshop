@@ -269,7 +269,7 @@ function foxyshop_inline_customers_js() {
 		});
 	";
 
-	echo foxyshop_manage_attributes_jquery('customer');
+	echo foxy_wp_html(foxyshop_manage_attributes_jquery('customer'));
 
 	echo "});
 </script>";

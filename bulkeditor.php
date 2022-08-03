@@ -463,21 +463,21 @@ function foxyshop_cfbe_save($post_type, $post_id) {
 	}
 	if ($_POST['_related_products_status'] == 1) {
 		if (isset($_POST['_related_products_list'])) {
-			cfbe_save_meta_data('_related_products',implode(",",sanitize_text_field($_POST['_related_products_list'])));
+			cfbe_save_meta_data('_related_products',sanitize_text_field(implode(",",$_POST['_related_products_list'])));
 		} else {
 			cfbe_save_meta_data('_related_products',"");
 		}
 	}
 	if ($_POST['_bundled_products_status'] == 1) {
 		if (isset($_POST['_bundled_products_list'])) {
-			cfbe_save_meta_data('_bundled_products',implode(",",sanitize_text_field($_POST['_bundled_products_list'])));
+			cfbe_save_meta_data('_bundled_products',sanitize_text_field(implode(",",$_POST['_bundled_products_list'])));
 		} else {
 			cfbe_save_meta_data('_bundled_products',"");
 		}
 	}
 	if ($_POST['_addon_products_status'] == 1) {
 		if (isset($_POST['_addon_products_list'])) {
-			cfbe_save_meta_data('_addon_products',implode(",",sanitize_text_field($_POST['_addon_products_list'])));
+			cfbe_save_meta_data('_addon_products',sanitize_text_field(implode(",",$_POST['_addon_products_list'])));
 		} else {
 			cfbe_save_meta_data('_addon_products',"");
 		}

@@ -691,7 +691,7 @@ jQuery(document).ready(function($){
 	});
 	";
 
-	echo foxyshop_manage_attributes_jquery('transaction');
+	echo foxy_wp_html(foxyshop_manage_attributes_jquery('transaction'));
 
 	echo "
 });
