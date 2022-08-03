@@ -79,9 +79,18 @@ function foxyshop_date_picker() {
 //Check Permalinks on all admin pages and warn if incorrect
 add_action('admin_notices', 'foxyshop_check_permalinks');
 function foxyshop_check_permalinks() {
-	$permalink_structure = (isset($_POST['permalink_structure']) ? $_POST['permalink_structure'] : get_option('permalink_structure'));
+	$permalink_structure = (isset($_POST['permalink_structure']) ? sanitize_text_field($_POST['permalink_structure']) : get_option('permalink_structure'));
 	if ($permalink_structure == '' && current_user_can('manage_options')) {
-		echo ('<div class="error"><p><strong>Warning:</strong> Your <a href="options-permalink.php">permalink structure</a> is set to default. Your product links will not work correctly until you have turned on Permalink support. It is recommend that you set to "Month and Name".</p></div>');
+		echo '<div class="error"><p><strong>Warning:</strong> Your <a href="options-permalink.php">permalink structure</a> is set to default. Your product links will not work correctly until you have turned on Permalink support. It is recommend that you set to "Month and Name".</p></div>';
+	}
+}
+
+// Warn for deprecated functionality
+add_action('admin_notices', 'foxyshop_check_deprecations');
+function foxyshop_check_deprecations() {
+	global $foxyshop_settings;
+	if ($foxyshop_settings['ga'] != "" && version_compare($foxyshop_settings['version'], '2.0', "<")) {
+		echo '<div class="error"><p><strong>Warning:</strong> Google Analytics is no longer supported for FoxyShop\'s checkout and receipt templates. Please upgrade to Foxy 2.0 to make use of the new native Google Analytics integration.</p></div>';
 	}
 }
 
@@ -682,19 +691,19 @@ function foxyshop_api_paging_nav($type, $position, $xml, $querystring) {
 
 	if ($pagination_start > 1 || $filtered_total > $pagination_end) {
 		//First
-		echo ('<span class="pagination-links"><a href="edit.php' . $querystring . '&amp;pagination_start=' . (1 + $start_offset) . '" title="Go to the first page" class="first-page' . ($current_page == 1 ? ' disabled' : '') . '">&laquo;</a>'."\n");
+		echo ('<span class="pagination-links"><a href="edit.php' . esc_attr($querystring) . '&amp;pagination_start=' . esc_attr(1 + $start_offset) . '" title="Go to the first page" class="first-page' . ($current_page == 1 ? ' disabled' : '') . '">&laquo;</a>'."\n");
 
 		//Previous
-		echo ('<a href="edit.php' . $querystring . '&amp;pagination_start=' . ($pagination_start - $p + $start_offset) . '" title="Go to the previous page" class="prev-page' . ($current_page == 1 ? ' disabled' : '') . '">&lsaquo;</a>'."\n");
+		echo ('<a href="edit.php' . esc_attr($querystring) . '&amp;pagination_start=' . esc_attr($pagination_start - $p + $start_offset) . '" title="Go to the previous page" class="prev-page' . ($current_page == 1 ? ' disabled' : '') . '">&lsaquo;</a>'."\n");
 
 		//Enter Page
 		echo ('<span class="paging-input"><input type="text" size="1" class="foxyshop_paged_number" value="' . $current_page . '" name="paged-' . $position . '" title="Current page" class="current-page"> of <span class="total-pages">' . $total_pages . '</span></span>'."\n");
 
 		//Next
-		echo ('<a href="edit.php' . $querystring . '&amp;pagination_start=' . ($pagination_end + 1 + $start_offset) . '" title="Go to the next page" class="next-page' . ($filtered_total <= $pagination_end ? ' disabled' : '') . '">&rsaquo;</a>'."\n");
+		echo ('<a href="edit.php' . esc_attr($querystring) . '&amp;pagination_start=' .esc_attr ($pagination_end + 1 + $start_offset) . '" title="Go to the next page" class="next-page' . ($filtered_total <= $pagination_end ? ' disabled' : '') . '">&rsaquo;</a>'."\n");
 
 		//Last
-		echo ('<a href="edit.php' . $querystring . '&amp;pagination_start=' . ((($total_pages - 1) * $p) + 1 + $start_offset) . '" title="Go to the last page" class="last-page' . ($filtered_total <= $pagination_end ? ' disabled' : '') . '">&raquo;</a></span>'."\n");
+		echo ('<a href="edit.php' . esc_attr($querystring) . '&amp;pagination_start=' . esc_attr((($total_pages - 1) * $p) + 1 + $start_offset) . '" title="Go to the last page" class="last-page' . ($filtered_total <= $pagination_end ? ' disabled' : '') . '">&raquo;</a></span>'."\n");
 	}
 
 	echo ('</div>'."\n");

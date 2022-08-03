@@ -137,7 +137,7 @@ function foxyshop_manage_custom_columns($column_name, $id) {
 		if ( !empty( $terms ) ) {
 			$out = array();
 			foreach ( $terms as $c )
-				$out[] = "<a href='edit-tags.php?action=edit&taxonomy=$_taxonomy&post_type=foxyshop_product&tag_ID={$c->term_id}'> " . esc_html(sanitize_term_field('name', $c->name, $c->term_id, 'category', 'display')) . "</a>";
+				$out[] = "<a href='edit-tags.php?action=edit&taxonomy=" . esc_attr($_taxonomy) . "&post_type=foxyshop_product&tag_ID=" . esc_attr($c->term_id) . "'> " . esc_html(sanitize_term_field('name', $c->name, $c->term_id, 'category', 'display')) . "</a>";
 			echo join( ', ', $out );
 		}
 		else {
@@ -167,7 +167,7 @@ function foxyshop_manage_custom_columns($column_name, $id) {
 		break;
 	case 'productcode':
 		$productcode = get_post_meta($id, "_code", true);
-		echo ($productcode ? $productcode : '(' . $id . ')');
+		echo esc_attr($productcode ? $productcode : '(' . $id . ')');
 		break;
 	case 'price':
 
@@ -182,12 +182,12 @@ function foxyshop_manage_custom_columns($column_name, $id) {
 			$beginningOK = (strtotime("now") > $salestartdate);
 			$endingOK = (strtotime("now") < ($saleenddate + 86400) || $saleenddate == 0);
 			if ($beginningOK && $endingOK || ($salestartdate == 0 && $saleenddate == 0)) {
-				echo '<span style="text-decoration: line-through; margin-right: 10px;">' . foxyshop_currency($originalprice) . '</span><span style="color: red;">' . foxyshop_currency($saleprice) . '</span>';
+				echo '<span style="text-decoration: line-through; margin-right: 10px;">' . wp_kses(foxyshop_currency($originalprice), []) . '</span><span style="color: red;">' . wp_kses(foxyshop_currency($saleprice), []) . '</span>';
 			} else {
-				echo foxyshop_currency($originalprice);
+				echo wp_kses(foxyshop_currency($originalprice), []);
 			}
 		} else {
-			echo foxyshop_currency($originalprice);
+			echo wp_kses(foxyshop_currency($originalprice), []);
 		}
 		break;
 	default:
@@ -219,11 +219,11 @@ function foxyshop_restrict_manage_posts() {
             $terms = get_terms($tax_slug);
 
             // output html for taxonomy dropdown filter
-            echo "<select name='$tax_slug' id='$tax_slug' class='postform'>";
+            echo "<select name='" . esc_attr($tax_slug) . "' id='" . esc_attr($tax_slug) . "' class='postform'>";
             echo '<option value="">' . __('Show All', 'foxyshop') . ' ' . $tax_name . '</option>'."\n";
             foreach ($terms as $term) {
                 // output each select option line, check against the last $_GET to show the current option selected
-                echo '<option value='. $term->slug, $tax_slug == $term->slug ? ' selected="selected"' : '','>' . $term->name .' (' . $term->count .')</option>';
+                echo '<option value="'. esc_attr($term->slug) . '" ' . ($tax_slug == $term->slug ? ' selected="selected"' : '')  . '>' . wp_kses($term->name .' (' . $term->count .')', []) . '</option>';
             }
             echo "</select>";
         }
@@ -264,7 +264,7 @@ add_action('admin_init','foxyshop_product_meta_init');
 function foxyshop_product_meta_init() {
 	global $post, $foxyshop_settings;
 
-	function inline_customposttype_init_js() {
+	function foxyshop_inline_customposttype_init_js() {
 		global $post, $foxyshop_settings;
 
 		if (get_post_type($post) != "foxyshop_product") return;
@@ -312,7 +312,7 @@ function foxyshop_product_meta_init() {
 
 </script>";
 	}
-	add_action( 'admin_print_scripts', 'inline_customposttype_init_js' );
+	add_action( 'admin_print_scripts', 'foxyshop_inline_customposttype_init_js' );
 
 	add_meta_box('product_details_meta', FOXYSHOP_PRODUCT_NAME_SINGULAR.' '.__('Details', 'foxyshop'), 'foxyshop_product_details_setup', 'foxyshop_product', 'side', 'high');
 	add_meta_box('product_pricing_meta', __('Pricing Details', 'foxyshop'), 'foxyshop_product_pricing_setup', 'foxyshop_product', 'side', 'low');
@@ -496,7 +496,7 @@ function foxyshop_product_details_setup() {
 	?>
 	<div id="foxyshop_add_to_cart_link" class="foxyshop_field_control">
 		<label for="add_to_cart_link"><?php _e('Add to Cart', 'foxyshop'); ?></label>
-		<input type="text" name="add_to_cart_link" id="add_to_cart_link" value="<?php echo foxyshop_product_link("", 1); ?>" onclick="this.select();" readonly="readonly" />
+		<input type="text" name="add_to_cart_link" id="add_to_cart_link" value="<?php echo esc_attr(foxyshop_product_link("", 1)); ?>" onclick="this.select();" readonly="readonly" />
 	</div>
 	<?php } ?>
 
@@ -518,7 +518,7 @@ function foxyshop_product_details_setup() {
 
 	//Setup Hidden Admin Fields
 	echo '<input type="hidden" name="products_meta_noncename" value="' . wp_create_nonce(__FILE__) . '" />';
-	echo '<input type="hidden" name="menu_order" value="' . ($post->menu_order == 0 && $post->post_status == "auto-draft" ? $post->ID : $post->menu_order) . '" />';
+	echo '<input type="hidden" name="menu_order" value="' . esc_attr($post->menu_order == 0 && $post->post_status == "auto-draft" ? $post->ID : $post->menu_order) . '" />';
 }
 
 
@@ -596,9 +596,9 @@ function foxyshop_product_pricing_setup() {
 		<select name="discount_method" id="discount_method">
 		<?php
 		foreach ($discount_methods as $key => $val) {
-			echo '<option value="' . $key . '"';
+			echo '<option value="' . esc_attr($key) . '"';
 			if ($current_discount_method == $key) echo ' selected="selected"';
-			echo ">$val</option>\n";
+			echo ">" . wp_kses($val, []) . "</option>\n";
 		}
 		?>
 		</select>
@@ -611,10 +611,10 @@ function foxyshop_product_pricing_setup() {
 			<select name="discount_type" id="discount_type">
 			<?php
 			foreach ($discount_types as $key => $val) {
-				echo '<option value="' . $key . '"';
+				echo '<option value="' . esc_attr($key) . '"';
 				$current_discount_type = get_post_meta($post->ID, '_discount_type', 1);
 				if ($current_discount_type == $key) echo ' selected="selected"';
-				echo ">$val</option>\n";
+				echo ">" . wp_kses($val, []) . "</option>\n";
 			}
 			?>
 			</select>
@@ -646,9 +646,9 @@ function foxyshop_product_pricing_setup() {
 		foreach ($inventory_levels as $ivcode => $iv) {
 			if ($ivcode) {
 				echo '<li>';
-				echo '<input type="text" id="inventory_code_' . $i . '" name="inventory_code_' . $i . '" value="' . $ivcode . '" class="inventory_code" rel="' . $i . '" style="width: 142px;" />';
-				echo '<input type="text" id="inventory_count_' . $i . '" name="inventory_count_' . $i . '" value="' . $iv['count'] . '" class="inventory_count" rel="' . $i . '" />';
-				echo '<input type="text" id="inventory_alert_' . $i . '" name="inventory_alert_' . $i . '" value="' . $iv['alert'] . '" class="inventory_count" rel="' . $i . '" />';
+				echo '<input type="text" id="inventory_code_' . esc_attr($i) . '" name="inventory_code_' . esc_attr($i) . '" value="' . esc_attr($ivcode) . '" class="inventory_code" rel="' . esc_attr($i) . '" style="width: 142px;" />';
+				echo '<input type="text" id="inventory_count_' . esc_attr($i) . '" name="inventory_count_' . esc_attr($i) . '" value="' . esc_attr($iv['count']) . '" class="inventory_count" rel="' . esc_attr($i) . '" />';
+				echo '<input type="text" id="inventory_alert_' . esc_attr($i) . '" name="inventory_alert_' . esc_attr($i) . '" value="' . esc_attr($iv['alert']) . '" class="inventory_count" rel="' . esc_attr($i) . '" />';
 				echo "</li>\n";
 				$i++;
 			}
@@ -790,7 +790,7 @@ function foxyshop_addon_products_setup() {
 	</select>
 	<p style="color: #999999;"><?php echo sprintf(__('Click the box above for a drop-down menu showing all %s. Type to search and click or press enter to select.', 'foxyshop'), strtolower(FOXYSHOP_PRODUCT_NAME_PLURAL)); ?></p>
 	<div class="foxyshop_field_control">
-		<label for="_addon_order" style="width: 220px; margin-left: 0;">Set Custom Order For Add-on Products</label> <input type="text" style="width: 220px; float: left;" name="_addon_order" id="_addon_order" value="<?php echo get_post_meta($post->ID, "_addon_order", 1) ?>" /> <span>ID's separated by comma</span>
+		<label for="_addon_order" style="width: 220px; margin-left: 0;">Set Custom Order For Add-on Products</label> <input type="text" style="width: 220px; float: left;" name="_addon_order" id="_addon_order" value="<?php echo esc_attr(get_post_meta($post->ID, "_addon_order", 1)); ?>" /> <span>ID's separated by comma</span>
 	</div>
 	<div style="clear: both;"></div>
 	<?php
@@ -811,8 +811,8 @@ function foxyshop_google_products_data() {
 		$display_title = ucwords(str_replace("_", " ", $field));
 		if (strlen($display_title) <= 4 && $display_title != "Size") $display_title = strtoupper($display_title);
 		echo '<div class="foxyshop_field_control">'."\n";
-		echo '<label for="_' . $field . '">' . $display_title . '</label>'."\n";
-		echo '<input type="text" id="_' . $field . '" name="_' . $field . '" value="' . esc_attr(get_post_meta($post->ID, "_" . $field, 1)) . '" />'."\n";
+		echo '<label for="_' . esc_attr($field) . '">' . wp_kses($display_title, []) . '</label>'."\n";
+		echo '<input type="text" id="_' . esc_attr($field) . '" name="_' . esc_attr($field) . '" value="' . esc_attr(get_post_meta($post->ID, "_" . $field, 1)) . '" />'."\n";
 		switch ($field) {
 			case "google_product_category": echo '<span>(<a href="http://www.google.com/basepages/producttype/taxonomy.en-US.txt" target="_blank">options</a>)</span>'; break;
 		}
@@ -838,14 +838,14 @@ function foxyshop_product_images_setup() {
 	if (array_key_exists('error', $upload_dir)) {
 		if ($upload_dir['error'] != '') {
 			echo '<p style="color: red;"><strong>Warning:</strong> Images cannot be uploaded at this time. The error given is below.<br />Please attempt to correct the error and reload this page.</p>';
-			echo '<p>' . $upload_dir['error'] . '</p>';
+			echo '<p>' . wp_kses_post($upload_dir['error']) . '</p>';
 			return;
 		}
 	}
 
 	echo '<div id="foxyshop_new_product_image_container" class="dropzone"></div>'."\n";
 	echo '<input type="hidden" id="foxyshop_sortable_value" name="foxyshop_sortable_value" />'."\n";
-	echo '<ul id="foxyshop_product_image_list">' . foxyshop_redraw_images($post->ID) . '</ul>'."\n";
+	echo '<ul id="foxyshop_product_image_list">' . wp_kses_post(foxyshop_redraw_images($post->ID)) . '</ul>'."\n";
 	echo '<div style="clear: both;"></div>';
 
 }
@@ -922,13 +922,13 @@ function foxyshop_product_variations_setup() {
 				<select name="_variation_type_<?php echo esc_attr($i); ?>" id="_variation_type_<?php echo esc_attr($i); ?>" class="variationtype">
 				<?php
 				foreach ($var_type_array as $var_name => $var_val) {
-					echo '<option value="' . $var_name . '"' . ($_variation_type == $var_name ? ' selected="selected"' : '') . '>' . $var_val . '  </option>'."\n";
+					echo '<option value="' . esc_attr($var_name) . '"' . ($_variation_type == $var_name ? ' selected="selected"' : '') . '>' . wp_kses($var_val, []) . '  </option>'."\n";
 				}
 				if (is_array($saved_variations) && count($saved_variations) > 0) {
 					echo '<optgroup label="' . __('Saved Variations', 'foxyshop') . '">'."\n";
 					foreach($saved_variations as $saved_var) {
 						$saved_ref = $saved_var['refname'];
-						echo '<option value="' . sanitize_title($saved_ref) . '" rel="' . esc_attr($saved_var['name']) . '"' . (sanitize_title($saved_ref) == $_variation_type ? ' selected="selected"' : '') . '>' . $saved_ref . '  </option>'."\n";
+						echo '<option value="' . esc_attr($saved_ref) . '" rel="' . esc_attr($saved_var['name']) . '"' . (sanitize_title($saved_ref) == $_variation_type ? ' selected="selected"' : '') . '>' . wp_kses($saved_ref, []) . '  </option>'."\n";
 					}
 					echo '</optgroup>'."\n";
 				}
@@ -1041,7 +1041,7 @@ function foxyshop_product_variations_setup() {
 
 <?php
 
-function inline_tools_page_js($var_type_array, $variation_key, $saved_variations) {
+function foxyshop_inline_tools_page_js($var_type_array, $variation_key, $saved_variations) {
 
    echo "<script type='text/javascript'>
 var variation_key = '" . esc_attr($variation_key) . "';
@@ -1055,13 +1055,13 @@ if (is_array($saved_variations)) {
 	echo "\t\tvariation_select_options += '<optgroup label=\"" . __('Saved Variations', 'foxyshop') . "\">';\n";
 	foreach($saved_variations as $saved_var) {
 		$saved_ref = $saved_var['refname'];
-		echo "\t\tvariation_select_options += '<option value=\"" . sanitize_title($saved_ref) . "\" rel=\"" . esc_attr($saved_var['name']) . "\">" . esc_attr($saved_var['name']) . "  </option>';\n";
+		echo "\t\tvariation_select_options += '<option value=\"" . esc_attr($saved_ref) . "\" rel=\"" . esc_attr($saved_var['name']) . "\">" . wp_kses($saved_var['name'], []) . "  </option>';\n";
 	}
 	echo "\t\tvariation_select_options += '</optgroup>';\n";
 }
 echo "</script>";
 }
-add_action( 'admin_print_footer_scripts', function() use ($var_type_array, $variation_key, $saved_variations) { inline_tools_page_js($var_type_array, $variation_key, $saved_variations); } );
+add_action( 'admin_print_footer_scripts', function() use ($var_type_array, $variation_key, $saved_variations) { foxyshop_inline_tools_page_js($var_type_array, $variation_key, $saved_variations); } );
 
 }
 
@@ -1074,56 +1074,56 @@ add_action( 'admin_print_footer_scripts', function() use ($var_type_array, $vari
 //-------------------------------------------
 function foxyshop_product_meta_save($post_id) {
 	global $foxyshop_settings, $google_product_field_names;
-	if (!wp_verify_nonce((isset($_POST['products_meta_noncename']) ? $_POST['products_meta_noncename'] : ""),__FILE__)) return $post_id;
+	if (!wp_verify_nonce((isset($_POST['products_meta_noncename']) ? sanitize_text_field($_POST['products_meta_noncename']) : ""),__FILE__)) return $post_id;
 	if (!current_user_can('edit_'.($_POST['post_type'] == 'page' ? 'page' : 'post'), $post_id)) return $post_id;
 
 	if (!isset($_POST['_weight1']) && !isset($_POST['_weight2'])) {
 		$_weight = "";
 	} else {
-		$_weight = (int)$_POST['_weight1'] . ' ' . (double)$_POST['_weight2'];
+		$_weight = (int)sanitize_text_field($_POST['_weight1']) . ' ' . (double)sanitize_text_field($_POST['_weight2']);
 	}
 
 	//Remove Illegal Characters From Code
-	$_code = trim($_POST['_code']);
+	$_code = trim(sanitize_text_field($_POST['_code']));
 	$_code = str_replace('"', '', $_code);
 	$_code = str_replace('&', '', $_code);
 
 	//Save Product Detail Data
 	foxyshop_save_meta_data('_weight',$_weight);
-	foxyshop_save_meta_data('_price',number_format((double)str_replace(",","",$_POST['_price']),FOXYSHOP_DECIMAL_PLACES,".",""));
+	foxyshop_save_meta_data('_price',number_format((double)str_replace(",","",sanitize_text_field($_POST['_price'])),FOXYSHOP_DECIMAL_PLACES,".",""));
 	foxyshop_save_meta_data('_code',$_code);
-	if (isset($_POST['_category'])) foxyshop_save_meta_data('_category',$_POST['_category']);
-	foxyshop_save_meta_data('_hide_product',(isset($_POST['_hide_product']) ? $_POST['_hide_product'] : ""));
+	if (isset($_POST['_category'])) foxyshop_save_meta_data('_category',sanitize_text_field($_POST['_category']));
+	foxyshop_save_meta_data('_hide_product',(isset($_POST['_hide_product']) ? sanitize_text_field($_POST['_hide_product']) : ""));
 
 	//Quantity Settings
-	$_quantity_min = (int)$_POST['_quantity_min'];
-	$_quantity_max = (int)$_POST['_quantity_max'];
+	$_quantity_min = (int)sanitize_text_field($_POST['_quantity_min']);
+	$_quantity_max = (int)sanitize_text_field($_POST['_quantity_max']);
 	if ($_quantity_min > $_quantity_max && $_quantity_max > 0) $_quantity_min = "";
 	if ($_quantity_min <= 0) $_quantity_min = "";
 	if ($_quantity_max <= 0) $_quantity_max = "";
 	foxyshop_save_meta_data('_quantity_min',$_quantity_min);
 	foxyshop_save_meta_data('_quantity_max',$_quantity_max);
-	foxyshop_save_meta_data('_quantity_hide',(isset($_POST['_quantity_hide']) ? $_POST['_quantity_hide'] : ""));
+	foxyshop_save_meta_data('_quantity_hide',(isset($_POST['_quantity_hide']) ? sanitize_text_field($_POST['_quantity_hide']) : ""));
 
 	//Require SSO
 	if ($foxyshop_settings['enable_sso'] && $foxyshop_settings['sso_account_required'] == 2) {
-		foxyshop_save_meta_data('_require_sso',(isset($_POST['_require_sso']) ? $_POST['_require_sso'] : ""));
+		foxyshop_save_meta_data('_require_sso',(isset($_POST['_require_sso']) ? sanitize_text_field($_POST['_require_sso']) : ""));
 	}
 
 	//Save Sale Pricing Data
-	$saleprice = number_format((double)str_replace(",","",$_POST['_saleprice']),FOXYSHOP_DECIMAL_PLACES,".","");
+	$saleprice = number_format((double)str_replace(",","",sanitize_text_field($_POST['_saleprice'])),FOXYSHOP_DECIMAL_PLACES,".","");
 	if ($saleprice == 0) $saleprice = "";
 	foxyshop_save_meta_data('_saleprice',$saleprice);
-	if (($_salestartdate = strtotime($_POST['_salestartdate'])) === false) foxyshop_save_meta_data('_salestartdate',"999999999999999999");
+	if (($_salestartdate = strtotime(sanitize_text_field($_POST['_salestartdate']))) === false) foxyshop_save_meta_data('_salestartdate',"999999999999999999");
 	else foxyshop_save_meta_data('_salestartdate',$_salestartdate);
-	if (($_saleenddate = strtotime($_POST['_saleenddate'])) === false) foxyshop_save_meta_data('_saleenddate',"999999999999999999");
+	if (($_saleenddate = strtotime(sanitize_text_field($_POST['_saleenddate']))) === false) foxyshop_save_meta_data('_saleenddate',"999999999999999999");
 	else foxyshop_save_meta_data('_saleenddate',$_saleenddate);
 
 	//Discounts
 	$discount_array = array("discount_quantity_amount", "discount_quantity_percentage", "discount_price_amount", "discount_price_percentage");
 	foreach ($discount_array as $val) {
 		if ($_POST['discount_method'] == $val) {
-			foxyshop_save_meta_data('_' . $val, $_POST['computed_discount']);
+			foxyshop_save_meta_data('_' . $val, sanitize_text_field($_POST['computed_discount']));
 		} else {
 			foxyshop_save_meta_data('_' . $val, '');
 		}
@@ -1136,40 +1136,40 @@ function foxyshop_product_meta_save($post_id) {
 		if ($_POST['_sub_frequency'] == "") {
 			foxyshop_save_meta_data('_sub_frequency', "");
 		} else {
-			foxyshop_save_meta_data('_sub_frequency', $_POST['_sub_frequency']);
+			foxyshop_save_meta_data('_sub_frequency', sanitize_text_field($_POST['_sub_frequency']));
 		}
 		if ($_POST['_sub_startdate'] == "") {
 			foxyshop_save_meta_data('_sub_startdate', "");
 		} else {
-			foxyshop_save_meta_data('_sub_startdate', $_POST['_sub_startdate']);
+			foxyshop_save_meta_data('_sub_startdate', sanitize_text_field($_POST['_sub_startdate']));
 		}
 		if ($_POST['_sub_enddate'] == "") {
 			foxyshop_save_meta_data('_sub_enddate', "");
 		} else {
-			foxyshop_save_meta_data('_sub_enddate', $_POST['_sub_enddate']);
+			foxyshop_save_meta_data('_sub_enddate', sanitize_text_field($_POST['_sub_enddate']));
 		}
 	}
 
 	//Extra Options
 	if (isset($_POST['do_coupon'])) {
-		foxyshop_save_meta_data('_coupon', $_POST['_coupon']);
+		foxyshop_save_meta_data('_coupon', sanitize_text_field($_POST['_coupon']));
 	} else {
 		foxyshop_save_meta_data('_coupon', '');
 	}
 	if (isset($_POST['_empty'])) {
-		foxyshop_save_meta_data('_empty', $_POST['_empty']);
+		foxyshop_save_meta_data('_empty', sanitize_text_field($_POST['_empty']));
 	} else {
 		foxyshop_save_meta_data('_empty', '');
 	}
 
 	if (isset($_POST['_cart'])) {
-		foxyshop_save_meta_data('_cart', $_POST['_cart']);
+		foxyshop_save_meta_data('_cart', sanitize_text_field($_POST['_cart']));
 	} else {
 		foxyshop_save_meta_data('_cart', '');
 	}
 
 	if (isset($_POST['_expires'])) {
-		foxyshop_save_meta_data('_expires', $_POST['_expires']);
+		foxyshop_save_meta_data('_expires', sanitize_text_field($_POST['_expires']));
 	} else {
 		foxyshop_save_meta_data('_expires', '');
 	}
@@ -1179,23 +1179,23 @@ function foxyshop_product_meta_save($post_id) {
 
 	//Save Related Product Data
 	if (isset($_POST['_related_products_list'])) {
-		foxyshop_save_meta_data('_related_products', implode(",",$_POST['_related_products_list']));
+		foxyshop_save_meta_data('_related_products', implode(",",sanitize_text_field($_POST['_related_products_list'])));
 	} else {
 		foxyshop_save_meta_data('_related_products', "");
 	}
-	if (isset($_POST['_related_order'])) foxyshop_save_meta_data('_related_order', $_POST['_related_order']);
-	if (isset($_POST['_addon_order'])) foxyshop_save_meta_data('_addon_order', $_POST['_addon_order']);
+	if (isset($_POST['_related_order'])) foxyshop_save_meta_data('_related_order', sanitize_text_field($_POST['_related_order']));
+	if (isset($_POST['_addon_order'])) foxyshop_save_meta_data('_addon_order', sanitize_text_field($_POST['_addon_order']));
 
 	//Save Bundled Product Data
 	if (isset($_POST['_bundled_products_list'])) {
-		foxyshop_save_meta_data('_bundled_products', implode(",",$_POST['_bundled_products_list']));
+		foxyshop_save_meta_data('_bundled_products', implode(",",sanitize_text_field($_POST['_bundled_products_list'])));
 	} else {
 		foxyshop_save_meta_data('_bundled_products', "");
 	}
 
 	//Save Add-On Product Data
 	if (isset($_POST['_addon_products_list'])) {
-		foxyshop_save_meta_data('_addon_products', implode(",",$_POST['_addon_products_list']));
+		foxyshop_save_meta_data('_addon_products', implode(",",sanitize_text_field($_POST['_addon_products_list'])));
 	} else {
 		foxyshop_save_meta_data('_addon_products', "");
 	}
@@ -1203,11 +1203,11 @@ function foxyshop_product_meta_save($post_id) {
 	//Inventory Levels
 	if ($foxyshop_settings['manage_inventory_levels']) {
 		$inventory_array = array();
-		for ($i=1; $i<=$_POST['max_inventory_count']; $i++) {
+		for ($i=1; $i<=(int)sanitize_text_field($_POST['max_inventory_count']); $i++) {
 			if ($_POST['inventory_code_'.$i] && $_POST['inventory_count_'.$i] != '') {
-				$alert_level = $_POST['inventory_alert_'.$i];
+				$alert_level = sanitize_text_field($_POST['inventory_alert_'.$i]);
 				if ($alert_level != '') $alert_level = (int)$alert_level;
-				$inventory_array[stripslashes(str_replace("'","",$_POST['inventory_code_'.$i]))] = array("count" => (int)$_POST['inventory_count_'.$i], "alert" => $alert_level);
+				$inventory_array[stripslashes(str_replace("'","",sanitize_text_field($_POST['inventory_code_'.$i])))] = array("count" => (int)sanitize_text_field($_POST['inventory_count_'.$i]), "alert" => $alert_level);
 			}
 		}
 		if (count($inventory_array) == 0) $inventory_array = "";
@@ -1217,42 +1217,43 @@ function foxyshop_product_meta_save($post_id) {
 	//Save Product Variations
 	$currentID = 1;
 	$variations = array();
-	for ($i=1;$i<=(int)$_POST['max_variations'];$i++) {
+	$max_variations = (int)sanitize_text_field($_POST['max_variations']);
+	for ($i=1;$i<=$max_variations;$i++) {
 
 		//Get Target From Sort Numbers
 		$target_id = 0;
-		for ($k=1;$k<=(int)$_POST['max_variations'];$k++) {
-			$tempid = (isset($_POST['sort'.$k]) ? $_POST['sort'.$k] : 0);
+		for ($k=1;$k<=$max_variations;$k++) {
+			$tempid = (isset($_POST['sort'.$k]) ? sanitize_text_field($_POST['sort'.$k]) : 0);
 			if ($tempid == $i) $target_id = $k;
 		}
 
 		//Set Values, Skip if Not There or Empty Name
 		if ($target_id == 0) continue;
-		$_variationName = trim(str_replace("&","and",str_replace(".","",str_replace('"','',$_POST['_variation_name_'.$target_id]))));
-		$_variationType = $_POST['_variation_type_'.$target_id];
-		$_variationDisplayKey = $_POST['_variation_dkey_'.$target_id];
-		$_variationRequired = (isset($_POST['_variation_required_'.$target_id]) ? $_POST['_variation_required_'.$target_id] : '');
+		$_variationName = trim(str_replace("&","and",str_replace(".","",str_replace('"','',sanitize_text_field($_POST['_variation_name_'.$target_id])))));
+		$_variationType = sanitize_text_field($_POST['_variation_type_'.$target_id]);
+		$_variationDisplayKey = sanitize_text_field($_POST['_variation_dkey_'.$target_id]);
+		$_variationRequired = (isset($_POST['_variation_required_'.$target_id]) ? sanitize_text_field($_POST['_variation_required_'.$target_id]) : '');
 		$_variationValue = "";
 		if ($_POST['_variation_name_'.$target_id] == "") continue;
 
 		//Get Values
 		if ($_variationType == 'text') {
-			$_variationValue = $_POST['_variation_textsize1_'.$target_id]."|".$_POST['_variation_textsize2_'.$target_id];
+			$_variationValue = sanitize_text_field($_POST['_variation_textsize1_'.$target_id])."|".sanitize_text_field($_POST['_variation_textsize2_'.$target_id]);
 		} elseif ($_variationType == 'textarea') {
-			$_variationValue = (int)$_POST['_variation_textareasize_'.$target_id];
+			$_variationValue = (int)sanitize_text_field($_POST['_variation_textareasize_'.$target_id]);
 			if ($_variationValue == 0) $_variationValue = 3;
 		} elseif ($_variationType == 'upload') {
-			$_variationValue = $_POST['_variation_uploadinstructions_'.$target_id];
+			$_variationValue = sanitize_textarea_field($_POST['_variation_uploadinstructions_'.$target_id]);
 		} elseif ($_variationType == 'descriptionfield') {
-			$_variationValue = $_POST['_variation_description_'.$target_id];
+			$_variationValue = sanitize_textarea_field($_POST['_variation_description_'.$target_id]);
 		} elseif ($_variationType == 'dropdown') {
-			$_variationValue = $_POST['_variation_value_'.$target_id];
+			$_variationValue = sanitize_textarea_field($_POST['_variation_value_'.$target_id]);
 		} elseif ($_variationType == 'checkbox') {
-			$_variationValue = $_POST['_variation_checkbox_'.$target_id];
+			$_variationValue = sanitize_text_field($_POST['_variation_checkbox_'.$target_id]);
 		} elseif ($_variationType == 'radio') {
-			$_variationValue = $_POST['_variation_radio_'.$target_id];
+			$_variationValue = sanitize_textarea_field($_POST['_variation_radio_'.$target_id]);
 		} elseif ($_variationType == 'hiddenfield') {
-			$_variationValue = $_POST['_variation_hiddenfield_'.$target_id];
+			$_variationValue = sanitize_text_field($_POST['_variation_hiddenfield_'.$target_id]);
 		}
 
 		$variations[$currentID] = array(
@@ -1272,7 +1273,7 @@ function foxyshop_product_meta_save($post_id) {
 	//Google Products Fields
 	if ($foxyshop_settings['google_product_support']) {
 		foreach($google_product_field_names as $field) {
-			foxyshop_save_meta_data("_" . $field, $_POST["_" . $field]);
+			foxyshop_save_meta_data("_" . $field, sanitize_text_field($_POST["_" . $field]));
 		}
 	}
 

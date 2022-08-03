@@ -153,7 +153,7 @@ function foxyshop_customer_management() {
 			echo ('<td>' . esc_attr((string)$customer_first_name) . '</td>');
 			echo ('<td>' . esc_attr((string) $customer_email) . '</td>');
 			echo ('<td><a href="edit.php?post_type=foxyshop_product&page=foxyshop_order_management&customer_id_filter=' . esc_attr((string)$customer->customer_id) . '&transaction_date_filter_begin=&transaction_date_filter_end=&hide_transaction_filter=&foxyshop_search=1">' . __('Orders', 'foxyshop') . '</a></td>');
-			if ($foxyshop_settings['enable_subscriptions']) echo ('<td><a href="edit.php?post_type=foxyshop_product&page=foxyshop_subscription_management&customer_id_filter=' . (string)$customer->customer_id . '&start_date_filter_begin=&start_date_filter_end=&&foxyshop_search=1">' . __('Subscriptions', 'foxyshop') . '</a></td>');
+			if ($foxyshop_settings['enable_subscriptions']) echo ('<td><a href="edit.php?post_type=foxyshop_product&page=foxyshop_subscription_management&customer_id_filter=' . esc_attr((string)$customer->customer_id) . '&start_date_filter_begin=&start_date_filter_end=&&foxyshop_search=1">' . __('Subscriptions', 'foxyshop') . '</a></td>');
 			echo ('</tr>'."\n");
 
 
@@ -240,7 +240,7 @@ function foxyshop_customer_management() {
 	<?php
 	echo ('</div>');
 
-function inline_customers_js() {
+function foxyshop_inline_customers_js() {
    echo "<script type='text/javascript'>
 	jQuery(document).ready(function($){
 		$(\".foxyshop-list-table thead th\").click(function() {
@@ -274,5 +274,5 @@ function inline_customers_js() {
 	echo "});
 </script>";
 }
-add_action( 'admin_print_footer_scripts', 'inline_customers_js' );
+add_action( 'admin_print_footer_scripts', 'foxyshop_inline_customers_js' );
 }

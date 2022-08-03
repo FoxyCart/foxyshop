@@ -73,6 +73,8 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 * Significant improvements across the plugin to move some of the legacy code to modern Wordpress standards
 * Renaming of some plugin javascript files
+* Renaming `action_process_option_update()` to `foxyshop_action_process_option_update()` and `action_show_user_profile()` to `foxyshop_action_show_user_profile()`
+* Removing FOXYSHOP_DOCUMENT_ROOT variable
 * Deprecated: Support for Foxy versions 0.7.2 and older (these are also unsupported versions of Foxy, and should not be in use)
 * Deprecated: Legacy Google Analytics tracking code is no longer output on the checkout and receipt templates. If you use this, please consider upgrading to Foxy 2.0 to use the native integration options
 
@@ -115,7 +117,7 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 * Fixing style issue with quantity field
 * Fixing error retrieving current custom type
 * Add Brazilian Portuguese translation
-* Update for PHP deprecated live function 
+* Update for PHP deprecated live function
 
 = 4.7.4 =
 * Fixing small jQuery error with validation javascript
@@ -294,6 +296,8 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 
 * Significant improvements across the plugin to move some of the legacy code to modern Wordpress standards
 * Renaming of some plugin javascript files
+* Renaming `action_process_option_update()` to `foxyshop_action_process_option_update()` and `action_show_user_profile()` to `foxyshop_action_show_user_profile()`
+* Removing FOXYSHOP_DOCUMENT_ROOT variable
 * Deprecated: Support for Foxy versions 0.7.2 and older (these are also unsupported versions of Foxy, and should not be in use)
 * Deprecated: Legacy Google Analytics tracking code is no longer output on the checkout and receipt templates. If you use this, please consider upgrading to Foxy 2.0 to use the native integration options
 
@@ -324,10 +328,10 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 Changing version number
 
 = 4.7.6 =
-Testing for compatibility with WP 5.6.2 
+Testing for compatibility with WP 5.6.2
 Adding a11y improvements
 Fixing minor issues
 
 = 4.7.5 =
-Fixing minor issues. 
+Fixing minor issues.
 Adding Brazilian Portuguese

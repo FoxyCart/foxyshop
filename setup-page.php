@@ -8,7 +8,7 @@ if (get_option("foxyshop_setup_required")) {
 function foxyshop_show_setup_prompt() {
 	if (isset($_GET['hide_setup_prompt']) || isset($_GET['setup']) || !current_user_can('manage_options')) return;
 	$page = (isset($_GET['page']) ? sanitize_text_field($_GET['page']) : "");
-	if ($page != "foxyshop_setup") echo ('<div class="updated"><p style="height: 16px;"><img src="' . FOXYSHOP_DIR . '/images/icon.png" alt="" style="float: left; margin: 0 4px 0 0;" /><strong style="float: left; margin-top: 1px;">Your FoxyShop store needs to be synced with your FoxyCart account: <a href="admin.php?page=foxyshop_setup">Setup Now</a></strong><small style="float: right;"><a href="edit.php?post_type=foxyshop_product&page=foxyshop_settings_page&hide_setup_prompt=1">I&rsquo;ll Do It Later</a></small></p></div>');
+	if ($page != "foxyshop_setup") echo ('<div class="updated"><p style="height: 16px;"><img src="' . esc_url(FOXYSHOP_DIR) . '/images/icon.png" alt="" style="float: left; margin: 0 4px 0 0;" /><strong style="float: left; margin-top: 1px;">Your FoxyShop store needs to be synced with your FoxyCart account: <a href="admin.php?page=foxyshop_setup">Setup Now</a></strong><small style="float: right;"><a href="edit.php?post_type=foxyshop_product&page=foxyshop_settings_page&hide_setup_prompt=1">I&rsquo;ll Do It Later</a></small></p></div>');
 }
 
 
@@ -49,7 +49,7 @@ function foxyshop_setup_legacy() {
 <div class="icon32" id="icon-options-general"><br></div>
 <h2><?php _e('FoxyShop Setup Wizard', 'foxyshop'); ?></h2>
 
-<a href="http://www.foxy-shop.com/?utm_source=plugin&utm_medium=app&utm_campaign=pluginlink_<?php echo FOXYSHOP_VERSION ?>" target="_blank"><img src="<?php echo esc_url(FOXYSHOP_DIR); ?>/images/logo.png" alt="FoxyShop" style="float: right; margin-left: 20px;" /></a>
+<a href="http://www.foxy-shop.com/?utm_source=plugin&utm_medium=app&utm_campaign=pluginlink_<?php echo esc_attr(FOXYSHOP_VERSION) ?>" target="_blank"><img src="<?php echo esc_url(FOXYSHOP_DIR); ?>/images/logo.png" alt="FoxyShop" style="float: right; margin-left: 20px;" /></a>
 <h3>Cool! You've got your new FoxyShop store installed and you are ready to get started.</h3>
 
 <p>The first thing you'll need to do is open up your FoxyCart account in another window so we can copy some information over there. If you don't have a FoxyCart account yet, that's no problem. Here's a short video overview that may help.</p>
@@ -93,7 +93,7 @@ function foxyshop_setup_legacy() {
 				}
 				?>
 				<td class="foxycartdomain <?php echo esc_attr($foxycart_domain_class); ?>">
-					<label for="foxyshop_domain"><?php _e('Enter Your FoxyCart Domain'); ?>:</label> <input type="text" name="foxyshop_domain" id="foxyshop_domain" value="<?php echo htmlspecialchars($foxycart_domain); ?>" size="50" />
+					<label for="foxyshop_domain"><?php _e('Enter Your FoxyCart Domain'); ?>:</label> <input type="text" name="foxyshop_domain" id="foxyshop_domain" value="<?php echo esc_attr(htmlspecialchars($foxycart_domain)); ?>" size="50" />
 					<label id="foxydomainsimplelabel">.foxycart.com</label>
 					<div id="foxydomain_simple">Have a customized FoxyCart domain like store.yoursite.com? <a href="#" class="foxydomainpicker" rel="advanced">Click here.</a></div>
 					<div id="foxydomain_advanced">Have a regular FoxyCart domain like yourstore.foxycart.com? <a href="#" class="foxydomainpicker" rel="simple">Click here.</a></div>
@@ -107,7 +107,7 @@ function foxyshop_setup_legacy() {
 				<?php
 				foreach ($foxycart_version_array as $key => $val) {
 					if (version_compare($key, '0.7.2', ">")) {
-						echo '<option value="' . $key . '"' . ($foxyshop_settings['version'] == $key ? ' selected="selected"' : '') . '>' . $val . '  </option>'."\n";
+						echo '<option value="' . esc_attr($key) . '"' . ($foxyshop_settings['version'] == $key ? ' selected="selected"' : '') . '>' . esc_html($val) . '  </option>'."\n";
 					}
 				} ?>
 				</select>
@@ -137,7 +137,7 @@ function foxyshop_setup_legacy() {
 			<td><h3>2B</h3></td>
 			<td>
 				<div>Check the Box to Enable Store Datafeed (RECOMMENDED). Then enter this datafeed URL:</div>
-				<input type="text" id="foxyshop_datafeed_url" name="foxyshop_datafeed_url" value="<?php echo get_bloginfo('url') . '/foxycart-datafeed-' . $foxyshop_settings['datafeed_url_key']; ?>/" readonly="readonly" onclick="this.select();" />
+				<input type="text" id="foxyshop_datafeed_url" name="foxyshop_datafeed_url" value="<?php echo esc_url(get_bloginfo('url') . '/foxycart-datafeed-' . $foxyshop_settings['datafeed_url_key']); ?>/" readonly="readonly" onclick="this.select();" />
 			</td>
 		</tr>
 		<tr>
@@ -160,7 +160,7 @@ function foxyshop_setup_legacy() {
 </div>
 <?php
 
-function inline_setup_page_js() {
+function foxyshop_inline_setup_page_js() {
    echo "<script type='text/javascript'>
 jQuery(document).ready(function($){
 	$(\".foxydomainpicker\").click(function(e) {
@@ -177,7 +177,7 @@ function foxyshop_check_settings_form() {
 }
 </script>";
 }
-add_action( 'admin_print_footer_scripts', 'inline_setup_page_js' );
+add_action( 'admin_print_footer_scripts', 'foxyshop_inline_setup_page_js' );
 
 
 }

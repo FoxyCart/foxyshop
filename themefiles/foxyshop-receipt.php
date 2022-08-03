@@ -7,7 +7,7 @@ This will allow you to upgrade FoxyShop without breaking your customizations. Mo
 
 
 //----------------------------------------------
-//Easy Config Section	
+//Easy Config Section
 //----------------------------------------------
 $show_email = true;
 $show_phone = true;
@@ -99,7 +99,7 @@ th {
 
 //Loop For Each Receipt Starts Here
 foreach($xml->transactions->transaction as $transaction) {
-	
+
 	//Just Grab Some Values to Show Later
 	$transaction_id = (string)$transaction->id;
 	$transaction_date = (string)$transaction->transaction_date;
@@ -110,7 +110,7 @@ foreach($xml->transactions->transaction as $transaction) {
 	$is_anonymous = (string)$transaction->is_anonymous;
 	$customer_id = (string)$transaction->customer_id;
 	$order_total = (double)$transaction->order_total;
-	
+
 ?>
 <div style="main_container">
 <div id="main">
@@ -137,14 +137,14 @@ foreach($xml->transactions->transaction as $transaction) {
 			</tr>
 			<?php
 			//Show Email or Phone if enabled in the easy config section
-			if ($show_email) echo '<tr><td><strong>Email:</strong> ' . (string)$transaction->customer_email . '</td></tr>';
-			if ($show_phone && (string)$transaction->customer_phone) echo '<tr><td><strong>Phone:</strong> ' . (string)$transaction->customer_phone . '</td></tr>';
-			
+			if ($show_email) echo '<tr><td><strong>Email:</strong> ' . esc_html((string)$transaction->customer_email) . '</td></tr>';
+			if ($show_phone && (string)$transaction->customer_phone) echo '<tr><td><strong>Phone:</strong> ' . esc_html((string)$transaction->customer_phone) . '</td></tr>';
+
 			//Custom Fields (per order)
 			if ($show_custom_fields) {
 				foreach($transaction->custom_fields->custom_field as $custom_field) {
 					if ($custom_field->custom_field_name != 'ga' && (int)$custom_field->custom_field_is_hidden == 0) {
-						echo '<tr><td><strong>' . str_replace("_"," ",$custom_field->custom_field_name) . ':</strong> ' . nl2br((string)$custom_field->custom_field_value) . '</td></tr>';
+						echo '<tr><td><strong>' . esc_html(str_replace("_"," ",$custom_field->custom_field_name)) . ':</strong> ' . wp_kses_post(nl2br((string)$custom_field->custom_field_value)) . '</td></tr>';
 					}
 				}
 			}
@@ -157,14 +157,14 @@ foreach($xml->transactions->transaction as $transaction) {
 				<td valign="top" style="padding-right: 20px;"><strong>Invoice Address:</strong><br />
 				<?php
 				//Show Invoice Address Section
-				echo foxy_wp_html($customer_first_name . " " . $customer_last_name . "<br />");
+				echo foxy_wp_html($customer_first_name . " " . $customer_last_name) . "<br />";
 				if ((string)$transaction->customer_company) echo foxy_wp_html($transaction->customer_company) . "<br />";
 				echo foxy_wp_html((string)$transaction->customer_address1 . "<br />");
 				if ((string)$transaction->customer_address2) echo foxy_wp_html($transaction->customer_address2 . "<br />");
-				echo foxy_wp_html((string)$transaction->customer_city . ', ' . (string)$transaction->customer_state . ' ' . (string)$transaction->customer_postal_code . '<br />');
-				if ($show_country) echo foxy_wp_html((string)$transaction->customer_country . '<br />');
+				echo foxy_wp_html((string)$transaction->customer_city . ', ' . (string)$transaction->customer_state . ' ' . (string)$transaction->customer_postal_code) . '<br />';
+				if ($show_country) echo foxy_wp_html((string)$transaction->customer_country) . '<br />';
 				echo ("&nbsp;</td>\n\n");
-				
+
 				//Show Shipping Address If Entered
 				if ((string)$transaction->shipping_address1 && !isset($transaction->shipto_addresses->shipto_address)) {
 					echo ('<td valign="top"><strong>Shipping Address:</strong><br />');
@@ -177,7 +177,7 @@ foreach($xml->transactions->transaction as $transaction) {
 					if ($show_phone && (string)$transaction->shipping_phone) echo foxy_wp_html('Phone: ' . $transaction->shipping_phone ). "<br />";
 					echo ('&nbsp;</td>');
 				}
-				
+
 				//Show Each Multi-ship Address If Entered
 				foreach($transaction->shipto_addresses->shipto_address as $shipto_address) {
 					echo ('<td valign="top"><strong>Shipping Address (' . $shipto_address->address_name . '):</strong><br />');
@@ -219,35 +219,35 @@ foreach($xml->transactions->transaction as $transaction) {
 			foreach($transaction_detail->transaction_detail_options->transaction_detail_option as $transaction_detail_option) {
 				$product_discount += (double)$transaction_detail_option->price_mod;
 			}
-			
+
 			$product_price += $product_discount;
 
 			?>
 			<tr>
 				<td><?php
-				echo '<div>' . $product_name . '</div>';
+				echo '<div>' . esc_html($product_name) . '</div>';
 				//If a subscription, show the subscription details
-				if ((string)$transaction_detail->shipto != "") echo '<div class="variation">Ship To: ' . (string)$transaction_detail->shipto . '</div>';
+				if ((string)$transaction_detail->shipto != "") echo '<div class="variation">Ship To: ' . esc_html((string)$transaction_detail->shipto) . '</div>';
 				if ((string)$transaction_detail->subscription_frequency != "") {
-					echo '<div class="variation">Subscription Frequency: ' . $transaction_detail->subscription_frequency . '</div>';
-					echo '<div class="variation">Subscription Start Date: ' . $transaction_detail->subscription_startdate . '</div>';
-					echo '<div class="variation">Subscription Next Date: ' . $transaction_detail->subscription_nextdate . '</div>';
-					if ((string)$transaction_detail->subscription_enddate != "0000-00-00") echo '<div class="variation">Subscription End Date: ' . $transaction_detail->subscription_enddate . '</div>';
+					echo '<div class="variation">Subscription Frequency: ' . esc_html($transaction_detail->subscription_frequency) . '</div>';
+					echo '<div class="variation">Subscription Start Date: ' . esc_html($transaction_detail->subscription_startdate) . '</div>';
+					echo '<div class="variation">Subscription Next Date: ' . esc_html($transaction_detail->subscription_nextdate) . '</div>';
+					if ((string)$transaction_detail->subscription_enddate != "0000-00-00") echo '<div class="variation">Subscription End Date: ' . esc_html($transaction_detail->subscription_enddate) . '</div>';
 				}
 				//These are the product Variations
 				foreach($transaction_detail->transaction_detail_options->transaction_detail_option as $transaction_detail_option) {
 					echo '<div class="variation">';
-					echo str_replace("_", " ", (string)$transaction_detail_option->product_option_name) . ': ';
-					echo (string)$transaction_detail_option->product_option_value;
+					echo esc_html(str_replace("_", " ", (string)$transaction_detail_option->product_option_name)) . ': ';
+					echo wp_kses_post((string)$transaction_detail_option->product_option_value);
 					if ((string)$transaction_detail_option->price_mod != '0.000') {
-						echo ' (' . (strpos("-",$transaction_detail_option->price_mod) !== false ? '-' : '+') . foxyshop_currency((double)$transaction_detail_option->price_mod) . ')';
+						echo ' (' . (strpos("-",$transaction_detail_option->price_mod) !== false ? '-' : '+') . esc_html(foxyshop_currency((double)$transaction_detail_option->price_mod)) . ')';
 					}
 					echo '</div>';
 				}
 				?></td>
-				<td class="short_cell"><?php echo (foxyshop_currency($product_price)); ?></td>
+				<td class="short_cell"><?php echo esc_html(foxyshop_currency($product_price)); ?></td>
 				<td class="short_cell"><?php echo foxy_wp_html($product_quantity); ?></td>
-				<td class="short_cell"><?php echo (foxyshop_currency($product_quantity * $product_price)); ?></td>
+				<td class="short_cell"><?php echo esc_html(foxyshop_currency($product_quantity * $product_price)); ?></td>
 			</tr>
 			<?php
 		}
@@ -256,10 +256,10 @@ foreach($xml->transactions->transaction as $transaction) {
 			<tr style="margin-top:30px;">
 				<td>&nbsp;</td>
 				<td colspan="2" align="right">Shipping:</td>
-				<td class="short_cell bold"><?php echo (foxyshop_currency((double)$transaction->shipping_total)); ?></td>
+				<td class="short_cell bold"><?php echo esc_html(foxyshop_currency((double)$transaction->shipping_total)); ?></td>
 
 			</tr>
-			
+
 			<?php
 			//Taxes
 			foreach($transaction->taxes->tax as $tax) {
@@ -267,7 +267,7 @@ foreach($xml->transactions->transaction as $transaction) {
 				<tr>
 					<td>&nbsp;</td>
 					<td colspan="2" align="right"><?php echo foxy_wp_html((string)$tax->tax_name); ?>:</td>
-					<td class="short_cell bold"><?php echo (foxyshop_currency((double)$tax->tax_amount)); ?></td>
+					<td class="short_cell bold"><?php echo esc_html(foxyshop_currency((double)$tax->tax_amount)); ?></td>
 				</tr>
 				<?php
 			}
@@ -278,7 +278,7 @@ foreach($xml->transactions->transaction as $transaction) {
 				<tr>
 					<td>&nbsp;</td>
 					<td colspan="2" align="right"><?php echo foxy_wp_html((string)$discount->name); ?>:</td>
-					<td class="short_cell bold"><?php echo (foxyshop_currency((double)$discount->amount)); ?></td>
+					<td class="short_cell bold"><?php echo esc_html(foxyshop_currency((double)$discount->amount)); ?></td>
 				</tr>
 				<?php
 			}
@@ -286,7 +286,7 @@ foreach($xml->transactions->transaction as $transaction) {
 			<tr>
 				<td>&nbsp;</td>
 				<td colspan="2" align="right">Total:</td>
-				<td class="short_cell bold"><?php echo (foxyshop_currency((double)$transaction->order_total)); ?></td>
+				<td class="short_cell bold"><?php echo esc_html(foxyshop_currency((double)$transaction->order_total)); ?></td>
 			</tr>
 		</table>
 
@@ -296,7 +296,7 @@ foreach($xml->transactions->transaction as $transaction) {
 	<?php
 	//Show a Nice Shadow Image at the Bottom of The Table
 	?>
-	<div style="text-align:center;"><img src="<?php echo FOXYSHOP_DIR; ?>/images/paper-shadow.png" width="505" height="8" alt="shadow" /></div>
+	<div style="text-align:center;"><img src="<?php echo esc_url(FOXYSHOP_DIR); ?>/images/paper-shadow.png" width="505" height="8" alt="shadow" /></div>
 
 </div>
 </div>

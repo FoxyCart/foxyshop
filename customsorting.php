@@ -39,11 +39,11 @@ function foxyshop_update_order() {
 		$result = count($IDs);
 		for($i = 0; $i < $result; $i++) {
 			$post_id = (int)str_replace(array("'", "id_"), "", $IDs[$i]);
-			$_POST['categoryID'] = sanitize_text_field($_POST['categoryID']);
-			if ((int)$_POST['categoryID'] == 0) {
+			$categoryID = (int)sanitize_text_field($_POST['categoryID']);
+			if ($categoryID == 0) {
 				$wpdb->query("UPDATE $wpdb->posts SET menu_order = '$i' WHERE id = $post_id");
 			} else {
-				update_post_meta($post_id, "_foxyshop_menu_order_" . (int)$_POST['categoryID'], $i);
+				update_post_meta($post_id, "_foxyshop_menu_order_" . $categoryID, $i);
 			}
 		}
 		return ('<div id="message" class="updated fade"><p>'. FOXYSHOP_PRODUCT_NAME_SINGULAR . ' ' . __('order updated successfully', 'foxyshop').'.</p></div>');
@@ -61,11 +61,11 @@ function foxyshop_revert_order() {
 	$result = count($IDs);
 	for($i = 0; $i < $result; $i++) {
 		$post_id = (int)str_replace(array("'", "id_"), "", $IDs[$i]);
-
-		if ((int)$_POST['categoryID'] == 0) {
+		$categoryID = (int)sanitize_text_field($_POST['categoryID']);
+		if ($categoryID == 0) {
 			$wpdb->query("UPDATE $wpdb->posts SET menu_order = '0' WHERE id = $post_id");
 		} else {
-			update_post_meta($post_id, "_foxyshop_menu_order_" . (int)$_POST['categoryID'], 0);
+			update_post_meta($post_id, "_foxyshop_menu_order_" . $categoryID, 0);
 		}
 	}
 	return ('<div id="message" class="updated fade"><p>'. FOXYSHOP_PRODUCT_NAME_SINGULAR . ' ' . __('order reverted to original', 'foxyshop').'.</p></div>');
@@ -145,7 +145,7 @@ function foxyshop_custom_sort() {
 		$product_list = get_posts($args);
 		if ($product_list) {
 
-			echo ('<h3>' . esc_html($current_category_name) . '</h3>'."\n");
+			echo ('<h3>' . wp_kses_post($current_category_name) . '</h3>'."\n");
 			echo ('<p>' . sprintf(__('Drag %s to the preferred order and then click the Save button at the bottom of the page.', 'foxyshop'), strtolower(FOXYSHOP_PRODUCT_NAME_PLURAL)) . '</p>');
 			echo ('<form name="form_product_order" method="post" action="">'."\n");
 			echo ('<ul id="foxyshop_product_order_list" class="foxyshop_sort_list">'."\n");
@@ -160,7 +160,7 @@ function foxyshop_custom_sort() {
 				echo ('<li id="id_' . esc_attr($prod->ID) . '" class="lineitem">');
 				echo ('<img src="' . esc_url(foxyshop_get_main_image()) . '" />');
 				echo ('<h4>' . esc_html($prod->post_title) . '</h4>'."\n");
-				echo (foxyshop_price());
+				echo wp_kses_post(foxyshop_price());
 				echo ('<div class="counter">' . esc_attr($current_count + 1) . '</div>');
 				echo ('<div style="clear: both; height: 1px;"></div>'."\n");
 				echo ('</li>'."\n");
@@ -168,8 +168,8 @@ function foxyshop_custom_sort() {
 			echo '</ul>'."\n";
 			?>
 			<div style="width: 90%; height: 100px;">
-				<input type="submit" name="submit_new_product_order" id="submit_new_product_order" class="button-primary" value="<?php _e('Save Custom Order', 'foxyshop'); ?>" onclick="javascript:orderPages(); return true;" />&nbsp;&nbsp;<strong id="updateText"></strong>
-				<input type="submit" name="revert_product_order" id="revert_product_order" class="button" style="float: right;" value="<?php _e('Revert To Original', 'foxyshop'); ?>" onclick="javascript:orderPages(); return true;" />
+				<input type="submit" name="submit_new_product_order" id="submit_new_product_order" class="button-primary" value="<?php _e('Save Custom Order', 'foxyshop'); ?>" onclick="javascript:foxyshop_orderPages(); return true;" />&nbsp;&nbsp;<strong id="updateText"></strong>
+				<input type="submit" name="revert_product_order" id="revert_product_order" class="button" style="float: right;" value="<?php _e('Revert To Original', 'foxyshop'); ?>" onclick="javascript:foxyshop_orderPages(); return true;" />
 			</div>
 			<input type="hidden" id="foxyshop_product_order_value" name="foxyshop_product_order_value" />
 			<input type="hidden" id="hdnParentID" name="hdnParentID" value="<?php echo esc_attr($parentID); ?>" />
@@ -190,7 +190,7 @@ function foxyshop_custom_sort() {
 
 <?php
 
-function inline_categorysorting_js() {
+function foxyshop_inline_categorysorting_js() {
    echo "<script type='text/javascript'>
 function foxyshop_custom_order_load_event(){
 	jQuery(\"#foxyshop_product_order_list\").sortable({
@@ -207,12 +207,12 @@ function foxyshop_custom_order_load_event(){
 	});
 };
 addLoadEvent(foxyshop_custom_order_load_event);
-function orderPages() {
+function foxyshop_orderPages() {
 	jQuery(\"#updateText\").html(\"" . sprintf(__('Updating %s Order...', 'foxyshop'), FOXYSHOP_PRODUCT_NAME_SINGULAR) . "\");
 	jQuery(\"#foxyshop_product_order_value\").val(jQuery(\"#foxyshop_product_order_list\").sortable(\"toArray\"));
 }
 </script>";
 }
-add_action( 'admin_print_footer_scripts', 'inline_categorysorting_js' );
+add_action( 'admin_print_footer_scripts', 'foxyshop_inline_categorysorting_js' );
 
 }

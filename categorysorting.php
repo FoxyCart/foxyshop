@@ -66,7 +66,7 @@ function foxyshop_category_sort() {
 		$subcats = array();
 		foreach($product_categories as $cat) {
 			$subcat = get_term_children($cat->term_id, 'foxyshop_categories');
-			if (count($subcat) > 0) $subcats[] = '<option value="' . $cat->term_id . '">' . $cat->name . '</option>'."\n";
+			if (count($subcat) > 0) $subcats[] = '<option value="' . esc_attr($cat->term_id) . '">' . wp_kses($cat->name, []) . '</option>'."\n";
 		}
 
 		if (count($subcats) > 0 || $categoryID > 0) {
@@ -94,7 +94,7 @@ function foxyshop_category_sort() {
 		//Sort Categories
 		$product_categories = foxyshop_sort_categories($product_categories, $categoryID);
 
-		echo ( '<h3>' . $current_category_name . '</h3>'."\n");
+		echo ( '<h3>' . wp_kses($current_category_name, []) . '</h3>'."\n");
 		echo ( '<p>' . __('Drag categories to the preferred order and then click the Save button at the bottom of the page.', 'foxyshop') . '</p>');
 		echo ( '<p><strong>' . __('Current Sorting') . ': ' . (array_key_exists($categoryID,$foxyshop_category_sort) ? __('Custom', 'foxyshop') : __('Alphabetical', 'foxyshop')) . '</strong></p>');
 		echo ( '<form name="form_category_order" method="post" action="">'."\n");
@@ -103,9 +103,9 @@ function foxyshop_category_sort() {
 		$counter = 1;
 		foreach($product_categories as $cat) {
 			if (substr($cat->name,0,1) == "_") continue;
-			echo foxy_wp_html( '<li id="' . $cat->term_id . '" class="lineitem">');
-			echo foxy_wp_html( '<h4>' . $cat->name . '</h4>'."\n");
-			echo foxy_wp_html( '<div class="counter">' . $counter . '</div>');
+			echo foxy_wp_html( '<li id="' . esc_attr($cat->term_id) . '" class="lineitem">');
+			echo foxy_wp_html( '<h4>' . wp_kses($cat->name, []) . '</h4>'."\n");
+			echo foxy_wp_html( '<div class="counter">' . wp_kses($counter, []) . '</div>');
 			echo foxy_wp_html( '<div style="clear: both; height: 1px;"></div>'."\n");
 			echo foxy_wp_html( '</li>'."\n");
 			$counter++;
@@ -114,8 +114,8 @@ function foxyshop_category_sort() {
 
 		?>
 		<div style="height: 100px;">
-			<input type="submit" name="submit_new_category_order" id="revert_category_order" class="button-primary" value="<?php _e('Save Custom Order', 'foxyshop'); ?>" onclick="javascript:orderPages(); return true;" />&nbsp;&nbsp;<strong id="updateText"></strong>
-			<input type="submit" name="revert_category_order" id="revert_category_order" class="button" style="float: right;" value="<?php _e('Reset to Alphabetical', 'foxyshop'); ?>" onclick="javascript:orderPages(); return true;" />
+			<input type="submit" name="submit_new_category_order" id="revert_category_order" class="button-primary" value="<?php _e('Save Custom Order', 'foxyshop'); ?>" onclick="javascript:foxyshop_orderPages(); return true;" />&nbsp;&nbsp;<strong id="updateText"></strong>
+			<input type="submit" name="revert_category_order" id="revert_category_order" class="button" style="float: right;" value="<?php _e('Reset to Alphabetical', 'foxyshop'); ?>" onclick="javascript:foxyshop_orderPages(); return true;" />
 		</div>
 		<input type="hidden" id="foxyshop_category_order_value" name="foxyshop_category_order_value" />
 		<input type="hidden" id="categoryID" name="categoryID" value="<?php echo foxy_wp_html( $categoryID); ?>" />
@@ -130,7 +130,7 @@ function foxyshop_category_sort() {
 	</div>
 <?php
 
-function inline_categorysorting_js() {
+function foxyshop_inline_categorysorting_js() {
    echo "<script type='text/javascript'>
 function foxyshop_custom_order_load_event(){
 	jQuery(\"#foxyshop_category_order_list\").sortable({
@@ -147,11 +147,11 @@ function foxyshop_custom_order_load_event(){
 	});
 };
 addLoadEvent(foxyshop_custom_order_load_event);
-function orderPages() {
+function foxyshop_orderPages() {
 	jQuery(\"#updateText\").html(\"" . __('Updating Category Order...', 'foxyshop') . "\");
 	jQuery(\"#foxyshop_category_order_value\").val(jQuery(\"#foxyshop_category_order_list\").sortable(\"toArray\"));
 }
 </script>";
 }
-add_action( 'admin_print_footer_scripts', 'inline_categorysorting_js' );
+add_action( 'admin_print_footer_scripts', 'foxyshop_inline_categorysorting_js' );
 }

@@ -369,7 +369,7 @@ function foxyshop_google_products_page() {
 
 	<?php
 
-		function inline_googleproductfeed_js() {
+		function foxyshop_inline_googleproductfeed_js() {
    			echo "<script type='text/javascript'>
 jQuery(document).ready(function($){
 	$(\"#authnow\").click(function() {
@@ -396,7 +396,7 @@ jQuery(document).ready(function($){
 });
 </script>";
 }
-add_action( 'admin_print_footer_scripts', 'inline_googleproductfeed_js' );
+add_action( 'admin_print_footer_scripts', 'foxyshop_inline_googleproductfeed_js' );
 
 	} else {
 
@@ -412,7 +412,7 @@ add_action( 'admin_print_footer_scripts', 'inline_googleproductfeed_js' );
 			echo ('<div class="error"><p><strong>Error!</strong><br /><ul style="margin: 0 10px;">');
 			$error_list = explode("||", sanitize_text_field($_GET['error']));
 			foreach($error_list as $the_error) {
-				if ($the_error) echo ("<li style=\"list-style: disc inside none;\">$the_error</li>\n");
+				if ($the_error) echo ("<li style=\"list-style: disc inside none;\">" . wp_kses_post($the_error) . "</li>\n");
 			}
 			echo ('</ul></p></div>');
 		} elseif (isset($_GET['success'])) {
@@ -556,7 +556,7 @@ add_action( 'admin_print_footer_scripts', 'inline_googleproductfeed_js' );
 			<button type="submit" class="button" name="delete_checked_google_products" value="1" id="delete_checked_google_products">Delete Checked <?php echo FOXYSHOP_PRODUCT_NAME_PLURAL; ?></button>
 
 			<?php if ($nextlink) {
-				echo ('<a href="edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&nextlink=' . urlencode($nextlink) . '" class="button" style="float: right;">Next Page</a>');
+				echo ('<a href="edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&nextlink=' . urlencode(esc_url($nextlink)) . '" class="button" style="float: right;">Next Page</a>');
 			} ?>
 
 		</div>
@@ -654,7 +654,7 @@ add_action( 'admin_print_footer_scripts', 'inline_googleproductfeed_js' );
 				echo ('<td>' . esc_html($product['code']) . '</td>'."\n");
 				echo ('<td><img src="' . esc_url(foxyshop_get_main_image()) . '" class="productfeedimage" /></td>'."\n");
 				echo ('<td>' . esc_html($pricewrite) . '</td>'."\n");
-				echo ('<td>' . Date("Y-m-d", strtotime($single_product->post_date)) . '</td>'."\n");
+				echo ('<td>' . esc_html(Date("Y-m-d", strtotime($single_product->post_date))) . '</td>'."\n");
 				echo ('</tr>'."\n");
 
 
@@ -773,14 +773,14 @@ function foxyshop_manage_google_feed() {
 	//Update Single Item
 	} elseif (isset($_GET['editid'])) {
 
-		$xml = foxyshop_google_product_xml((int)$_GET['editid'], "UPDATE");
+		$xml = foxyshop_google_product_xml((int)sanitize_text_field($_GET['editid']), "UPDATE");
 		update_post_meta((int)sanitize_text_field($_GET['editid']), '_google_product_listed', strtotime('+30 days'));
 
 
 	//Delete Single Item
 	} elseif (isset($_GET['deleteid'])) {
 
-		$xml = foxyshop_google_product_xml((int)$_GET['deleteid'], "DELETE");
+		$xml = foxyshop_google_product_xml((int)sanitize_text_field($_GET['deleteid']), "DELETE");
 		delete_post_meta((int)sanitize_text_field($_GET['deleteid']), '_google_product_listed');
 	}
 
@@ -793,8 +793,8 @@ function foxyshop_manage_google_feed() {
 		$writexml .= $xml;
 		$writexml .= '</feed>';
 		if (isset($_REQUEST['debug'])) {
-			echo ("<form><button type=\"button\" onclick=\"location.href = 'edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1&debug=1$error';\">Continue</button></form>");
-			echo ("<b>Submitted XML:</b><br /><br /><form><textarea style=\"width: 80%; height: 350px;\">$writexml</textarea></form><br /><br />");
+			echo ("<form><button type=\"button\" onclick=\"location.href = 'edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1&debug=1" . esc_attr($error) . "';\">Continue</button></form>");
+			echo ("<b>Submitted XML:</b><br /><br /><form><textarea style=\"width: 80%; height: 350px;\">" . esc_textarea($writexml) . "</textarea></form><br /><br />");
 		}
 
 		$payload = $writexml;
@@ -828,11 +828,11 @@ function foxyshop_manage_google_feed() {
 		}
 
 		if (isset($_REQUEST['debug'])) {
-			if ($error) echo ("<b>Error: </b> $error<br /><br />");
+			if ($error) echo ("<b>Error: </b> " . wp_kses_post($error) . "<br /><br />");
 			echo ("<b>Returned Data:</b><br /><br />");
 
 			echo ("<form><textarea style=\"width: 80%; height: 350px;\">");
-			print_r($xml);
+			print_r(esc_xml($xml));
 			echo ("</textarea></form><br /><br />");
 
 			echo ("<b>Returned Data (raw XML):</b><br /><br />");
@@ -843,7 +843,7 @@ function foxyshop_manage_google_feed() {
 			die;
 		}
 
-		wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1'.$error);
+		wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1'.esc_attr($error));
 		die;
 
 	}

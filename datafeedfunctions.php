@@ -3,6 +3,7 @@
 if (!defined('ABSPATH')) exit();
 
 //Decrypt Data From Source
+// Consider $src as UNTRUSTED
 function foxyshop_decrypt($src) {
 	global $foxyshop_settings;
 	return rc4crypt::decrypt($foxyshop_settings['api_key'],urldecode($src));
@@ -23,14 +24,27 @@ function foxyshop_run_external_datafeeds($external_datafeeds) {
 	if (!defined('FOXYSHOP_CURL_TIMEOUT')) define('FOXYSHOP_CURL_TIMEOUT', 15); //15
 	if (!isset($_POST["FoxyData"]) && !isset($_POST["FoxySubscriptionData"])) return;
 
+	$payload = [];
+	if(isset($_POST["FoxyData"])) {
+		// Confirm POST data is valid
+		$xml_decrypted = foxyshop_decrypt($_POST["FoxyData"]);
+		$xml = simplexml_load_string($xml_decrypted, NULL, LIBXML_NOCDATA);
+		if (!isset($xml->transactions)) return;
+
+		// It's ok, so pass the raw data along to the external endpoints
+		$payload = array("FoxyData" => $_POST["FoxyData"]);
+	} else if(isset($_POST["FoxySubscriptionData"])) {
+		// Confirm POST data is valid
+		$xml_decrypted = foxyshop_decrypt($_POST["FoxySubscriptionData"]);
+		$xml = simplexml_load_string($xml_decrypted, NULL, LIBXML_NOCDATA);
+		if (!isset($xml->subscriptions)) return;
+
+		// It's ok, so pass the raw data along to the external endpoints
+		$payload = array("FoxySubscriptionData" => $_POST["FoxySubscriptionData"]);
+	}
+
 	foreach($external_datafeeds as $feedurl) {
 		if ($feedurl) {
-			$payload = [];
-			if(isset($_POST["FoxyData"]))
-				$payload = array("FoxyData" => $_POST["FoxyData"]);
-			elseif(isset($_POST["FoxySubscriptionData"]))
-				$payload = array("FoxySubscriptionData" => $_POST["FoxySubscriptionData"]);
-
 			$args = [
 					'headers' =>  ["Content-Type" => "application/x-www-form-urlencoded"],
 					'body' => $payload
@@ -40,12 +54,9 @@ function foxyshop_run_external_datafeeds($external_datafeeds) {
 				$args['sslverify'] = FOXYSHOP_CURL_SSL_VERIFYPEER;
 			}
 
-
 			$response = wp_remote_post($feedurl,
 				$args);
 
-			 
-	
 		//	$response = trim($response['body']);
 
 			//If Error, Send Email and Kill Process
@@ -58,12 +69,12 @@ function foxyshop_run_external_datafeeds($external_datafeeds) {
 				$message .= $error_msg;
 				//$message .= "\n\n" . print_r($_POST, 1);
 				//$message .= "\n\n" . print_r($_SERVER, 1);
-				$message .= "\n\n" . foxyshop_decrypt($_POST["FoxyData"]);
+				$message .= "\n\n" . foxyshop_decrypt(sanitize_text_field($_POST["FoxyData"]));
 				$headers = 'From: ' . get_bloginfo('name') . ' Server Admin <' . $to_email . '>' . "\r\n";
 				mail($to_email, 'Data Feed Error on ' . get_bloginfo('name'), $message, $headers);
-				 
+
 				die($error_msg);
-			}  
+			}
 		}
 	}
 }
