@@ -1179,7 +1179,7 @@ function foxyshop_product_meta_save($post_id) {
 
 	//Save Related Product Data
 	if (isset($_POST['_related_products_list'])) {
-		foxyshop_save_meta_data('_related_products', implode(",",sanitize_text_field($_POST['_related_products_list'])));
+		foxyshop_save_meta_data('_related_products', sanitize_text_field(implode(",",$_POST['_related_products_list'])));
 	} else {
 		foxyshop_save_meta_data('_related_products', "");
 	}
@@ -1188,14 +1188,14 @@ function foxyshop_product_meta_save($post_id) {
 
 	//Save Bundled Product Data
 	if (isset($_POST['_bundled_products_list'])) {
-		foxyshop_save_meta_data('_bundled_products', implode(",",sanitize_text_field($_POST['_bundled_products_list'])));
+		foxyshop_save_meta_data('_bundled_products', sanitize_text_field(implode(",",$_POST['_bundled_products_list'])));
 	} else {
 		foxyshop_save_meta_data('_bundled_products', "");
 	}
 
 	//Save Add-On Product Data
 	if (isset($_POST['_addon_products_list'])) {
-		foxyshop_save_meta_data('_addon_products', implode(",",sanitize_text_field($_POST['_addon_products_list'])));
+		foxyshop_save_meta_data('_addon_products', sanitize_text_field(implode(",",$_POST['_addon_products_list'])));
 	} else {
 		foxyshop_save_meta_data('_addon_products', "");
 	}
