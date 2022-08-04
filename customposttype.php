@@ -1055,7 +1055,7 @@ if (is_array($saved_variations)) {
 	echo "\t\tvariation_select_options += '<optgroup label=\"" . __('Saved Variations', 'foxyshop') . "\">';\n";
 	foreach($saved_variations as $saved_var) {
 		$saved_ref = $saved_var['refname'];
-		echo "\t\tvariation_select_options += '<option value=\"" . esc_attr(sanitize_title($saved_ref)) . "\" rel=\"" . esc_attr($saved_var['name']) . "\">" . wp_kses($saved_var['name'], []) . "  </option>';\n";
+		echo "\t\tvariation_select_options += '<option value=\"" . esc_attr(sanitize_title($saved_ref)) . "\" rel=\"" . esc_attr($saved_var['name']) . "\">" . wp_kses($saved_ref, []) . "  </option>';\n";
 	}
 	echo "\t\tvariation_select_options += '</optgroup>';\n";
 }
