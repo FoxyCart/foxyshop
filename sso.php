@@ -122,13 +122,13 @@ function foxyshop_login_message() {
 //Setup Actions
 add_action('admin_init', 'foxyshop_user_init');
 function foxyshop_user_init() {
-	add_action('show_user_profile', 'action_show_user_profile');
-	add_action('edit_user_profile', 'action_show_user_profile');
-	add_action('personal_options_update', 'action_process_option_update');
-	add_action('edit_user_profile_update', 'action_process_option_update');
+	add_action('show_user_profile', 'foxyshop_action_show_user_profile');
+	add_action('edit_user_profile', 'foxyshop_action_show_user_profile');
+	add_action('personal_options_update', 'foxyshop_action_process_option_update');
+	add_action('edit_user_profile_update', 'foxyshop_action_process_option_update');
 }
 
-function action_show_user_profile($user) {
+function foxyshop_action_show_user_profile($user) {
 	global $foxyshop_settings;
 	if (!current_user_can('administrator')) return;
 	?>
@@ -172,7 +172,7 @@ function action_show_user_profile($user) {
         <tr class="alternate">
             <td class="column-columnname"><?php echo esc_attr($key); ?></td>
             <td class="column-columnname"><?php echo ($val['is_active'] == 1 ? __('Yes', 'foxyshop') : __('No', 'foxyshop')); ?></td>
-            <td class="column-columnname"><a href="<?php echo esc_url($val['sub_token_url']); ?>&amp;cart=checkout" target="_blank"><?php _e('Update Info', 'foxyshop');?></a> | <a href="<?php echo $val['sub_token_url']; ?>&amp;sub_cancel=true&amp;cart=checkout" target="_blank"><?php _e('Cancel', 'foxyshop');?></a></td>
+            <td class="column-columnname"><a href="<?php echo esc_url($val['sub_token_url']); ?>&amp;cart=checkout" target="_blank"><?php _e('Update Info', 'foxyshop');?></a> | <a href="<?php echo esc_url($val['sub_token_url']); ?>&amp;sub_cancel=true&amp;cart=checkout" target="_blank"><?php _e('Cancel', 'foxyshop');?></a></td>
         </tr>
      <?php
      }
@@ -183,7 +183,7 @@ function action_show_user_profile($user) {
 	} //End Subscription View
 }
 
-function action_process_option_update($user_id) {
+function foxyshop_action_process_option_update($user_id) {
 	if (!current_user_can('administrator')) return;
 	if (isset($_POST['foxycart_customer_id'])) update_user_meta($user_id, 'foxycart_customer_id', sanitize_text_field($_POST['foxycart_customer_id']));
 }
@@ -211,7 +211,7 @@ function foxyshop_reverse_sso_login() {
 	global $foxyshop_settings;
 	$timestamp = sanitize_text_field($_GET['timestamp']);
 	$current_timestamp = date("U");
-	$calculated_auth_token = sha1(foxy_wp_html($_GET['foxycart_customer_id']) . '|' . foxy_wp_html($_GET['timestamp']) . '|' . sanitize_text_field($foxyshop_settings['api_key']));
+	$calculated_auth_token = sha1(sanitize_text_field($_GET['foxycart_customer_id']) . '|' . sanitize_text_field($_GET['timestamp']) . '|' . sanitize_text_field($foxyshop_settings['api_key']));
 
 	//Token Matches, Do Login
 	if ($calculated_auth_token === $_GET['fc_auth_token'] && $timestamp >= $current_timestamp) {
@@ -233,7 +233,7 @@ function foxyshop_reverse_sso_login() {
 
 	//Is This a JSONP Request?
 	if (isset($_GET['callback'])) {
-		echo htmlspecialchars($_GET['callback']) . '({ "result": "' . $result . '"})';
+		echo htmlspecialchars(esc_attr($_GET['callback'])) . '({ "result": "' . $result . '"})';
 		die;
 	}
 

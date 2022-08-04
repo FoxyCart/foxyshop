@@ -168,7 +168,7 @@ function foxyshop_ups_export() {
 		$xml .= "\t".'</OpenShipment>'."\n";
 	}
 	$xml .= '</OpenShipments>'."\n";
-	echo ($xml);
+	echo esc_xml($xml);
 	die;
 }
 

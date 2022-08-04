@@ -24,12 +24,12 @@ if (!$product['hide_product']) {
 
 	//Show Image on Left
 	echo '<div class="foxyshop_product_image">';
-	if ($thumbnailSRC = foxyshop_get_main_image("thumbnail")) echo '<a href="' . $product['url'] . '"><img src="' . $thumbnailSRC . '" alt="' . htmlspecialchars($product['name']) . '" class="foxyshop_main_image" /></a>';
+	if ($thumbnailSRC = foxyshop_get_main_image("thumbnail")) echo '<a href="' . esc_url($product['url']) . '"><img src="' . esc_url($thumbnailSRC) . '" alt="' . htmlspecialchars(esc_attr($product['name'])) . '" class="foxyshop_main_image" /></a>';
 	echo "</div>\n";
 
 	//Show Main Product Info
 	echo '<div class="foxyshop_product_info">';
-	echo '<h2><a href="' . $product['url'] . '">' . apply_filters('the_title', $product['name']) . '</a></h2>';
+	echo '<h2><a href="' . esc_url($product['url']) . '">' . apply_filters('the_title', $product['name']) . '</a></h2>';
 
 	//Show a sale tag if the product is on sale
 	//if (foxyshop_is_on_sale()) echo '<p>SALE!</p>';
@@ -40,7 +40,7 @@ if (!$product['hide_product']) {
 	if ($product['short_description']) echo "<p>" . $product['short_description'] . "</p>";
 
 	//More Details Button
-	echo '<a href="' . $product['url'] . '" class="foxyshop_button">More Details</a>';
+	echo '<a href="' . esc_url($product['url']) . '" class="foxyshop_button">More Details</a>';
 
 	//Add To Cart Button (options)
 	//foxyshop_product_link("Add To Cart", false);

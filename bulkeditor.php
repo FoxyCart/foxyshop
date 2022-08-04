@@ -339,7 +339,7 @@ function foxyshop_cfbe_metabox($post_type) {
 
 
 <?php
-	function inline_bulkeditor_js() {
+	function foxyshop_inline_bulkeditor_js() {
 	echo "<script type='text/javascript'>
 	jQuery(document).ready(function($){
 		$('#_salestartdate, #_saleenddate').datepicker({ dateFormat: 'm/d/yy' });
@@ -349,7 +349,7 @@ function foxyshop_cfbe_metabox($post_type) {
 	});
 	</script>";
 	}
-	add_action( 'admin_print_footer_scripts', 'inline_bulkeditor_js' );
+	add_action( 'admin_print_footer_scripts', 'foxyshop_inline_bulkeditor_js' );
 }
 
 add_action('cfbe_before_metabox', 'foxyshop_cfbe_metabox');

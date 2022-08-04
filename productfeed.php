@@ -312,7 +312,7 @@ function foxyshop_google_products_page() {
 
 	<?php
 
-		function inline_productfeed_js() {
+		function foxyshop_inline_productfeed_js() {
    			echo "<script type='text/javascript'>
 jQuery(document).ready(function($){
 	$(\"#authnow\").click(function() {
@@ -339,7 +339,7 @@ jQuery(document).ready(function($){
 });
 </script>";
 }
-add_action( 'admin_print_footer_scripts', 'inline_productfeed_js' );
+add_action( 'admin_print_footer_scripts', 'foxyshop_inline_productfeed_js' );
 
 	} else {
 
@@ -355,7 +355,7 @@ add_action( 'admin_print_footer_scripts', 'inline_productfeed_js' );
 			echo '<div class="error"><p><strong>Error!</strong><br /><ul style="margin: 0 10px;">';
 			$error_list = explode("||", foxy_wp_html($_GET['error']));
 			foreach($error_list as $the_error) {
-				if ($the_error) echo "<li style=\"list-style: disc inside none;\">$the_error</li>\n";
+				if ($the_error) echo "<li style=\"list-style: disc inside none;\">" . wp_kses_post($the_error) . "</li>\n";
 			}
 			echo '</ul></p></div>';
 		} elseif (isset($_GET['success'])) {
@@ -459,30 +459,30 @@ add_action( 'admin_print_footer_scripts', 'inline_productfeed_js' );
 			}
 
 			echo '<tr>'."\n";
-			echo '<th class="check-column" scope="row"><input type="checkbox" value="' . $google_product_id . '" name="post[]"></th>'."\n";
-			echo '<td><strong>' . $google_product_id . '</strong>' . $unmatched_text . '</td>'."\n";
+			echo '<th class="check-column" scope="row"><input type="checkbox" value="' . esc_attr($google_product_id) . '" name="post[]"></th>'."\n";
+			echo '<td><strong>' . esc_html($google_product_id) . '</strong>' . wp_kses_post($unmatched_text) . '</td>'."\n";
 			if ($unmatched_text == "") {
-				echo '<td><strong><a href="post.php?post=' . $google_product_id . '&action=edit">' . (string)$entry->title . '</a></strong>';
+				echo '<td><strong><a href="post.php?post=' . esc_attr($google_product_id) . '&action=edit">' . wp_kses_post((string)$entry->title) . '</a></strong>';
 				echo '<div class="row-actions">';
-				echo '<span><a href="edit.php?foxyshop_manage_google_feed=1&amp;editid=' . $google_product_id . $debug_querystring . '&amp;_wpnonce=' . wp_create_nonce("manage-the-google-feed-settings") . '" class="update_google_product" rel="' . $google_product_id . '">Renew/Update</a> | </span>';
-				echo '<span class="delete"><a href="edit.php?foxyshop_manage_google_feed=1&amp;deleteid=' . $google_product_id . $debug_querystring . '&amp;_wpnonce=' . wp_create_nonce("manage-the-google-feed-settings") . '" class="delete_google_product" rel="' . $google_product_id . '">Delete</a></span>';
+				echo '<span><a href="edit.php?foxyshop_manage_google_feed=1&amp;editid=' . esc_attr($google_product_id . $debug_querystring) . '&amp;_wpnonce=' . wp_create_nonce("manage-the-google-feed-settings") . '" class="update_google_product" rel="' . esc_atr($google_product_id) . '">Renew/Update</a> | </span>';
+				echo '<span class="delete"><a href="edit.php?foxyshop_manage_google_feed=1&amp;deleteid=' . esc_attr($google_product_id . $debug_querystring) . '&amp;_wpnonce=' . wp_create_nonce("manage-the-google-feed-settings") . '" class="delete_google_product" rel="' . esc_atr($google_product_id) . '">Delete</a></span>';
 				echo '</div>';
 				echo '</td>'."\n";
 			} else {
 				echo '<td><strong><a href="#" onclick="return false;">' . (string)$entry->title . '</a></strong>';
 				echo '<div class="row-actions">';
-				echo '<span class="delete"><a href="edit.php?foxyshop_manage_google_feed=1&amp;deleteid=' . $google_product_id . $debug_querystring . '&amp;_wpnonce=' . wp_create_nonce("manage-the-google-feed-settings") . '" class="delete_google_product" rel="' . $google_product_id . '">Delete</a></span>';
+				echo '<span class="delete"><a href="edit.php?foxyshop_manage_google_feed=1&amp;deleteid=' . esc_attr($google_product_id . $debug_querystring) . '&amp;_wpnonce=' . wp_create_nonce("manage-the-google-feed-settings") . '" class="delete_google_product" rel="' . esc_atr($google_product_id) . '">Delete</a></span>';
 				echo '</div>';
 				echo '</td>'."\n";
 			}
 
 			if ((string)$entry->scimage_link) {
-				echo '<td><img src="' . (string)$entry->scimage_link . '" class="productfeedimage" /></td>'."\n";
+				echo '<td><img src="' . esc_url((string)$entry->scimage_link) . '" class="productfeedimage" /></td>'."\n";
 			} else {
 				echo '<td>&nbsp;</td>'."\n";
 			}
-			echo '<td>' . $expiration_date . '</td>'."\n";
-			echo '<td>' . $clicks . ' Click' . ($clicks != 1 ? 's' : '') . '</td>'."\n";
+			echo '<td>' . esc_html($expiration_date) . '</td>'."\n";
+			echo '<td>' . esc_html($clicks) . ' Click' . ($clicks != 1 ? 's' : '') . '</td>'."\n";
 			echo '</tr>'."\n";
 
 
@@ -497,7 +497,7 @@ add_action( 'admin_print_footer_scripts', 'inline_productfeed_js' );
 			<button type="submit" class="button" name="delete_checked_google_products" value="1" id="delete_checked_google_products">Delete Checked <?php echo FOXYSHOP_PRODUCT_NAME_PLURAL; ?></button>
 
 			<?php if ($nextlink) {
-				echo '<a href="edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&nextlink=' . urlencode($nextlink) . '" class="button" style="float: right;">Next Page</a>';
+				echo '<a href="edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&nextlink=' . urlencode(esc_attr($nextlink)) . '" class="button" style="float: right;">Next Page</a>';
 			} ?>
 
 		</div>
@@ -584,19 +584,19 @@ add_action( 'admin_print_footer_scripts', 'inline_productfeed_js' );
 
 
 			echo '<tr>'."\n";
-			echo '<th class="check-column" scope="row"><input type="checkbox" value="' .$product['id'] . '" name="post[]"></th>'."\n";
-			echo '<td><strong>' . $product['id'] . '</strong></td>'."\n";
+			echo '<th class="check-column" scope="row"><input type="checkbox" value="' .esc_attr($product['id']) . '" name="post[]"></th>'."\n";
+			echo '<td><strong>' . esc_html($product['id']) . '</strong></td>'."\n";
 
-			echo '<td><strong><a href="post.php?post=' . $product['id'] . '&action=edit">' . $product['name'] . '</a></strong>';
+			echo '<td><strong><a href="post.php?post=' . esc_attr($product['id']) . '&action=edit">' . esc_attr($product['name']) . '</a></strong>';
 			echo '<div class="row-actions">';
-			echo '<span><a href="edit.php?foxyshop_manage_google_feed=1&amp;addid=' . $product['id'] . $debug_querystring . '&amp;_wpnonce=' . wp_create_nonce("manage-the-google-feed-settings") . '" class="insert_google_product" rel="' . $google_product_id . '">Add To Google Products Feed</a></span>';
+			echo '<span><a href="edit.php?foxyshop_manage_google_feed=1&amp;addid=' . esc_attr($product['id']) . esc_attr($debug_querystring) . '&amp;_wpnonce=' . wp_create_nonce("manage-the-google-feed-settings") . '" class="insert_google_product" rel="' . $google_product_id . '">Add To Google Products Feed</a></span>';
 			echo '</div>';
 			echo '</td>'."\n";
 
-			echo '<td>' . $product['code'] . '</td>'."\n";
-			echo '<td><img src="' . foxyshop_get_main_image() . '" class="productfeedimage" /></td>'."\n";
-			echo '<td>' . $pricewrite . '</td>'."\n";
-			echo '<td>' . Date("Y-m-d", strtotime($single_product->post_date)) . '</td>'."\n";
+			echo '<td>' . esc_html($product['code']) . '</td>'."\n";
+			echo '<td><img src="' . esc_url(foxyshop_get_main_image()) . '" class="productfeedimage" /></td>'."\n";
+			echo '<td>' . esc_html($pricewrite) . '</td>'."\n";
+			echo '<td>' . esc_html(Date("Y-m-d", strtotime($single_product->post_date))) . '</td>'."\n";
 			echo '</tr>'."\n";
 
 
@@ -705,14 +705,14 @@ function foxyshop_manage_google_feed() {
 	//Update Single Item
 	} elseif (isset($_GET['editid'])) {
 
-		$xml = foxyshop_google_product_xml((int)$_GET['editid'], "UPDATE");
+		$xml = foxyshop_google_product_xml((int)sanitize_text_field($_GET['editid']), "UPDATE");
 		update_post_meta((int)sanitize_text_field($_GET['editid']), '_google_product_listed', strtotime('+30 days'));
 
 
 	//Delete Single Item
 	} elseif (isset($_GET['deleteid'])) {
 
-		$xml = foxyshop_google_product_xml((int)$_GET['deleteid'], "DELETE");
+		$xml = foxyshop_google_product_xml((int)sanitize_text_field($_GET['deleteid']), "DELETE");
 		delete_post_meta((int)sanitize_text_field($_GET['deleteid']), '_google_product_listed');
 	}
 
@@ -725,7 +725,7 @@ function foxyshop_manage_google_feed() {
 		$writexml .= $xml;
 		$writexml .= '</feed>';
 		if (isset($_REQUEST['debug'])) {
-			echo "<form><button type=\"button\" onclick=\"location.href = 'edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1&debug=1$error';\">Continue</button></form>";
+			echo "<form><button type=\"button\" onclick=\"location.href = 'edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1&debug=1" . esc_attr($error) . "';\">Continue</button></form>";
 			echo "<b>Submitted XML:</b><br /><br /><form><textarea style=\"width: 80%; height: 350px;\">".esc_textarea($writexml)."</textarea></form><br /><br />";
 		}
 
@@ -761,22 +761,22 @@ function foxyshop_manage_google_feed() {
 		}
 
 		if (isset($_REQUEST['debug'])) {
-			if ($error) echo "<b>Error: </b> $error<br /><br />";
+			if ($error) echo "<b>Error: </b> " . wp_kses_post($error) . "<br /><br />";
 			echo "<b>Returned Data:</b><br /><br />";
 
 			echo "<form><textarea style=\"width: 80%; height: 350px;\">";
-			print_r(esc_textarea($xml));
+			print_r(esc_xml($xml));
 			echo "</textarea></form><br /><br />";
 
 			echo "<b>Returned Data (raw XML):</b><br /><br />";
 			echo "<form><textarea style=\"width: 80%; height: 350px;\">" . esc_textarea($response);
 			echo "</textarea></form>";
 
-			echo "<br /><form><button type=\"button\" onclick=\"location.href = 'edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1&debug=1$error';\">Continue</button></form>";
+			echo "<br /><form><button type=\"button\" onclick=\"location.href = 'edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1&debug=1" . esc_attr($error) . "';\">Continue</button></form>";
 			die;
 		}
 
-		wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1'.$error);
+		wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1'.esc_attr($error));
 		die;
 
 	}

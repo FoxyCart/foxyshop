@@ -7,10 +7,7 @@ if (!defined('ABSPATH')) exit();
 add_action('wp_ajax_save_inventory_values', 'foxyshop_save_inventory_values_ajax');
 function foxyshop_save_inventory_values_ajax() {
 	if (!check_admin_referer('update-foxyshop-inventory')) return;
-	$_POST['code'] = sanitize_text_field($_POST['code']);
-	$_POST['new_count'] = sanitize_text_field($_POST['new_count']);
-	$_POST['product_id'] = sanitize_text_field($_POST['product_id']);
-	foxyshop_inventory_count_update($_POST['code'], $_POST['new_count'], $_POST['product_id'], true);
+	foxyshop_inventory_count_update(sanitize_text_field($_POST['code']), sanitize_text_field($_POST['new_count']), sanitize_text_field($_POST['product_id']), true);
 	die;
 }
 
@@ -21,11 +18,10 @@ function foxyshop_inventory_update() {
 
 	//Saving Values From Uploaded Data
 	if (isset($_POST['foxyshop_inventory_updates'])) {
-	$_POST['foxyshop_inventory_updates'] = sanitize_textarea_field($_POST['foxyshop_inventory_updates']);
 
 		if (!check_admin_referer('import-foxyshop-inventory-updates')) return;
 
-		$lines = preg_split("/(\r\n|\n|\r)/", $_POST['foxyshop_inventory_updates']);
+		$lines = preg_split("/(\r\n|\n|\r)/", sanitize_textarea_field($_POST['foxyshop_inventory_updates']));
 		$save_count = 0;
 		foreach ($lines as $line) {
 			$line = explode("\t", $line);
@@ -132,24 +128,24 @@ function foxyshop_inventory_management_page() {
 					if ($inventory_count <= $inventory_alert) $grade = "X";
 					if ($inventory_count <= 0) $grade = "U";
 					echo '<tr>'."\n";
-					echo '<td><strong>' . $product['id'] . '</strong></td>'."\n";
-					echo '<td><strong><a href="post.php?post=' . $product['id'] . '&action=edit" tabindex="1">' . $product['name'] . '</a></strong></td>'."\n";
-					echo '<td>' . $ivcode . '</td>'."\n";
-					echo '<td>' . $variation . '</td>'."\n";
+					echo '<td><strong>' . wp_kses($product['id'], []) . '</strong></td>'."\n";
+					echo '<td><strong><a href="post.php?post=' . esc_attr($product['id']) . '&action=edit" tabindex="1">' . wp_kses_post($product['name']) . '</a></strong></td>'."\n";
+					echo '<td>' . wp_kses($ivcode, []) . '</td>'."\n";
+					echo '<td>' . wp_kses($variation, []) . '</td>'."\n";
 
 					//The Form
 					echo '<td>';
 					echo '<form>';
-					echo '<input type="hidden" name="original_count_' . $i . '" id="original_count_' . $i . '" value="' . $inventory_count . '" />';
-					echo '<input type="hidden" name="productid_' . $i . '" id="productid_' . $i . '" value="' . $single_product->ID . '" />';
-					echo '<input type="hidden" name="code_' . $i . '" id="code_' . $i . '" value="' . $ivcode . '" />';
-					echo '<input type="text" name="new_count_' . $i . '" id="new_count_' . $i . '" value="' . $inventory_count . '" data-id="' . $i . '" class="inventory_update_width" autocomplete="off" />';
-					echo '<div class="foxyshop_wait" id="wait_' . $i . '"></div>';
+					echo '<input type="hidden" name="original_count_' . esc_attr($i) . '" id="original_count_' . esc_attr($i) . '" value="' . esc_attr($inventory_count) . '" />';
+					echo '<input type="hidden" name="productid_' . esc_attr($i) . '" id="productid_' . esc_attr($i) . '" value="' . esc_attr($single_product->ID) . '" />';
+					echo '<input type="hidden" name="code_' . esc_attr($i) . '" id="code_' . esc_attr($i) . '" value="' . esc_attr($ivcode) . '" />';
+					echo '<input type="text" name="new_count_' . esc_attr($i) . '" id="new_count_' . esc_attr($i) . '" value="' . esc_attr($inventory_count) . '" data-id="' . esc_attr($i) . '" class="inventory_update_width" autocomplete="off" />';
+					echo '<div class="foxyshop_wait" id="wait_' . esc_attr($i) . '"></div>';
 					echo "</form>\n";
 					echo "</td>\n";
 
-					echo '<td id="current_inventory_' . $i . '" class="inventory' . $grade . '">' . $inventory_count . '</td>'."\n";
-					echo '<td id="current_inventory_alert_' . $i . '">' . $inventory_alert . '</td>'."\n";
+					echo '<td id="current_inventory_' . esc_attr($i) . '" class="inventory' . esc_attr($grade) . '">' . wp_kses($inventory_count, []) . '</td>'."\n";
+					echo '<td id="current_inventory_alert_' . esc_attr($i) . '">' . wp_kses($inventory_alert, []) . '</td>'."\n";
 					echo '</tr>'."\n";
 				}
 			}
@@ -191,7 +187,7 @@ function foxyshop_inventory_management_page() {
 
 
 <?php
-function inline_inventory_js() {
+function foxyshop_inline_inventory_js() {
    echo "<script type='text/javascript'>
 jQuery(document).ready(function($){
 	$(\".inventory_update_width\").blur(function() {
@@ -246,6 +242,6 @@ jQuery(document).ready(function($){
 function foxyshop_format_number_single(num) { num = num.toString().replace(/\$|\,/g,''); if(isNaN(num)) num = \"0\"; sign = (num == (num = Math.abs(num))); num = Math.floor(num*100+0.50000000001); cents = num%100; num = Math.floor(num/100).toString(); if(cents<10) cents = \"0\" + cents; for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++) num = num.substring(0,num.length-(4*i+3))+','+ num.substring(num.length-(4*i+3)); return (((sign)?'':'-') + num); }
 </script>";
 }
-add_action( 'admin_print_footer_scripts', 'inline_inventory_js' );
+add_action( 'admin_print_footer_scripts', 'foxyshop_inline_inventory_js' );
 }
 ?>

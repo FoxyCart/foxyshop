@@ -31,8 +31,8 @@ class FoxyShop_Category extends WP_Widget {
 		$showAddToCart = isset($instance['showAddToCart']) ? $instance['showAddToCart'] : false;
 		$showMax = $instance['showMax'] > 0 ? $instance['showMax'] : -1;
 
-		echo ($before_widget);
-		if ($title) echo ($before_title . $title . $after_title);
+		echo foxy_wp_html($before_widget);
+		if ($title) echo foxy_wp_html($before_title . $title . $after_title);
 
 		if ($instance['simpleView']) {
 			echo ('<div class="foxyshop_category_simple_widget">');
@@ -43,7 +43,7 @@ class FoxyShop_Category extends WP_Widget {
 			foxyshop_featured_category($categoryName, $showAddToCart, $showMoreDetails, $showMax);
 			echo ('</div>');
 		}
-		echo ($after_widget);
+		echo foxy_wp_html($after_widget);
 	}
 
 	//Update Widget Settings
@@ -149,13 +149,13 @@ class FoxyShop_Cart_Link extends WP_Widget {
 		$linkText = $instance['linkText'];
 		$hideEmpty = isset($instance['hideEmpty']) ? $instance['hideEmpty'] : false;
 
-		echo ($before_widget);
-		if ($title) echo ($before_title . $title . $after_title);
+		echo foxy_wp_html($before_widget);
+		if ($title) echo foxy_wp_html($before_title . $title . $after_title);
 
 		echo ('<ul class="foxyshop_cart_link_widget"><li>');
 		foxyshop_cart_link($linkText, $hideEmpty);
 		echo ('</li></ul>');
-		echo ($after_widget);
+		echo foxy_wp_html($after_widget);
 	}
 
 	//Update Widget Settings
@@ -222,14 +222,14 @@ class FoxyShop_Category_List extends WP_Widget {
 		$depth = $instance['depth'];
 		if ($depth == "") $depth = 1;
 
-		echo ($before_widget);
-		if ($title) echo ($before_title . $title . $after_title);
+		echo foxy_wp_html($before_widget);
+		if ($title) echo foxy_wp_html($before_title . $title . $after_title);
 
 		echo ('<ul>');
 		foxyshop_simple_category_children($categoryID, $depth);
 		echo ('</ul>');
 
-		echo ($after_widget);
+		echo foxy_wp_html($after_widget);
 	}
 
 	//Update Widget Settings
@@ -311,7 +311,7 @@ function add_foxyshop_dashboard_stats() {
 
 function foxyshop_dashboard_stats() {
 	echo '<div id="foxyshop_statsright">'."\n";
-	echo '<img src="' . FOXYSHOP_DIR . '/images/logo.png" alt="FoxyShop" style="width: 100%; max-width: 230px; float: right;" />'."\n";
+	echo '<img src="' . esc_url(FOXYSHOP_DIR) . '/images/logo.png" alt="FoxyShop" style="width: 100%; max-width: 230px; float: right;" />'."\n";
 	echo '</div>';
 
 	echo '<div id="foxyshop_statsleft">'."\n";
@@ -324,10 +324,10 @@ function foxyshop_dashboard_stats() {
 	$count_posts = wp_count_posts('foxyshop_product');
 	$tax = get_terms('foxyshop_categories', array("hide_empty" => 0));
 
-	echo '<h4 style="margin-top: 24px;">' . FOXYSHOP_PRODUCT_NAME_SINGULAR . ' ' . __('Summary', 'foxyshop') . '</h4>';
+	echo '<h4 style="margin-top: 24px;">' . esc_html(FOXYSHOP_PRODUCT_NAME_SINGULAR) . ' ' . __('Summary', 'foxyshop') . '</h4>';
 	echo '<ul>';
-	echo '<li><a href="edit.php?post_type=foxyshop_product">' . $count_posts->publish . ' ' . ($count_posts->publish == 1 ? FOXYSHOP_PRODUCT_NAME_SINGULAR : FOXYSHOP_PRODUCT_NAME_PLURAL) . '</a></li>';
-	echo '<li><a href="edit-tags.php?taxonomy=foxyshop_categories&post_type=foxyshop_product">' . count($tax) . ' ' . FOXYSHOP_PRODUCT_NAME_SINGULAR . ' ' . _n('Category', 'Categories', count($tax), 'foxyshop') . '</a></li>';
+	echo '<li><a href="edit.php?post_type=foxyshop_product">' . $count_posts->publish . ' ' . esc_html($count_posts->publish == 1 ? FOXYSHOP_PRODUCT_NAME_SINGULAR : FOXYSHOP_PRODUCT_NAME_PLURAL) . '</a></li>';
+	echo '<li><a href="edit-tags.php?taxonomy=foxyshop_categories&post_type=foxyshop_product">' . count($tax) . ' ' . esc_html(FOXYSHOP_PRODUCT_NAME_SINGULAR) . ' ' . _n('Category', 'Categories', count($tax), 'foxyshop') . '</a></li>';
 	echo '</ul>';
 
 	echo '</div>'."\n";
@@ -335,7 +335,7 @@ function foxyshop_dashboard_stats() {
 
 	<?php
 
-function inline_dashboard_stats_js() {
+function foxyshop_inline_dashboard_stats_js() {
    echo "<script type='text/javascript'>
 jQuery(document).ready(function($){
 		$.post(ajaxurl, { action: 'foxyshop_order_history_dashboard_action', security: '" . wp_create_nonce("foxyshop-order-info-dashboard") . "' }, function(response) {
@@ -344,7 +344,7 @@ jQuery(document).ready(function($){
 	});
 </script>";
 }
-add_action( 'admin_print_footer_scripts', 'inline_dashboard_stats_js' );
+add_action( 'admin_print_footer_scripts', 'foxyshop_inline_dashboard_stats_js' );
 
 	echo '<div style="clear: both;"></div>'."\n";
 }
@@ -398,8 +398,8 @@ function foxyshop_order_history_dashboard_ajax() {
 		}
 	}
 
-	echo '<li>' . __('One Day', 'foxyshop') . ': <a href="edit.php?foxyshop_search=1&amp;is_test_filter=&amp;post_type=foxyshop_product&amp;page=foxyshop_order_management&amp;transaction_date_filter_begin=' . date("Y-m-d", strtotime("-1 day")) . '&amp;transaction_date_filter_end='.date("Y-m-d") . '">' . $orderstats[1][0] . ' ' . _n('order', 'orders', $orderstats[1][0], 'foxyshop') . ', ' . foxyshop_currency($orderstats[1][1]) . '</a></li>'."\n";
-	echo '<li>' . __('Seven Days', 'foxyshop') . ': <a href="edit.php?foxyshop_search=1&amp;is_test_filter=&amp;post_type=foxyshop_product&amp;page=foxyshop_order_management&amp;transaction_date_filter_begin=' . date("Y-m-d", strtotime("-7 days")) . '&amp;transaction_date_filter_end='.date("Y-m-d") . '">' . $orderstats[7][0] . ' ' . _n('order', 'orders', $orderstats[7][0], 'foxyshop') . ', ' . foxyshop_currency($orderstats[7][1]) . '</a></li>'."\n";
-	echo '<li>' . __('30 Days', 'foxyshop') . ': <a href="edit.php?foxyshop_search=1&amp;is_test_filter=&amp;post_type=foxyshop_product&amp;page=foxyshop_order_management&amp;transaction_date_filter_begin=' . date("Y-m-d", strtotime("-30 days")) . '&amp;transaction_date_filter_end='.date("Y-m-d") . '">' . $orderstats[30][0] . ' ' . _n('order', 'orders', $orderstats[30][0], 'foxyshop') . ', ' . foxyshop_currency($orderstats[30][1]) . '</a></li>'."\n";
+	echo '<li>' . __('One Day', 'foxyshop') . ': <a href="edit.php?foxyshop_search=1&amp;is_test_filter=&amp;post_type=foxyshop_product&amp;page=foxyshop_order_management&amp;transaction_date_filter_begin=' . date("Y-m-d", strtotime("-1 day")) . '&amp;transaction_date_filter_end='.date("Y-m-d") . '">' . esc_attr($orderstats[1][0]) . ' ' . _n('order', 'orders', esc_attr($orderstats[1][0]), 'foxyshop') . ', ' . esc_html(foxyshop_currency($orderstats[1][1])) . '</a></li>'."\n";
+	echo '<li>' . __('Seven Days', 'foxyshop') . ': <a href="edit.php?foxyshop_search=1&amp;is_test_filter=&amp;post_type=foxyshop_product&amp;page=foxyshop_order_management&amp;transaction_date_filter_begin=' . date("Y-m-d", strtotime("-7 days")) . '&amp;transaction_date_filter_end='.date("Y-m-d") . '">' . esc_attr($orderstats[7][0]) . ' ' . _n('order', 'orders', esc_attr($orderstats[7][0]), 'foxyshop') . ', ' . esc_html(foxyshop_currency($orderstats[7][1])) . '</a></li>'."\n";
+	echo '<li>' . __('30 Days', 'foxyshop') . ': <a href="edit.php?foxyshop_search=1&amp;is_test_filter=&amp;post_type=foxyshop_product&amp;page=foxyshop_order_management&amp;transaction_date_filter_begin=' . date("Y-m-d", strtotime("-30 days")) . '&amp;transaction_date_filter_end='.date("Y-m-d") . '">' . esc_attr($orderstats[30][0]) . ' ' . _n('order', 'orders', esc_attr($orderstats[30][0]), 'foxyshop') . ', ' . esc_html(foxyshop_currency($orderstats[30][1])) . '</a></li>'."\n";
 	die;
 }
