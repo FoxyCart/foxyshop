@@ -114,7 +114,7 @@ function foxyshop_login_head() { ?>
 	</style><?php
 }
 function foxyshop_login_message() {
-	$message = '<p class="custom-message">' . __('Please login before checking out.', 'foxyshop') . ' <a href="' . get_bloginfo("wpurl") . '/wp-login.php?action=register">' . __('Click here to register.', 'foxyshop') . '</a></p><br />';
+	$message = '<p class="custom-message">' . __('Please login before checking out.', 'foxyshop') . ' <a href="' . esc_url(get_bloginfo("wpurl")) . '/wp-login.php?action=register">' . __('Click here to register.', 'foxyshop') . '</a></p><br />';
 	return $message;
 }
 
@@ -170,7 +170,7 @@ function foxyshop_action_show_user_profile($user) {
 		$sub_token = str_replace('https://'.$foxyshop_settings['domain'].'/cart?sub_token=', "", $val['sub_token_url']);
 	?>
         <tr class="alternate">
-            <td class="column-columnname"><?php echo esc_attr($key); ?></td>
+            <td class="column-columnname"><?php echo esc_html($key); ?></td>
             <td class="column-columnname"><?php echo ($val['is_active'] == 1 ? __('Yes', 'foxyshop') : __('No', 'foxyshop')); ?></td>
             <td class="column-columnname"><a href="<?php echo esc_url($val['sub_token_url']); ?>&amp;cart=checkout" target="_blank"><?php _e('Update Info', 'foxyshop');?></a> | <a href="<?php echo esc_url($val['sub_token_url']); ?>&amp;sub_cancel=true&amp;cart=checkout" target="_blank"><?php _e('Cancel', 'foxyshop');?></a></td>
         </tr>

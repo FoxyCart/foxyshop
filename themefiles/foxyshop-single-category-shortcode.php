@@ -29,7 +29,7 @@ global $product, $foxyshop_category_slug, $post;
 	//echo '<h1 id="foxyshop_category_title">' . str_replace("_","",$currentCategoryName) . '</h1>'."\n";
 
 	//If there's a category description, write it here
-	if ($currentCategoryDescription) echo '<p>' . $currentCategoryDescription . '</p>'."\n";
+	if ($currentCategoryDescription) echo '<p>' . wp_kses_post($currentCategoryDescription) . '</p>'."\n";
 
 
 	//Run the query for all products in this category

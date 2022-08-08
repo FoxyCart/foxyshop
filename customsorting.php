@@ -41,7 +41,7 @@ function foxyshop_update_order() {
 			$post_id = (int)str_replace(array("'", "id_"), "", $IDs[$i]);
 			$categoryID = (int)sanitize_text_field($_POST['categoryID']);
 			if ($categoryID == 0) {
-				$wpdb->query("UPDATE $wpdb->posts SET menu_order = '$i' WHERE id = $post_id");
+				$wpdb->query("UPDATE $wpdb->posts SET menu_order = '" . esc_sql($i) . "' WHERE id = '" . esc_sql($post_id) . "'");
 			} else {
 				update_post_meta($post_id, "_foxyshop_menu_order_" . $categoryID, $i);
 			}
@@ -63,7 +63,7 @@ function foxyshop_revert_order() {
 		$post_id = (int)str_replace(array("'", "id_"), "", $IDs[$i]);
 		$categoryID = (int)sanitize_text_field($_POST['categoryID']);
 		if ($categoryID == 0) {
-			$wpdb->query("UPDATE $wpdb->posts SET menu_order = '0' WHERE id = $post_id");
+			$wpdb->query("UPDATE $wpdb->posts SET menu_order = '0' WHERE id = '" . esc_sql($post_id) . "'");
 		} else {
 			update_post_meta($post_id, "_foxyshop_menu_order_" . $categoryID, 0);
 		}
@@ -108,7 +108,7 @@ function foxyshop_custom_sort() {
 		echo ('<select name="categoryID" id="categoryID">'."\n");
 		echo ('<option value="0"' . ($categoryID == 0 ? ' selected="selected"' : '') . '>' . __('All', 'foxyshop') . ' ' . FOXYSHOP_PRODUCT_NAME_PLURAL . '</option>'."\n");
 		foreach($product_categories as $cat) {
-			echo ('<option value="' . esc_attr($cat->term_id) . '"' . ($categoryID == $cat->term_id ? ' selected="selected"' : '') . '>' . esc_html($cat->name) . ' (' . esc_html($cat->count) . ')' . '</option>'."\n");
+			echo ('<option value="' . esc_attr($cat->term_id) . '"' . ($categoryID == $cat->term_id ? ' selected="selected"' : '') . '>' . esc_html($cat->name . ' (' . $cat->count . ')') . '</option>'."\n");
 		}
 		echo ('</select>'."\n");
 		echo ('<input type="submit" name="btnSubPages" class="button" id="btnSubPages" value="' . __('Select Category', 'foxyshop') . '" /></form>');
@@ -161,7 +161,7 @@ function foxyshop_custom_sort() {
 				echo ('<img src="' . esc_url(foxyshop_get_main_image()) . '" />');
 				echo ('<h4>' . esc_html($prod->post_title) . '</h4>'."\n");
 				echo wp_kses_post(foxyshop_price());
-				echo ('<div class="counter">' . esc_attr($current_count + 1) . '</div>');
+				echo ('<div class="counter">' . esc_html($current_count + 1) . '</div>');
 				echo ('<div style="clear: both; height: 1px;"></div>'."\n");
 				echo ('</li>'."\n");
 			}

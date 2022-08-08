@@ -43,8 +43,8 @@ function foxyshop_cfbe_metabox($post_type) {
 								$shipping_category_name = trim($shipping_category[0]);
 							}
 							echo '<option value="' . esc_attr($shipping_category_code) . '"';
-							if (esc_attr($shipping_category_code == $_category)) echo ' selected="selected"';
-							echo '>' . esc_attr($shipping_category_name) . '</option>';
+							if ($shipping_category_code == $_category) echo ' selected="selected"';
+							echo '>' . esc_html($shipping_category_name) . '</option>';
 							echo "\n";
 						}
 						?>
@@ -283,7 +283,7 @@ function foxyshop_cfbe_metabox($post_type) {
 					$args = array('post_type' => 'foxyshop_product', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC');
 					$all_products = get_posts($args);
 					foreach ($all_products as $product) {
-						$all_product_list .= '<option value="' . $product->ID . '">' . $product->post_title . '</option>'."\n";
+						$all_product_list .= '<option value="' . esc_attr($product->ID) . '">' . esc_html($product->post_title) . '</option>'."\n";
 					}?>
 
 					<label for="_related_products_list" class="cfbe_special_label"><?php _e('Related Products', 'foxyshop'); ?></label>
@@ -463,21 +463,21 @@ function foxyshop_cfbe_save($post_type, $post_id) {
 	}
 	if ($_POST['_related_products_status'] == 1) {
 		if (isset($_POST['_related_products_list'])) {
-			cfbe_save_meta_data('_related_products',sanitize_text_field(implode(",",$_POST['_related_products_list'])));
+			cfbe_save_meta_data('_related_products', sanitize_text_field(implode(",",$_POST['_related_products_list'])));
 		} else {
 			cfbe_save_meta_data('_related_products',"");
 		}
 	}
 	if ($_POST['_bundled_products_status'] == 1) {
 		if (isset($_POST['_bundled_products_list'])) {
-			cfbe_save_meta_data('_bundled_products',sanitize_text_field(implode(",",$_POST['_bundled_products_list'])));
+			cfbe_save_meta_data('_bundled_products', sanitize_text_field(implode(",",$_POST['_bundled_products_list'])));
 		} else {
 			cfbe_save_meta_data('_bundled_products',"");
 		}
 	}
 	if ($_POST['_addon_products_status'] == 1) {
 		if (isset($_POST['_addon_products_list'])) {
-			cfbe_save_meta_data('_addon_products',sanitize_text_field(implode(",",$_POST['_addon_products_list'])));
+			cfbe_save_meta_data('_addon_products', sanitize_text_field(implode(",",$_POST['_addon_products_list'])));
 		} else {
 			cfbe_save_meta_data('_addon_products',"");
 		}

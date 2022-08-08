@@ -22,7 +22,7 @@ if (isset($_GET['fcsid']) && isset($_GET['timestamp'])) {
 		//Force a Straight Redirect
 		if ($foxyshop_settings['sso_account_required'] == 1) {
 			$redirect_to = get_bloginfo('url') . '/foxycart-sso-' . $foxyshop_settings['datafeed_url_key'] . '/?timestamp=' . sanitize_text_field($_GET['timestamp']) . '&fcsid=' . sanitize_text_field($_GET['fcsid']);
-			header('Location: ' . $login_url . '?redirect_to=' . urlencode($redirect_to) . '&foxycart_checkout=1&reauth=1');
+			header('Location: ' . esc_url($login_url . '?redirect_to=' . urlencode(esc_url($redirect_to)) . '&foxycart_checkout=1&reauth=1'));
 			die;
 
 		//Check Cart Contents to Decide on Redirect
@@ -31,9 +31,9 @@ if (isset($_GET['fcsid']) && isset($_GET['timestamp'])) {
 			if (!defined('FOXYSHOP_CURL_CONNECTTIMEOUT')) define('FOXYSHOP_CURL_CONNECTTIMEOUT', 10);
 			if (!defined('FOXYSHOP_CURL_TIMEOUT')) define('FOXYSHOP_CURL_TIMEOUT', 15);
 
-			$args = array( 
+			$args = array(
 				"timeout" => !defined('FOXYSHOP_CURL_TIMEOUT') ? 15 : FOXYSHOP_CURL_TIMEOUT,
-				"method" => "POST", 
+				"method" => "POST",
 				"sslverify" => defined('FOXYSHOP_CURL_SSL_VERIFYPEER') ? FOXYSHOP_CURL_SSL_VERIFYPEER : 1,
 				"body" => $foxyData,
 			);
@@ -43,7 +43,7 @@ if (isset($_GET['fcsid']) && isset($_GET['timestamp'])) {
 			if (is_wp_error($response)) {
 				die();
 			}
-  
+
 			$curlout = trim($response['body']);
 			$sso_required = 0;
 			if ($curlout) {
@@ -82,7 +82,7 @@ if (isset($_GET['fcsid']) && isset($_GET['timestamp'])) {
 			//Do the Signup Redirect
 			if ($sso_required) {
 				$redirect_to = get_bloginfo('url') . '/foxycart-sso-' . $foxyshop_settings['datafeed_url_key'] . '/?timestamp=' . sanitize_text_field($_GET['timestamp']) . '&fcsid=' . sanitize_text_field($_GET['fcsid']);
-				header('Location: ' . $login_url . '?redirect_to=' . urlencode($redirect_to) . '&foxycart_checkout=1&reauth=1');
+				header('Location: ' . esc_url($login_url . '?redirect_to=' . urlencode(esc_url($redirect_to)) . '&foxycart_checkout=1&reauth=1'));
 				die;
 
 			//No Redirect Required

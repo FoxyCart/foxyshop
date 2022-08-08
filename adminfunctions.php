@@ -593,7 +593,7 @@ function foxyshop_get_category_list($output_type = "") {
 		if ($output_type == "") {
 			$output .= "$code|$description|$product_delivery_type\n";
 		} elseif ($output_type == "select") {
-			$output .= '<option value="' . htmlspecialchars($code) . '">' . htmlspecialchars($description) . '</option>' . "\n";
+			$output .= '<option value="' . esc_attr($code) . '">' . esc_html($description) . '</option>' . "\n";
 		}
 	}
 
@@ -697,10 +697,10 @@ function foxyshop_api_paging_nav($type, $position, $xml, $querystring) {
 		echo ('<a href="edit.php' . esc_attr($querystring) . '&amp;pagination_start=' . esc_attr($pagination_start - $p + $start_offset) . '" title="Go to the previous page" class="prev-page' . ($current_page == 1 ? ' disabled' : '') . '">&lsaquo;</a>'."\n");
 
 		//Enter Page
-		echo ('<span class="paging-input"><input type="text" size="1" class="foxyshop_paged_number" value="' . $current_page . '" name="paged-' . $position . '" title="Current page" class="current-page"> of <span class="total-pages">' . $total_pages . '</span></span>'."\n");
+		echo ('<span class="paging-input"><input type="text" size="1" class="foxyshop_paged_number" value="' . esc_attr($current_page) . '" name="paged-' . esc_attr($position) . '" title="Current page" class="current-page"> of <span class="total-pages">' . esc_html($total_pages) . '</span></span>'."\n");
 
 		//Next
-		echo ('<a href="edit.php' . esc_attr($querystring) . '&amp;pagination_start=' .esc_attr ($pagination_end + 1 + $start_offset) . '" title="Go to the next page" class="next-page' . ($filtered_total <= $pagination_end ? ' disabled' : '') . '">&rsaquo;</a>'."\n");
+		echo ('<a href="edit.php' . esc_attr($querystring) . '&amp;pagination_start=' . esc_attr($pagination_end + 1 + $start_offset) . '" title="Go to the next page" class="next-page' . ($filtered_total <= $pagination_end ? ' disabled' : '') . '">&rsaquo;</a>'."\n");
 
 		//Last
 		echo ('<a href="edit.php' . esc_attr($querystring) . '&amp;pagination_start=' . esc_attr((($total_pages - 1) * $p) + 1 + $start_offset) . '" title="Go to the last page" class="last-page' . ($filtered_total <= $pagination_end ? ' disabled' : '') . '">&raquo;</a></span>'."\n");
@@ -767,12 +767,12 @@ function foxyshop_manage_attributes($xml, $id, $att_type) {
 		$attribute_value = (string)$attribute->value;
 
 		$holder .= '<tr class="viewing">';
-		$holder .= '<td class="col1">' . htmlspecialchars($attribute_name) . '</td>';
-		$holder .= '<td class="col2"><div>' . str_replace("\n", "<br />\n", $attribute_value) . '</div><a href="#" class="foxyshop_attribute_delete" attname="' . htmlspecialchars($attribute_name) . '" rel="' . $id . '" title="Delete">' . __('Delete', 'foxyshop') . '</a><a href="#" class="foxyshop_attribute_edit" rel="' . $id . '" title="Edit">' . __('Edit', 'foxyshop') . '</a></td>'."\n";
+		$holder .= '<td class="col1">' . esc_html($attribute_name) . '</td>';
+		$holder .= '<td class="col2"><div>' . str_replace("\n", "<br />\n", esc_html($attribute_value)) . '</div><a href="#" class="foxyshop_attribute_delete" attname="' . esc_attr($attribute_name) . '" rel="' . esc_attr($id) . '" title="Delete">' . __('Delete', 'foxyshop') . '</a><a href="#" class="foxyshop_attribute_edit" rel="' . esc_attr($id) . '" title="Edit">' . __('Edit', 'foxyshop') . '</a></td>'."\n";
 		$holder .= '</tr>';
 	}
 	$holder .= "</tbody></table>\n";
-	$holder .= '<input type="button" value="' . __('Add Attribute', 'foxyshop') . '" class="button foxyshop_add_attribute" rel="' . $id . '" />'."\n";
+	$holder .= '<input type="button" value="' . __('Add Attribute', 'foxyshop') . '" class="button foxyshop_add_attribute" rel="' . esc_attr($id) . '" />'."\n";
 	return $holder;
 }
 

@@ -157,7 +157,7 @@ function foxyshop_customer_management() {
 			echo ('</tr>'."\n");
 
 
-			$holder .= '<div class="detail_holder" id="holder_' . $customer_id. '">'."\n";
+			$holder .= '<div class="detail_holder" id="holder_' . esc_attr($customer_id). '">'."\n";
 
 			//Customer Details
 			$holder .= '<div class="foxyshop_list_col">';

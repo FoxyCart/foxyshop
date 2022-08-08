@@ -240,19 +240,19 @@ function foxyshop_google_product_xml($id, $batch_process = "") {
 			$xml .= "<id>https://content.googleapis.com/content/v1/" . $foxyshop_settings['google_product_merchant_id'] . "/items/products/schema/" . $id . "</id>\n";
 		}
 		if ($batch_process) $xml .= "<batch:operation type='$batch_process'/>\n";
-		$xml .= '<title>' . esc_attr(trim($product['name'])) . '</title>'."\n";
-		$xml .= '<content type="text"><![CDATA[' . esc_attr($product['description']) . ']]></content>'."\n";
-		$xml .= '<sc:id>' . esc_attr($product['id']) . '</sc:id>'."\n";
-		$xml .= '<sc:availability>' . esc_attr($availability) . '</sc:availability>'."\n";
-		$xml .= '<link rel="alternate" type="text/html" href="' . esc_attr($product['url']) . '"/>'."\n";
-		$xml .= '<sc:image_link>' . foxyshop_get_main_image('large') . '</sc:image_link>'."\n";
+		$xml .= '<title>' . esc_html(trim($product['name'])) . '</title>'."\n";
+		$xml .= '<content type="text"><![CDATA[' . foxy_wp_html($product['description']) . ']]></content>'."\n";
+		$xml .= '<sc:id>' . esc_html($product['id']) . '</sc:id>'."\n";
+		$xml .= '<sc:availability>' . esc_html($availability) . '</sc:availability>'."\n";
+		$xml .= '<link rel="alternate" type="text/html" href="' . esc_url($product['url']) . '"/>'."\n";
+		$xml .= '<sc:image_link>' . esc_url(foxyshop_get_main_image('large')) . '</sc:image_link>'."\n";
 
 		//Additional Images
 		$number_of_additional_images = 0;
 		foreach($product['images'] AS $product_image) {
 			$number_of_additional_images++;
 			if ($product_image['featured'] == 0 && $number_of_additional_images <= 10) {
-				'<sc:additional_image_link>' . $product_image['large'] . '</sc:additional_image_link>'."\n";
+				'<sc:additional_image_link>' . esc_url($product_image['large']) . '</sc:additional_image_link>'."\n";
 			}
 		}
 
@@ -272,7 +272,7 @@ function foxyshop_google_product_xml($id, $batch_process = "") {
 			if ($field == 'condition') $val = $condition;
 			if ($field == 'gtin' && !$val && $identifier_exists) $val = $product['code'];
 			if ($field == 'mpn' && !$val && $identifier_exists) $val = $product['code'];
-			if ($val) $xml .= '<scp:'.$field.'>' . esc_attr($val) . '</scp:'.$field.'>'."\n";
+			if ($val) $xml .= '<scp:'.$field.'>' . esc_html($val) . '</scp:'.$field.'>'."\n";
 		}
 
 		//No GTIN or MPN
@@ -281,12 +281,12 @@ function foxyshop_google_product_xml($id, $batch_process = "") {
 		}
 
 		$xml .= '<scp:availability>in stock</scp:availability>'."\n";
-		$xml .= '<scp:price unit="' . apply_filters("foxyshop_google_product_currency", "usd") . '">' . $product['originalprice'] . '</scp:price>'."\n";
+		$xml .= '<scp:price unit="' . apply_filters("foxyshop_google_product_currency", "usd") . '">' . esc_html($product['originalprice']) . '</scp:price>'."\n";
 		if ($product['originalprice'] != $product['price']) {
-			$xml .= '<scp:sale_price unit="' . apply_filters("foxyshop_google_product_currency", "usd") . '">' . $product['originalprice'] . '</scp:sale_price>'."\n";
+			$xml .= '<scp:sale_price unit="' . apply_filters("foxyshop_google_product_currency", "usd") . '">' . esc_html($product['originalprice']) . '</scp:sale_price>'."\n";
 			//$xml .= '<scp:sale_price_effective_date">' . $sale_price_effective_date . '</scp:sale_price_effective_date>'."\n";
 		}
-		if ($product_type_write) $xml .= '<scp:product_type>' . esc_attr($product_type_write) . '</scp:product_type>'."\n";
+		if ($product_type_write) $xml .= '<scp:product_type>' . esc_html($product_type_write) . '</scp:product_type>'."\n";
 		$xml .= '</entry>'."\n";
 	}
 	return $xml;
@@ -632,7 +632,7 @@ add_action( 'admin_print_footer_scripts', 'foxyshop_inline_googleproductfeed_js'
 					$beginningOK = (strtotime("now") > $salestartdate);
 					$endingOK = (strtotime("now") < ($saleenddate + 86400) || $saleenddate == 0);
 					if ($beginningOK && $endingOK || ($salestartdate == 0 && $saleenddate == 0)) {
-						$pricewrite = '<span style="text-decoration: line-through; margin-right: 10px;">' . foxyshop_currency($originalprice) . '</span><span style="color: red;">' . foxyshop_currency($saleprice) . '</span>';
+						$pricewrite = '<span style="text-decoration: line-through; margin-right: 10px;">' . esc_html(foxyshop_currency($originalprice)) . '</span><span style="color: red;">' . esc_html(foxyshop_currency($saleprice)) . '</span>';
 					} else {
 						$pricewrite = foxyshop_currency($originalprice);
 					}
@@ -643,7 +643,7 @@ add_action( 'admin_print_footer_scripts', 'foxyshop_inline_googleproductfeed_js'
 
 				echo ('<tr>'."\n");
 				echo ('<th class="check-column" scope="row"><input type="checkbox" value="' .esc_attr($product['id']) . '" name="post[]"></th>'."\n");
-				echo ('<td><strong>' . esc_attr($product['id']) . '</strong></td>'."\n");
+				echo ('<td><strong>' . esc_html($product['id']) . '</strong></td>'."\n");
 
 				echo ('<td><strong><a href="post.php?post=' . esc_attr($product['id']) . '&action=edit">' . esc_html($product['name']) . '</a></strong>');
 				echo ('<div class="row-actions">');
@@ -790,7 +790,7 @@ function foxyshop_manage_google_feed() {
 
 		$writexml = "<?xml version='1.0' encoding='UTF-8'?>\n";
 		$writexml .= "<feed xmlns='http://www.w3.org/2005/Atom' xmlns:batch='http://schemas.google.com/gdata/batch'>\n";
-		$writexml .= $xml;
+		$writexml .= esc_xml($xml);
 		$writexml .= '</feed>';
 		if (isset($_REQUEST['debug'])) {
 			echo ("<form><button type=\"button\" onclick=\"location.href = 'edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1&debug=1" . esc_attr($error) . "';\">Continue</button></form>");
@@ -839,7 +839,7 @@ function foxyshop_manage_google_feed() {
 			echo ("<form><textarea style=\"width: 80%; height: 350px;\">" . esc_textarea($response));
 			echo ("</textarea></form>");
 
-			echo ("<br /><form><button type=\"button\" onclick=\"location.href = 'edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1&debug=1$error';\">Continue</button></form>");
+			echo ("<br /><form><button type=\"button\" onclick=\"location.href = 'edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1&debug=1" . esc_attr($error) . "';\">Continue</button></form>");
 			die;
 		}
 

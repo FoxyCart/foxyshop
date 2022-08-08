@@ -19,7 +19,7 @@ This will allow you to upgrade FoxyShop without breaking your customizations. Mo
 
 	<?php
 	global $product;
-	$search = (isset($_REQUEST['search']) ? urlencode($_REQUEST['search']) : "sdafasdfasdfasdfasdfasdf");
+	$search = (isset($_REQUEST['search']) ? urlencode(sanitize_text_field($_REQUEST['search'])) : "sdafasdfasdfasdfasdfasdf");
 	$args = array('post_type' => 'foxyshop_product', 'post_status' => 'publish', 'posts_per_page' => foxyshop_products_per_page(), 's' => $search, 'paged' => get_query_var('paged'));
 	query_posts($args);
 	if (!have_posts() & isset($_REQUEST['search'])) {

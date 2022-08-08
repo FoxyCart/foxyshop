@@ -23,13 +23,13 @@ This will allow you to upgrade FoxyShop without breaking your customizations. Mo
 	$currentCategoryID = $term->term_id;
 
 	//Write Category Title
-	echo '<h1 id="foxyshop_category_title">' . str_replace("_","",$currentCategoryName) . '</h1>'."\n";
+	echo '<h1 id="foxyshop_category_title">' . str_replace("_","",wp_kses_post($currentCategoryName)) . '</h1>'."\n";
 
 	//Write Product Sort Dropdown
 	//foxyshop_sort_dropdown();
 
 	//If there's a category description, write it here
-	if ($currentCategoryDescription) echo '<p>' . $currentCategoryDescription . '</p>'."\n";
+	if ($currentCategoryDescription) echo '<p>' . wp_kses_post($currentCategoryDescription) . '</p>'."\n";
 
 	//Show Children Categories
 	foxyshop_category_children($currentCategoryID);

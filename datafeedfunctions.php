@@ -2,15 +2,32 @@
 //Exit if not called in proper context
 if (!defined('ABSPATH')) exit();
 
-//Decrypt Data From Source
-// Consider $src as UNTRUSTED
+/**
+ * Decrypt Data From Source
+ *
+ * NOTE: As the payloads needs to be decoded and decrypted, it can't be sanitised
+ * before this process is completed, so always consider the $src params as UNTRUSTED
+ *
+ * @param string $src UNTRUSTED urlencoded, rc4-ecnrypted payload
+ * @return string
+ */
 function foxyshop_decrypt($src) {
 	global $foxyshop_settings;
 	return rc4crypt::decrypt($foxyshop_settings['api_key'],urldecode($src));
 }
 
 
-//Push Feed to External Datafeeds
+/**
+ * Push Feed to External Datafeeds
+ *
+ * NOTE: As the external datafeeds need to receive an exact copy of the $_POST payload
+ * we need to make use of the $_POST without sanitising the value. This function deos
+ * still at least confirm that the payload decrypts correctly, is valid XML and includes
+ * the expected parent node before being used though.
+ *
+ * @param array $external_datafeeds Array of URLs to forward the raw $_POST value to
+ * @return null
+ */
 function foxyshop_run_external_datafeeds($external_datafeeds) {
 	global $foxyshop_settings;
 	if ($foxyshop_settings["orderdesk_url"]) {
@@ -25,22 +42,25 @@ function foxyshop_run_external_datafeeds($external_datafeeds) {
 	if (!isset($_POST["FoxyData"]) && !isset($_POST["FoxySubscriptionData"])) return;
 
 	$payload = [];
+	$untrusted_payload = "";
 	if(isset($_POST["FoxyData"])) {
 		// Confirm POST data is valid
-		$xml_decrypted = foxyshop_decrypt($_POST["FoxyData"]);
+		$untrusted_payload = $_POST["FoxyData"];
+		$xml_decrypted = foxyshop_decrypt($untrusted_payload);
 		$xml = simplexml_load_string($xml_decrypted, NULL, LIBXML_NOCDATA);
 		if (!isset($xml->transactions)) return;
 
 		// It's ok, so pass the raw data along to the external endpoints
-		$payload = array("FoxyData" => $_POST["FoxyData"]);
+		$payload = array("FoxyData" => $untrusted_payload);
 	} else if(isset($_POST["FoxySubscriptionData"])) {
 		// Confirm POST data is valid
-		$xml_decrypted = foxyshop_decrypt($_POST["FoxySubscriptionData"]);
+		$untrusted_payload = $_POST["FoxySubscriptionData"];
+		$xml_decrypted = foxyshop_decrypt($untrusted_payload);
 		$xml = simplexml_load_string($xml_decrypted, NULL, LIBXML_NOCDATA);
 		if (!isset($xml->subscriptions)) return;
 
 		// It's ok, so pass the raw data along to the external endpoints
-		$payload = array("FoxySubscriptionData" => $_POST["FoxySubscriptionData"]);
+		$payload = array("FoxySubscriptionData" => $untrusted_payload);
 	}
 
 	foreach($external_datafeeds as $feedurl) {
@@ -66,10 +86,10 @@ function foxyshop_run_external_datafeeds($external_datafeeds) {
 				$message = "A FoxyCart datafeed error was encountered at " . date("F j, Y, g:i a") . ".\n\n";
 				$message .= "The feed that failed was $feedurl\n\n";
 				$message .= "The error is listed below:\n\n";
-				$message .= $error_msg;
+				$message .= esc_html($error_msg);
 				//$message .= "\n\n" . print_r($_POST, 1);
 				//$message .= "\n\n" . print_r($_SERVER, 1);
-				$message .= "\n\n" . foxyshop_decrypt($_POST["FoxyData"]);
+				$message .= "\n\n" . esc_html(foxyshop_decrypt($untrusted_payload));
 				$headers = 'From: ' . get_bloginfo('name') . ' Server Admin <' . $to_email . '>' . "\r\n";
 				mail($to_email, 'Data Feed Error on ' . get_bloginfo('name'), $message, $headers);
 
@@ -113,13 +133,13 @@ function foxyshop_datafeed_inventory_update($xml) {
 
 						//Send Email Alert Email
 						if ($foxyshop_settings['inventory_alert_email'] && $new_count <= $alert_level) {
-							$subject_line = "Inventory Alert: " . $product_name;
+							$subject_line = "Inventory Alert: " . esc_html($product_name);
 							$to_email = apply_filters('foxyshop_inventory_alert_email', get_bloginfo('admin_email'));
 							$message = "The inventory for one of your products is getting low:\n\n";
-							$message .= "Product Name: $product_name\n";
-							$message .= "Product Code: $product_code\n";
-							$message .= "Current Inventory Level: $new_count\n";
-							$message .= "Inventory Alert Level: $alert_level\n";
+							$message .= "Product Name: " . esc_html($product_name) . "\n";
+							$message .= "Product Code: " . esc_html($product_code) . "\n";
+							$message .= "Current Inventory Level: " . esc_html($new_count) . "\n";
+							$message .= "Inventory Alert Level: " . esc_html($alert_level) . "\n";
 							$message .= "\n". get_bloginfo('wpurl') . "/wp-admin/edit.php?post_type=foxyshop_product\n";
 							$headers = 'From: ' . get_bloginfo('name') . ' <' . $to_email . '>' . "\r\n";
 							wp_mail($to_email, $subject_line, $message, $headers);
@@ -155,7 +175,7 @@ function foxyshop_datafeed_sso_update($xml) {
 			if ($sub_token_url != "") {
 
 				//Get WordPress User ID
-				$select_user = "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'foxycart_customer_id' AND meta_value = '$customer_id'";
+				$select_user = "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'foxycart_customer_id' AND meta_value = '" . esc_sql($customer_id) . "'";
 				$user_id = $wpdb->get_var($select_user);
 				if ($user_id) {
 
@@ -219,7 +239,7 @@ function foxyshop_datafeed_user_update($xml) {
 				add_user_meta($new_user_id, 'foxycart_customer_id', $customer_id, true);
 
 				//Set Password In WordPress Database
-				$wpdb->query("UPDATE $wpdb->users SET user_pass = '" . esc_sql($customer_password) . "' WHERE ID = $new_user_id");
+				$wpdb->query("UPDATE $wpdb->users SET user_pass = '" . esc_sql($customer_password) . "' WHERE ID = '" . esc_sql($new_user_id) . "'");
 
 				//Set Original Password at FoxyCart
 				//foxyshop_get_foxycart_data(array("api_action" => "customer_save", "customer_id" => $customer_id, "customer_password_hash" => $customer_password));
@@ -231,7 +251,7 @@ function foxyshop_datafeed_user_update($xml) {
 			} else {
 
 				//Set Password
-				$wpdb->query("UPDATE $wpdb->users SET user_pass = '" . esc_sql($customer_password) . "' WHERE ID = " . $current_user->ID);
+				$wpdb->query("UPDATE $wpdb->users SET user_pass = '" . esc_sql($customer_password) . "' WHERE ID = '" . esc_sql($current_user->ID) . "'");
 
 				//Update First Name and Last Name
 				$updated_user_id = wp_update_user(array(
@@ -241,7 +261,7 @@ function foxyshop_datafeed_user_update($xml) {
 				));
 
 				//Reset Password Again
-				$wpdb->query("UPDATE $wpdb->users SET user_pass = '" . esc_sql($customer_password) . "' WHERE ID = " . $current_user->ID);
+				$wpdb->query("UPDATE $wpdb->users SET user_pass = '" . esc_sql($customer_password) . "' WHERE ID = '" . esc_sql($current_user->ID) . "'");
 
 				//Add FoxyCart User ID if not added before
 				add_user_meta($current_user->ID, 'foxycart_customer_id', $customer_id, true);

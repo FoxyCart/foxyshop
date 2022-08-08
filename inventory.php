@@ -36,7 +36,7 @@ function foxyshop_inventory_update() {
 			foxyshop_inventory_count_update($productcode, $newcount, $productid);
 			$save_count++;
 		}
-		wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_inventory_management_page&importcompleted='.$save_count);
+		wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_inventory_management_page&importcompleted='.esc_attr($save_count));
 		die;
 	}
 }
@@ -128,10 +128,10 @@ function foxyshop_inventory_management_page() {
 					if ($inventory_count <= $inventory_alert) $grade = "X";
 					if ($inventory_count <= 0) $grade = "U";
 					echo '<tr>'."\n";
-					echo '<td><strong>' . wp_kses($product['id'], []) . '</strong></td>'."\n";
+					echo '<td><strong>' . esc_html($product['id']) . '</strong></td>'."\n";
 					echo '<td><strong><a href="post.php?post=' . esc_attr($product['id']) . '&action=edit" tabindex="1">' . wp_kses_post($product['name']) . '</a></strong></td>'."\n";
-					echo '<td>' . wp_kses($ivcode, []) . '</td>'."\n";
-					echo '<td>' . wp_kses($variation, []) . '</td>'."\n";
+					echo '<td>' . esc_html($ivcode) . '</td>'."\n";
+					echo '<td>' . esc_html($variation) . '</td>'."\n";
 
 					//The Form
 					echo '<td>';
@@ -144,8 +144,8 @@ function foxyshop_inventory_management_page() {
 					echo "</form>\n";
 					echo "</td>\n";
 
-					echo '<td id="current_inventory_' . esc_attr($i) . '" class="inventory' . esc_attr($grade) . '">' . wp_kses($inventory_count, []) . '</td>'."\n";
-					echo '<td id="current_inventory_alert_' . esc_attr($i) . '">' . wp_kses($inventory_alert, []) . '</td>'."\n";
+					echo '<td id="current_inventory_' . esc_attr($i) . '" class="inventory' . esc_attr($grade) . '">' . esc_html($inventory_count) . '</td>'."\n";
+					echo '<td id="current_inventory_alert_' . esc_attr($i) . '">' . esc_html($inventory_alert) . '</td>'."\n";
 					echo '</tr>'."\n";
 				}
 			}
