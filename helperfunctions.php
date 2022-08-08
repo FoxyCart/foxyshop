@@ -1691,7 +1691,7 @@ function foxyshop_subscription_template($id) {
 		$xml .= "\t\t<product_weight><![CDATA[" . esc_html($product['weight']) . "]]></product_weight>\n";
 		$xml .= "\t\t<product_code><![CDATA[" . esc_url($product['code']) . "]]></product_code>\n";
 		$xml .= "\t\t<image><![CDATA[" . esc_url(foxyshop_get_main_image()) . "]]></image>\n";
-		$xml .= "\t\t<url><![CDATA[" . $product['url'] . "]]></url>\n";
+		$xml .= "\t\t<url><![CDATA[" . esc_url($product['url']) . "]]></url>\n";
 		$xml .= "\t\t<category_code><![CDATA[" . esc_html($product['category']) . "]]></category_code>\n";
 		$xml .= "\t\t<transaction_detail_options />\n";
 		$xml .= "\t</transaction_detail>\n";

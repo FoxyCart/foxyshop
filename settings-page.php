@@ -51,7 +51,7 @@ function foxyshop_save_settings() {
 	);
 	foreach ($fields as $field1) {
 		if($field1=='ship_categories'){
-			$foxyshop_settings[$field1] = isset($_POST['foxyshop_'.$field1]) ? trim(sanitize_text_field($_POST['foxyshop_'.$field1])) : '';
+			$foxyshop_settings[$field1] = isset($_POST['foxyshop_'.$field1]) ? trim(sanitize_textarea_field($_POST['foxyshop_'.$field1])) : '';
 		}
 		else{
 			$foxyshop_settings[$field1] = isset($_POST['foxyshop_'.$field1]) ? trim(sanitize_text_field($_POST['foxyshop_'.$field1])) : '';
