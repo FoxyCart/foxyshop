@@ -91,7 +91,7 @@ function foxyshop_product_shortcode($atts, $content = null) {
 	if ($sub_frequency) {
 		$url_extra .= "&amp;sub_frequency=" . $sub_frequency . foxyshop_get_verification("sub_frequency", $sub_frequency);
 	}
-	$write = '<a href="' . foxyshop_product_link("", true, $variations) . $url_extra . '" class="foxyshop_sc_product_link">' . $content . '</a>';
+	$write = '<a href="' . esc_url(foxyshop_product_link("", true, $variations) . $url_extra) . '" class="foxyshop_sc_product_link">' . $content . '</a>';
 	$product = $original_product;
 	return foxy_wp_html($write);
 }

@@ -220,7 +220,7 @@ function foxyshop_restrict_manage_posts() {
 
             // output html for taxonomy dropdown filter
             echo "<select name='" . esc_attr($tax_slug) . "' id='" . esc_attr($tax_slug) . "' class='postform'>";
-            echo '<option value="">' . __('Show All', 'foxyshop') . ' ' . $tax_name . '</option>'."\n";
+            echo '<option value="">' . __('Show All', 'foxyshop') . ' ' . wp_kses($tax_name, []) . '</option>'."\n";
             foreach ($terms as $term) {
                 // output each select option line, check against the last $_GET to show the current option selected
                 echo '<option value="'. esc_attr($term->slug) . '" ' . ($tax_slug == $term->slug ? ' selected="selected"' : '')  . '>' . wp_kses($term->name .' (' . $term->count .')', []) . '</option>';
@@ -306,8 +306,8 @@ function foxyshop_product_meta_init() {
 	var foxyshop_max_upload = '" . esc_attr($foxyshop_max_upload) . "';
 
 	var FOXYSHOP_DIR = '" . esc_attr(FOXYSHOP_DIR) . "';
-	var FOXYSHOP_URL_BASE = '" . esc_attr(FOXYSHOP_URL_BASE) . "';
-	var bloginfo_url = '" . esc_attr(is_ssl() ? str_replace("http://", "https://", get_bloginfo("url")) : get_bloginfo("url")) . "';
+	var FOXYSHOP_URL_BASE = '" . esc_url(FOXYSHOP_URL_BASE) . "';
+	var bloginfo_url = '" . esc_url(is_ssl() ? str_replace("http://", "https://", get_bloginfo("url")) : get_bloginfo("url")) . "';
 	var datafeed_url_key = '" . esc_attr($foxyshop_settings['datafeed_url_key']) . "';
 
 </script>";
@@ -396,7 +396,7 @@ function foxyshop_product_details_setup() {
 				echo '<option value="' . esc_attr($downloadable['product_code']) . '"';
 				echo ' category_code="' . esc_attr($downloadable['category_code']) . '"';
 				echo ' product_price="' . esc_attr($downloadable['product_price']) . '"';
-				echo '>' . esc_attr($downloadable['product_name']) . '</option>';
+				echo '>' . esc_html($downloadable['product_name']) . '</option>';
 				echo "\n";
 			}
 			?>
@@ -480,8 +480,8 @@ function foxyshop_product_details_setup() {
 				if (isset($shipping_category[2])) $shipping_category_type = trim($shipping_category[2]);
 				echo '<option value="' . esc_attr($shipping_category_code) . '"';
 				if ($shipping_category_type) echo ' rel="' . esc_attr($shipping_category_type) . '"';
-				if (esc_attr($shipping_category_code == $_category)) echo ' selected="selected"';
-				echo '>' . esc_attr($shipping_category_name) . '</option>';
+				if ($shipping_category_code == $_category) echo ' selected="selected"';
+				echo '>' . esc_html($shipping_category_name) . '</option>';
 				echo "\n";
 			}
 			?>
@@ -731,9 +731,9 @@ function foxyshop_related_products_setup() {
 	$args = array('post_type' => 'foxyshop_product', "post__not_in" => array($post->ID), 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC');
 	$all_products = get_posts($args);
 	foreach ($all_products as $product) {
-		$relatedList .= '<option value="' . $product->ID . '"'. (in_array($product->ID, $arr_related_products) ? ' selected="selected"' : '') . '>' . $product->post_title . ' (' . $product->ID . ')</option>'."\n";
-		if ($foxyshop_settings['enable_bundled_products']) $bundledList .= '<option value="' . $product->ID . '"'. (in_array($product->ID, $arr_bundled_products) ? ' selected="selected"' : '') . '>' . $product->post_title . '</option>'."\n";
-		if ($foxyshop_settings['enable_addon_products']) $addonList .= '<option value="' . $product->ID . '"'. (in_array($product->ID, $arr_addon_products) ? ' selected="selected"' : '') . '>' . $product->post_title . ' (' . $product->ID . ')</option>'."\n";
+		$relatedList .= '<option value="' . esc_attr($product->ID) . '"'. (in_array($product->ID, $arr_related_products) ? ' selected="selected"' : '') . '>' . $product->post_title . ' (' . $product->ID . ')</option>'."\n";
+		if ($foxyshop_settings['enable_bundled_products']) $bundledList .= '<option value="' . esc_attr($product->ID) . '"'. (in_array($product->ID, $arr_bundled_products) ? ' selected="selected"' : '') . '>' . $product->post_title . '</option>'."\n";
+		if ($foxyshop_settings['enable_addon_products']) $addonList .= '<option value="' . esc_attr($product->ID) . '"'. (in_array($product->ID, $arr_addon_products) ? ' selected="selected"' : '') . '>' . $product->post_title . ' (' . $product->ID . ')</option>'."\n";
 	} ?>
 	<select name="_related_products_list[]" id="_related_products_list" data-placeholder="Search for <?php echo FOXYSHOP_PRODUCT_NAME_PLURAL; ?>" style="width: 100%;" class="chzn-select" multiple="multiple">
 		<?php echo foxy_wp_html($relatedList); ?>
@@ -759,7 +759,7 @@ function foxyshop_bundled_products_setup() {
 		$args = array('post_type' => 'foxyshop_product', "post__not_in" => array($post->ID), 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC');
 		$all_products = get_posts($args);
 		foreach ($all_products as $product) {
-			$bundledList .= '<option value="' . $product->ID . '"'. (in_array($product->ID, $arr_bundled_products) ? ' selected="selected"' : '') . '>' . $product->post_title . '</option>'."\n";
+			$bundledList .= '<option value="' . esc_attr($product->ID) . '"'. (in_array($product->ID, $arr_bundled_products) ? ' selected="selected"' : '') . '>' . $product->post_title . '</option>'."\n";
 		}
 	}
 	?>
@@ -781,7 +781,7 @@ function foxyshop_addon_products_setup() {
 		$args = array('post_type' => 'foxyshop_product', "post__not_in" => array($post->ID), 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC');
 		$all_products = get_posts($args);
 		foreach ($all_products as $product) {
-			$addonList .= '<option value="' . $product->ID . '"'. (in_array($product->ID, $arr_addon_products) ? ' selected="selected"' : '') . '>' . $product->post_title . ' (' . $product->ID . ')</option>'."\n";
+			$addonList .= '<option value="' . esc_attr($product->ID) . '"'. (in_array($product->ID, $arr_addon_products) ? ' selected="selected"' : '') . '>' . $product->post_title . ' (' . $product->ID . ')</option>'."\n";
 		}
 	}
 	?>
@@ -928,6 +928,7 @@ function foxyshop_product_variations_setup() {
 					echo '<optgroup label="' . __('Saved Variations', 'foxyshop') . '">'."\n";
 					foreach($saved_variations as $saved_var) {
 						$saved_ref = $saved_var['refname'];
+						// Needs both sanitize and esc for backwards compatability
 						echo '<option value="' . esc_attr(sanitize_title($saved_ref)) . '" rel="' . esc_attr($saved_var['name']) . '"' . (sanitize_title($saved_ref) == $_variation_type ? ' selected="selected"' : '') . '>' . wp_kses($saved_ref, []) . '  </option>'."\n";
 					}
 					echo '</optgroup>'."\n";
@@ -957,7 +958,7 @@ function foxyshop_product_variations_setup() {
 
 				<?php elseif($_variation_type == "text") : ?>
 					<!-- Text Box -->
-					<?php $arrVariationTextSize = explode("|",esc_attr($_variationValue)); ?>
+					<?php $arrVariationTextSize = explode("|",$_variationValue); ?>
 					<div class="foxyshop_field_control text variationoptions">
 						<div class="foxyshop_field_control">
 							<label for="_variation_textsize1_<?php echo esc_attr($i); ?>"><?php _e('Text Box Size', 'foxyshop'); ?></label>
@@ -1016,7 +1017,7 @@ function foxyshop_product_variations_setup() {
 			</div>
 
 			<!-- //// DISPLAY KEY //// -->
-			<div class="foxyshop_field_control dkeycontainer"<?php echo esc_attr($dkeyhide); ?>>
+			<div class="foxyshop_field_control dkeycontainer"<?php echo foxy_wp_html($dkeyhide); ?>>
 				<label class="dkeylabel" title="Enter a value here if you want your variation to be invisible until called by another variation."><?php _e('Display Key', 'foxyshop'); ?></label>
 				<input type="text" name="_variation_dkey_<?php echo esc_attr($i); ?>" id="_variation_dkey_<?php echo esc_attr($i); ?>" value="<?php echo esc_attr($_variationDisplayKey); ?>" class="dkeynamefield" />
 
@@ -1055,6 +1056,7 @@ if (is_array($saved_variations)) {
 	echo "\t\tvariation_select_options += '<optgroup label=\"" . __('Saved Variations', 'foxyshop') . "\">';\n";
 	foreach($saved_variations as $saved_var) {
 		$saved_ref = $saved_var['refname'];
+		// Needs to be both escape and sanitised for backwards compatibility
 		echo "\t\tvariation_select_options += '<option value=\"" . esc_attr(sanitize_title($saved_ref)) . "\" rel=\"" . esc_attr($saved_var['name']) . "\">" . wp_kses($saved_ref, []) . "  </option>';\n";
 	}
 	echo "\t\tvariation_select_options += '</optgroup>';\n";
@@ -1243,9 +1245,9 @@ function foxyshop_product_meta_save($post_id) {
 			$_variationValue = (int)sanitize_text_field($_POST['_variation_textareasize_'.$target_id]);
 			if ($_variationValue == 0) $_variationValue = 3;
 		} elseif ($_variationType == 'upload') {
-			$_variationValue = sanitize_textarea_field($_POST['_variation_uploadinstructions_'.$target_id]);
+			$_variationValue = wp_kses_post($_POST['_variation_uploadinstructions_'.$target_id]);
 		} elseif ($_variationType == 'descriptionfield') {
-			$_variationValue = sanitize_textarea_field($_POST['_variation_description_'.$target_id]);
+			$_variationValue = wp_kses_post($_POST['_variation_description_'.$target_id]);
 		} elseif ($_variationType == 'dropdown') {
 			$_variationValue = sanitize_textarea_field($_POST['_variation_value_'.$target_id]);
 		} elseif ($_variationType == 'checkbox') {

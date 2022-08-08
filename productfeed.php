@@ -203,15 +203,15 @@ function foxyshop_google_product_xml($id, $batch_process = "") {
 		$xml .= '<content type="text">' . esc_attr($product['description']) . '</content>'."\n";
 		$xml .= '<sc:id>' . esc_attr($product['id']) . '</sc:id>'."\n";
 		$xml .= '<sc:availability>' . esc_attr($availability) . '</sc:availability>'."\n";
-		$xml .= '<link rel="alternate" type="text/html" href="' . esc_attr($product['url']) . '"/>'."\n";
-		$xml .= '<sc:image_link>' . foxyshop_get_main_image('large') . '</sc:image_link>'."\n";
+		$xml .= '<link rel="alternate" type="text/html" href="' . esc_url($product['url']) . '"/>'."\n";
+		$xml .= '<sc:image_link>' . esc_url(foxyshop_get_main_image('large')) . '</sc:image_link>'."\n";
 
 		//Additional Images
 		$number_of_additional_images = 0;
 		foreach($product['images'] AS $product_image) {
 			$number_of_additional_images++;
 			if ($product_image['featured'] == 0 && $number_of_additional_images <= 10) {
-				'<sc:additional_image_link>' . $product_image['large'] . '</sc:additional_image_link>'."\n";
+				'<sc:additional_image_link>' . esc_url($product_image['large']) . '</sc:additional_image_link>'."\n";
 			}
 		}
 
@@ -353,7 +353,7 @@ add_action( 'admin_print_footer_scripts', 'foxyshop_inline_productfeed_js' );
 		//Display Confirmations and Errors
 		if (isset($_GET['error'])) {
 			echo '<div class="error"><p><strong>Error!</strong><br /><ul style="margin: 0 10px;">';
-			$error_list = explode("||", foxy_wp_html($_GET['error']));
+			$error_list = explode("||", sanitize_text_field($_GET['error']));
 			foreach($error_list as $the_error) {
 				if ($the_error) echo "<li style=\"list-style: disc inside none;\">" . wp_kses_post($the_error) . "</li>\n";
 			}
@@ -464,14 +464,14 @@ add_action( 'admin_print_footer_scripts', 'foxyshop_inline_productfeed_js' );
 			if ($unmatched_text == "") {
 				echo '<td><strong><a href="post.php?post=' . esc_attr($google_product_id) . '&action=edit">' . wp_kses_post((string)$entry->title) . '</a></strong>';
 				echo '<div class="row-actions">';
-				echo '<span><a href="edit.php?foxyshop_manage_google_feed=1&amp;editid=' . esc_attr($google_product_id . $debug_querystring) . '&amp;_wpnonce=' . wp_create_nonce("manage-the-google-feed-settings") . '" class="update_google_product" rel="' . esc_atr($google_product_id) . '">Renew/Update</a> | </span>';
-				echo '<span class="delete"><a href="edit.php?foxyshop_manage_google_feed=1&amp;deleteid=' . esc_attr($google_product_id . $debug_querystring) . '&amp;_wpnonce=' . wp_create_nonce("manage-the-google-feed-settings") . '" class="delete_google_product" rel="' . esc_atr($google_product_id) . '">Delete</a></span>';
+				echo '<span><a href="edit.php?foxyshop_manage_google_feed=1&amp;editid=' . esc_attr($google_product_id . $debug_querystring) . '&amp;_wpnonce=' . wp_create_nonce("manage-the-google-feed-settings") . '" class="update_google_product" rel="' . esc_attr($google_product_id) . '">Renew/Update</a> | </span>';
+				echo '<span class="delete"><a href="edit.php?foxyshop_manage_google_feed=1&amp;deleteid=' . esc_attr($google_product_id . $debug_querystring) . '&amp;_wpnonce=' . wp_create_nonce("manage-the-google-feed-settings") . '" class="delete_google_product" rel="' . esc_attr($google_product_id) . '">Delete</a></span>';
 				echo '</div>';
 				echo '</td>'."\n";
 			} else {
-				echo '<td><strong><a href="#" onclick="return false;">' . (string)$entry->title . '</a></strong>';
+				echo '<td><strong><a href="#" onclick="return false;">' . esc_html((string)$entry->title) . '</a></strong>';
 				echo '<div class="row-actions">';
-				echo '<span class="delete"><a href="edit.php?foxyshop_manage_google_feed=1&amp;deleteid=' . esc_attr($google_product_id . $debug_querystring) . '&amp;_wpnonce=' . wp_create_nonce("manage-the-google-feed-settings") . '" class="delete_google_product" rel="' . esc_atr($google_product_id) . '">Delete</a></span>';
+				echo '<span class="delete"><a href="edit.php?foxyshop_manage_google_feed=1&amp;deleteid=' . esc_attr($google_product_id . $debug_querystring) . '&amp;_wpnonce=' . wp_create_nonce("manage-the-google-feed-settings") . '" class="delete_google_product" rel="' . esc_attr($google_product_id) . '">Delete</a></span>';
 				echo '</div>';
 				echo '</td>'."\n";
 			}
@@ -497,7 +497,7 @@ add_action( 'admin_print_footer_scripts', 'foxyshop_inline_productfeed_js' );
 			<button type="submit" class="button" name="delete_checked_google_products" value="1" id="delete_checked_google_products">Delete Checked <?php echo FOXYSHOP_PRODUCT_NAME_PLURAL; ?></button>
 
 			<?php if ($nextlink) {
-				echo '<a href="edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&nextlink=' . urlencode(esc_attr($nextlink)) . '" class="button" style="float: right;">Next Page</a>';
+				echo '<a href="edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&nextlink=' . urlencode(esc_url($nextlink)) . '" class="button" style="float: right;">Next Page</a>';
 			} ?>
 
 		</div>
@@ -589,7 +589,7 @@ add_action( 'admin_print_footer_scripts', 'foxyshop_inline_productfeed_js' );
 
 			echo '<td><strong><a href="post.php?post=' . esc_attr($product['id']) . '&action=edit">' . esc_attr($product['name']) . '</a></strong>';
 			echo '<div class="row-actions">';
-			echo '<span><a href="edit.php?foxyshop_manage_google_feed=1&amp;addid=' . esc_attr($product['id']) . esc_attr($debug_querystring) . '&amp;_wpnonce=' . wp_create_nonce("manage-the-google-feed-settings") . '" class="insert_google_product" rel="' . $google_product_id . '">Add To Google Products Feed</a></span>';
+			echo '<span><a href="edit.php?foxyshop_manage_google_feed=1&amp;addid=' . esc_attr($product['id']) . esc_attr($debug_querystring) . '&amp;_wpnonce=' . wp_create_nonce("manage-the-google-feed-settings") . '" class="insert_google_product" rel="' . esc_attr($google_product_id) . '">Add To Google Products Feed</a></span>';
 			echo '</div>';
 			echo '</td>'."\n";
 
@@ -722,7 +722,7 @@ function foxyshop_manage_google_feed() {
 
 		$writexml = "<?xml version='1.0' encoding='UTF-8'?>\n";
 		$writexml .= "<feed xmlns='http://www.w3.org/2005/Atom' xmlns:batch='http://schemas.google.com/gdata/batch'>\n";
-		$writexml .= $xml;
+		$writexml .= esc_xml($xml);
 		$writexml .= '</feed>';
 		if (isset($_REQUEST['debug'])) {
 			echo "<form><button type=\"button\" onclick=\"location.href = 'edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1&debug=1" . esc_attr($error) . "';\">Continue</button></form>";

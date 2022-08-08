@@ -51,7 +51,7 @@ function foxyshop_save_settings() {
 	);
 	foreach ($fields as $field1) {
 		if($field1=='ship_categories'){
-			$foxyshop_settings[$field1] = isset($_POST['foxyshop_'.$field1]) ? trim(foxy_wp_html($_POST['foxyshop_'.$field1])) : '';
+			$foxyshop_settings[$field1] = isset($_POST['foxyshop_'.$field1]) ? trim(sanitize_textarea_field($_POST['foxyshop_'.$field1])) : '';
 		}
 		else{
 			$foxyshop_settings[$field1] = isset($_POST['foxyshop_'.$field1]) ? trim(sanitize_text_field($_POST['foxyshop_'.$field1])) : '';
@@ -306,7 +306,7 @@ function foxyshop_settings_page() {
 					<?php
 					foreach ($foxycart_version_array as $key => $val) {
 						if (version_compare($key, '0.7.2', ">") || $foxyshop_settings['version'] == $key) {
-							echo '<option value="' . esc_attr($key) . '"' . ($foxyshop_settings['version'] == $key ? ' selected="selected"' : '') . '>' . $val . '  </option>'."\n";
+							echo '<option value="' . esc_attr($key) . '"' . ($foxyshop_settings['version'] == $key ? ' selected="selected"' : '') . '>' . esc_html($val) . '  </option>'."\n";
 						}
 					} ?>
 					</select>
@@ -594,7 +594,7 @@ function foxyshop_settings_page() {
 					<small>(<a href="https://www.orderdesk.me/" target="_blank"><?php _e("more info", "foxyshop"); ?></a>)</small>
 					<div id="orderdesk_url_holder"<?php if (!$foxyshop_settings['orderdesk_url']) echo ' style="display:none;"'; ?>>
 						<label for="foxyshop_orderdesk_url"><?php echo __('Your Order Desk Datafeed URL', 'foxyshop'); ?>:</label>
-						<input type="text" id="foxyshop_orderdesk_url" name="foxyshop_orderdesk_url" value="<?php echo esc_attr($foxyshop_settings['orderdesk_url']); ?>" style="width: 400px;" />
+						<input type="text" id="foxyshop_orderdesk_url" name="foxyshop_orderdesk_url" value="<?php echo esc_url($foxyshop_settings['orderdesk_url']); ?>" style="width: 400px;" />
 					</div>
 				</td>
 			</tr>

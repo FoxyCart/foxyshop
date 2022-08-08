@@ -47,8 +47,8 @@ function foxyshop_subscription_management() {
 		foreach ($fields as $field) {
 			if (isset($_GET[$field])) {
 				$foxy_data[$field] = sanitize_text_field($_GET[$field]);
-				$foxyshop_querystring .= "&amp;$field=" . urlencode(sanitize_text_field($_GET[$field]));
-				$foxyshop_hidden_input .= '<input type="hidden" name="' . $field . '" value="' . htmlspecialchars(sanitize_text_field($_GET[$field])) . '" />' . "\n";
+				$foxyshop_querystring .= "&amp;$field=" . urlencode($foxy_data[$field]);
+				$foxyshop_hidden_input .= '<input type="hidden" name="' . $field . '" value="' . htmlspecialchars($foxy_data[$field]) . '" />' . "\n";
 			}
 		}
 		$foxy_data['pagination_start'] = (isset($_GET['pagination_start']) ? sanitize_text_field($_GET['pagination_start']) : 0);
@@ -328,7 +328,7 @@ function foxyshop_subscription_management() {
 			$holder .= '<select name="transaction_template_id" id="transaction_template_id_' . esc_attr($sub_token). '">'."\n";
 			$holder .= '<option value="0">- - ' . __('Select Option Below', 'foxyshop') . ' - -</option>'."\n";
 			foreach ($subscription_product_array as $key=>$val) {
-				$holder .= '<option value="' . esc_attr($val['id']) . '">' . wp_kses($val['name'] . ' ' . foxyshop_currency($val['price']), []) . '</option>'."\n";
+				$holder .= '<option value="' . esc_attr($val['id']) . '">' . esc_html($val['name'] . ' ' . foxyshop_currency($val['price'])) . '</option>'."\n";
 			}
 			$holder .= '</select>'."\n";
 			$holder .= '</div>'."\n";

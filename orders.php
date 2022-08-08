@@ -136,10 +136,9 @@ function foxyshop_order_management() {
 		$fields = array("is_test_filter", "hide_transaction_filter", "data_is_fed_filter", "id_filter", "display_id_filter", "order_total_filter", "coupon_code_filter", "transaction_date_filter_begin", "transaction_date_filter_end", "customer_id_filter", "customer_email_filter", "customer_first_name_filter", "customer_last_name_filter","customer_state_filter", "shipping_state_filter", "customer_ip_filter", "product_code_filter", "product_name_filter", "product_option_name_filter", "product_option_value_filter", "custom_field_name_filter", "custom_field_value_filter");
 		foreach ($fields as $field) {
 			if (isset($_GET[$field])) {
-				$_GET[$field] = sanitize_text_field($_GET[$field]);
-				$foxy_data[$field] = $_GET[$field];
-				$foxyshop_querystring .= "&amp;$field=" . urlencode($_GET[$field]);
-				$foxyshop_hidden_input .= '<input type="hidden" name="' . $field . '" value="' . htmlspecialchars($_GET[$field]) . '" />' . "\n";
+				$foxy_data[$field] = sanitize_text_field($_GET[$field]);
+				$foxyshop_querystring .= "&amp;$field=" . urlencode($foxy_data[$field]);
+				$foxyshop_hidden_input .= '<input type="hidden" name="' . $field . '" value="' . htmlspecialchars($foxy_data[$field]) . '" />' . "\n";
 			}
 		}
 		$foxy_data['pagination_start'] = (isset($_GET['pagination_start']) ? sanitize_text_field($_GET['pagination_start']) : 0);
@@ -393,7 +392,7 @@ function foxyshop_order_management() {
 					$holder .= str_replace("_", " ", (string)$transaction_detail_option->product_option_name) . ': ';
 					if (substr((string)$transaction_detail_option->product_option_value,0,5) == "file-") {
 						$upload_dir = wp_upload_dir();
-						$holder .= '<a href="' . $upload_dir['baseurl'] . '/customuploads/' . (string)$transaction_detail_option->product_option_value . '" target="_blank">' . (string)$transaction_detail_option->product_option_value . '</a>';
+						$holder .= '<a href="' . esc_url($upload_dir['baseurl'] . '/customuploads/' . (string)$transaction_detail_option->product_option_value) . '" target="_blank">' . (string)$transaction_detail_option->product_option_value . '</a>';
 					} else {
 						$holder .= $transaction_detail_option->product_option_value;
 					}
@@ -408,7 +407,7 @@ function foxyshop_order_management() {
 			echo '<th class="check-column" scope="row"><input type="checkbox" value="' . esc_attr($transaction_id) . '" name="post[]"></th>'."\n";
 			echo '<td>';
 			echo '<a href="' . esc_url((string)$transaction->receipt_url) . '" title="' . __('FoxyCart Receipt', 'foxyshop') . '" target="_blank" style="float: left;"><img src="' . FOXYSHOP_DIR . '/images/foxycart-icon.png" alt="" align="top" /></a>';
-			echo '<strong><a href="#" class="view_detail" style="float: left; line-height: 18px; margin: 0 0 0 5px;">' . wp_kses($transaction_id, []) . '</a></strong>';
+			echo '<strong><a href="#" class="view_detail" style="float: left; line-height: 18px; margin: 0 0 0 5px;">' . esc_html($transaction_id) . '</a></strong>';
 			echo '<div class="row-actions">';
 				echo '<span><a href="#" class="view_detail">' . __('View Order', 'foxyshop') . '</a> | </span>';
 				echo '<span><a href="' . esc_attr($print_receipt_link) . '" title="' . __('Printable Receipt', 'foxyshop') . '" target="_blank">' . __('Receipt', 'foxyshop') . '</a></span>';

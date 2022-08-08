@@ -37,7 +37,7 @@ if (!$product['hide_product']) {
 	//Product Is New Tag
 	//if (foxyshop_is_product_new(14)) echo '<p>NEW!</p>';
 
-	if ($product['short_description']) echo "<p>" . $product['short_description'] . "</p>";
+	if ($product['short_description']) echo "<p>" . wp_kses_post($product['short_description']) . "</p>";
 
 	//More Details Button
 	echo '<a href="' . esc_url($product['url']) . '" class="foxyshop_button">More Details</a>';

@@ -169,10 +169,10 @@ foreach($xml->transactions->transaction as $transaction) {
 				if ((string)$transaction->shipping_address1 && !isset($transaction->shipto_addresses->shipto_address)) {
 					echo ('<td valign="top"><strong>Shipping Address:</strong><br />');
 					echo foxy_wp_html($shipping_first_name . " " . $shipping_last_name ). "<br />";
-					if ((string)$transaction->shipping_company) echo foxy_wp_html($transaction->shipping_company ). "<br />";
+					if ((string)$transaction->shipping_company) echo foxy_wp_html($transaction->shipping_company) . "<br />";
 					echo foxy_wp_html((string)$transaction->shipping_address1 ). "<br />";
-					if ((string)$transaction->shipping_address2) echo foxy_wp_html($transaction->shipping_address2 ). "<br />";
-					echo foxy_wp_html((string)$transaction->shipping_city . ', ' . (string)$transaction->shipping_state . ' ' . (string)$transaction->shipping_postal_code ). '<br />';
+					if ((string)$transaction->shipping_address2) echo foxy_wp_html($transaction->shipping_address2) . "<br />";
+					echo foxy_wp_html((string)$transaction->shipping_city . ', ' . (string)$transaction->shipping_state . ' ' . (string)$transaction->shipping_postal_code) . '<br />';
 					if ($show_country) echo foxy_wp_html($transaction->shipping_country)."<br />";
 					if ($show_phone && (string)$transaction->shipping_phone) echo foxy_wp_html('Phone: ' . $transaction->shipping_phone ). "<br />";
 					echo ('&nbsp;</td>');
@@ -182,14 +182,14 @@ foreach($xml->transactions->transaction as $transaction) {
 				foreach($transaction->shipto_addresses->shipto_address as $shipto_address) {
 					echo ('<td valign="top"><strong>Shipping Address (' . $shipto_address->address_name . '):</strong><br />');
 					echo foxy_wp_html((string)$shipto_address->shipto_first_name . " " . (string)$shipto_address->shipto_last_name) . "<br />";
-					if ((string)$shipto_address->shipto_company) echo foxy_wp_html($shipto_address->shipto_company ). "<br />";
+					if ((string)$shipto_address->shipto_company) echo foxy_wp_html($shipto_address->shipto_company) . "<br />";
 					echo foxy_wp_html((string)$shipto_address->shipto_address1 ). "<br />";
-					if ((string)$shipto_address->shipto_address2) echo foxy_wp_html($shipto_address->shipto_address2 ). "<br />";
+					if ((string)$shipto_address->shipto_address2) echo foxy_wp_html($shipto_address->shipto_address2) . "<br />";
 					echo foxy_wp_html((string)$shipto_address->shipto_city . ', ' . (string)$shipto_address->shipto_state . ' ' . (string)$shipto_address->shipto_postal_code ). '<br />';
 					if ($show_country) echo foxy_wp_html($shipto_address->shipto_country)."<br />";
-					if ($show_phone && (string)$shipto_address->shipto_phone) echo foxy_wp_html($shipto_address->shipto_phone ). "<br />";
+					if ($show_phone && (string)$shipto_address->shipto_phone) echo foxy_wp_html($shipto_address->shipto_phone) . "<br />";
 					echo foxy_wp_html('Method: ' . $shipto_address->shipto_shipping_service_description) . "<br />";
-					echo foxy_wp_html('Shipping: ' . foxyshop_currency((double)$shipto_address->shipto_shipping_total) ). "<br />";
+					echo foxy_wp_html('Shipping: ' . foxyshop_currency((double)$shipto_address->shipto_shipping_total)) . "<br />";
 					echo ('&nbsp;</td>');
 				}
 				?>
@@ -246,7 +246,7 @@ foreach($xml->transactions->transaction as $transaction) {
 				}
 				?></td>
 				<td class="short_cell"><?php echo esc_html(foxyshop_currency($product_price)); ?></td>
-				<td class="short_cell"><?php echo foxy_wp_html($product_quantity); ?></td>
+				<td class="short_cell"><?php echo esc_html($product_quantity); ?></td>
 				<td class="short_cell"><?php echo esc_html(foxyshop_currency($product_quantity * $product_price)); ?></td>
 			</tr>
 			<?php

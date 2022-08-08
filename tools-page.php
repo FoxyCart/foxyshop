@@ -64,7 +64,7 @@ function foxyshop_save_tools() {
 			if ($xml->result != "ERROR") {
 				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=cart');
 			} else {
-				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=error&error='.urlencode((string)$xml->messages->message));
+				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=error&error='.urlencode(esc_attr((string)$xml->messages->message)));
 			}
 			exit;
 
@@ -77,7 +77,7 @@ function foxyshop_save_tools() {
 			if ($xml->result != "ERROR") {
 				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=checkout');
 			} else {
-				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=error&error='.urlencode((string)$xml->messages->message));
+				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=error&error='.urlencode(esc_attr((string)$xml->messages->message)));
 			}
 			exit;
 
@@ -89,7 +89,7 @@ function foxyshop_save_tools() {
 			if ($xml->result != "ERROR") {
 				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=receipt');
 			} else {
-				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=error&error='.urlencode((string)$xml->messages->message));
+				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=error&error='.urlencode(esc_attr((string)$xml->messages->message)));
 			}
 			exit;
 		}
@@ -125,9 +125,9 @@ function foxyshop_save_tools() {
 				$_variationValue = (int)sanitize_text_field($_POST['_variation_textareasize_'.$target_id]);
 				if ($_variationValue == 0) $_variationValue = 3;
 			} elseif ($_variationType == 'upload') {
-				$_variationValue = sanitize_textarea_field($_POST['_variation_uploadinstructions_'.$target_id]);
+				$_variationValue = wp_kses_post($_POST['_variation_uploadinstructions_'.$target_id]);
 			} elseif ($_variationType == 'descriptionfield') {
-				$_variationValue = sanitize_textarea_field($_POST['_variation_description_'.$target_id]);
+				$_variationValue = wp_kses_post($_POST['_variation_description_'.$target_id]);
 			} elseif ($_variationType == 'dropdown') {
 				$_variationValue = sanitize_textarea_field($_POST['_variation_value_'.$target_id]);
 			} elseif ($_variationType == 'checkbox') {
@@ -221,13 +221,13 @@ function foxyshop_tools() {
 
 	//Update Template
 	if (isset($_GET['updatetemplate'])) {
-		$_GET['updatetemplate'] = sanitize_text_field($_GET['updatetemplate']);
-		if ($_GET['updatetemplate'] == "error") {
+		$updatetemplate = sanitize_text_field($_GET['updatetemplate']);
+		if ($updatetemplate == "error") {
 			echo '<div class="updated"><p>' .  wp_kses_post(sanitize_text_field($_GET['error'])) . '</p></div>';
-		} elseif ($_GET['updatetemplate'] == "clear") {
+		} elseif ($updatetemplate == "clear") {
 			echo '<div class="updated"><p>' . __('Your saved URLs have been cleared.', 'foxyshop') . '</p></div>';
 		} else {
-			echo '<div class="updated"><p>' . sprintf(__('The %s template has been successfully updated.', 'foxyshop'), esc_attr($_GET['updatetemplate'])) . '</p></div>';
+			echo '<div class="updated"><p>' . sprintf(__('The %s template has been successfully updated.', 'foxyshop'), esc_attr($updatetemplate)) . '</p></div>';
 		}
 	}
 
@@ -480,12 +480,12 @@ for ($i=1;$i<=$max_variations;$i++) {
 				<div class="foxyshop_field_control radio variationoptions">
 					<label for="_variation_radio_<?php echo esc_attr($i); ?>"><?php _e('Radio Button Options', 'foxyshop'); ?></label>
 					<textarea name="_variation_radio_<?php echo esc_attr($i); ?>" id="_variation_radio_<?php echo esc_attr($i); ?>"><?php echo esc_textarea($_variationValue); ?></textarea>
-					<div class="variationkey"><?php echo esc_html($variation_key); ?></div>
+					<div class="variationkey"><?php echo foxy_wp_html($variation_key); ?></div>
 				</div>
 
 			<?php elseif($_variation_type == "text") : ?>
 				<!-- Text Box -->
-				<?php $arrVariationTextSize = explode("|",esc_attr($_variationValue)); ?>
+				<?php $arrVariationTextSize = explode("|",$_variationValue); ?>
 				<div class="foxyshop_field_control text variationoptions">
 					<div class="foxyshop_field_control">
 						<label for="_variation_textsize1_<?php echo esc_attr($i); ?>"><?php _e('Text Box Size', 'foxyshop'); ?></label>
@@ -552,7 +552,7 @@ for ($i=1;$i<=$max_variations;$i++) {
 			</div>
 		</div>
 
-		<div class="variationsortnum"><?php echo esc_attr($i); ?></div>
+		<div class="variationsortnum"><?php echo esc_html($i); ?></div>
 		<div style="clear: both;"></div>
 	</div>
 	<?php
@@ -859,7 +859,7 @@ jQuery(document).ready(function($){
 		//Checkbox
 		} else if (new_type == \"checkbox\") {
 			new_contents = '<div class=\"foxyshop_field_control checkbox variationoptions\">';
-			new_contents += '<label for=\"_variation_description_' + this_id + '\">" . __('Value', 'foxyshop') . "</label>';
+			new_contents += '<label for=\"_variation_checkbox_' + this_id + '\">" . __('Value', 'foxyshop') . "</label>';
 			new_contents += '<input type=\"text\" name=\"_variation_checkbox_' + this_id + '\" id=\"_variation_checkbox_' + this_id + '\" value=\"' + $(\"#checkbox_value_\"+this_id).val() + '\" class=\"variation_checkbox_text\" />';
 			new_contents += variationkeyhtml;
 			new_contents += '</div>';

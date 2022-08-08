@@ -326,8 +326,8 @@ function foxyshop_dashboard_stats() {
 
 	echo '<h4 style="margin-top: 24px;">' . esc_html(FOXYSHOP_PRODUCT_NAME_SINGULAR) . ' ' . __('Summary', 'foxyshop') . '</h4>';
 	echo '<ul>';
-	echo '<li><a href="edit.php?post_type=foxyshop_product">' . $count_posts->publish . ' ' . esc_html($count_posts->publish == 1 ? FOXYSHOP_PRODUCT_NAME_SINGULAR : FOXYSHOP_PRODUCT_NAME_PLURAL) . '</a></li>';
-	echo '<li><a href="edit-tags.php?taxonomy=foxyshop_categories&post_type=foxyshop_product">' . count($tax) . ' ' . esc_html(FOXYSHOP_PRODUCT_NAME_SINGULAR) . ' ' . _n('Category', 'Categories', count($tax), 'foxyshop') . '</a></li>';
+	echo '<li><a href="edit.php?post_type=foxyshop_product">' . esc_html($count_posts->publish . ' ' . $count_posts->publish == 1 ? FOXYSHOP_PRODUCT_NAME_SINGULAR : FOXYSHOP_PRODUCT_NAME_PLURAL) . '</a></li>';
+	echo '<li><a href="edit-tags.php?taxonomy=foxyshop_categories&post_type=foxyshop_product">' . esc_html(count($tax) . ' ' . FOXYSHOP_PRODUCT_NAME_SINGULAR) . ' ' . _n('Category', 'Categories', count($tax), 'foxyshop') . '</a></li>';
 	echo '</ul>';
 
 	echo '</div>'."\n";
