@@ -312,6 +312,16 @@ function foxyshop_google_products_act() {
 
 }
 
+// Check for functionality usage
+ add_action('admin_notices', 'foxyshop_product_feed_usage_check');
+ function foxyshop_product_feed_usage_check() {
+	$current_screen = get_current_screen();
+
+	if (strpos($current_screen->base, 'foxyshop_google_products_page') !== false) {
+		echo '<div class="notice notice-info is-dismissible"><h3>Are you using this functionality?</h3><p>We\'re wanting to confirm usage for this product feed functionality to help us to decide on future support. Please <a href="https://foxy.io/contact" title="Contact Foxy.io">contact us to let us know</a> if you are using this feature.</p></div>';
+	}
+ }
+
 
 function foxyshop_google_product_menu() {
 	add_submenu_page('edit.php?post_type=foxyshop_product', __('Google Products'), __('Google Products'), apply_filters('foxyshop_google_product_perm', 'manage_options'), 'foxyshop_google_products_page', 'foxyshop_google_products_page');
