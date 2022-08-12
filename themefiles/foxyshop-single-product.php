@@ -28,11 +28,11 @@ while (have_posts()) : the_post();
 
 
 	//Shows Main Image and Optional Slideshow
-	//Available Built-in Options: magnific-popup (lightbox), prettyPhoto (lightbox)
+	//Available Built-in Options: luminous (lightbox), prettyPhoto (lightbox)
 	//Second arg writes css and js includes on page
 	//If you want to make more customizations, you can grab the code from helperfunctions.php line ~780 and paste here
 	//-------------------------------------------------------------------------------------------------------------------------
-	foxyshop_build_image_slideshow("magnific", true);
+	foxyshop_build_image_slideshow("luminous", true);
 	//foxyshop_build_image_slideshow("prettyPhoto", true);
 
 

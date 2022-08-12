@@ -114,7 +114,7 @@ function foxyshop_login_head() { ?>
 	</style><?php
 }
 function foxyshop_login_message() {
-	$message = '<p class="custom-message">' . __('Please login before checking out.', 'foxyshop') . ' <a href="' . esc_url(get_bloginfo("wpurl")) . '/wp-login.php?action=register">' . __('Click here to register.', 'foxyshop') . '</a></p><br />';
+	$message = '<p class="custom-message">' . __('Please login before checking out.', 'foxyshop') . ' <a href="' . get_bloginfo("wpurl") . '/wp-login.php?action=register">' . __('Click here to register.', 'foxyshop') . '</a></p><br />';
 	return $message;
 }
 
@@ -158,7 +158,7 @@ function foxyshop_action_show_user_profile($user) {
     <thead>
     <tr>
         <tr>
-            <th class="manage-column column-columnname" scope="col"><?php echo FOXYSHOP_PRODUCT_NAME_SINGULAR . ' ' . __('Code', 'foxyshop'); ?></th>
+            <th class="manage-column column-columnname" scope="col"><?php echo esc_html(FOXYSHOP_PRODUCT_NAME_SINGULAR) . ' ' . __('Code', 'foxyshop'); ?></th>
             <th class="manage-column column-columnname" scope="col"><?php _e('Active', 'foxyshop'); ?></th>
             <th class="manage-column column-columnname" scope="col"><?php _e('Actions', 'foxyshop'); ?></th>
         </tr>
@@ -191,8 +191,8 @@ function foxyshop_action_process_option_update($user_id) {
 //Keep redirect_to in URL
 add_filter('site_url', 'foxyshop_add_registration_redirect', 5);
 function foxyshop_add_registration_redirect($path) {
-	if ((strpos($path, "action=register") !== false || strpos($path, "action=lostpassword") !== false) && isset($_REQUEST['redirect_to'])) return $path . '&amp;redirect_to='.urlencode(esc_url($_REQUEST['redirect_to']));
-	if (substr($path, strlen($path)-12) == "wp-login.php" && isset($_REQUEST['redirect_to'])) return $path . '?redirect_to='.urlencode(esc_url($_REQUEST['redirect_to']));
+	if ((strpos($path, "action=register") !== false || strpos($path, "action=lostpassword") !== false) && isset($_REQUEST['redirect_to'])) return $path . '&amp;redirect_to='.urlencode(sanitize_text_field($_REQUEST['redirect_to']));
+	if (substr($path, strlen($path)-12) == "wp-login.php" && isset($_REQUEST['redirect_to'])) return $path . '?redirect_to='.urlencode(sanitize_text_field($_REQUEST['redirect_to']));
 	return $path;
 }
 
@@ -233,7 +233,7 @@ function foxyshop_reverse_sso_login() {
 
 	//Is This a JSONP Request?
 	if (isset($_GET['callback'])) {
-		echo htmlspecialchars(esc_attr($_GET['callback'])) . '({ "result": "' . $result . '"})';
+		echo htmlspecialchars(esc_attr($_GET['callback'])) . '({ "result": "' . esc_attr($result) . '"})';
 		die;
 	}
 

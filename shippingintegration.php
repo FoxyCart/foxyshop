@@ -352,11 +352,11 @@ function foxyshop_transaction_export() {
 		echo (string)$transaction->id;
 		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->store_id) . '"';
 		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->transaction_date) . '"';
-		echo esc_attr($field_delimiter) . $product_total;
-		echo esc_attr($field_delimiter) . $tax_total;
-		echo esc_attr($field_delimiter) . $shipping_total;
-		echo esc_attr($field_delimiter) . $discount_total;
-		echo esc_attr($field_delimiter) . $order_total;
+		echo esc_attr($field_delimiter) . esc_attr($product_total);
+		echo esc_attr($field_delimiter) . esc_attr($tax_total);
+		echo esc_attr($field_delimiter) . esc_attr($shipping_total);
+		echo esc_attr($field_delimiter) . esc_attr($discount_total);
+		echo esc_attr($field_delimiter) . esc_attr($order_total);
 		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->purchase_order) . '"';
 		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->cc_type) . '"';
 		echo esc_attr($field_delimiter) . '"' . foxyshop_dblquotes((string)$transaction->cc_number_masked) . '"';

@@ -158,9 +158,9 @@ function foxyshop_cfbe_metabox($post_type) {
 					<input type="radio" name="_hide_product_status" id="_hide_product_status0" value="0" checked="checked" />
 					<label for="_hide_product_status0" class="cfbe_leave_unchanged"><?php echo foxy_wp_html($leave_unchanged_text); ?></label>
 					<input type="radio" name="_hide_product_status" id="_hide_product_status1" value="1" />
-					<label for="_hide_product_status1" class="cfbe_leave_unchanged"><?php _e("Hide"); echo " ".FOXYSHOP_PRODUCT_NAME_SINGULAR; ?></label>
+					<label for="_hide_product_status1" class="cfbe_leave_unchanged"><?php _e("Hide"); echo " ".esc_html(FOXYSHOP_PRODUCT_NAME_SINGULAR); ?></label>
 					<input type="radio" name="_hide_product_status" id="_hide_product_status2" value="2" style="margin-bottom: 11px;" />
-					<label for="_hide_product_status2"><?php _e("Show"); echo " ".FOXYSHOP_PRODUCT_NAME_SINGULAR; ?></label>
+					<label for="_hide_product_status2"><?php _e("Show"); echo " ".esc_html(FOXYSHOP_PRODUCT_NAME_SINGULAR); ?></label>
 					<div style="clear: both;"></div>
 				</td>
 			</tr>
@@ -283,7 +283,7 @@ function foxyshop_cfbe_metabox($post_type) {
 					$args = array('post_type' => 'foxyshop_product', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC');
 					$all_products = get_posts($args);
 					foreach ($all_products as $product) {
-						$all_product_list .= '<option value="' . esc_attr($product->ID) . '">' . esc_html($product->post_title) . '</option>'."\n";
+						$all_product_list .= '<option value="' . $product->ID . '">' . $product->post_title . '</option>'."\n";
 					}?>
 
 					<label for="_related_products_list" class="cfbe_special_label"><?php _e('Related Products', 'foxyshop'); ?></label>
@@ -291,7 +291,7 @@ function foxyshop_cfbe_metabox($post_type) {
 					<label for="_related_products_status0" class="cfbe_leave_unchanged"><?php echo foxy_wp_html($leave_unchanged_text); ?></label>
 					<input type="radio" name="_related_products_status" id="_related_products_status1" value="1" />
 					<label for="_related_products_status1"><?php echo foxy_wp_html($change_to_text); ?>:</label>
-					<select name="_related_products_list[]" id="_related_products_list" data-placeholder="Search for <?php echo FOXYSHOP_PRODUCT_NAME_PLURAL; ?>" style="width: 100%;" class="chzn-select" multiple="multiple">
+					<select name="_related_products_list[]" id="_related_products_list" data-placeholder="Search for <?php echo esc_attr(FOXYSHOP_PRODUCT_NAME_PLURAL); ?>" style="width: 100%;" class="chzn-select" multiple="multiple">
 						<?php echo foxy_wp_html($all_product_list); ?>
 					</select>
 					<div style="clear: both;"></div>
@@ -305,7 +305,7 @@ function foxyshop_cfbe_metabox($post_type) {
 					<label for="_bundled_products_status0" class="cfbe_leave_unchanged"><?php echo foxy_wp_html($leave_unchanged_text); ?></label>
 					<input type="radio" name="_bundled_products_status" id="_bundled_products_status1" value="1" />
 					<label for="_bundled_products_status1"><?php echo foxy_wp_html($change_to_text); ?>:</label>
-					<select name="_bundled_products_list[]" id="_bundled_products_list" data-placeholder="Search for <?php echo FOXYSHOP_PRODUCT_NAME_PLURAL; ?>" style="width: 100%;" class="chzn-select" multiple="multiple">
+					<select name="_bundled_products_list[]" id="_bundled_products_list" data-placeholder="Search for <?php echo esc_attr(FOXYSHOP_PRODUCT_NAME_PLURAL); ?>" style="width: 100%;" class="chzn-select" multiple="multiple">
 						<?php echo foxy_wp_html($all_product_list); ?>
 					</select>
 					<div style="clear: both;"></div>
@@ -323,7 +323,7 @@ function foxyshop_cfbe_metabox($post_type) {
 					<label for="_addon_products_status0" class="cfbe_leave_unchanged"><?php echo foxy_wp_html($leave_unchanged_text); ?></label>
 					<input type="radio" name="_addon_products_status" id="_addon_products_status1" value="1" />
 					<label for="_addon_products_status1"><?php echo foxy_wp_html($change_to_text); ?>:</label>
-					<select name="_addon_products_list[]" id="_addon_products_list" data-placeholder="Search for <?php echo FOXYSHOP_PRODUCT_NAME_PLURAL; ?>" style="width: 100%;" class="chzn-select" multiple="multiple">
+					<select name="_addon_products_list[]" id="_addon_products_list" data-placeholder="Search for <?php echo esc_attr(FOXYSHOP_PRODUCT_NAME_PLURAL); ?>" style="width: 100%;" class="chzn-select" multiple="multiple">
 						<?php echo foxy_wp_html($all_product_list); ?>
 					</select>
 					<div style="clear: both;"></div>

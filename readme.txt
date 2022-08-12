@@ -57,6 +57,12 @@ Copy the folder to your WordPress
 
 There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http://www.foxy-shop.com/faq/).
 
+== Third-party script inclusion ==
+
+As part of this plugin, based on the Foxy store version you have configured, a javascript file will be included from the Foxy CDN to add the cart functionality to your site. The file is unique to your store, and updated based on changes to your store in the Foxy administration.
+
+You can exclude this from being output on specific (or all) pages using the "Skip FoxyCart Includes on These Pages" option in the FoxyShop plugin settings. If the file isn't included on a page with a product add to cart, customers will be redirected to the full page cart instead, and it may impact cart session functionality.
+
 
 == Screenshots ==
 
@@ -77,6 +83,7 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 * Removing FOXYSHOP_DOCUMENT_ROOT variable
 * Deprecated: Support for Foxy versions 0.7.2 and older (these are also unsupported versions of Foxy, and should not be in use)
 * Deprecated: Legacy Google Analytics tracking code is no longer output on the checkout and receipt templates. If you use this, please consider upgrading to Foxy 2.0 to use the native integration options
+* Deprecated: Removing Magnific lightbox from the product gallery as it is no longer allowed by Wordpress, replaced instead with Luminous as the new default
 
 = 4.8.2 =
 
@@ -300,6 +307,7 @@ There's a thorough FAQ section located at [http://www.foxy-shop.com/faq/](http:/
 * Removing FOXYSHOP_DOCUMENT_ROOT variable
 * Deprecated: Support for Foxy versions 0.7.2 and older (these are also unsupported versions of Foxy, and should not be in use)
 * Deprecated: Legacy Google Analytics tracking code is no longer output on the checkout and receipt templates. If you use this, please consider upgrading to Foxy 2.0 to use the native integration options
+* Deprecated: Removing Magnific lightbox from the product gallery as it is no longer allowed by Wordpress, replaced instead with Luminous as the new default
 
 = 4.8.2 =
 

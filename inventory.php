@@ -36,7 +36,7 @@ function foxyshop_inventory_update() {
 			foxyshop_inventory_count_update($productcode, $newcount, $productid);
 			$save_count++;
 		}
-		wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_inventory_management_page&importcompleted='.esc_attr($save_count));
+		wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_inventory_management_page&importcompleted='.$save_count);
 		die;
 	}
 }

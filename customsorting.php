@@ -146,7 +146,7 @@ function foxyshop_custom_sort() {
 		if ($product_list) {
 
 			echo ('<h3>' . wp_kses_post($current_category_name) . '</h3>'."\n");
-			echo ('<p>' . sprintf(__('Drag %s to the preferred order and then click the Save button at the bottom of the page.', 'foxyshop'), strtolower(FOXYSHOP_PRODUCT_NAME_PLURAL)) . '</p>');
+			echo ('<p>' . esc_html(sprintf(__('Drag %s to the preferred order and then click the Save button at the bottom of the page.', 'foxyshop'), strtolower(FOXYSHOP_PRODUCT_NAME_PLURAL))) . '</p>');
 			echo ('<form name="form_product_order" method="post" action="">'."\n");
 			echo ('<ul id="foxyshop_product_order_list" class="foxyshop_sort_list">'."\n");
 
@@ -160,7 +160,7 @@ function foxyshop_custom_sort() {
 				echo ('<li id="id_' . esc_attr($prod->ID) . '" class="lineitem">');
 				echo ('<img src="' . esc_url(foxyshop_get_main_image()) . '" />');
 				echo ('<h4>' . esc_html($prod->post_title) . '</h4>'."\n");
-				echo wp_kses_post(foxyshop_price());
+				echo foxy_wp_html(foxyshop_price());
 				echo ('<div class="counter">' . esc_html($current_count + 1) . '</div>');
 				echo ('<div style="clear: both; height: 1px;"></div>'."\n");
 				echo ('</li>'."\n");
@@ -179,7 +179,7 @@ function foxyshop_custom_sort() {
 			<?php
 
 		} else {
-			echo ('<p><em>' . sprintf(__('No %s Found For This Category.', 'foxyshop'), FOXYSHOP_PRODUCT_NAME_PLURAL) . '</em></p>');
+			echo ('<p><em>' . esc_html(sprintf(__('No %s Found For This Category.', 'foxyshop'), FOXYSHOP_PRODUCT_NAME_PLURAL)) . '</em></p>');
 			echo ('<p><a href="edit.php?post_type=foxyshop_product&amp;page=foxyshop_custom_sort&amp;upgrade_menu_order=1&amp;categoryID=' . esc_attr($categoryID) . '">Missing products? Click here.</a></p>');
 		}
 

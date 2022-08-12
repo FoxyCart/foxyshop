@@ -199,19 +199,19 @@ function foxyshop_google_product_xml($id, $batch_process = "") {
 			$xml .= "<id>https://content.googleapis.com/content/v1/" . $foxyshop_settings['google_product_merchant_id'] . "/items/products/schema/" . $id . "</id>\n";
 		}
 		if ($batch_process) $xml .= "<batch:operation type='$batch_process'/>\n";
-		$xml .= '<title>' . esc_attr(trim($product['name'])) . '</title>'."\n";
-		$xml .= '<content type="text">' . esc_attr($product['description']) . '</content>'."\n";
-		$xml .= '<sc:id>' . esc_attr($product['id']) . '</sc:id>'."\n";
-		$xml .= '<sc:availability>' . esc_attr($availability) . '</sc:availability>'."\n";
-		$xml .= '<link rel="alternate" type="text/html" href="' . esc_url($product['url']) . '"/>'."\n";
-		$xml .= '<sc:image_link>' . esc_url(foxyshop_get_main_image('large')) . '</sc:image_link>'."\n";
+		$xml .= '<title>' . trim($product['name']) . '</title>'."\n";
+		$xml .= '<content type="text">' . $product['description'] . '</content>'."\n";
+		$xml .= '<sc:id>' . $product['id'] . '</sc:id>'."\n";
+		$xml .= '<sc:availability>' . $availability . '</sc:availability>'."\n";
+		$xml .= '<link rel="alternate" type="text/html" href="' . $product['url'] . '"/>'."\n";
+		$xml .= '<sc:image_link>' . foxyshop_get_main_image('large') . '</sc:image_link>'."\n";
 
 		//Additional Images
 		$number_of_additional_images = 0;
 		foreach($product['images'] AS $product_image) {
 			$number_of_additional_images++;
 			if ($product_image['featured'] == 0 && $number_of_additional_images <= 10) {
-				'<sc:additional_image_link>' . esc_url($product_image['large']) . '</sc:additional_image_link>'."\n";
+				'<sc:additional_image_link>' . $product_image['large'] . '</sc:additional_image_link>'."\n";
 			}
 		}
 
@@ -221,7 +221,7 @@ function foxyshop_google_product_xml($id, $batch_process = "") {
 			$val = get_post_meta($product['id'],'_'.$field,1);
 			if ($field == 'condition') $val = $condition;
 			if ($field == 'gtin' && !$val) $val = $product['code'];
-			if ($val) $xml .= '<scp:'.$field.'>' . esc_attr($val) . '</scp:'.$field.'>'."\n";
+			if ($val) $xml .= '<scp:'.$field.'>' . $val . '</scp:'.$field.'>'."\n";
 		}
 		$xml .= '<scp:availability>in stock</scp:availability>'."\n";
 		$xml .= '<scp:price unit="usd">' . $product['originalprice'] . '</scp:price>'."\n";
@@ -229,7 +229,7 @@ function foxyshop_google_product_xml($id, $batch_process = "") {
 			$xml .= '<scp:sale_price unit="usd">' . $product['originalprice'] . '</scp:sale_price>'."\n";
 			//$xml .= '<scp:sale_price_effective_date">' . $sale_price_effective_date . '</scp:sale_price_effective_date>'."\n";
 		}
-		if ($product_type_write) $xml .= '<scp:product_type>' . esc_attr($product_type_write) . '</scp:product_type>'."\n";
+		if ($product_type_write) $xml .= '<scp:product_type>' . $product_type_write . '</scp:product_type>'."\n";
 		$xml .= '</entry>'."\n";
 	}
 	return $xml;
@@ -375,7 +375,7 @@ add_action( 'admin_print_footer_scripts', 'foxyshop_inline_productfeed_js' );
 			"Authorization" => "GoogleLogin auth=" . $foxyshop_settings['google_product_auth']
 		];
 
-		$url = "https://content.googleapis.com/content/v1/" . esc_attr($foxyshop_settings['google_product_merchant_id']) . "/items/products/schema?performance.start=" . esc_attr(date("Y-m-d", strtotime("-30 days"))) . "&max-results=250&performance.end=" . esc_attr(date("Y-m-d", strtotime("now")));
+		$url = "https://content.googleapis.com/content/v1/" . $foxyshop_settings['google_product_merchant_id'] . "/items/products/schema?performance.start=" . date("Y-m-d", strtotime("-30 days")) . "&max-results=250&performance.end=" . date("Y-m-d", strtotime("now"));
 		if (isset($_GET['nextlink'])) $url = sanitize_text_field($_GET['nextlink']);
 
 		$response = wp_remote_get($url, ['headers' => $header_array]);
@@ -492,9 +492,9 @@ add_action( 'admin_print_footer_scripts', 'foxyshop_inline_productfeed_js' );
 			</tbody>
 		</table>
 		<div style="padding-top: 10px;">
-			<button type="submit" class="button" name="update_checked_google_products" value="1" id="update_checked_google_products">Update/Renew Checked <?php echo FOXYSHOP_PRODUCT_NAME_PLURAL; ?></button>
+			<button type="submit" class="button" name="update_checked_google_products" value="1" id="update_checked_google_products">Update/Renew Checked <?php echo esc_html(FOXYSHOP_PRODUCT_NAME_PLURAL); ?></button>
 			&nbsp;&nbsp;&nbsp;
-			<button type="submit" class="button" name="delete_checked_google_products" value="1" id="delete_checked_google_products">Delete Checked <?php echo FOXYSHOP_PRODUCT_NAME_PLURAL; ?></button>
+			<button type="submit" class="button" name="delete_checked_google_products" value="1" id="delete_checked_google_products">Delete Checked <?php echo esc_html(FOXYSHOP_PRODUCT_NAME_PLURAL); ?></button>
 
 			<?php if ($nextlink) {
 				echo '<a href="edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&nextlink=' . urlencode(esc_url($nextlink)) . '" class="button" style="float: right;">Next Page</a>';
@@ -525,8 +525,8 @@ add_action( 'admin_print_footer_scripts', 'foxyshop_inline_productfeed_js' );
 	if ($product_list) {
 
 	?>
-		<h2 style="padding: 100px 0 0 0;">Available, Unmatched <?php echo FOXYSHOP_PRODUCT_NAME_PLURAL; ?> to Add</h2>
-		<p style="margin: 0;">In order to appear in this list, <?php echo strtolower(FOXYSHOP_PRODUCT_NAME_PLURAL); ?> must have a "Google Product Category" attribute.</p>
+		<h2 style="padding: 100px 0 0 0;">Available, Unmatched <?php echo esc_html(FOXYSHOP_PRODUCT_NAME_PLURAL); ?> to Add</h2>
+		<p style="margin: 0;">In order to appear in this list, <?php echo strtolower(esc_html(FOXYSHOP_PRODUCT_NAME_PLURAL)); ?> must have a "Google Product Category" attribute.</p>
 
 		<form action="edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&foxyshop_manage_google_feed=1" method="post">
 
@@ -603,7 +603,7 @@ add_action( 'admin_print_footer_scripts', 'foxyshop_inline_productfeed_js' );
 
 		}
 		if ($none_available) {
-			echo '<tr><td colspan="7"><em>No ' . FOXYSHOP_PRODUCT_NAME_PLURAL . ' Available.</em></td></tr>'."\n";
+			echo '<tr><td colspan="7"><em>No ' . esc_html(FOXYSHOP_PRODUCT_NAME_PLURAL) . ' Available.</em></td></tr>'."\n";
 		}
 			?>
 			</tbody>
@@ -612,7 +612,7 @@ add_action( 'admin_print_footer_scripts', 'foxyshop_inline_productfeed_js' );
 		<?php wp_nonce_field('manage-the-google-feed-settings'); ?>
 		<?php if (isset($_GET['debug'])) echo '<input type="hidden" name="debug" value="1" />'; ?>
 		<div style="padding-top: 10px;">
-			<button type="submit" class="button" name="add_checked_google_products" value="1" id="add_checked_google_products">Add Checked <?php echo FOXYSHOP_PRODUCT_NAME_PLURAL; ?> to Google</button>
+			<button type="submit" class="button" name="add_checked_google_products" value="1" id="add_checked_google_products">Add Checked <?php echo esc_html(FOXYSHOP_PRODUCT_NAME_PLURAL); ?> to Google</button>
 		</div>
 		</form>
 
@@ -722,7 +722,7 @@ function foxyshop_manage_google_feed() {
 
 		$writexml = "<?xml version='1.0' encoding='UTF-8'?>\n";
 		$writexml .= "<feed xmlns='http://www.w3.org/2005/Atom' xmlns:batch='http://schemas.google.com/gdata/batch'>\n";
-		$writexml .= esc_xml($xml);
+		$writexml .= $xml;
 		$writexml .= '</feed>';
 		if (isset($_REQUEST['debug'])) {
 			echo "<form><button type=\"button\" onclick=\"location.href = 'edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1&debug=1" . esc_attr($error) . "';\">Continue</button></form>";
@@ -776,7 +776,7 @@ function foxyshop_manage_google_feed() {
 			die;
 		}
 
-		wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1'.esc_attr($error));
+		wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_google_products_page&success=1'.$error);
 		die;
 
 	}

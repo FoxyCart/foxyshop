@@ -72,7 +72,7 @@ function foxyshop_load_site_scripts() {
 
 
 function foxyshop_date_picker() {
-	wp_enqueue_style('jquery-style', 'http' . (is_ssl() ? "s" : "") . '://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css');
+	wp_enqueue_style('jquery-ui-style', FOXYSHOP_DIR . '/css/jquery-ui.css', array(), FOXYSHOP_VERSION);
 	wp_enqueue_script('jquery-ui-datepicker', array('jquery','jquery-ui-core'));
 }
 
@@ -197,13 +197,13 @@ function foxyshop_insert_google_analytics() {
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', '".foxy_wp_html(htmlspecialchars($foxyshop_settings['ga']) )."', 'auto');
+  ga('create', '".htmlspecialchars($foxyshop_settings['ga']) ."', 'auto');
   ".(($foxyshop_settings['ga_demographics']) ? "ga('require', 'displayfeatures');\n" : "")."
   ga('send', 'pageview');";
 		//Legacy
 		} else {
 		$toadd = "var _gaq = _gaq || [];
-_gaq.push(['_setAccount', '".foxy_wp_html(htmlspecialchars($foxyshop_settings['ga']))."']);
+_gaq.push(['_setAccount', '".htmlspecialchars($foxyshop_settings['ga'])."']);
 _gaq.push(['_trackPageview']);
 (function() {
 	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
@@ -593,7 +593,7 @@ function foxyshop_get_category_list($output_type = "") {
 		if ($output_type == "") {
 			$output .= "$code|$description|$product_delivery_type\n";
 		} elseif ($output_type == "select") {
-			$output .= '<option value="' . esc_attr($code) . '">' . esc_html($description) . '</option>' . "\n";
+			$output .= '<option value="' . $code . '">' . $description . '</option>' . "\n";
 		}
 	}
 
@@ -628,7 +628,7 @@ function foxyshop_get_downloadable_list() {
 //Access the FoxyCart API
 function foxyshop_get_foxycart_data($foxyData, $silent_fail = true) {
 	global $foxyshop_settings;
-	$foxyData = array_merge(array("api_token" => esc_attr($foxyshop_settings['api_key'])), $foxyData);
+	$foxyData = array_merge(array("api_token" => $foxyshop_settings['api_key']), $foxyData);
 	$args = array(
 		"timeout" => !defined('FOXYSHOP_CURL_TIMEOUT') ? 15 : FOXYSHOP_CURL_TIMEOUT,
 		"method" => "POST",
@@ -767,12 +767,12 @@ function foxyshop_manage_attributes($xml, $id, $att_type) {
 		$attribute_value = (string)$attribute->value;
 
 		$holder .= '<tr class="viewing">';
-		$holder .= '<td class="col1">' . esc_html($attribute_name) . '</td>';
-		$holder .= '<td class="col2"><div>' . str_replace("\n", "<br />\n", esc_html($attribute_value)) . '</div><a href="#" class="foxyshop_attribute_delete" attname="' . esc_attr($attribute_name) . '" rel="' . esc_attr($id) . '" title="Delete">' . __('Delete', 'foxyshop') . '</a><a href="#" class="foxyshop_attribute_edit" rel="' . esc_attr($id) . '" title="Edit">' . __('Edit', 'foxyshop') . '</a></td>'."\n";
+		$holder .= '<td class="col1">' . $attribute_name . '</td>';
+		$holder .= '<td class="col2"><div>' . str_replace("\n", "<br />\n", $attribute_value) . '</div><a href="#" class="foxyshop_attribute_delete" attname="' . $attribute_name . '" rel="' . $id . '" title="Delete">' . __('Delete', 'foxyshop') . '</a><a href="#" class="foxyshop_attribute_edit" rel="' . $id . '" title="Edit">' . __('Edit', 'foxyshop') . '</a></td>'."\n";
 		$holder .= '</tr>';
 	}
 	$holder .= "</tbody></table>\n";
-	$holder .= '<input type="button" value="' . __('Add Attribute', 'foxyshop') . '" class="button foxyshop_add_attribute" rel="' . esc_attr($id) . '" />'."\n";
+	$holder .= '<input type="button" value="' . __('Add Attribute', 'foxyshop') . '" class="button foxyshop_add_attribute" rel="' . $id . '" />'."\n";
 	return $holder;
 }
 

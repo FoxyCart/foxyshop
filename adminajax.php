@@ -141,11 +141,11 @@ function foxyshop_ajax_set_google_auth() {
 	foreach($response_line as $response) {
 		$r = explode("=", $response);
 		if ($r[0] == "Error") {
-			die(foxy_wp_html("Error"));
+			die("Error");
 		} elseif ($r[0] == "Auth") {
 			$foxyshop_settings['google_product_auth'] = strip_tags($r[1]);
 			update_option("foxyshop_settings", $foxyshop_settings);
-			die(foxy_wp_html("Success"));
+			die("Success");
 		}
 	}
 	die;
@@ -231,14 +231,14 @@ function foxyshop_redraw_images($id) {
 				$hide_from_slideshow_class = $hide_from_slideshow ? 'foxyshop_hide_from_slideshow ' : '';
 
 				$write .= '<li id="att_' . $attachment->ID . '" class="'. $featured_class . $hide_from_slideshow_class . '">';
-				$write .= '<div class="foxyshop_image_holder"><img src="' . $thumbnailSRC[0] . '" alt="' . esc_attr($attachment->post_title) . ' (' . $attachment->ID . ')" title="' . esc_attr($attachment->post_title) . ' (' . $attachment->ID . ')" /></div>';
+				$write .= '<div class="foxyshop_image_holder"><img src="' . $thumbnailSRC[0] . '" alt="' . $attachment->post_title . ' (' . $attachment->ID . ')" title="' . $attachment->post_title . ' (' . $attachment->ID . ')" /></div>';
 				$write .= '<div style="clear: both;"></div>';
 				$write .= '<a href="#" class="foxyshop_image_delete" rel="' . $attachment->ID . '" alt="Delete" title="Delete">Delete</a>';
 				$write .= '<a href="#" class="foxyshop_image_rename" rel="' . $attachment->ID . '" alt="Rename" title="Rename">Rename</a>';
 				$write .= '<a href="#" class="foxyshop_image_featured" rel="' . $attachment->ID . '" alt="Make Featured Image" title="Make Featured Image">Make Featured Image</a>';
 				$write .= '<a href="#" class="foxyshop_visible" rel="' . $attachment->ID . '" alt="Toggle Slideshow View" title="Toggle Slideshow View">Toggle Slideshow View</a>';
 				$write .= '<div class="renamediv" id="renamediv_' . $attachment->ID . '">';
-				$write .= '<input type="text" name="rename_' . $attachment->ID . '" id="rename_' . $attachment->ID . '" rel="' . $attachment->ID . '" value="' . esc_attr($attachment->post_title) . '" />';
+				$write .= '<input type="text" name="rename_' . $attachment->ID . '" id="rename_' . $attachment->ID . '" rel="' . $attachment->ID . '" value="' . $attachment->post_title . '" />';
 				$write .= '</div>';
 				$write .= '<div style="clear: both;"></div>';
 				$write .= '</li>';
@@ -247,5 +247,5 @@ function foxyshop_redraw_images($id) {
 			}
 		}
 	}
-	return foxy_wp_html($write);
+	return $write;
 }

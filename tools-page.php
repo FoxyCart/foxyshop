@@ -64,7 +64,7 @@ function foxyshop_save_tools() {
 			if ($xml->result != "ERROR") {
 				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=cart');
 			} else {
-				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=error&error='.urlencode(esc_attr((string)$xml->messages->message)));
+				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=error&error='.urlencode((string)$xml->messages->message));
 			}
 			exit;
 
@@ -77,7 +77,7 @@ function foxyshop_save_tools() {
 			if ($xml->result != "ERROR") {
 				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=checkout');
 			} else {
-				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=error&error='.urlencode(esc_attr((string)$xml->messages->message)));
+				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=error&error='.urlencode((string)$xml->messages->message));
 			}
 			exit;
 
@@ -89,7 +89,7 @@ function foxyshop_save_tools() {
 			if ($xml->result != "ERROR") {
 				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=receipt');
 			} else {
-				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=error&error='.urlencode(esc_attr((string)$xml->messages->message)));
+				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=error&error='.urlencode((string)$xml->messages->message));
 			}
 			exit;
 		}
@@ -208,7 +208,7 @@ function foxyshop_tools() {
 	}
 
 	//Confirmation Key Reset
-	if (isset($_GET['key'])) echo '<div class="updated"><p>' . sprintf(__('Your API Key Has Been Reset: "%s". Please Update FoxyCart With Your New Key.', 'foxyshop'), esc_attr($foxyshop_settings['api_key'])) . '</p></div>';
+	if (isset($_GET['key'])) echo '<div class="updated"><p>' . esc_html(sprintf(__('Your API Key Has Been Reset: "%s". Please Update FoxyCart With Your New Key.', 'foxyshop'), $foxyshop_settings['api_key'])) . '</p></div>';
 
 	//Confirmation Old Vars
 	if (isset($_GET['oldvars'])) echo '<div class="updated"><p>' . __('Scan for old variations has been successfully completed.', 'foxyshop') . '</p></div>';
@@ -227,7 +227,7 @@ function foxyshop_tools() {
 		} elseif ($updatetemplate == "clear") {
 			echo '<div class="updated"><p>' . __('Your saved URLs have been cleared.', 'foxyshop') . '</p></div>';
 		} else {
-			echo '<div class="updated"><p>' . sprintf(__('The %s template has been successfully updated.', 'foxyshop'), esc_attr($updatetemplate)) . '</p></div>';
+			echo '<div class="updated"><p>' . esc_html(sprintf(__('The %s template has been successfully updated.', 'foxyshop'), $updatetemplate)) . '</p></div>';
 		}
 	}
 

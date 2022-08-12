@@ -13,7 +13,21 @@ if (!defined('ABSPATH')) exit();
  */
 function foxyshop_decrypt($src) {
 	global $foxyshop_settings;
-	return rc4crypt::decrypt($foxyshop_settings['api_key'],urldecode($src));
+
+	// All of WordPress's sanitization functions break the payload - so check that it
+	// passes as XML before returning back the decrypted data
+	$decrypted = rc4crypt::decrypt($foxyshop_settings['api_key'],urldecode($src));
+	// Parse the decrypted payload using simplexml to make sure it's valid XML
+	$xml = simplexml_load_string($decrypted, NULL, LIBXML_NOCDATA);
+	if ($xml !== false) {
+		// We still have to return the decrypted data and not the parsed XML to maintain
+		// backwards-compatibility for any customised foxyshop-datafeed-endpoint.php
+		return $decrypted;
+	} else {
+		return false;
+	}
+
+
 }
 
 
@@ -21,7 +35,7 @@ function foxyshop_decrypt($src) {
  * Push Feed to External Datafeeds
  *
  * NOTE: As the external datafeeds need to receive an exact copy of the $_POST payload
- * we need to make use of the $_POST without sanitising the value. This function deos
+ * we need to make use of the $_POST without sanitising the value. This function does
  * still at least confirm that the payload decrypts correctly, is valid XML and includes
  * the expected parent node before being used though.
  *
@@ -44,22 +58,28 @@ function foxyshop_run_external_datafeeds($external_datafeeds) {
 	$payload = [];
 	$untrusted_payload = "";
 	if(isset($_POST["FoxyData"])) {
-		// Confirm POST data is valid
+		// Because we can't sanitise the data because it needs to be passed in the exact same state
+		// to an external endpoint, let's validate the data by passing it to simplexml and confirm
+		// that a node exists that we expect to be there
 		$untrusted_payload = $_POST["FoxyData"];
 		$xml_decrypted = foxyshop_decrypt($untrusted_payload);
 		$xml = simplexml_load_string($xml_decrypted, NULL, LIBXML_NOCDATA);
 		if (!isset($xml->transactions)) return;
 
-		// It's ok, so pass the raw data along to the external endpoints
+		// We've confirmed that the transactions node exists, so it's valid XML as we expect it to be.
+		// We can now pass the untrusted raw data along to the external endpoints defined
 		$payload = array("FoxyData" => $untrusted_payload);
 	} else if(isset($_POST["FoxySubscriptionData"])) {
-		// Confirm POST data is valid
+		// Because we can't sanitise the data because it needs to be passed in the exact same state
+		// to an external endpoint, let's validate the data by passing it to simplexml and confirm
+		// that a node exists that we expect to be there
 		$untrusted_payload = $_POST["FoxySubscriptionData"];
 		$xml_decrypted = foxyshop_decrypt($untrusted_payload);
 		$xml = simplexml_load_string($xml_decrypted, NULL, LIBXML_NOCDATA);
 		if (!isset($xml->subscriptions)) return;
 
-		// It's ok, so pass the raw data along to the external endpoints
+		// We've confirmed that the subscriptions node exists, so it's valid XML as we expect it to be.
+		// We can now pass the untrusted raw data along to the external endpoints defined
 		$payload = array("FoxySubscriptionData" => $untrusted_payload);
 	}
 
@@ -86,10 +106,9 @@ function foxyshop_run_external_datafeeds($external_datafeeds) {
 				$message = "A FoxyCart datafeed error was encountered at " . date("F j, Y, g:i a") . ".\n\n";
 				$message .= "The feed that failed was $feedurl\n\n";
 				$message .= "The error is listed below:\n\n";
-				$message .= esc_html($error_msg);
+				$message .= $error_msg;
 				//$message .= "\n\n" . print_r($_POST, 1);
 				//$message .= "\n\n" . print_r($_SERVER, 1);
-				$message .= "\n\n" . esc_html(foxyshop_decrypt($untrusted_payload));
 				$headers = 'From: ' . get_bloginfo('name') . ' Server Admin <' . $to_email . '>' . "\r\n";
 				mail($to_email, 'Data Feed Error on ' . get_bloginfo('name'), $message, $headers);
 
@@ -133,13 +152,13 @@ function foxyshop_datafeed_inventory_update($xml) {
 
 						//Send Email Alert Email
 						if ($foxyshop_settings['inventory_alert_email'] && $new_count <= $alert_level) {
-							$subject_line = "Inventory Alert: " . esc_html($product_name);
+							$subject_line = "Inventory Alert: " . $product_name;
 							$to_email = apply_filters('foxyshop_inventory_alert_email', get_bloginfo('admin_email'));
 							$message = "The inventory for one of your products is getting low:\n\n";
-							$message .= "Product Name: " . esc_html($product_name) . "\n";
-							$message .= "Product Code: " . esc_html($product_code) . "\n";
-							$message .= "Current Inventory Level: " . esc_html($new_count) . "\n";
-							$message .= "Inventory Alert Level: " . esc_html($alert_level) . "\n";
+							$message .= "Product Name: " . $product_name . "\n";
+							$message .= "Product Code: " . $product_code . "\n";
+							$message .= "Current Inventory Level: " . $new_count . "\n";
+							$message .= "Inventory Alert Level: " . $alert_level . "\n";
 							$message .= "\n". get_bloginfo('wpurl') . "/wp-admin/edit.php?post_type=foxyshop_product\n";
 							$headers = 'From: ' . get_bloginfo('name') . ' <' . $to_email . '>' . "\r\n";
 							wp_mail($to_email, $subject_line, $message, $headers);

@@ -56,7 +56,7 @@ function foxyshop_category_sort() {
 	echo ('<div class="wrap">');
 
 	echo ( '<div class="icon32" id="icon-tools"><br></div>');
-	echo ( '<h2>' . sprintf(__('Set %s Category Order', 'foxyshop'), FOXYSHOP_PRODUCT_NAME_SINGULAR) . '</h2>');
+	echo ( '<h2>' . esc_html(sprintf(__('Set %s Category Order', 'foxyshop'), FOXYSHOP_PRODUCT_NAME_SINGULAR)) . '</h2>');
 	if ($success) echo foxy_wp_html( $success);
 
 	$categoryID = (isset($_POST['categoryID']) ? sanitize_text_field($_POST['categoryID']) : 0);
@@ -66,14 +66,14 @@ function foxyshop_category_sort() {
 		$subcats = array();
 		foreach($product_categories as $cat) {
 			$subcat = get_term_children($cat->term_id, 'foxyshop_categories');
-			if (count($subcat) > 0) $subcats[] = '<option value="' . esc_attr($cat->term_id) . '">' . wp_kses($cat->name, []) . '</option>'."\n";
+			if (count($subcat) > 0) $subcats[] = '<option value="' . $cat->term_id . '">' . $cat->name . '</option>'."\n";
 		}
 
 		if (count($subcats) > 0 || $categoryID > 0) {
 			echo ('<form name="form_product_category_order" method="post" action="">');
 			echo ( '<select name="categoryID" id="categoryID">'."\n");
 			if ($categoryID > 0) echo ( '<option value="0">Top Level</option>'."\n");
-			echo ( implode("\n",$subcats));
+			echo ( foxy_wp_html(implode("\n",$subcats)));
 			echo ( '</select>'."\n");
 			echo ( '<input type="submit" name="btnSubPages" class="button" id="btnSubPages" value="' . __('Select Sub-Category', 'foxyshop') . '" /></form>');
 		}
@@ -94,7 +94,7 @@ function foxyshop_category_sort() {
 		//Sort Categories
 		$product_categories = foxyshop_sort_categories($product_categories, $categoryID);
 
-		echo ( '<h3>' . wp_kses($current_category_name, []) . '</h3>'."\n");
+		echo ( '<h3>' . esc_html($current_category_name) . '</h3>'."\n");
 		echo ( '<p>' . __('Drag categories to the preferred order and then click the Save button at the bottom of the page.', 'foxyshop') . '</p>');
 		echo ( '<p><strong>' . __('Current Sorting') . ': ' . (array_key_exists($categoryID,$foxyshop_category_sort) ? __('Custom', 'foxyshop') : __('Alphabetical', 'foxyshop')) . '</strong></p>');
 		echo ( '<form name="form_category_order" method="post" action="">'."\n");
@@ -103,11 +103,11 @@ function foxyshop_category_sort() {
 		$counter = 1;
 		foreach($product_categories as $cat) {
 			if (substr($cat->name,0,1) == "_") continue;
-			echo foxy_wp_html( '<li id="' . esc_attr($cat->term_id) . '" class="lineitem">');
-			echo foxy_wp_html( '<h4>' . wp_kses($cat->name, []) . '</h4>'."\n");
-			echo foxy_wp_html( '<div class="counter">' . wp_kses($counter, []) . '</div>');
-			echo foxy_wp_html( '<div style="clear: both; height: 1px;"></div>'."\n");
-			echo foxy_wp_html( '</li>'."\n");
+			echo ( '<li id="' . esc_attr($cat->term_id) . '" class="lineitem">');
+			echo ( '<h4>' . esc_html($cat->name) . '</h4>'."\n");
+			echo ( '<div class="counter">' . esc_html($counter) . '</div>');
+			echo ( '<div style="clear: both; height: 1px;"></div>'."\n");
+			echo ( '</li>'."\n");
 			$counter++;
 		}
 		echo foxy_wp_html( '</ul>'."\n");

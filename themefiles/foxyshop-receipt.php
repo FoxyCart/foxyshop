@@ -130,7 +130,7 @@ foreach($xml->transactions->transaction as $transaction) {
 				<td>&nbsp;</td>
 			</tr>
 			<tr>
-				<td><strong>Date:</strong> <?php echo Date($date_style, strtotime($transaction_date)); ?></td>
+				<td><strong>Date:</strong> <?php echo esc_html(Date($date_style, strtotime($transaction_date))); ?></td>
 			</tr>
 			<tr>
 				<td><strong>Order Number:</strong> <?php echo foxy_wp_html($transaction_id); ?></td>
@@ -180,7 +180,7 @@ foreach($xml->transactions->transaction as $transaction) {
 
 				//Show Each Multi-ship Address If Entered
 				foreach($transaction->shipto_addresses->shipto_address as $shipto_address) {
-					echo ('<td valign="top"><strong>Shipping Address (' . $shipto_address->address_name . '):</strong><br />');
+					echo ('<td valign="top"><strong>Shipping Address (' . foxy_wp_html($shipto_address->address_name) . '):</strong><br />');
 					echo foxy_wp_html((string)$shipto_address->shipto_first_name . " " . (string)$shipto_address->shipto_last_name) . "<br />";
 					if ((string)$shipto_address->shipto_company) echo foxy_wp_html($shipto_address->shipto_company) . "<br />";
 					echo foxy_wp_html((string)$shipto_address->shipto_address1 ). "<br />";
