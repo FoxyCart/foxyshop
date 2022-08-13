@@ -189,6 +189,7 @@ http://www.foxy-shop.com/documentation/theme-customization/
 	margin-top: 30px;
 	margin-bottom: 15px;
 	width: 100%;
+	overflow: hidden;
 }
 .foxyshop_product_list li.foxyshop_product_box {
 	margin: 0 20px 20px 0;
