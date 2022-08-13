@@ -412,7 +412,7 @@ function foxyshop_product_details_setup() {
 		<span style="float: left; margin: 9px 0 0 5px;">0.00</span>
 	</div>
 	<div id="foxyshop_item_code" class="foxyshop_field_control">
-		<label for="_code"><?php _e('Item Code', 'foxyshop'); ?></label>
+		<label for="_code"><?php echo esc_html(FOXYSHOP_PRODUCT_NAME_SINGULAR) . ' ' . __('Code', 'foxyshop'); ?></label>
 		<input type="text" name="_code" id="_code" value="<?php echo esc_attr($_code); ?>" />
 	</div>
 	<div id="foxyshop_weight" class="foxyshop_field_control">
@@ -636,7 +636,7 @@ function foxyshop_product_pricing_setup() {
 
 	<?php if ($foxyshop_settings['manage_inventory_levels']) { ?>
 	<h4><?php _e('Set Inventory Levels', 'foxyshop'); ?></a></h4>
-	<div style="float: left; width: 152px; margin-bottom: 5px; font-size: 11px;"><? echo esc_html(FOXYSHOP_PRODUCT_NAME_SINGULAR) . ' ' . __('Code', 'foxyshop');?></div>
+	<div style="float: left; width: 152px; margin-bottom: 5px; font-size: 11px;"><?php echo esc_html(FOXYSHOP_PRODUCT_NAME_SINGULAR) . ' ' . __('Code', 'foxyshop');?></div>
 	<div style="float: left; width: 51px; margin-bottom: 5px; font-size: 11px;"><?php _e('Count', 'foxyshop'); ?></div>
 	<div style="float: left; width: 50px; margin-bottom: 5px; font-size: 11px;" title="<?php echo esc_html(sprintf(__('If not set, default value will be used (%s)', 'foxyshop'), $foxyshop_settings['inventory_alert_level'])); ?>"><?php _e('Alert Lvl', 'foxyshop'); ?></div>
 	<ul id="inventory_levels">
