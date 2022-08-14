@@ -689,11 +689,11 @@ function foxyshop_product_pricing_setup() {
 
 	<h4 style="margin-bottom: 3px;"><?php _e('Other Product Features', 'foxyshop'); ?></h4>
 	<div class="foxyshop_field_control">
-		<input type="checkbox" style="float: left; margin: 5px 0 0 10px;" id="_cart" name="_cart" value="checkout"<?php echo esc_html($_cart); ?>>
+		<input type="checkbox" style="float: left; margin: 5px 0 0 10px;" id="_cart" name="_cart" value="checkout"<?php echo wp_kses($_cart, []); ?>>
 		<label for="_cart" style="width: 210px;"><?php _e('Force Immediate Checkout', 'foxyshop'); ?></label>
 	</div>
 	<div class="foxyshop_field_control">
-		<input type="checkbox" style="float: left; margin: 5px 0 0 10px;" id="_empty" name="_empty" value="true"<?php echo esc_html($_empty); ?>>
+		<input type="checkbox" style="float: left; margin: 5px 0 0 10px;" id="_empty" name="_empty" value="true"<?php echo wp_kses($_empty, []); ?>>
 		<label for="_empty" style="width: 210px;"><?php _e('Empty Cart Before Adding Product', 'foxyshop'); ?></label>
 	</div>
 	<div class="foxyshop_field_control">
