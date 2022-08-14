@@ -166,7 +166,7 @@ function foxyshop_order_management() {
 
 	<div class="wrap">
 		<div class="icon32 icon32-posts-page" id="icon-edit-pages"><br></div>
-		<h2><?php _e('Manage Orders', 'foxyshop'); echo foxy_wp_html($orderdesk_link); ?></h2>
+		<h2><?php _e('Manage Orders', 'foxyshop'); echo wp_kses_post($orderdesk_link); ?></h2>
 
 
 		<form action="edit.php" method="get" id="foxyshop_searchform" name="foxyshop_searchform" style="display: block; margin: 14px 0 20px 0;">
@@ -181,39 +181,39 @@ function foxyshop_order_management() {
 			<div class="foxyshop_field_control foxyshop_radio_label_container">
 				<label><?php _e('Transaction Status', 'foxyshop'); ?></label>
 
-				<input type="radio" id="hide_transaction_filter0" name="hide_transaction_filter" value="0" <?php echo foxy_wp_html($foxy_data['hide_transaction_filter'] == 0 ? ' checked="checked"' : ''); ?> />
+				<input type="radio" id="hide_transaction_filter0" name="hide_transaction_filter" value="0" <?php echo $foxy_data['hide_transaction_filter'] == 0 ? ' checked="checked"' : ''; ?> />
 				<label for="hide_transaction_filter0"><?php _e('Visible', 'foxyshop'); ?></label>
 
-				<input type="radio" id="hide_transaction_filter1" name="hide_transaction_filter" value="1" <?php echo foxy_wp_html($foxy_data['hide_transaction_filter'] == 1 ? ' checked="checked"' : ''); ?> />
+				<input type="radio" id="hide_transaction_filter1" name="hide_transaction_filter" value="1" <?php echo $foxy_data['hide_transaction_filter'] == 1 ? ' checked="checked"' : ''; ?> />
 				<label for="hide_transaction_filter1"><?php _e('Hidden', 'foxyshop'); ?></label>
 
-				<input type="radio" id="hide_transaction_filter" name="hide_transaction_filter" value="" <?php echo foxy_wp_html($foxy_data['hide_transaction_filter'] == '' ? ' checked="checked"' : ''); ?> />
+				<input type="radio" id="hide_transaction_filter" name="hide_transaction_filter" value="" <?php echo $foxy_data['hide_transaction_filter'] == '' ? ' checked="checked"' : ''; ?> />
 				<label for="hide_transaction_filter"><?php _e('Both', 'foxyshop'); ?></label>
 			</div>
 
 			<div class="foxyshop_field_control foxyshop_radio_label_container">
 				<label><?php _e('Datafeed Status', 'foxyshop'); ?></label>
 
-				<input type="radio" id="data_is_fed_filter0" name="data_is_fed_filter" value="0" <?php echo foxy_wp_html($foxy_data['data_is_fed_filter'] == 0 ? ' checked="checked"' : ''); ?> />
+				<input type="radio" id="data_is_fed_filter0" name="data_is_fed_filter" value="0" <?php echo $foxy_data['data_is_fed_filter'] == 0 ? ' checked="checked"' : ''; ?> />
 				<label for="data_is_fed_filter0"><?php _e('Fed', 'foxyshop'); ?></label>
 
-				<input type="radio" id="data_is_fed_filter1" name="data_is_fed_filter" value="1" <?php echo foxy_wp_html($foxy_data['data_is_fed_filter'] == 1 ? ' checked="checked"' : ''); ?> />
+				<input type="radio" id="data_is_fed_filter1" name="data_is_fed_filter" value="1" <?php echo $foxy_data['data_is_fed_filter'] == 1 ? ' checked="checked"' : ''; ?> />
 				<label for="data_is_fed_filter1"><?php _e('Unfed', 'foxyshop'); ?></label>
 
-				<input type="radio" id="data_is_fed_filter" name="data_is_fed_filter" value="" <?php echo foxy_wp_html($foxy_data['data_is_fed_filter'] == '' ? ' checked="checked"' : ''); ?> />
+				<input type="radio" id="data_is_fed_filter" name="data_is_fed_filter" value="" <?php echo $foxy_data['data_is_fed_filter'] == '' ? ' checked="checked"' : ''; ?> />
 				<label for="data_is_fed_filter"><?php _e('Both', 'foxyshop'); ?></label>
 			</div>
 
 			<div class="foxyshop_field_control foxyshop_radio_label_container">
 				<label><?php _e('Test Transactions', 'foxyshop'); ?></label>
 
-				<input type="radio" id="is_test_filter0" name="is_test_filter" value="0" <?php echo foxy_wp_html($foxy_data['is_test_filter'] == 0 ? ' checked="checked"' : ''); ?> />
+				<input type="radio" id="is_test_filter0" name="is_test_filter" value="0" <?php echo $foxy_data['is_test_filter'] == 0 ? ' checked="checked"' : ''; ?> />
 				<label for="is_test_filter0"><?php _e('Live', 'foxyshop'); ?></label>
 
-				<input type="radio" id="is_test_filter1" name="is_test_filter" value="1" <?php echo foxy_wp_html($foxy_data['is_test_filter'] == 1 ? ' checked="checked"' : ''); ?> />
+				<input type="radio" id="is_test_filter1" name="is_test_filter" value="1" <?php echo $foxy_data['is_test_filter'] == 1 ? ' checked="checked"' : ''; ?> />
 				<label for="is_test_filter1"><?php _e('Test', 'foxyshop'); ?></label>
 
-				<input type="radio" id="is_test_filter" name="is_test_filter" value="" <?php echo foxy_wp_html($foxy_data['is_test_filter'] == '' ? ' checked="checked"' : ''); ?> />
+				<input type="radio" id="is_test_filter" name="is_test_filter" value="" <?php echo $foxy_data['is_test_filter'] == '' ? ' checked="checked"' : ''; ?> />
 				<label for="is_test_filter"><?php _e('Both', 'foxyshop'); ?></label>
 			</div>
 
@@ -328,7 +328,7 @@ function foxyshop_order_management() {
 		<input type="hidden" name="page" value="foxyshop_order_management" />
 
 		<?php
-		echo foxy_wp_html($foxyshop_hidden_input);
+		echo foxy_wp_kses_html($foxyshop_hidden_input, ['input']);
 		foxyshop_api_paging_nav('transactions', 'top', $xml, $foxyshop_querystring);
 		?>
 
@@ -430,7 +430,7 @@ function foxyshop_order_management() {
 			echo '</div>';
 			echo '</td>';
 			echo '<td>' . esc_html($transaction_date) . '</td>';
-			echo '<td>' . foxy_wp_html($customer_name) . '</td>';
+			echo '<td>' . wp_kses_post($customer_name) . '</td>';
 			echo '<td>' . esc_html(foxyshop_currency((double)$transaction->order_total)) . '</td>';
 			do_action("foxyshop_order_line_end", $transaction);
 			echo '</tr>'."\n";
@@ -616,7 +616,7 @@ function foxyshop_order_management() {
 	<?php } ?>
 
 
-	<div id="details_holder"><?php echo foxy_wp_html($holder); ?></div>
+	<div id="details_holder"><?php echo foxy_wp_kses_html($holder); ?></div>
 
 	<?php
 
@@ -694,7 +694,7 @@ jQuery(document).ready(function($){
 	});
 	";
 
-	echo foxy_wp_html(foxyshop_manage_attributes_jquery('transaction'));
+	echo esc_js(foxyshop_manage_attributes_jquery('transaction'));
 
 	echo "
 });

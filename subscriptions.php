@@ -189,14 +189,13 @@ function foxyshop_subscription_management() {
 		?>
 
 
-
 		<form action="edit.php" method="get">
 		<input type="hidden" name="foxyshop_search" value="1" />
 		<input type="hidden" name="post_type" value="foxyshop_product" />
 		<input type="hidden" name="page" value="foxyshop_subscription_management" />
 
 		<?php
-		echo foxy_wp_html($foxyshop_hidden_input);
+		echo foxy_wp_kses_html($foxyshop_hidden_input, ['input']);
 		foxyshop_api_paging_nav('subscriptions', 'top', $xml, $foxyshop_querystring);
 		?>
 
@@ -357,7 +356,7 @@ function foxyshop_subscription_management() {
 		</form>
 	<?php } ?>
 
-	<div id="details_holder"><?php echo foxy_wp_html($holder); ?></div>
+	<div id="details_holder"><?php echo foxy_wp_kses_html($holder, [], true); ?></div>
 
 	<?php
 
@@ -424,7 +423,7 @@ jQuery(document).ready(function($){
 	});
 	";
 
-	echo foxy_wp_html(foxyshop_manage_attributes_jquery('subscription'));
+	echo esc_js(foxyshop_manage_attributes_jquery('subscription'));
 
 	echo "
 

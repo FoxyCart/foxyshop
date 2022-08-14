@@ -47,9 +47,7 @@ add_filter( 'script_loader_tag', function ( $tag, $handle ) {
 function foxyshop_insert_foxycart_files() {
 	global $foxyshop_settings;
 	if (empty($foxyshop_settings['domain'])) return;
-	if ($foxyshop_settings['foxycart_include_cache']) {
-		echo foxy_wp_html($foxyshop_settings['foxycart_include_cache']);
-	} elseif ($foxyshop_settings['version'] == '1.0') {
+	if ($foxyshop_settings['version'] == '1.0') {
 		wp_enqueue_style( 'foxy_colorbox',  FOXYSHOP_DIR . '/css/colorbox.1.3.19.css', [], FOXYSHOP_VERSION );
 		// Javascript file is unique to the configured Foxy store, so it is loaded directly from the Foxy CDN
 		wp_enqueue_script( 'foxy_colorbox', 'https://cdn.foxycart.com/' . str_replace('.foxycart.com','',$foxyshop_settings['domain']) . '/foxycart.colorbox.js', ['jquery'] );
@@ -486,7 +484,7 @@ function foxyshop_product_variations($showQuantity = 0, $showPriceVariations = t
 		$foxyshop_write_variation_include = 1;
 	}
 	if ($write) {
-		echo '<div class="foxyshop_variations">' . "\n" . foxy_wp_html($write) . "</div>\n\n";
+		echo '<div class="foxyshop_variations">' . "\n" . foxy_wp_kses_html($write) . "</div>\n\n";
 	}
 }
 
@@ -573,10 +571,7 @@ function foxyshop_run_variations($variationValue, $variationName, $showPriceVari
 			}
 
 			if ($alternate_value != "NO-VALUE") {
-				$val = $alternate_value;
-				if ($original_price_change != "") {
-					$val .= '{p' . $original_price_change . '}';
-				}
+				$val = $alternate_value . "{" . $variation_modifiers . "}";
 			}
 			if ($priceset !== "") $option_attributes .= ' priceset="' . $priceset . '"';
 			if ($pricechange !== "") $option_attributes .= ' pricechange="' . $pricechange . '"';
@@ -776,7 +771,7 @@ function foxyshop_social_media_header_meta() {
 	if ($product['short_description']) echo '<meta itemprop="description" content="' . esc_attr($product['short_description']) . '" />'."\n";
 
 	//Add Filter
-	echo foxy_wp_html(apply_filters('foxyshop_social_media_header', ""));
+	echo wp_kses_post(apply_filters('foxyshop_social_media_header', ""));
 }
 
 //Writes the Price with Sale Information
@@ -791,7 +786,7 @@ function foxyshop_price($skip_sale_price = false, $echo_output = true) {
 	}
 	$write .= '</div>';
 	if ($echo_output) {
-		echo foxy_wp_html($write);
+		echo wp_kses_post($write);
 	} else {
 		return $write;
 	}
@@ -1009,10 +1004,10 @@ function foxyshop_image_slideshow($size = "thumbnail", $includeFeatured = true, 
 		}
 	}
 	if ($write && (count($product['images']) != 1 || $includeFeatured)) {
-		echo foxy_wp_html(apply_filters('foxyshop_slideshow_before', ""));
+		echo wp_kses_post(apply_filters('foxyshop_slideshow_before', ""));
 		$titleText = apply_filters('foxyshop_slideshow_title', $titleText, $product['id']);
-		if ($titleText) echo '<div class="foxyshop_slideshow_title">' . foxy_wp_html($titleText) . '</div>';
-		echo '<ul class="foxyshop_slideshow">' . foxy_wp_html($write) . '</ul>'."\n";
+		if ($titleText) echo '<div class="foxyshop_slideshow_title">' . wp_kses_post($titleText) . '</div>';
+		echo '<ul class="foxyshop_slideshow">' . wp_kses_post($write) . '</ul>'."\n";
 		echo apply_filters('foxyshop_slideshow_after', "<div class=\"clr\"></div>\n");
 		if ($ikey) {
 			wp_add_inline_script( 'foxyshop_slideshow', "var ikey = " . wp_json_encode($ikey) . ";");
@@ -1053,7 +1048,7 @@ function foxyshop_category_children($categoryID = 0, $showCount = false, $showDe
 			$liwrite .= '</li>'."\n";
 			$write .= apply_filters('foxyshop_category_children_write', $liwrite, $term);
 		}
-		if ($write) echo '<ul class="foxyshop_categories">' . foxy_wp_html($write) . '</ul>' . foxy_wp_html(apply_filters('foxyshop_after_category_display', '<div class="clr"></div>'));
+		if ($write) echo wp_kses_post('<ul class="foxyshop_categories">' . $write . '</ul>' . apply_filters('foxyshop_after_category_display', '<div class="clr"></div>'));
 	}
 }
 
@@ -1066,7 +1061,7 @@ function foxyshop_simple_category_children($category_id = 0, $depth = 1) {
 	$foxyshop_category_depth = $depth;
 	$foxyshop_category_write = "";
 	foxyshop_category_writer($category_id, 1);
-	if ($foxyshop_category_write) echo foxy_wp_html($foxyshop_category_write);
+	if ($foxyshop_category_write) echo wp_kses_post($foxyshop_category_write);
 }
 
 function foxyshop_category_writer($category_id, $depth) {
@@ -1196,11 +1191,11 @@ function foxyshop_breadcrumbs($sep = " &raquo; ", $product_fallback = "&laquo; B
 			$write1 .= '<li>'.$post->post_title.'</li>';
 		}
 
-		if ($write1) echo '<ul id="foxyshop_breadcrumbs" aria-label="Breadcrumb">' . foxy_wp_html($write1) . apply_filters('foxyshop_breadcrumb_nofloat', '<li style="float: none; text-indent: -99999px; width: 1px; margin: 0;">-</li>') . '</ul>';
+		if ($write1) echo wp_kses_post('<ul id="foxyshop_breadcrumbs" aria-label="Breadcrumb">' . $write1 . apply_filters('foxyshop_breadcrumb_nofloat', '<li style="float: none; text-indent: -99999px; width: 1px; margin: 0;">-</li>') . '</ul>');
 
 	//Product Fallback
 	} elseif ($post->ID && $product_fallback != "") {
-		echo '<ul id="foxyshop_breadcrumbs" aria-label="Breadcrumb"><li><a href="' . esc_url(get_bloginfo('url') . FOXYSHOP_URL_BASE . '/' . apply_filters('foxyshop_template_redirect_product_slug', FOXYSHOP_PRODUCTS_SLUG) . '/') . '">'. foxy_wp_html($product_fallback) . '</a></li>' . apply_filters('foxyshop_breadcrumb_nofloat', '<li style="float: none; text-indent: -99999px; width: 1px; margin: 0;">-</li>') . '</ul>';
+		echo wp_kses_post('<ul id="foxyshop_breadcrumbs" aria-label="Breadcrumb"><li><a href="' . esc_url(get_bloginfo('url') . FOXYSHOP_URL_BASE . '/' . apply_filters('foxyshop_template_redirect_product_slug', FOXYSHOP_PRODUCTS_SLUG) . '/') . '">'. $product_fallback . '</a></li>' . apply_filters('foxyshop_breadcrumb_nofloat', '<li style="float: none; text-indent: -99999px; width: 1px; margin: 0;">-</li>') . '</ul>');
 	}
 
 }
@@ -1233,7 +1228,7 @@ arr_foxyshop_inventory_stock_none[" . esc_attr($product['id']) . "] = " . json_e
 var foxyshop_allow_backorder = " . ($allowBackOrder ? "true" : "false") . ";
 if (typeof arr_foxyshop_inventory == 'undefined') var arr_foxyshop_inventory = [];
 arr_foxyshop_inventory[" . esc_attr($product['id']) . "] = [];
-" . foxy_wp_html($arr_foxyshop_inventory_data));
+" . wp_kses($arr_foxyshop_inventory_data, []));
 
 	if ($stockStatus == -1 && !$allowBackOrder) {
 		wp_add_inline_script( 'foxyshop_js', "
@@ -1303,7 +1298,7 @@ function foxyshop_featured_category($categoryName, $showAddToCart = false, $show
 
 		if ($simpleList) {
 			$simplewrite = '<li><a href="' . $product['url'] . '">' . apply_filters('the_title', $product['name']) . '</a></li>'."\n";
-			echo foxy_wp_html(apply_filters("foxyshop_featured_category_simple", $simplewrite, $product));
+			echo wp_kses_post(apply_filters("foxyshop_featured_category_simple", $simplewrite, $product));
 		} else {
 			$thumbnailSRC = foxyshop_get_main_image("thumbnail");
 			$write = '<li class="foxyshop_product_box">'."\n";
@@ -1318,7 +1313,7 @@ function foxyshop_featured_category($categoryName, $showAddToCart = false, $show
 			$write .= "</div>\n";
 			$write .= '<div class="clr"></div>';
 			$write .= "</li>\n";
-			echo foxy_wp_html(apply_filters("foxyshop_featured_category_html", $write, $product));
+			echo wp_kses_post(apply_filters("foxyshop_featured_category_html", $write, $product));
 		}
 	}
 	echo "</ul><div class=\"clr\"></div>\n";
@@ -1384,7 +1379,7 @@ function foxyshop_related_products($sectiontitle = "Related Products", $maxprodu
 			$write .= "</div>\n";
 			$write .= '<div class="clr"></div>';
 			$write .= "</li>\n";
-			echo foxy_wp_html(apply_filters('foxyshop_related_products_html', $write, $product));
+			echo wp_kses_post(apply_filters('foxyshop_related_products_html', $write, $product));
 
 		endwhile;
 		echo "</ul>\n";
@@ -1452,13 +1447,13 @@ function foxyshop_addon_products($show_qty = false, $before_entry = "", $after_e
 		if (version_compare($foxyshop_settings['version'], '0.7.0', ">") && !isset($foxyshop_skip_url_link)) echo '<input type="hidden" class="foxyshop_addon_fields" rel="' . esc_attr($num) . '" originalname="' . esc_attr('url' . foxyshop_get_verification('url')) . '" name="' . esc_attr('x:url' . foxyshop_get_verification('url')) . '" id="' . esc_attr($num . ':url_' . $product['id']) . '" value="' . esc_url($product['url']) . '" />'."\n";
 
 		//Output
-		echo foxy_wp_html($before_entry);
+		echo foxy_wp_kses_html($before_entry);
 		echo ('<input type="checkbox" name="x:addon_'.esc_attr($num).'" id="addon_'.esc_attr($num).'" rel="'.esc_attr($num).'" class="foxyshop_addon_checkbox" />');
 		echo ('<label for="addon_'.esc_attr($num).'" class="addon_main_label">' . esc_html($product['name']) . '</label>');
 		echo ('<input type="hidden" name="x:addon_price_'.esc_attr($num).'" id="addon_price_'.esc_attr($num).'" value="' . esc_attr($product['price']) . '" />');
 		foxyshop_price(0, 1);
-		if ($show_qty) echo foxy_wp_html(foxyshop_quantity(apply_filters("foxyshop_default_quantity_value", 1), "", "", $num));
-		echo foxy_wp_html($after_entry);
+		if ($show_qty) echo foxy_wp_kses_html(foxyshop_quantity(apply_filters("foxyshop_default_quantity_value", 1), "", "", $num));
+		echo foxy_wp_kses_html($after_entry);
 
 
 		$num++;
@@ -1617,7 +1612,7 @@ function foxyshop_customer_order_history($customer_id = 0, $date_filter = 'n/j/Y
 	$pagination_end = (int)$xml->statistics->pagination_end;
 	if ($pagination_start > 1 || $filtered_total > $pagination_end) {
 		echo '<div id="foxyshop_list_pagination">';
-		echo foxy_wp_html($xml->messages->message[1]) . '<br />';
+		echo esc_html($xml->messages->message[1]) . '<br />';
 		if ($pagination_start > 1) echo '<a href="edit.php' . esc_attr($querystring) . '&amp;pagination_start=' . esc_attr($pagination_start - $p - 1) . '">&laquo; Previous</a>';
 		if ($pagination_end < $filtered_total) {
 			if ($pagination_start > 1) echo ' | ';

@@ -105,11 +105,11 @@ if (isset($_GET['foxyshop_product_id'])) {
 
 	$targetFile = $results['file'];
 
-	echo foxy_wp_html($newfilename);
+	echo esc_html($newfilename);
 
 //Nothing Requested
 } else {
-	echo foxy_wp_html(__('invalid request', 'foxyshop'));
+	echo esc_html(__('invalid request', 'foxyshop'));
 }
 
 

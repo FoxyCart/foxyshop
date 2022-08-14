@@ -201,7 +201,7 @@ function foxyshop_settings_page() {
 		<thead>
 			<tr>
 				<th>
-					<div id="settings_title">FoxyShop <?php echo foxy_wp_html($foxyshop_settings['foxyshop_version']); ?></div>
+					<div id="settings_title">FoxyShop <?php echo esc_html($foxyshop_settings['foxyshop_version']); ?></div>
 				</th>
 			</tr>
 		</thead>
@@ -230,7 +230,7 @@ function foxyshop_settings_page() {
 	<table class="widefat infoonly">
 		<thead>
 			<tr>
-				<th><img src="<?php echo esc_url($info_icon); ?>" alt="" /><?php _e('Setup Information', 'foxyshop'); ?></th>
+				<th><img src="<?php echo esc_attr($info_icon); ?>" alt="" /><?php _e('Setup Information', 'foxyshop'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -262,7 +262,7 @@ function foxyshop_settings_page() {
 					<?php if ($foxyshop_settings['generate_product_sitemap']) { ?>
 						<div style="clear: both;margin-bottom: 5px;"></div>
 						<label for="foxyshop_sitemap"><?php _e('Sitemap', 'foxyshop'); ?>:</label>
-						<input type="text" id="foxyshop_sitemap" name="foxyshop_sitemap" value="https://<?php echo esc_attr($_SERVER['SERVER_NAME']) . '/' . FOXYSHOP_PRODUCT_SITEMAP_SLUG . '/'; ?>" readonly="readonly" onclick="this.select();" />
+						<input type="text" id="foxyshop_sitemap" name="foxyshop_sitemap" value="<?php echo esc_url(get_bloginfo('url') . '/' . FOXYSHOP_PRODUCT_SITEMAP_SLUG . '/'); ?>" readonly="readonly" onclick="this.select();" />
 						<a href="#" class="foxyshophelp">This is the url where you can find your sitemap for submitting to search engines.</a>
 					<?php } ?>
 
@@ -277,7 +277,7 @@ function foxyshop_settings_page() {
 	<table class="widefat">
 		<thead>
 			<tr>
-				<th><img src="<?php echo esc_url($settings_icon); ?>" alt="" /><?php _e('FoxyCart Settings', 'foxyshop'); ?></th>
+				<th><img src="<?php echo esc_attr($settings_icon); ?>" alt="" /><?php _e('FoxyCart Settings', 'foxyshop'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -320,13 +320,16 @@ function foxyshop_settings_page() {
 					<a href="#" class="foxyshophelp">Enter page slugs or ID's, separated by comma and the FoxyCart includes will not be included on these pages. This is helpful if you are setting up a template for checkout caching.<br /><br />Enter * to keep includes from showing on any page. This is useful if you want to enter the includes manually.</a>
 				</td>
 			</tr>
+			<?php //if ($foxyshop_settings['use_jquery'] === "on") { ?>
 			<tr>
 				<td>
 					<input type="checkbox" id="foxyshop_use_jquery" name="foxyshop_use_jquery"<?php checked($foxyshop_settings['use_jquery'], "on"); ?> />
 					<label for="foxyshop_use_jquery"><?php echo esc_html(sprintf(__('Automatically Insert jQuery %s from Google CDN', 'foxyshop'), foxyshop_get_jquery_version())); ?></label>
 					<a href="#" class="foxyshophelp">If you are already manually inserting jQuery you should uncheck this option.</a>
+					<p style="float: left; clear: both; margin-top: 10px; font-style: italic; color: rgb(219, 65, 65);"><strong>NOTE:</strong> This setting will be removed in a future version. Review your reliance on this version of jQuery to prevent issues.</p>
 				</td>
 			</tr>
+			<?php //} ?>
 		</tbody>
 	</table>
 	<p><input type="submit" class="button-primary" value="<?php _e('Save All Settings', 'foxyshop'); ?>" /></p>
@@ -337,7 +340,7 @@ function foxyshop_settings_page() {
 	<table class="widefat">
 		<thead>
 			<tr>
-				<th><img src="<?php echo esc_url($display_icon); ?>" alt="" /><?php _e('Display Settings', 'foxyshop'); ?></th>
+				<th><img src="<?php echo esc_attr($display_icon); ?>" alt="" /><?php _e('Display Settings', 'foxyshop'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -383,7 +386,7 @@ function foxyshop_settings_page() {
 	<table class="widefat">
 		<thead>
 			<tr>
-				<th><img src="<?php echo esc_url($pagetitle_icon); ?>" alt="" /><?php _e('Browser Title Bar Settings', 'foxyshop'); ?></th>
+				<th><img src="<?php echo esc_attr($pagetitle_icon); ?>" alt="" /><?php _e('Browser Title Bar Settings', 'foxyshop'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -414,7 +417,7 @@ function foxyshop_settings_page() {
 	<table class="widefat">
 		<thead>
 			<tr>
-				<th><img src="<?php echo esc_url($advanced_icon); ?>" alt="" /><?php _e('Advanced Settings', 'foxyshop'); ?></th>
+				<th><img src="<?php echo esc_attr($advanced_icon); ?>" alt="" /><?php _e('Advanced Settings', 'foxyshop'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -425,7 +428,7 @@ function foxyshop_settings_page() {
 						<a href="#" class="foxyshophelp">These categories should correspond to the category codes you set up in your FoxyCart admin and will be available in a drop-down on your <?php echo strtolower(esc_html(FOXYSHOP_PRODUCT_NAME_SINGULAR)); ?> setup page. Separate each category with a line break. If you would like to also display a nice name in the dropdown menu, use a pipe sign "|" like this: free_shipping|Free Shipping. There's also an optional third entry you can put with the product delivery type (shipped, downloaded, not_shipped, flat_rate).</a>
 						<?php if (version_compare($foxyshop_settings['version'], '0.7.2', ">=") && $foxyshop_settings['domain']) echo '<button type="button" class="button" id="ajax_get_category_list">Pull Category List From FoxyCart</button><div id="foxyshop_category_list_waiter"></div>'; ?>
 					</div>
-					<textarea id="foxyshop_ship_categories" name="foxyshop_ship_categories" wrap="auto" style="float: left; width:640px;height: <?php echo strlen($foxyshop_settings['ship_categories']) > 110 ? "160px" : "80px" ?>;"><?php echo foxy_wp_html($foxyshop_settings['ship_categories']); ?></textarea>
+					<textarea id="foxyshop_ship_categories" name="foxyshop_ship_categories" wrap="auto" style="float: left; width:640px;height: <?php echo strlen($foxyshop_settings['ship_categories']) > 110 ? "160px" : "80px" ?>;"><?php echo esc_textarea($foxyshop_settings['ship_categories']); ?></textarea>
 					<span style="display:block; clear: both; padding-top: 3px;"><strong>Syntax:</strong> category_code<strong>|</strong>category_description<strong>|</strong>product_delivery_type</span>
 				</td>
 			</tr>

@@ -57,7 +57,7 @@ function foxyshop_category_sort() {
 
 	echo ( '<div class="icon32" id="icon-tools"><br></div>');
 	echo ( '<h2>' . esc_html(sprintf(__('Set %s Category Order', 'foxyshop'), FOXYSHOP_PRODUCT_NAME_SINGULAR)) . '</h2>');
-	if ($success) echo foxy_wp_html( $success);
+	if ($success) echo wp_kses_post( $success);
 
 	$categoryID = (isset($_POST['categoryID']) ? sanitize_text_field($_POST['categoryID']) : 0);
 	$product_categories = get_terms('foxyshop_categories', 'hide_empty=0&hierarchical=0&orderby=name&order=ASC&parent='.$categoryID);
@@ -73,7 +73,7 @@ function foxyshop_category_sort() {
 			echo ('<form name="form_product_category_order" method="post" action="">');
 			echo ( '<select name="categoryID" id="categoryID">'."\n");
 			if ($categoryID > 0) echo ( '<option value="0">Top Level</option>'."\n");
-			echo ( foxy_wp_html(implode("\n",$subcats)));
+			echo ( foxy_wp_kses_html(implode("\n",$subcats), ['option']));
 			echo ( '</select>'."\n");
 			echo ( '<input type="submit" name="btnSubPages" class="button" id="btnSubPages" value="' . __('Select Sub-Category', 'foxyshop') . '" /></form>');
 		}
@@ -110,7 +110,7 @@ function foxyshop_category_sort() {
 			echo ( '</li>'."\n");
 			$counter++;
 		}
-		echo foxy_wp_html( '</ul>'."\n");
+		echo '</ul>'."\n";
 
 		?>
 		<div style="height: 100px;">
@@ -118,13 +118,13 @@ function foxyshop_category_sort() {
 			<input type="submit" name="revert_category_order" id="revert_category_order" class="button" style="float: right;" value="<?php _e('Reset to Alphabetical', 'foxyshop'); ?>" onclick="javascript:foxyshop_orderPages(); return true;" />
 		</div>
 		<input type="hidden" id="foxyshop_category_order_value" name="foxyshop_category_order_value" />
-		<input type="hidden" id="categoryID" name="categoryID" value="<?php echo foxy_wp_html( $categoryID); ?>" />
+		<input type="hidden" id="categoryID" name="categoryID" value="<?php echo esc_attr( $categoryID); ?>" />
 		<?php wp_nonce_field('update-foxyshop-sorting-options'); ?>
 		</form>
 		<?php
 
 	} else {
-		echo foxy_wp_html( '<p><em>' . __('No Sub-Categories Found.', 'foxyshop') . '</em></p>');
+		echo wp_kses_post( '<p><em>' . __('No Sub-Categories Found.', 'foxyshop') . '</em></p>');
 	}
 	?>
 	</div>

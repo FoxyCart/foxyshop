@@ -97,7 +97,7 @@ function foxyshop_customer_management() {
 	//echo "<pre>" . substr($foxy_response,1,2000) . "</pre>";
 
 	if ((string)$xml->result == "ERROR") {
-		echo ('<h3>' . foxy_wp_html((string)$xml->messages->message) . '</h3>');
+		echo ('<h3>' . esc_html((string)$xml->messages->message) . '</h3>');
 		return;
 	} else {
 		?>
@@ -108,7 +108,7 @@ function foxyshop_customer_management() {
 		<input type="hidden" name="page" value="foxyshop_customer_management" />
 
 		<?php
-		echo foxy_wp_html($foxyshop_hidden_input);
+		echo foxy_wp_kses_html($foxyshop_hidden_input, ['input']);
 		foxyshop_api_paging_nav('customers', 'top', $xml, $foxyshop_querystring);
 		?>
 
@@ -236,7 +236,7 @@ function foxyshop_customer_management() {
 		</form>
 	<?php } ?>
 
-	<div id="details_holder"><?php echo foxy_wp_html($holder); ?></div>
+	<div id="details_holder"><?php echo foxy_wp_kses_html($holder); ?></div>
 	<?php
 	echo ('</div>');
 
@@ -269,7 +269,7 @@ function foxyshop_inline_customers_js() {
 		});
 	";
 
-	echo foxy_wp_html(foxyshop_manage_attributes_jquery('customer'));
+	echo esc_js(foxyshop_manage_attributes_jquery('customer'));
 
 	echo "});
 </script>";

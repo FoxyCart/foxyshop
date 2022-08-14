@@ -2,9 +2,111 @@
 //Exit if not called in proper context
 if (!defined('ABSPATH')) exit();
 
-//validating HTML using WordPress functions
-function foxy_wp_html($string){
-	return htmlspecialchars_decode( esc_html( $string ) );
+/**
+ * Sanitizes content for allowed HTML tags for FoxyShop HTML blocks.
+ *
+ * This uses the native wp_kses() function, and expands on the default $allowedposttags array
+ * but with added tags related to forms and inputs, and the custom attributes that FoxyShop uses
+ *
+ * This function expects unslashed data.
+ *
+ * @param string $data Post content to filter.
+ * @param array $filter_tags An array of HTML tags to limit the sanitization to.
+ * @param boolean $allow_forms Whether or not to allow form tags.
+ * @return string Filtered post content with allowed HTML tags and attributes intact.
+ */
+function foxy_wp_kses_html($data, $filter_tags = [], $allow_forms = false){
+
+	$foxy_additional_tags = [
+		'input' => [
+			'type' => true,
+			'name' => true,
+			'value' => true,
+			'class' => true,
+			'id' => true,
+			'checked' => true,
+			'disabled' => true,
+			'style' => true,
+			'rel' => true,
+			'onblur' => true,
+			'priceset' => true,
+			'pricechange' => true,
+			'displaykey' => true,
+			'dkey' => true,
+			'imagekey' => true,
+			'code' => true,
+			'codeadd' => true,
+			'subfrequency' => true
+		],
+		'select' => [
+			'name' => true,
+			'value' => true,
+			'class' => true,
+			'id' => true,
+			'disabled' => true,
+			'style' => true,
+			'onblur' => true,
+			'priceset' => true,
+			'pricechange' => true,
+			'displaykey' => true,
+			'imagekey' => true,
+			'code' => true,
+			'codeadd' => true,
+			'subfrequency' => true
+		],
+		'option' => [
+			'value' => true,
+			'disabled' => true,
+			'selected' => true,
+			'priceset' => true,
+			'pricechange' => true,
+			'displaykey' => true,
+			'imagekey' => true,
+			'code' => true,
+			'codeadd' => true,
+			'subfrequency' => true
+		],
+		'label' => [
+			'dkey' => true
+		],
+		'table' => [
+			'rel' => true
+		]
+	];
+
+	$foxy_allowedtags = wp_kses_allowed_html( 'post' );
+
+	foreach ($foxy_additional_tags as $el => $attributes) {
+		if (array_key_exists($el, $foxy_allowedtags)) {
+			$foxy_allowedtags[$el] = array_merge($foxy_allowedtags[$el], $attributes);
+		} else {
+			$foxy_allowedtags[$el] = $attributes;
+		}
+	}
+
+	if ($allow_forms) {
+		$foxy_allowedtags['form'] = [
+			'name' => true,
+			'class' => true,
+			'id' => true,
+			'style' => true,
+			'onsubmit' => true
+		];
+		$foxy_allowedtags['input']['onclick'] = true;
+		$foxy_allowedtags['a']['onclick'] = true;
+	}
+
+	if (count($filter_tags) > 0) {
+		$filtered_tags = [];
+		foreach ($filter_tags as $key => $el) {
+			if (array_key_exists($el, $foxy_allowedtags)) {
+				$filtered_tags[$el] = $foxy_allowedtags[$el];
+			}
+		}
+		$foxy_allowedtags = $filtered_tags;
+	}
+	return wp_kses($data, $foxy_allowedtags, ['http', 'https', 'mailto', 'sms', 'tel', 'fax', 'webcal']);
+
 }
 
 //Insert jQuery
@@ -89,8 +191,15 @@ function foxyshop_check_permalinks() {
 add_action('admin_notices', 'foxyshop_check_deprecations');
 function foxyshop_check_deprecations() {
 	global $foxyshop_settings;
-	if ($foxyshop_settings['ga'] != "" && version_compare($foxyshop_settings['version'], '2.0', "<")) {
-		echo '<div class="error"><p><strong>Warning:</strong> Google Analytics is no longer supported for FoxyShop\'s checkout and receipt templates. Please upgrade to Foxy 2.0 to make use of the new native Google Analytics integration.</p></div>';
+	$current_screen = get_current_screen();
+
+	if ($current_screen->post_type == "foxyshop_product") {
+		if ($foxyshop_settings['ga'] != "" && version_compare($foxyshop_settings['version'], '2.0', "<") && current_user_can('manage_options')) {
+			echo '<div class="error"><p><strong>Warning:</strong> Google Analytics is no longer supported for FoxyShop\'s checkout and receipt templates. Please upgrade to Foxy 2.0 to make use of the new native Google Analytics integration.</p></div>';
+		}
+		if ($foxyshop_settings['use_jquery'] === "on" && current_user_can('manage_options')) {
+			echo '<div class="error"><p><strong>Warning:</strong> Embedding a custom version of jQuery will be removed from an upcoming version of FoxyShop to rely instead on the default version included by Wordpress. You currently have this option enabled within your FoxyShop settings. If you have this enabled to rely on an older version of jQuery, you will need to take steps to handle this natively yourself, otherwise turn off this option in the plugin settings. Please <a href="https://foxy.io/contact" title="Contact Foxy.io">contact us</a> if you are unsure about this change.</p></div>';
+		}
 	}
 }
 

@@ -174,7 +174,7 @@ function foxyshop_create_feed() {
 		}
 		$write .= "\n";
 	}
-	echo foxy_wp_html($write);
+	echo esc_html($write);
 }
 
 function foxyshop_google_product_xml($id, $batch_process = "") {
@@ -663,7 +663,7 @@ add_action( 'admin_print_footer_scripts', 'foxyshop_inline_googleproductfeed_js'
 
 				echo ('<td>' . esc_html($product['code']) . '</td>'."\n");
 				echo ('<td><img src="' . esc_url(foxyshop_get_main_image()) . '" class="productfeedimage" /></td>'."\n");
-				echo ('<td>' . foxy_wp_html($pricewrite) . '</td>'."\n");
+				echo ('<td>' . wp_kses_post($pricewrite) . '</td>'."\n");
 				echo ('<td>' . esc_html(Date("Y-m-d", strtotime($single_product->post_date))) . '</td>'."\n");
 				echo ('</tr>'."\n");
 

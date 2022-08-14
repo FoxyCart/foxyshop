@@ -31,8 +31,8 @@ class FoxyShop_Category extends WP_Widget {
 		$showAddToCart = isset($instance['showAddToCart']) ? $instance['showAddToCart'] : false;
 		$showMax = $instance['showMax'] > 0 ? $instance['showMax'] : -1;
 
-		echo foxy_wp_html($before_widget);
-		if ($title) echo foxy_wp_html($before_title . $title . $after_title);
+		echo wp_kses_post($before_widget);
+		if ($title) echo wp_kses_post($before_title . $title . $after_title);
 
 		if ($instance['simpleView']) {
 			echo ('<div class="foxyshop_category_simple_widget">');
@@ -43,7 +43,7 @@ class FoxyShop_Category extends WP_Widget {
 			foxyshop_featured_category($categoryName, $showAddToCart, $showMoreDetails, $showMax);
 			echo ('</div>');
 		}
-		echo foxy_wp_html($after_widget);
+		echo wp_kses_post($after_widget);
 	}
 
 	//Update Widget Settings
@@ -149,13 +149,13 @@ class FoxyShop_Cart_Link extends WP_Widget {
 		$linkText = $instance['linkText'];
 		$hideEmpty = isset($instance['hideEmpty']) ? $instance['hideEmpty'] : false;
 
-		echo foxy_wp_html($before_widget);
-		if ($title) echo foxy_wp_html($before_title . $title . $after_title);
+		echo wp_kses_post($before_widget);
+		if ($title) echo wp_kses_post($before_title . $title . $after_title);
 
 		echo ('<ul class="foxyshop_cart_link_widget"><li>');
 		foxyshop_cart_link($linkText, $hideEmpty);
 		echo ('</li></ul>');
-		echo foxy_wp_html($after_widget);
+		echo wp_kses_post($after_widget);
 	}
 
 	//Update Widget Settings
@@ -222,14 +222,14 @@ class FoxyShop_Category_List extends WP_Widget {
 		$depth = $instance['depth'];
 		if ($depth == "") $depth = 1;
 
-		echo foxy_wp_html($before_widget);
-		if ($title) echo foxy_wp_html($before_title . $title . $after_title);
+		echo wp_kses_post($before_widget);
+		if ($title) echo wp_kses_post($before_title . $title . $after_title);
 
 		echo ('<ul>');
 		foxyshop_simple_category_children($categoryID, $depth);
 		echo ('</ul>');
 
-		echo foxy_wp_html($after_widget);
+		echo wp_kses_post($after_widget);
 	}
 
 	//Update Widget Settings

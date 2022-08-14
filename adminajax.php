@@ -36,7 +36,7 @@ function foxyshop_display_ajax() {
 		$foxy_response = foxyshop_get_foxycart_data($foxy_data);
 		$xml = simplexml_load_string($foxy_response, NULL, LIBXML_NOCDATA);
 		do_action("foxyshop_after_subscription_modify", $xml);
-		echo foxy_wp_html((string)$xml->result) . ": " . foxy_wp_html((string)$xml->messages->message);
+		echo esc_html((string)$xml->result . ": " . (string)$xml->messages->message);
 		die;
 
 	//Hide/Unhide Transaction
@@ -45,7 +45,7 @@ function foxyshop_display_ajax() {
 		$foxy_response = foxyshop_get_foxycart_data($foxy_data);
 		$xml = simplexml_load_string($foxy_response, NULL, LIBXML_NOCDATA);
 		do_action("foxyshop_after_transaction_archive", $xml);
-		echo foxy_wp_html((string)$xml->result . ": " . (string)$xml->messages->message);
+		echo esc_html((string)$xml->result . ": " . (string)$xml->messages->message);
 		die;
 	}
 	die;
@@ -70,12 +70,12 @@ function foxyshop_manage_attribute_ajax() {
 	//Save
 	if ($foxyshop_action == 'save_attribute') {
 		$att_value = str_replace('\"', '"', sanitize_text_field($_POST['att_value']));
-		echo foxy_wp_html(foxyshop_save_attribute($att_type, $id, $att_name, $att_value));
+		echo esc_attr(foxyshop_save_attribute($att_type, $id, $att_name, $att_value));
 		die;
 
 	//Delete
 	} elseif ($foxyshop_action == 'delete_attribute') {
-		echo foxy_wp_html(foxyshop_delete_attribute($att_type, $id, $att_name));
+		echo esc_attr(foxyshop_delete_attribute($att_type, $id, $att_name));
 		die;
 	}
 	die;
@@ -86,7 +86,7 @@ function foxyshop_manage_attribute_ajax() {
 add_action('wp_ajax_foxyshop_ajax_get_category_list', 'foxyshop_ajax_get_category_list');
 function foxyshop_ajax_get_category_list() {
 	check_ajax_referer('foxyshop-ajax-get-category-list', 'security');
-	echo foxy_wp_html(foxyshop_get_category_list());
+	echo esc_html(foxyshop_get_category_list());
 	die;
 }
 
@@ -95,7 +95,7 @@ function foxyshop_ajax_get_category_list() {
 add_action('wp_ajax_foxyshop_ajax_get_category_list_select', 'foxyshop_ajax_get_category_list_select');
 function foxyshop_ajax_get_category_list_select() {
 	check_ajax_referer('foxyshop-ajax-get-downloadable-list', 'security');
-	echo foxy_wp_html(foxyshop_get_category_list('select'));
+	echo foxy_wp_kses_html(foxyshop_get_category_list('select'), ['option']);
 	die;
 }
 
@@ -169,16 +169,16 @@ function foxyshop_product_ajax() {
 
 	if ($foxyshop_action == "add_new_image") {
 
-		echo foxy_wp_html(foxyshop_redraw_images($productID));
+		echo foxy_wp_kses_html(foxyshop_redraw_images($productID));
 
 	} elseif ($foxyshop_action == "delete_image") {
 		wp_delete_attachment($imageID);
-		echo foxy_wp_html(foxyshop_redraw_images($productID));
+		echo foxy_wp_kses_html(foxyshop_redraw_images($productID));
 
 	} elseif ($foxyshop_action == "featured_image") {
 		delete_post_meta($productID,"_thumbnail_id");
 		update_post_meta($productID,"_thumbnail_id",$imageID);
-		echo foxy_wp_html(foxyshop_redraw_images($productID));
+		echo foxy_wp_kses_html(foxyshop_redraw_images($productID));
 
 	} elseif ($foxyshop_action == "toggle_visible") {
 		if (get_post_meta($imageID, "_foxyshop_hide_image", 1)) {
@@ -186,7 +186,7 @@ function foxyshop_product_ajax() {
 		} else {
 			add_post_meta($imageID,"_foxyshop_hide_image", 1);
 		}
-		echo foxy_wp_html(foxyshop_redraw_images($productID));
+		echo foxy_wp_kses_html(foxyshop_redraw_images($productID));
 
 	} elseif ($foxyshop_action == "rename_image") {
 		$update_post = array();
@@ -206,10 +206,10 @@ function foxyshop_product_ajax() {
 			wp_update_post($update_post);
 		}
 
-		echo foxy_wp_html(foxyshop_redraw_images($productID));
+		echo foxy_wp_kses_html(foxyshop_redraw_images($productID));
 
 	} elseif ($foxyshop_action == "refresh_images") {
-		echo foxy_wp_html(foxyshop_redraw_images($productID));
+		echo foxy_wp_kses_html(foxyshop_redraw_images($productID));
 	}
 	die;
 }

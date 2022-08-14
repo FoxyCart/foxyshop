@@ -133,7 +133,7 @@ function foxyshop_create_feed() {
 
 
 	}
-	echo foxy_wp_html($write);
+	echo esc_html($write);
 }
 
 function foxyshop_google_product_xml($id, $batch_process = "") {
@@ -276,7 +276,7 @@ function foxyshop_google_products_page() {
 		<table class="widefat" style="margin-top: 14px;">
 			<thead>
 				<tr>
-					<th><img src="<?php echo esc_url($google_icon); ?>" alt="" /><?php _e("Google Authentication Required", 'foxyshop'); ?></th>
+					<th><img src="<?php echo esc_attr($google_icon); ?>" alt="" /><?php _e("Google Authentication Required", 'foxyshop'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -627,7 +627,7 @@ add_action( 'admin_print_footer_scripts', 'foxyshop_inline_productfeed_js' );
 	<table class="widefat">
 		<thead>
 			<tr>
-				<th><img src="<?php echo foxy_wp_html($google_icon); ?>" alt="" /><?php _e("Create Manual Export File", 'foxyshop'); ?></th>
+				<th><img src="<?php echo esc_attr($google_icon); ?>" alt="" /><?php _e("Create Manual Export File", 'foxyshop'); ?></th>
 			</tr>
 		</thead>
 		<tbody>

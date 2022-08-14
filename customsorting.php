@@ -93,8 +93,8 @@ function foxyshop_custom_sort() {
 
 	<div class="wrap">
 	<div class="icon32" id="icon-tools"><br></div>
-	<h2><?php echo foxy_wp_html(sprintf(__('Custom %s Order'), FOXYSHOP_PRODUCT_NAME_SINGULAR)); ?></h2>
-	<?php if ($success) echo foxy_wp_html($success); ?>
+	<h2><?php echo sprintf(__('Custom %s Order'), esc_html(FOXYSHOP_PRODUCT_NAME_SINGULAR)); ?></h2>
+	<?php if ($success) echo wp_kses_post($success); ?>
 
 	<?php
 	$product_categories = get_terms('foxyshop_categories', 'hide_empty=0&hierarchical=0&orderby=name&order=ASC');
@@ -160,7 +160,7 @@ function foxyshop_custom_sort() {
 				echo ('<li id="id_' . esc_attr($prod->ID) . '" class="lineitem">');
 				echo ('<img src="' . esc_url(foxyshop_get_main_image()) . '" />');
 				echo ('<h4>' . esc_html($prod->post_title) . '</h4>'."\n");
-				echo foxy_wp_html(foxyshop_price());
+				foxyshop_price();
 				echo ('<div class="counter">' . esc_html($current_count + 1) . '</div>');
 				echo ('<div style="clear: both; height: 1px;"></div>'."\n");
 				echo ('</li>'."\n");

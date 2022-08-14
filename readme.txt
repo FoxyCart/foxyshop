@@ -80,10 +80,12 @@ You can exclude this from being output on specific (or all) pages using the "Ski
 * Significant improvements across the plugin to move some of the legacy code to modern Wordpress standards
 * Renaming of some plugin javascript files
 * Renaming `action_process_option_update()` to `foxyshop_action_process_option_update()` and `action_show_user_profile()` to `foxyshop_action_show_user_profile()`
+* Fixed issue preventing product option modifiers from outputting if a custom value was set
 * Removing FOXYSHOP_DOCUMENT_ROOT variable
 * Deprecated: Support for Foxy versions 0.7.2 and older (these are also unsupported versions of Foxy, and should not be in use)
 * Deprecated: Legacy Google Analytics tracking code is no longer output on the checkout and receipt templates. If you use this, please consider upgrading to Foxy 2.0 to use the native integration options
 * Deprecated: Removing Magnific lightbox from the product gallery as it is no longer allowed by Wordpress, replaced instead with Luminous as the new default
+* Removed Magnific files from the plugin NOTE: if you were linking to these files, please download them directly from their website.
 
 = 4.8.2 =
 
@@ -304,10 +306,12 @@ You can exclude this from being output on specific (or all) pages using the "Ski
 * Significant improvements across the plugin to move some of the legacy code to modern Wordpress standards
 * Renaming of some plugin javascript files
 * Renaming `action_process_option_update()` to `foxyshop_action_process_option_update()` and `action_show_user_profile()` to `foxyshop_action_show_user_profile()`
+* Fixed issue preventing product option modifiers from outputting if a custom value was set
 * Removing FOXYSHOP_DOCUMENT_ROOT variable
 * Deprecated: Support for Foxy versions 0.7.2 and older (these are also unsupported versions of Foxy, and should not be in use)
 * Deprecated: Legacy Google Analytics tracking code is no longer output on the checkout and receipt templates. If you use this, please consider upgrading to Foxy 2.0 to use the native integration options
 * Deprecated: Removing Magnific lightbox from the product gallery as it is no longer allowed by Wordpress, replaced instead with Luminous as the new default
+* Removed Magnific files from the plugin NOTE: if you were linking to these files, please download them directly from their website.
 
 = 4.8.2 =
 
