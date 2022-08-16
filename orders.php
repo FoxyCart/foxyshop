@@ -57,9 +57,11 @@ function foxyshop_print_invoice() {
 		"product_code_filter" => "",
 		"product_name_filter" => "",
 		"product_option_name_filter" => "",
-		"product_option_value_filter" => "",
-		"status_filter" => "all"
+		"product_option_value_filter" => ""
 	);
+	if (version_compare($foxyshop_settings['version'], '2.0', ">=")) {
+		$foxy_data_defaults["status_filter"] = "all";
+	}
 	$foxy_data = wp_parse_args(array("api_action" => "transaction_list"), $foxy_data_defaults);
 
 	if (isset($_GET['foxyshop_search'])) {
@@ -120,12 +122,14 @@ function foxyshop_order_management() {
 		"product_code_filter" => "",
 		"product_name_filter" => "",
 		"product_option_name_filter" => "",
-		"product_option_value_filter" => "",
-		"status_filter" => "all"
+		"product_option_value_filter" => ""
 	);
 	if (version_compare($foxyshop_settings['version'], '0.7.2', ">=")) {
 		$foxy_data_defaults["custom_field_name_filter"] = "";
 		$foxy_data_defaults["custom_field_value_filter"] = "";
+	}
+	if (version_compare($foxyshop_settings['version'], '2.0', ">=")) {
+		$foxy_data_defaults["status_filter"] = "all";
 	}
 	$foxy_data = wp_parse_args(array("api_action" => "transaction_list"), apply_filters('foxyshop_transaction_filter_defaults',$foxy_data_defaults));
 	$foxyshop_querystring = "?post_type=foxyshop_product&amp;page=foxyshop_order_management&amp;foxyshop_search=1";
@@ -162,7 +166,7 @@ function foxyshop_order_management() {
 
 	<div class="wrap">
 		<div class="icon32 icon32-posts-page" id="icon-edit-pages"><br></div>
-		<h2><?php _e('Manage Orders', 'foxyshop'); echo foxy_wp_html($orderdesk_link); ?></h2>
+		<h2><?php _e('Manage Orders', 'foxyshop'); echo wp_kses_post($orderdesk_link); ?></h2>
 
 
 		<form action="edit.php" method="get" id="foxyshop_searchform" name="foxyshop_searchform" style="display: block; margin: 14px 0 20px 0;">
@@ -171,45 +175,45 @@ function foxyshop_order_management() {
 		<input type="hidden" name="page" value="foxyshop_order_management" />
 
 		<table class="widefat">
-		<thead><tr><th colspan="2"><img src="<?php echo FOXYSHOP_DIR; ?>/images/search-icon.png" alt="" /><?php _e('Search Options', 'foxyshop'); ?></th></tr></thead>
+		<thead><tr><th colspan="2"><img src="<?php echo esc_url(FOXYSHOP_DIR); ?>/images/search-icon.png" alt="" /><?php _e('Search Options', 'foxyshop'); ?></th></tr></thead>
 		<tbody><tr><td>
 
 			<div class="foxyshop_field_control foxyshop_radio_label_container">
 				<label><?php _e('Transaction Status', 'foxyshop'); ?></label>
 
-				<input type="radio" id="hide_transaction_filter0" name="hide_transaction_filter" value="0" <?php echo foxy_wp_html($foxy_data['hide_transaction_filter'] == 0 ? ' checked="checked"' : ''); ?> />
+				<input type="radio" id="hide_transaction_filter0" name="hide_transaction_filter" value="0" <?php echo $foxy_data['hide_transaction_filter'] == 0 ? ' checked="checked"' : ''; ?> />
 				<label for="hide_transaction_filter0"><?php _e('Visible', 'foxyshop'); ?></label>
 
-				<input type="radio" id="hide_transaction_filter1" name="hide_transaction_filter" value="1" <?php echo foxy_wp_html($foxy_data['hide_transaction_filter'] == 1 ? ' checked="checked"' : ''); ?> />
+				<input type="radio" id="hide_transaction_filter1" name="hide_transaction_filter" value="1" <?php echo $foxy_data['hide_transaction_filter'] == 1 ? ' checked="checked"' : ''; ?> />
 				<label for="hide_transaction_filter1"><?php _e('Hidden', 'foxyshop'); ?></label>
 
-				<input type="radio" id="hide_transaction_filter" name="hide_transaction_filter" value="" <?php echo foxy_wp_html($foxy_data['hide_transaction_filter'] == '' ? ' checked="checked"' : ''); ?> />
+				<input type="radio" id="hide_transaction_filter" name="hide_transaction_filter" value="" <?php echo $foxy_data['hide_transaction_filter'] == '' ? ' checked="checked"' : ''; ?> />
 				<label for="hide_transaction_filter"><?php _e('Both', 'foxyshop'); ?></label>
 			</div>
 
 			<div class="foxyshop_field_control foxyshop_radio_label_container">
 				<label><?php _e('Datafeed Status', 'foxyshop'); ?></label>
 
-				<input type="radio" id="data_is_fed_filter0" name="data_is_fed_filter" value="0" <?php echo foxy_wp_html($foxy_data['data_is_fed_filter'] == 0 ? ' checked="checked"' : ''); ?> />
+				<input type="radio" id="data_is_fed_filter0" name="data_is_fed_filter" value="0" <?php echo $foxy_data['data_is_fed_filter'] == 0 ? ' checked="checked"' : ''; ?> />
 				<label for="data_is_fed_filter0"><?php _e('Fed', 'foxyshop'); ?></label>
 
-				<input type="radio" id="data_is_fed_filter1" name="data_is_fed_filter" value="1" <?php echo foxy_wp_html($foxy_data['data_is_fed_filter'] == 1 ? ' checked="checked"' : ''); ?> />
+				<input type="radio" id="data_is_fed_filter1" name="data_is_fed_filter" value="1" <?php echo $foxy_data['data_is_fed_filter'] == 1 ? ' checked="checked"' : ''; ?> />
 				<label for="data_is_fed_filter1"><?php _e('Unfed', 'foxyshop'); ?></label>
 
-				<input type="radio" id="data_is_fed_filter" name="data_is_fed_filter" value="" <?php echo foxy_wp_html($foxy_data['data_is_fed_filter'] == '' ? ' checked="checked"' : ''); ?> />
+				<input type="radio" id="data_is_fed_filter" name="data_is_fed_filter" value="" <?php echo $foxy_data['data_is_fed_filter'] == '' ? ' checked="checked"' : ''; ?> />
 				<label for="data_is_fed_filter"><?php _e('Both', 'foxyshop'); ?></label>
 			</div>
 
 			<div class="foxyshop_field_control foxyshop_radio_label_container">
 				<label><?php _e('Test Transactions', 'foxyshop'); ?></label>
 
-				<input type="radio" id="is_test_filter0" name="is_test_filter" value="0" <?php echo foxy_wp_html($foxy_data['is_test_filter'] == 0 ? ' checked="checked"' : ''); ?> />
+				<input type="radio" id="is_test_filter0" name="is_test_filter" value="0" <?php echo $foxy_data['is_test_filter'] == 0 ? ' checked="checked"' : ''; ?> />
 				<label for="is_test_filter0"><?php _e('Live', 'foxyshop'); ?></label>
 
-				<input type="radio" id="is_test_filter1" name="is_test_filter" value="1" <?php echo foxy_wp_html($foxy_data['is_test_filter'] == 1 ? ' checked="checked"' : ''); ?> />
+				<input type="radio" id="is_test_filter1" name="is_test_filter" value="1" <?php echo $foxy_data['is_test_filter'] == 1 ? ' checked="checked"' : ''; ?> />
 				<label for="is_test_filter1"><?php _e('Test', 'foxyshop'); ?></label>
 
-				<input type="radio" id="is_test_filter" name="is_test_filter" value="" <?php echo foxy_wp_html($foxy_data['is_test_filter'] == '' ? ' checked="checked"' : ''); ?> />
+				<input type="radio" id="is_test_filter" name="is_test_filter" value="" <?php echo $foxy_data['is_test_filter'] == '' ? ' checked="checked"' : ''; ?> />
 				<label for="is_test_filter"><?php _e('Both', 'foxyshop'); ?></label>
 			</div>
 
@@ -230,13 +234,13 @@ function foxyshop_order_management() {
 			</div>
 
 			<div class="foxyshop_field_control">
-				<label for="product_code_filter"><?php echo FOXYSHOP_PRODUCT_NAME_SINGULAR . ' ' . __('Code', 'foxyshop'); ?></label><input type="text" name="product_code_filter" id="product_code_filter" value="<?php echo esc_attr($foxy_data['product_code_filter']); ?>" />
+				<label for="product_code_filter"><?php echo esc_html(FOXYSHOP_PRODUCT_NAME_SINGULAR) . ' ' . __('Code', 'foxyshop'); ?></label><input type="text" name="product_code_filter" id="product_code_filter" value="<?php echo esc_attr($foxy_data['product_code_filter']); ?>" />
 			</div>
 			<div class="foxyshop_field_control">
-				<label for="product_name_filter"><?php echo FOXYSHOP_PRODUCT_NAME_SINGULAR . ' ' . __('Name', 'foxyshop'); ?></label><input type="text" name="product_name_filter" id="product_name_filter" value="<?php echo esc_attr($foxy_data['product_name_filter']); ?>" />
+				<label for="product_name_filter"><?php echo esc_html(FOXYSHOP_PRODUCT_NAME_SINGULAR) . ' ' . __('Name', 'foxyshop'); ?></label><input type="text" name="product_name_filter" id="product_name_filter" value="<?php echo esc_attr($foxy_data['product_name_filter']); ?>" />
 			</div>
 			<div class="foxyshop_field_control">
-				<label for="product_option_name_filter"><?php echo FOXYSHOP_PRODUCT_NAME_SINGULAR . ' ' . __('Option Name', 'foxyshop'); ?></label><input type="text" name="product_option_name_filter" id="product_option_name_filter" value="<?php echo esc_attr($foxy_data['product_option_name_filter']); ?>" />
+				<label for="product_option_name_filter"><?php echo esc_html(FOXYSHOP_PRODUCT_NAME_SINGULAR) . ' ' . __('Option Name', 'foxyshop'); ?></label><input type="text" name="product_option_name_filter" id="product_option_name_filter" value="<?php echo esc_attr($foxy_data['product_option_name_filter']); ?>" />
 				<label for="product_option_value_filter" style="margin-left: 15px; margin-top: 4px; width: 34px;"><?php _e('Value', 'foxyshop'); ?></label><input type="text" name="product_option_value_filter" id="product_option_value_filter" value="<?php echo esc_attr($foxy_data['product_option_value_filter']); ?>" />
 			</div>
 
@@ -324,7 +328,7 @@ function foxyshop_order_management() {
 		<input type="hidden" name="page" value="foxyshop_order_management" />
 
 		<?php
-		echo foxy_wp_html($foxyshop_hidden_input);
+		echo foxy_wp_kses_html($foxyshop_hidden_input, ['input']);
 		foxyshop_api_paging_nav('transactions', 'top', $xml, $foxyshop_querystring);
 		?>
 
@@ -392,7 +396,7 @@ function foxyshop_order_management() {
 					$holder .= str_replace("_", " ", (string)$transaction_detail_option->product_option_name) . ': ';
 					if (substr((string)$transaction_detail_option->product_option_value,0,5) == "file-") {
 						$upload_dir = wp_upload_dir();
-						$holder .= '<a href="' . esc_url($upload_dir['baseurl'] . '/customuploads/' . (string)$transaction_detail_option->product_option_value) . '" target="_blank">' . (string)$transaction_detail_option->product_option_value . '</a>';
+						$holder .= '<a href="' . $upload_dir['baseurl'] . '/customuploads/' . (string)$transaction_detail_option->product_option_value . '" target="_blank">' . (string)$transaction_detail_option->product_option_value . '</a>';
 					} else {
 						$holder .= $transaction_detail_option->product_option_value;
 					}
@@ -406,7 +410,7 @@ function foxyshop_order_management() {
 			echo '<tr rel="' . esc_attr($transaction_id) . '">';
 			echo '<th class="check-column" scope="row"><input type="checkbox" value="' . esc_attr($transaction_id) . '" name="post[]"></th>'."\n";
 			echo '<td>';
-			echo '<a href="' . esc_url((string)$transaction->receipt_url) . '" title="' . __('FoxyCart Receipt', 'foxyshop') . '" target="_blank" style="float: left;"><img src="' . FOXYSHOP_DIR . '/images/foxycart-icon.png" alt="" align="top" /></a>';
+			echo '<a href="' . esc_url((string)$transaction->receipt_url) . '" title="' . __('FoxyCart Receipt', 'foxyshop') . '" target="_blank" style="float: left;"><img src="' . esc_url(FOXYSHOP_DIR) . '/images/foxycart-icon.png" alt="" align="top" /></a>';
 			echo '<strong><a href="#" class="view_detail" style="float: left; line-height: 18px; margin: 0 0 0 5px;">' . esc_html($transaction_id) . '</a></strong>';
 			echo '<div class="row-actions">';
 				echo '<span><a href="#" class="view_detail">' . __('View Order', 'foxyshop') . '</a> | </span>';
@@ -426,45 +430,45 @@ function foxyshop_order_management() {
 			echo '</div>';
 			echo '</td>';
 			echo '<td>' . esc_html($transaction_date) . '</td>';
-			echo '<td>' . foxy_wp_html($customer_name) . '</td>';
+			echo '<td>' . wp_kses_post($customer_name) . '</td>';
 			echo '<td>' . esc_html(foxyshop_currency((double)$transaction->order_total)) . '</td>';
 			do_action("foxyshop_order_line_end", $transaction);
 			echo '</tr>'."\n";
 
 			//Write Out Order Details Holder
-			$holder .= '<div class="detail_holder" id="holder_' . esc_attr($transaction_id) . '">'."\n";
+			$holder .= '<div class="detail_holder" id="holder_' . $transaction_id . '">'."\n";
 
 			$holder .= '<div class="foxyshop_list_col">';
 			$holder .= '<h4>' . __('Transaction Details', 'foxyshop') . '</h4>';
 			$holder .= '<ul>';
-			$holder .= '<li>' . __('Order ID', 'foxyshop') . ': ' . esc_html((string)$transaction->id) . '</li>';
-			$holder .= '<li>' . __('Date', 'foxyshop') . ': ' . esc_html($transaction_date). '</li>';
-			$holder .= '<li>' . esc_html((string)$transaction->processor_response). '</li>';
-			if ((string)$transaction->cc_number_masked != "") $holder .= '<li>' . __('Card', 'foxyshop') . ': ' . esc_html((string)$transaction->cc_number_masked). ' (' . esc_html((string)$transaction->cc_type) . ')</li>';
-			if ((string)$transaction->cc_exp_month != "") $holder .= '<li>' . __('Exp', 'foxyshop') . ': ' . esc_html((string)$transaction->cc_exp_month) . '-' . esc_html((string)$transaction->cc_exp_year) . '</li>';
-			if ($minfraud_score > 0) $holder .= '<li>' . __('MinFraud Score', 'foxyshop') . ': ' . esc_html($minfraud_score) . '</li>';
-			if ((string)$transaction->shipto_shipping_service_description != "") $holder .= '<li>' . __('Shipping Type', 'foxyshop') . ': ' . wp_kses_post((string)$transaction->shipto_shipping_service_description) . '</li>';
-			if ((string)$transaction->processor_response == "Purchase Order") $holder .= '<li>PO #: ' . wp_kses_post((string)$transaction->purchase_order) . '</li>';
+			$holder .= '<li>' . __('Order ID', 'foxyshop') . ': ' . (string)$transaction->id . '</li>';
+			$holder .= '<li>' . __('Date', 'foxyshop') . ': ' . $transaction_date. '</li>';
+			$holder .= '<li>' . (string)$transaction->processor_response. '</li>';
+			if ((string)$transaction->cc_number_masked != "") $holder .= '<li>' . __('Card', 'foxyshop') . ': ' . (string)$transaction->cc_number_masked. ' (' . (string)$transaction->cc_type . ')</li>';
+			if ((string)$transaction->cc_exp_month != "") $holder .= '<li>' . __('Exp', 'foxyshop') . ': ' . (string)$transaction->cc_exp_month . '-' . (string)$transaction->cc_exp_year . '</li>';
+			if ($minfraud_score > 0) $holder .= '<li>' . __('MinFraud Score', 'foxyshop') . ': ' . $minfraud_score . '</li>';
+			if ((string)$transaction->shipto_shipping_service_description != "") $holder .= '<li>' . __('Shipping Type', 'foxyshop') . ': ' . (string)$transaction->shipto_shipping_service_description . '</li>';
+			if ((string)$transaction->processor_response == "Purchase Order") $holder .= '<li>PO #: ' . (string)$transaction->purchase_order . '</li>';
 			$holder .= '</ul>';
 			$holder .= '</div>';
 
 			$holder .= '<div class="foxyshop_list_col">';
 			$holder .= '<h4>' . __('Order Details', 'foxyshop') . '</h4>';
 			$holder .= '<ul>';
-			$holder .= '<li>' . __('Subtotal', 'foxyshop') . ': ' . esc_html(foxyshop_currency((double)$transaction->product_total)) . '</li>';
+			$holder .= '<li>' . __('Subtotal', 'foxyshop') . ': ' . foxyshop_currency((double)$transaction->product_total) . '</li>';
 
 			//Discounts
 			foreach($transaction->discounts->discount as $discount) {
-				$holder .= '<li>' . (string)$discount->name . ': ' . esc_html(foxyshop_currency((double)$discount->amount)) . '</li>';
+				$holder .= '<li>' . (string)$discount->name . ': ' . foxyshop_currency((double)$discount->amount) . '</li>';
 			}
 
 			//Taxes
 			foreach($transaction->taxes->tax as $tax) {
-				$holder .= '<li>' . (string)$tax->tax_name . ': ' . esc_html(foxyshop_currency((double)$tax->tax_amount)) . '</li>';
+				$holder .= '<li>' . (string)$tax->tax_name . ': ' . foxyshop_currency((double)$tax->tax_amount) . '</li>';
 			}
 
-			$holder .= '<li>' . __('Shipping', 'foxyshop') . ': ' . esc_html(foxyshop_currency((double)$transaction->shipping_total)) . '</li>';
-			$holder .= '<li><strong>' . __('Order Total', 'foxyshop') . ': ' . esc_html(foxyshop_currency((double)$transaction->order_total)) . '</strong></li>';
+			$holder .= '<li>' . __('Shipping', 'foxyshop') . ': ' . foxyshop_currency((double)$transaction->shipping_total) . '</li>';
+			$holder .= '<li><strong>' . __('Order Total', 'foxyshop') . ': ' . foxyshop_currency((double)$transaction->order_total) . '</strong></li>';
 
 			$holder .= '</ul>';
 			$holder .= '</div>';
@@ -472,12 +476,12 @@ function foxyshop_order_management() {
 			$holder .= '<div class="foxyshop_list_col">';
 			$holder .= '<h4>' . __('Customer Address', 'foxyshop') . '</h4>';
 			$holder .= '<ul>';
-			$holder .= '<li>' . esc_html((string)$transaction->customer_first_name . ' ' . (string)$transaction->customer_last_name) . '</li>';
-			if ((string)$transaction->customer_company != "") $holder .= '<li>' . esc_html((string)$transaction->customer_company) . '</li>';
-			$holder .= '<li>' . esc_html((string)$transaction->customer_address1) . '</li>';
-			if ((string)$transaction->customer_address2 != "") $holder .= '<li>' . esc_html((string)$transaction->customer_address2) . '</li>';
-			$holder .= '<li>' . esc_html((string)$transaction->customer_city . ', ' . (string)$transaction->customer_state . ' ' . (string)$transaction->customer_postal_code) . '</li>';
-			$holder .= '<li>' . esc_html((string)$transaction->customer_country) . '</li>';
+			$holder .= '<li>' . (string)$transaction->customer_first_name . ' ' . (string)$transaction->customer_last_name . '</li>';
+			if ((string)$transaction->customer_company != "") $holder .= '<li>' . (string)$transaction->customer_company . '</li>';
+			$holder .= '<li>' . (string)$transaction->customer_address1 . '</li>';
+			if ((string)$transaction->customer_address2 != "") $holder .= '<li>' . (string)$transaction->customer_address2 . '</li>';
+			$holder .= '<li>' . (string)$transaction->customer_city . ', ' . (string)$transaction->customer_state . ' ' . (string)$transaction->customer_postal_code . '</li>';
+			$holder .= '<li>' . (string)$transaction->customer_country . '</li>';
 			$holder .= '</ul>';
 			$holder .= '</div>';
 
@@ -486,13 +490,13 @@ function foxyshop_order_management() {
 				$holder .= '<div class="foxyshop_list_col">';
 				$holder .= '<h4>' . __('Shipping Details', 'foxyshop') . '</h4>';
 				$holder .= '<ul>';
-				$holder .= '<li>' . esc_html((string)$transaction->shipping_first_name . ' ' . (string)$transaction->shipping_last_name) . '</li>';
-				if ((string)$transaction->shipping_company != "") $holder .= '<li>' . esc_html((string)$transaction->shipping_company) . '</li>';
-				$holder .= '<li>' . esc_html((string)$transaction->shipping_address1) . '</li>';
-				if ((string)$transaction->shipping_address2 != "") $holder .= '<li>' . esc_html((string)$transaction->shipping_address2) . '</li>';
-				$holder .= '<li>' . esc_html((string)$transaction->shipping_city . ', ' . (string)$transaction->shipping_state . ' ' . (string)$transaction->shipping_postal_code) . '</li>';
-				$holder .= '<li>' . esc_html((string)$transaction->shipping_country) . '</li>';
-				if ((string)$transaction->shipping_phone != "") $holder .= '<li>' . esc_html((string)$transaction->shipping_phone) . '</li>';
+				$holder .= '<li>' . (string)$transaction->shipping_first_name . ' ' . (string)$transaction->shipping_last_name . '</li>';
+				if ((string)$transaction->shipping_company != "") $holder .= '<li>' . (string)$transaction->shipping_company . '</li>';
+				$holder .= '<li>' . (string)$transaction->shipping_address1 . '</li>';
+				if ((string)$transaction->shipping_address2 != "") $holder .= '<li>' . (string)$transaction->shipping_address2 . '</li>';
+				$holder .= '<li>' . (string)$transaction->shipping_city . ', ' . (string)$transaction->shipping_state . ' ' . (string)$transaction->shipping_postal_code . '</li>';
+				$holder .= '<li>' . (string)$transaction->shipping_country . '</li>';
+				if ((string)$transaction->shipping_phone != "") $holder .= '<li>' . (string)$transaction->shipping_phone . '</li>';
 				$holder .= '</ul>';
 				$holder .= '</div>';
 			}
@@ -500,17 +504,17 @@ function foxyshop_order_management() {
 			//Multi-ship Addresses
 			foreach($transaction->shipto_addresses->shipto_address as $shipto_address) {
 				$holder .= '<div class="foxyshop_list_col">';
-				$holder .= '<h4>' . __('Shipping Details', 'foxyshop') . ': ' . esc_html($shipto_address->address_name) . '</h4>';
+				$holder .= '<h4>' . __('Shipping Details', 'foxyshop') . ': ' . $shipto_address->address_name . '</h4>';
 				$holder .= '<ul>';
-				$holder .= '<li>' . esc_html($shipto_address->shipto_first_name . ' ' . $shipto_address->shipto_last_name) . '</li>';
-				if ((string)$shipto_address->shipto_company != "") $holder .= '<li>' . esc_html($shipto_address->shipto_company) . '</li>';
-				$holder .= '<li>' . esc_html($shipto_address->shipto_address1) . '</li>';
-				if ((string)$shipto_address->shipto_address2 != "") $holder .= '<li>' . esc_html($shipto_address->shipto_address2) . '</li>';
-				$holder .= '<li>' . esc_html($shipto_address->shipto_city . ', ' . $shipto_address->shipto_state . ' ' . $shipto_address->shipto_postal_code) . '</li>';
-				$holder .= '<li>' . esc_html($shipto_address->shipto_country) . '</li>';
-				if ((string)$shipto_address->shipto_phone != "") $holder .= '<li>' . esc_html($shipto_address->shipto_phone) . '</li>';
-				$holder .= '<li><br />' . __('Method', 'foxyshop') . ': ' . wp_kses_post($shipto_address->shipto_shipping_service_description) . '</li>';
-				$holder .= '<li>' . __('Shipping', 'foxyshop') . ': ' .  esc_html(foxyshop_currency((double)$shipto_address->shipto_shipping_total)) . '</li>';
+				$holder .= '<li>' . $shipto_address->shipto_first_name . ' ' . $shipto_address->shipto_last_name . '</li>';
+				if ((string)$shipto_address->shipto_company != "") $holder .= '<li>' . $shipto_address->shipto_company . '</li>';
+				$holder .= '<li>' . $shipto_address->shipto_address1 . '</li>';
+				if ((string)$shipto_address->shipto_address2 != "") $holder .= '<li>' . $shipto_address->shipto_address2 . '</li>';
+				$holder .= '<li>' . $shipto_address->shipto_city . ', ' . $shipto_address->shipto_state . ' ' . $shipto_address->shipto_postal_code . '</li>';
+				$holder .= '<li>' . $shipto_address->shipto_country . '</li>';
+				if ((string)$shipto_address->shipto_phone != "") $holder .= '<li>' . $shipto_address->shipto_phone . '</li>';
+				$holder .= '<li><br />' . __('Method', 'foxyshop') . ': ' . $shipto_address->shipto_shipping_service_description . '</li>';
+				$holder .= '<li>' . __('Shipping', 'foxyshop') . ': ' .  foxyshop_currency((double)$shipto_address->shipto_shipping_total) . '</li>';
 				$holder .= '</ul>';
 				$holder .= '</div>';
 			}
@@ -519,15 +523,15 @@ function foxyshop_order_management() {
 			$holder .= '<div class="foxyshop_list_col">';
 			$holder .= '<h4>' . __('Customer Details', 'foxyshop') . '</h4>';
 			$holder .= '<ul>';
-			if ((string)$transaction->customer_phone != "") $holder .= '<li>' . esc_html((string)$transaction->customer_phone) . '</li>';
-			$holder .= '<li><a href="mailto:' . (string)$transaction->customer_email . '">' . esc_html((string)$transaction->customer_email) . '</a></li>';
-			$holder .= '<li>' . apply_filters('foxyshop_order_ip', '<a href="' . esc_url('http://whatismyipaddress.com/ip/' . (string)$transaction->customer_ip) . '" target="_blank">' . esc_html((string)$transaction->customer_ip) . '</a>', esc_html((string)$transaction->customer_ip)) . '</li>';
+			if ((string)$transaction->customer_phone != "") $holder .= '<li>' . (string)$transaction->customer_phone . '</li>';
+			$holder .= '<li><a href="mailto:' . (string)$transaction->customer_email . '">' . (string)$transaction->customer_email . '</a></li>';
+			$holder .= '<li>' . apply_filters('foxyshop_order_ip', '<a href="' . 'http://whatismyipaddress.com/ip/' . (string)$transaction->customer_ip . '" target="_blank">' . (string)$transaction->customer_ip . '</a>', (string)$transaction->customer_ip) . '</li>';
 			$holder .= '<li>&nbsp;</li>';
 
 			//Custom Fields
 			foreach($transaction->custom_fields->custom_field as $custom_field) {
 				if ($custom_field->custom_field_name != 'ga') {
-					$holder .= '<li><strong>' . esc_html(str_replace("_"," ",(string)$custom_field->custom_field_name)) . ':</strong> ' . wp_kses_post(nl2br((string)$custom_field->custom_field_value)) . '</li>';
+					$holder .= '<li><strong>' . str_replace("_"," ",(string)$custom_field->custom_field_name) . ':</strong> ' . nl2br((string)$custom_field->custom_field_value) . '</li>';
 				}
 			}
 
@@ -547,8 +551,8 @@ function foxyshop_order_management() {
 				$holder .= '<div class="product_listing">';
 				if ($transaction_detail->image != "") {
 					$holder .= '<div class="image_div">';
-					if ($transaction_detail->url != "") $holder .= '<a href="' . esc_url($transaction_detail->url) . '" target="_blank">';
-					$holder .= '<img src="' . esc_url($transaction_detail->image) . '" />';
+					if ($transaction_detail->url != "") $holder .= '<a href="' . $transaction_detail->url . '" target="_blank">';
+					$holder .= '<img src="' . $transaction_detail->image . '" />';
 					if ($transaction_detail->url != "") $holder .= '</a>';
 					$holder .= '</div>';
 				}
@@ -562,34 +566,34 @@ function foxyshop_order_management() {
 
 
 				$holder .= '<div class="details_div">';
-				$holder .= '<h4>' . esc_html($transaction_detail->product_name) . '</h4>';
+				$holder .= '<h4>' . $transaction_detail->product_name . '</h4>';
 				$holder .= '<ul>';
-				if ((string)$transaction_detail->shipto != "") $holder .= '<li>Ship To: ' . esc_html((string)$transaction_detail->shipto) . '</li>';
-				$holder .= '<li>' . __('Code', 'foxyshop') . ': ' . esc_html((string)$transaction_detail->product_code) . '</li>';
-				$holder .= '<li>' . __('Price', 'foxyshop') . ': ' . esc_html(foxyshop_currency((double)$transaction_detail->product_price)). '</li>';
-				if ($product_discount != 0) $holder .= '<li>Adjusted Price: ' . esc_html(foxyshop_currency((double)$transaction_detail->product_price + $product_discount)). '</li>';
-				$holder .= '<li>' . __('Qty', 'foxyshop') . ': ' . esc_html($transaction_detail->product_quantity) . '</li>';
-				if ((string)$transaction_detail->product_weight != "0.000") $holder .= '<li>Weight: ' . esc_html((string)$transaction_detail->product_weight) . '</li>';
-				if ($weight_discount != 0) $holder .= '<li>Adjusted Weight: ' . (esc_html((double)$transaction_detail->product_weight + $weight_discount)). '</li>';
-				if ((string)$transaction_detail->category_code != "DEFAULT") $holder .= '<li>Category: ' . esc_html((string)$transaction_detail->category_description) . '</li>';
-				if ((string)$transaction_detail->product_delivery_type != "shipped") $holder .= '<li>Delivery Type: ' . esc_html((string)$transaction_detail->product_delivery_type) . '</li>';
-				if ((string)$transaction_detail->downloadable_url != "") $holder .= '<li>Downloadable URL: <a href="' . esc_url((string)$transaction_detail->downloadable_url) . '" target="_blank">Click Here</a></li>';
+				if ((string)$transaction_detail->shipto != "") $holder .= '<li>Ship To: ' . (string)$transaction_detail->shipto . '</li>';
+				$holder .= '<li>' . __('Code', 'foxyshop') . ': ' . (string)$transaction_detail->product_code . '</li>';
+				$holder .= '<li>' . __('Price', 'foxyshop') . ': ' . foxyshop_currency((double)$transaction_detail->product_price). '</li>';
+				if ($product_discount != 0) $holder .= '<li>Adjusted Price: ' . foxyshop_currency((double)$transaction_detail->product_price + $product_discount). '</li>';
+				$holder .= '<li>' . __('Qty', 'foxyshop') . ': ' . $transaction_detail->product_quantity . '</li>';
+				if ((string)$transaction_detail->product_weight != "0.000") $holder .= '<li>Weight: ' . (string)$transaction_detail->product_weight . '</li>';
+				if ($weight_discount != 0) $holder .= '<li>Adjusted Weight: ' . ((double)$transaction_detail->product_weight + $weight_discount). '</li>';
+				if ((string)$transaction_detail->category_code != "DEFAULT") $holder .= '<li>Category: ' . (string)$transaction_detail->category_description . '</li>';
+				if ((string)$transaction_detail->product_delivery_type != "shipped") $holder .= '<li>Delivery Type: ' . (string)$transaction_detail->product_delivery_type . '</li>';
+				if ((string)$transaction_detail->downloadable_url != "") $holder .= '<li>Downloadable URL: <a href="' . (string)$transaction_detail->downloadable_url . '" target="_blank">Click Here</a></li>';
 				if ($transaction_detail->subscription_frequency != "") {
-					$holder .= '<li>' . __('Subscription Frequency', 'foxyshop') . ': ' . esc_html((string)$transaction_detail->subscription_frequency) . '</li>';
-					$holder .= '<li>' . __('Subscription Start Date', 'foxyshop') . ': ' . esc_html((string)$transaction_detail->subscription_startdate) . '</li>';
-					$holder .= '<li>' . __('Subscription Next Date', 'foxyshop') . ': ' . esc_html((string)$transaction_detail->subscription_nextdate) . '</li>';
-					if ((string)$transaction_detail->subscription_enddate != "0000-00-00") $holder .= '<li>Subscription End Date: ' . esc_html((string)$transaction_detail->subscription_enddate) . '</li>';
+					$holder .= '<li>' . __('Subscription Frequency', 'foxyshop') . ': ' . (string)$transaction_detail->subscription_frequency . '</li>';
+					$holder .= '<li>' . __('Subscription Start Date', 'foxyshop') . ': ' . (string)$transaction_detail->subscription_startdate . '</li>';
+					$holder .= '<li>' . __('Subscription Next Date', 'foxyshop') . ': ' . (string)$transaction_detail->subscription_nextdate . '</li>';
+					if ((string)$transaction_detail->subscription_enddate != "0000-00-00") $holder .= '<li>Subscription End Date: ' . (string)$transaction_detail->subscription_enddate . '</li>';
 				}
 				foreach($transaction_detail->transaction_detail_options->transaction_detail_option as $transaction_detail_option) {
 					$holder .= '<li>';
 					$holder .= str_replace("_", " ", (string)$transaction_detail_option->product_option_name) . ': ';
 					if (substr((string)$transaction_detail_option->product_option_value,0,5) == "file-") {
 						$upload_dir = wp_upload_dir();
-						$holder .= '<a href="' . esc_url($upload_dir['baseurl'] . '/customuploads/' . (string)$transaction_detail_option->product_option_value) . '" target="_blank">' . esc_html((string)$transaction_detail_option->product_option_value) . '</a>';
+						$holder .= '<a href="' . $upload_dir['baseurl'] . '/customuploads/' . (string)$transaction_detail_option->product_option_value . '" target="_blank">' . (string)$transaction_detail_option->product_option_value . '</a>';
 					} else {
-						$holder .= wp_kses_post($transaction_detail_option->product_option_value);
+						$holder .= $transaction_detail_option->product_option_value;
 					}
-					if ((string)$transaction_detail_option->price_mod != '0.000') $holder .= ' (' . (strpos("-",$transaction_detail_option->price_mod) !== false ? '-' : '+') . esc_html(foxyshop_currency((double)$transaction_detail_option->price_mod)) . ')';
+					if ((string)$transaction_detail_option->price_mod != '0.000') $holder .= ' (' . (strpos("-",$transaction_detail_option->price_mod) !== false ? '-' : '+') . foxyshop_currency((double)$transaction_detail_option->price_mod) . ')';
 					$holder .= '</li>';
 				}
 
@@ -612,7 +616,7 @@ function foxyshop_order_management() {
 	<?php } ?>
 
 
-	<div id="details_holder"><?php echo foxy_wp_html($holder); ?></div>
+	<div id="details_holder"><?php echo foxy_wp_kses_html($holder); ?></div>
 
 	<?php
 
@@ -690,7 +694,7 @@ jQuery(document).ready(function($){
 	});
 	";
 
-	echo foxy_wp_html(foxyshop_manage_attributes_jquery('transaction'));
+	echo esc_js(foxyshop_manage_attributes_jquery('transaction'));
 
 	echo "
 });

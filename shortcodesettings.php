@@ -39,7 +39,7 @@ function foxyshop_productcategory_shortcode($atts, $content = null) {
 	foxyshop_include('single-category-shortcode');
 	$write = ob_get_contents();
 	ob_end_clean();
-	return foxy_wp_html($write);
+	return $write;
 }
 
 
@@ -66,7 +66,7 @@ function foxyshop_showproduct_shortcode($atts, $content = null) {
 	foxyshop_include('single-product-shortcode');
 	$write = ob_get_contents();
 	ob_end_clean();
-	return foxy_wp_html($write);
+	return $write;
 }
 
 
@@ -91,9 +91,9 @@ function foxyshop_product_shortcode($atts, $content = null) {
 	if ($sub_frequency) {
 		$url_extra .= "&amp;sub_frequency=" . $sub_frequency . foxyshop_get_verification("sub_frequency", $sub_frequency);
 	}
-	$write = '<a href="' . esc_url(foxyshop_product_link("", true, $variations) . $url_extra) . '" class="foxyshop_sc_product_link">' . $content . '</a>';
+	$write = '<a href="' . foxyshop_product_link("", true, $variations) . $url_extra . '" class="foxyshop_sc_product_link">' . $content . '</a>';
 	$product = $original_product;
-	return foxy_wp_html($write);
+	return $write;
 }
 
 
@@ -113,7 +113,7 @@ function foxyshop_productlink_shortcode($atts, $content = null) {
 	$product = foxyshop_setup_product($prod);
 	$write = foxyshop_product_link("", true, $variations, $quantity);
 	$product = $original_product;
-	return foxy_wp_html($write);
+	return $write;
 }
 
 

@@ -36,7 +36,7 @@ function foxyshop_display_ajax() {
 		$foxy_response = foxyshop_get_foxycart_data($foxy_data);
 		$xml = simplexml_load_string($foxy_response, NULL, LIBXML_NOCDATA);
 		do_action("foxyshop_after_subscription_modify", $xml);
-		echo foxy_wp_html((string)$xml->result) . ": " . foxy_wp_html((string)$xml->messages->message);
+		echo esc_html((string)$xml->result . ": " . (string)$xml->messages->message);
 		die;
 
 	//Hide/Unhide Transaction
@@ -45,7 +45,7 @@ function foxyshop_display_ajax() {
 		$foxy_response = foxyshop_get_foxycart_data($foxy_data);
 		$xml = simplexml_load_string($foxy_response, NULL, LIBXML_NOCDATA);
 		do_action("foxyshop_after_transaction_archive", $xml);
-		echo foxy_wp_html((string)$xml->result . ": " . (string)$xml->messages->message);
+		echo esc_html((string)$xml->result . ": " . (string)$xml->messages->message);
 		die;
 	}
 	die;
@@ -70,12 +70,12 @@ function foxyshop_manage_attribute_ajax() {
 	//Save
 	if ($foxyshop_action == 'save_attribute') {
 		$att_value = str_replace('\"', '"', sanitize_text_field($_POST['att_value']));
-		echo foxy_wp_html(foxyshop_save_attribute($att_type, $id, $att_name, $att_value));
+		echo esc_attr(foxyshop_save_attribute($att_type, $id, $att_name, $att_value));
 		die;
 
 	//Delete
 	} elseif ($foxyshop_action == 'delete_attribute') {
-		echo foxy_wp_html(foxyshop_delete_attribute($att_type, $id, $att_name));
+		echo esc_attr(foxyshop_delete_attribute($att_type, $id, $att_name));
 		die;
 	}
 	die;
@@ -86,7 +86,7 @@ function foxyshop_manage_attribute_ajax() {
 add_action('wp_ajax_foxyshop_ajax_get_category_list', 'foxyshop_ajax_get_category_list');
 function foxyshop_ajax_get_category_list() {
 	check_ajax_referer('foxyshop-ajax-get-category-list', 'security');
-	echo foxy_wp_html(foxyshop_get_category_list());
+	echo esc_html(foxyshop_get_category_list());
 	die;
 }
 
@@ -95,7 +95,7 @@ function foxyshop_ajax_get_category_list() {
 add_action('wp_ajax_foxyshop_ajax_get_category_list_select', 'foxyshop_ajax_get_category_list_select');
 function foxyshop_ajax_get_category_list_select() {
 	check_ajax_referer('foxyshop-ajax-get-downloadable-list', 'security');
-	echo foxy_wp_html(foxyshop_get_category_list('select'));
+	echo foxy_wp_kses_html(foxyshop_get_category_list('select'), ['option']);
 	die;
 }
 
@@ -141,11 +141,11 @@ function foxyshop_ajax_set_google_auth() {
 	foreach($response_line as $response) {
 		$r = explode("=", $response);
 		if ($r[0] == "Error") {
-			die(foxy_wp_html("Error"));
+			die("Error");
 		} elseif ($r[0] == "Auth") {
 			$foxyshop_settings['google_product_auth'] = strip_tags($r[1]);
 			update_option("foxyshop_settings", $foxyshop_settings);
-			die(foxy_wp_html("Success"));
+			die("Success");
 		}
 	}
 	die;
@@ -169,16 +169,16 @@ function foxyshop_product_ajax() {
 
 	if ($foxyshop_action == "add_new_image") {
 
-		echo foxy_wp_html(foxyshop_redraw_images($productID));
+		echo foxy_wp_kses_html(foxyshop_redraw_images($productID));
 
 	} elseif ($foxyshop_action == "delete_image") {
 		wp_delete_attachment($imageID);
-		echo foxy_wp_html(foxyshop_redraw_images($productID));
+		echo foxy_wp_kses_html(foxyshop_redraw_images($productID));
 
 	} elseif ($foxyshop_action == "featured_image") {
 		delete_post_meta($productID,"_thumbnail_id");
 		update_post_meta($productID,"_thumbnail_id",$imageID);
-		echo foxy_wp_html(foxyshop_redraw_images($productID));
+		echo foxy_wp_kses_html(foxyshop_redraw_images($productID));
 
 	} elseif ($foxyshop_action == "toggle_visible") {
 		if (get_post_meta($imageID, "_foxyshop_hide_image", 1)) {
@@ -186,7 +186,7 @@ function foxyshop_product_ajax() {
 		} else {
 			add_post_meta($imageID,"_foxyshop_hide_image", 1);
 		}
-		echo foxy_wp_html(foxyshop_redraw_images($productID));
+		echo foxy_wp_kses_html(foxyshop_redraw_images($productID));
 
 	} elseif ($foxyshop_action == "rename_image") {
 		$update_post = array();
@@ -206,10 +206,10 @@ function foxyshop_product_ajax() {
 			wp_update_post($update_post);
 		}
 
-		echo foxy_wp_html(foxyshop_redraw_images($productID));
+		echo foxy_wp_kses_html(foxyshop_redraw_images($productID));
 
 	} elseif ($foxyshop_action == "refresh_images") {
-		echo foxy_wp_html(foxyshop_redraw_images($productID));
+		echo foxy_wp_kses_html(foxyshop_redraw_images($productID));
 	}
 	die;
 }
@@ -231,14 +231,14 @@ function foxyshop_redraw_images($id) {
 				$hide_from_slideshow_class = $hide_from_slideshow ? 'foxyshop_hide_from_slideshow ' : '';
 
 				$write .= '<li id="att_' . $attachment->ID . '" class="'. $featured_class . $hide_from_slideshow_class . '">';
-				$write .= '<div class="foxyshop_image_holder"><img src="' . $thumbnailSRC[0] . '" alt="' . esc_attr($attachment->post_title) . ' (' . $attachment->ID . ')" title="' . esc_attr($attachment->post_title) . ' (' . $attachment->ID . ')" /></div>';
+				$write .= '<div class="foxyshop_image_holder"><img src="' . $thumbnailSRC[0] . '" alt="' . $attachment->post_title . ' (' . $attachment->ID . ')" title="' . $attachment->post_title . ' (' . $attachment->ID . ')" /></div>';
 				$write .= '<div style="clear: both;"></div>';
 				$write .= '<a href="#" class="foxyshop_image_delete" rel="' . $attachment->ID . '" alt="Delete" title="Delete">Delete</a>';
 				$write .= '<a href="#" class="foxyshop_image_rename" rel="' . $attachment->ID . '" alt="Rename" title="Rename">Rename</a>';
 				$write .= '<a href="#" class="foxyshop_image_featured" rel="' . $attachment->ID . '" alt="Make Featured Image" title="Make Featured Image">Make Featured Image</a>';
 				$write .= '<a href="#" class="foxyshop_visible" rel="' . $attachment->ID . '" alt="Toggle Slideshow View" title="Toggle Slideshow View">Toggle Slideshow View</a>';
 				$write .= '<div class="renamediv" id="renamediv_' . $attachment->ID . '">';
-				$write .= '<input type="text" name="rename_' . $attachment->ID . '" id="rename_' . $attachment->ID . '" rel="' . $attachment->ID . '" value="' . esc_attr($attachment->post_title) . '" />';
+				$write .= '<input type="text" name="rename_' . $attachment->ID . '" id="rename_' . $attachment->ID . '" rel="' . $attachment->ID . '" value="' . $attachment->post_title . '" />';
 				$write .= '</div>';
 				$write .= '<div style="clear: both;"></div>';
 				$write .= '</li>';
@@ -247,5 +247,5 @@ function foxyshop_redraw_images($id) {
 			}
 		}
 	}
-	return foxy_wp_html($write);
+	return $write;
 }

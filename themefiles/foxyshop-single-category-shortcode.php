@@ -26,7 +26,7 @@ global $product, $foxyshop_category_slug, $post;
 	$currentCategoryID = $term->term_id;
 
 	//Write Category Title (if you want the title in, just uncomment line below)
-	//echo '<h1 id="foxyshop_category_title">' . str_replace("_","",$currentCategoryName) . '</h1>'."\n";
+	//echo '<h1 id="foxyshop_category_title">' . wp_kses_post(str_replace("_","",$currentCategoryName)) . '</h1>'."\n";
 
 	//If there's a category description, write it here
 	if ($currentCategoryDescription) echo '<p>' . wp_kses_post($currentCategoryDescription) . '</p>'."\n";

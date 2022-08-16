@@ -64,7 +64,7 @@ function foxyshop_save_tools() {
 			if ($xml->result != "ERROR") {
 				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=cart');
 			} else {
-				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=error&error='.urlencode(esc_attr((string)$xml->messages->message)));
+				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=error&error='.urlencode((string)$xml->messages->message));
 			}
 			exit;
 
@@ -77,7 +77,7 @@ function foxyshop_save_tools() {
 			if ($xml->result != "ERROR") {
 				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=checkout');
 			} else {
-				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=error&error='.urlencode(esc_attr((string)$xml->messages->message)));
+				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=error&error='.urlencode((string)$xml->messages->message));
 			}
 			exit;
 
@@ -89,7 +89,7 @@ function foxyshop_save_tools() {
 			if ($xml->result != "ERROR") {
 				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=receipt');
 			} else {
-				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=error&error='.urlencode(esc_attr((string)$xml->messages->message)));
+				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&updatetemplate=error&error='.urlencode((string)$xml->messages->message));
 			}
 			exit;
 		}
@@ -208,7 +208,7 @@ function foxyshop_tools() {
 	}
 
 	//Confirmation Key Reset
-	if (isset($_GET['key'])) echo '<div class="updated"><p>' . sprintf(__('Your API Key Has Been Reset: "%s". Please Update FoxyCart With Your New Key.', 'foxyshop'), esc_attr($foxyshop_settings['api_key'])) . '</p></div>';
+	if (isset($_GET['key'])) echo '<div class="updated"><p>' . esc_html(sprintf(__('Your API Key Has Been Reset: "%s". Please Update FoxyCart With Your New Key.', 'foxyshop'), $foxyshop_settings['api_key'])) . '</p></div>';
 
 	//Confirmation Old Vars
 	if (isset($_GET['oldvars'])) echo '<div class="updated"><p>' . __('Scan for old variations has been successfully completed.', 'foxyshop') . '</p></div>';
@@ -227,7 +227,7 @@ function foxyshop_tools() {
 		} elseif ($updatetemplate == "clear") {
 			echo '<div class="updated"><p>' . __('Your saved URLs have been cleared.', 'foxyshop') . '</p></div>';
 		} else {
-			echo '<div class="updated"><p>' . sprintf(__('The %s template has been successfully updated.', 'foxyshop'), esc_attr($updatetemplate)) . '</p></div>';
+			echo '<div class="updated"><p>' . esc_html(sprintf(__('The %s template has been successfully updated.', 'foxyshop'), $updatetemplate)) . '</p></div>';
 		}
 	}
 
@@ -472,7 +472,7 @@ for ($i=1;$i<=$max_variations;$i++) {
 				<div class="foxyshop_field_control dropdown variationoptions">
 					<label for="_variation_value_<?php echo esc_attr($i); ?>"><?php _e('Items in Dropdown', 'foxyshop'); ?></label>
 					<textarea name="_variation_value_<?php echo esc_attr($i); ?>" id="_variation_value_<?php echo esc_attr($i); ?>"><?php echo esc_textarea($_variationValue); ?></textarea>
-					<div class="variationkey"><?php echo foxy_wp_html($variation_key); ?></div>
+					<div class="variationkey"><?php echo esc_html($variation_key); ?></div>
 				</div>
 
 			<?php elseif($_variation_type == "radio") : ?>
@@ -480,7 +480,7 @@ for ($i=1;$i<=$max_variations;$i++) {
 				<div class="foxyshop_field_control radio variationoptions">
 					<label for="_variation_radio_<?php echo esc_attr($i); ?>"><?php _e('Radio Button Options', 'foxyshop'); ?></label>
 					<textarea name="_variation_radio_<?php echo esc_attr($i); ?>" id="_variation_radio_<?php echo esc_attr($i); ?>"><?php echo esc_textarea($_variationValue); ?></textarea>
-					<div class="variationkey"><?php echo foxy_wp_html($variation_key); ?></div>
+					<div class="variationkey"><?php echo esc_html($variation_key); ?></div>
 				</div>
 
 			<?php elseif($_variation_type == "text") : ?>
@@ -527,7 +527,7 @@ for ($i=1;$i<=$max_variations;$i++) {
 				<div class="foxyshop_field_control checkbox variationoptions" style="background-color: transparent;">
 					<label for="_variation_checkbox_<?php echo esc_attr($i); ?>"><?php _e('Value', 'foxyshop'); ?></label>
 					<input type="text" name="_variation_checkbox_<?php echo esc_attr($i); ?>" id="_variation_checkbox_<?php echo esc_attr($i); ?>" value="<?php echo esc_attr($_variationValue); ?>" class="variation_checkbox_text" />
-					<div class="variationkey"><?php echo foxy_wp_html($variation_key); ?></div>
+					<div class="variationkey"><?php echo esc_html($variation_key); ?></div>
 				</div>
 
 			<?php elseif($_variation_type == "upload") : ?>
@@ -541,7 +541,7 @@ for ($i=1;$i<=$max_variations;$i++) {
 		</div>
 
 		<!-- //// DISPLAY KEY //// -->
-		<div class="foxyshop_field_control dkeycontainer"<?php echo foxy_wp_html($dkeyhide); ?>>
+		<div class="foxyshop_field_control dkeycontainer"<?php echo wp_kses($dkeyhide, []); ?>>
 			<label class="dkeylabel" title="Enter a value here if you want your variation to be invisible until called by another variation."><?php _e('Display Key'); ?></label>
 			<input type="text" name="_variation_dkey_<?php echo esc_attr($i); ?>" id="_variation_dkey_<?php echo esc_attr($i); ?>" value="<?php echo esc_attr($_variationDisplayKey); ?>" class="dkeynamefield" />
 
@@ -809,7 +809,7 @@ jQuery(document).ready(function($){
 
 	function getVariationContents(new_type, this_id) {
 		new_contents = \"\";
-		variationkeyhtml = '<div class=\"variationkey\">" . foxy_wp_html($variation_key) . "</div>';
+		variationkeyhtml = '<div class=\"variationkey\">" . esc_html($variation_key) . "</div>';
 
 		//Dropdown
 		if (new_type == \"dropdown\") {

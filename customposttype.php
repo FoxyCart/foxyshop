@@ -136,9 +136,10 @@ function foxyshop_manage_custom_columns($column_name, $id) {
 		$terms = get_the_terms($id, $_taxonomy);
 		if ( !empty( $terms ) ) {
 			$out = array();
-			foreach ( $terms as $c )
-				$out[] = "<a href='edit-tags.php?action=edit&taxonomy=" . esc_attr($_taxonomy) . "&post_type=foxyshop_product&tag_ID=" . esc_attr($c->term_id) . "'> " . esc_html(sanitize_term_field('name', $c->name, $c->term_id, 'category', 'display')) . "</a>";
-			echo join( ', ', $out );
+			foreach ( $terms as $c ) {
+				$out[] = "<a href='edit-tags.php?action=edit&taxonomy=" . $_taxonomy . "&post_type=foxyshop_product&tag_ID=" . $c->term_id . "'> " . sanitize_term_field('name', $c->name, $c->term_id, 'category', 'display') . "</a>";
+			}
+			echo wp_kses_post(join( ', ', $out ));
 		}
 		else {
 			_e('Uncategorized', 'foxyshop');
@@ -182,12 +183,12 @@ function foxyshop_manage_custom_columns($column_name, $id) {
 			$beginningOK = (strtotime("now") > $salestartdate);
 			$endingOK = (strtotime("now") < ($saleenddate + 86400) || $saleenddate == 0);
 			if ($beginningOK && $endingOK || ($salestartdate == 0 && $saleenddate == 0)) {
-				echo '<span style="text-decoration: line-through; margin-right: 10px;">' . wp_kses(foxyshop_currency($originalprice), []) . '</span><span style="color: red;">' . wp_kses(foxyshop_currency($saleprice), []) . '</span>';
+				echo '<span style="text-decoration: line-through; margin-right: 10px;">' . esc_html(foxyshop_currency($originalprice)) . '</span><span style="color: red;">' . esc_html(foxyshop_currency($saleprice)) . '</span>';
 			} else {
-				echo wp_kses(foxyshop_currency($originalprice), []);
+				echo esc_html(foxyshop_currency($originalprice));
 			}
 		} else {
-			echo wp_kses(foxyshop_currency($originalprice), []);
+			echo esc_html(foxyshop_currency($originalprice));
 		}
 		break;
 	default:
@@ -220,10 +221,10 @@ function foxyshop_restrict_manage_posts() {
 
             // output html for taxonomy dropdown filter
             echo "<select name='" . esc_attr($tax_slug) . "' id='" . esc_attr($tax_slug) . "' class='postform'>";
-            echo '<option value="">' . __('Show All', 'foxyshop') . ' ' . wp_kses($tax_name, []) . '</option>'."\n";
+            echo '<option value="">' . __('Show All', 'foxyshop') . ' ' . esc_html($tax_name) . '</option>'."\n";
             foreach ($terms as $term) {
                 // output each select option line, check against the last $_GET to show the current option selected
-                echo '<option value="'. esc_attr($term->slug) . '" ' . ($tax_slug == $term->slug ? ' selected="selected"' : '')  . '>' . wp_kses($term->name .' (' . $term->count .')', []) . '</option>';
+                echo '<option value="'. esc_attr($term->slug) . '" ' . ($tax_slug == $term->slug ? ' selected="selected"' : '')  . '>' . esc_html($term->name .' (' . $term->count .')') . '</option>';
             }
             echo "</select>";
         }
@@ -241,15 +242,15 @@ function foxyshop_updated_messages($messages) {
 	global $post, $post_ID;
 
 	$messages['foxyshop_product'] = array(
-		1 => FOXYSHOP_PRODUCT_NAME_SINGULAR.' updated. <a href="'.esc_url(get_permalink($post_ID)).'">View '.strtolower(FOXYSHOP_PRODUCT_NAME_SINGULAR).'</a>',
+		1 => FOXYSHOP_PRODUCT_NAME_SINGULAR.' updated. <a href="'.get_permalink($post_ID).'">View '.strtolower(FOXYSHOP_PRODUCT_NAME_SINGULAR).'</a>',
 		2 => __('Custom field updated.', 'foxyshop'),
 		3 => __('Custom field deleted.', 'foxyshop'),
 		4 => FOXYSHOP_PRODUCT_NAME_SINGULAR.' '.__('updated', 'foxyshop').'.',
-		6 => FOXYSHOP_PRODUCT_NAME_SINGULAR.' published. <a href="' . esc_url(get_permalink($post_ID)) . '">View '.strtolower(FOXYSHOP_PRODUCT_NAME_SINGULAR).'</a>',
+		6 => FOXYSHOP_PRODUCT_NAME_SINGULAR.' published. <a href="' . get_permalink($post_ID) . '">View '.strtolower(FOXYSHOP_PRODUCT_NAME_SINGULAR).'</a>',
 		7 => FOXYSHOP_PRODUCT_NAME_SINGULAR.' '.__(' saved', 'foxyshop').'.',
-		8 => FOXYSHOP_PRODUCT_NAME_SINGULAR.' submitted. <a target="_blank" href="'.esc_url(add_query_arg('preview', 'true', get_permalink($post_ID))).'">Preview '.strtolower(FOXYSHOP_PRODUCT_NAME_SINGULAR).'</a>',
-		9 => FOXYSHOP_PRODUCT_NAME_SINGULAR.' scheduled for: <strong>'.date_i18n( __('M j, Y @ G:i'), strtotime($post->post_date)).'</strong>. <a target="_blank" href="'.esc_url(get_permalink($post_ID)).'">Preview '.strtolower(FOXYSHOP_PRODUCT_NAME_SINGULAR).'</a>',
-		10 => FOXYSHOP_PRODUCT_NAME_SINGULAR.' draft updated. <a target="_blank" href="'.esc_url(add_query_arg( 'preview', 'true', get_permalink($post_ID))).'">Preview '.strtolower(FOXYSHOP_PRODUCT_NAME_SINGULAR).'</a>'
+		8 => FOXYSHOP_PRODUCT_NAME_SINGULAR.' submitted. <a target="_blank" href="'.add_query_arg('preview', 'true', get_permalink($post_ID)).'">Preview '.strtolower(FOXYSHOP_PRODUCT_NAME_SINGULAR).'</a>',
+		9 => FOXYSHOP_PRODUCT_NAME_SINGULAR.' scheduled for: <strong>'.date_i18n( __('M j, Y @ G:i'), strtotime($post->post_date)).'</strong>. <a target="_blank" href="'.get_permalink($post_ID).'">Preview '.strtolower(FOXYSHOP_PRODUCT_NAME_SINGULAR).'</a>',
+		10 => FOXYSHOP_PRODUCT_NAME_SINGULAR.' draft updated. <a target="_blank" href="'.add_query_arg( 'preview', 'true', get_permalink($post_ID)).'">Preview '.strtolower(FOXYSHOP_PRODUCT_NAME_SINGULAR).'</a>'
 	);
 	return $messages;
 }
@@ -411,7 +412,7 @@ function foxyshop_product_details_setup() {
 		<span style="float: left; margin: 9px 0 0 5px;">0.00</span>
 	</div>
 	<div id="foxyshop_item_code" class="foxyshop_field_control">
-		<label for="_code"><?php _e('Item Code', 'foxyshop'); ?></label>
+		<label for="_code"><?php echo esc_html(FOXYSHOP_PRODUCT_NAME_SINGULAR) . ' ' . __('Code', 'foxyshop'); ?></label>
 		<input type="text" name="_code" id="_code" value="<?php echo esc_attr($_code); ?>" />
 	</div>
 	<div id="foxyshop_weight" class="foxyshop_field_control">
@@ -420,7 +421,7 @@ function foxyshop_product_details_setup() {
 		<span style="float: left; margin: 9px 0 0 5px; width: 21px;"><?php echo ($foxyshop_settings['weight_type'] == "metric" ? 'kg' : 'lbs'); ?></span>
 		<input type="text" name="_weight2" id="_weight2" value="<?php echo esc_attr($_weight[1]); ?>"<?php if ($disable_weight_checked) echo ' disabled="disabled"'; ?> />
 		<span style="float: left; margin: 9px 0 0 5px; width: 23px;"><?php echo ($foxyshop_settings['weight_type'] == "metric" ? 'gm' : 'oz'); ?></span>
-		<input type="checkbox" name="weight_disable" id="weight_disable" title="<?php _e('Disable Weight', 'foxyshop'); ?>" style="float: left; margin-top: 7px;"<?php echo foxy_wp_html($disable_weight_checked); ?> />
+		<input type="checkbox" name="weight_disable" id="weight_disable" title="<?php _e('Disable Weight', 'foxyshop'); ?>" style="float: left; margin-top: 7px;"<?php echo esc_html($disable_weight_checked); ?> />
 		<label id="weight_disable_label" for="weight_disable" style="float: left; margin: 6px 0 0 2px; width: 16px;" title="<?php _e('Disable Weight', 'foxyshop'); ?>" class="iconsprite <?php echo ($disable_weight_checked ? "hide_color" : "hide_gray"); ?>"></label>
 	</div>
 	<div id="foxyshop_quantity" class="foxyshop_field_control">
@@ -455,8 +456,8 @@ function foxyshop_product_details_setup() {
 				if (isset($shipping_category[2])) $shipping_category_type = trim($shipping_category[2]);
 				echo '<option value="' . esc_attr($shipping_category_code) . '"';
 				if ($shipping_category_type) echo ' rel="' . esc_attr($shipping_category_type) . '"';
-				if (esc_attr($shipping_category_code == $_category)) echo ' selected="selected"';
-				echo '>' . esc_attr($shipping_category_name) . '</option>';
+				if ($shipping_category_code == $_category) echo ' selected="selected"';
+				echo '>' . esc_html($shipping_category_name) . '</option>';
 				echo "\n";
 			}
 			?>
@@ -508,7 +509,7 @@ function foxyshop_product_details_setup() {
 	<?php } ?>
 	<div id="foxyshop_hide_product" class="foxyshop_field_control">
 		<input type="checkbox" name="_hide_product" id="_hide_product"<?php echo checked($_hide_product,"on"); ?> />
-		<label style="width: 210px;" for="_hide_product"><?php echo sprintf(__('Hide This %s From List View', 'foxyshop'), FOXYSHOP_PRODUCT_NAME_SINGULAR); ?></label>
+		<label style="width: 210px;" for="_hide_product"><?php echo esc_html(sprintf(__('Hide This %s From List View', 'foxyshop'), FOXYSHOP_PRODUCT_NAME_SINGULAR)); ?></label>
 	</div>
 	<div style="clear:both"></div>
 
@@ -598,7 +599,7 @@ function foxyshop_product_pricing_setup() {
 		foreach ($discount_methods as $key => $val) {
 			echo '<option value="' . esc_attr($key) . '"';
 			if ($current_discount_method == $key) echo ' selected="selected"';
-			echo ">" . wp_kses($val, []) . "</option>\n";
+			echo ">" . esc_html($val) . "</option>\n";
 		}
 		?>
 		</select>
@@ -614,7 +615,7 @@ function foxyshop_product_pricing_setup() {
 				echo '<option value="' . esc_attr($key) . '"';
 				$current_discount_type = get_post_meta($post->ID, '_discount_type', 1);
 				if ($current_discount_type == $key) echo ' selected="selected"';
-				echo ">" . wp_kses($val, []) . "</option>\n";
+				echo ">" . esc_html($val) . "</option>\n";
 			}
 			?>
 			</select>
@@ -635,9 +636,9 @@ function foxyshop_product_pricing_setup() {
 
 	<?php if ($foxyshop_settings['manage_inventory_levels']) { ?>
 	<h4><?php _e('Set Inventory Levels', 'foxyshop'); ?></a></h4>
-	<div style="float: left; width: 152px; margin-bottom: 5px; font-size: 11px;"><? echo FOXYSHOP_PRODUCT_NAME_SINGULAR . ' ' . __('Code', 'foxyshop');?></div>
+	<div style="float: left; width: 152px; margin-bottom: 5px; font-size: 11px;"><?php echo esc_html(FOXYSHOP_PRODUCT_NAME_SINGULAR) . ' ' . __('Code', 'foxyshop');?></div>
 	<div style="float: left; width: 51px; margin-bottom: 5px; font-size: 11px;"><?php _e('Count', 'foxyshop'); ?></div>
-	<div style="float: left; width: 50px; margin-bottom: 5px; font-size: 11px;" title="<?php echo sprintf(__('If not set, default value will be used (%s)', 'foxyshop'), $foxyshop_settings['inventory_alert_level']); ?>"><?php _e('Alert Lvl', 'foxyshop'); ?></div>
+	<div style="float: left; width: 50px; margin-bottom: 5px; font-size: 11px;" title="<?php echo esc_html(sprintf(__('If not set, default value will be used (%s)', 'foxyshop'), $foxyshop_settings['inventory_alert_level'])); ?>"><?php _e('Alert Lvl', 'foxyshop'); ?></div>
 	<ul id="inventory_levels">
 		<?php
 		$inventory_levels = get_post_meta($post->ID,'_inventory_levels',TRUE);
@@ -688,11 +689,11 @@ function foxyshop_product_pricing_setup() {
 
 	<h4 style="margin-bottom: 3px;"><?php _e('Other Product Features', 'foxyshop'); ?></h4>
 	<div class="foxyshop_field_control">
-		<input type="checkbox" style="float: left; margin: 5px 0 0 10px;" id="_cart" name="_cart" value="checkout"<?php echo foxy_wp_html($_cart); ?>>
+		<input type="checkbox" style="float: left; margin: 5px 0 0 10px;" id="_cart" name="_cart" value="checkout"<?php echo wp_kses($_cart, []); ?>>
 		<label for="_cart" style="width: 210px;"><?php _e('Force Immediate Checkout', 'foxyshop'); ?></label>
 	</div>
 	<div class="foxyshop_field_control">
-		<input type="checkbox" style="float: left; margin: 5px 0 0 10px;" id="_empty" name="_empty" value="true"<?php echo foxy_wp_html($_empty); ?>>
+		<input type="checkbox" style="float: left; margin: 5px 0 0 10px;" id="_empty" name="_empty" value="true"<?php echo wp_kses($_empty, []); ?>>
 		<label for="_empty" style="width: 210px;"><?php _e('Empty Cart Before Adding Product', 'foxyshop'); ?></label>
 	</div>
 	<div class="foxyshop_field_control">
@@ -731,14 +732,14 @@ function foxyshop_related_products_setup() {
 	$args = array('post_type' => 'foxyshop_product', "post__not_in" => array($post->ID), 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC');
 	$all_products = get_posts($args);
 	foreach ($all_products as $product) {
-		$relatedList .= '<option value="' . esc_attr($product->ID) . '"'. (in_array($product->ID, $arr_related_products) ? ' selected="selected"' : '') . '>' . $product->post_title . ' (' . $product->ID . ')</option>'."\n";
-		if ($foxyshop_settings['enable_bundled_products']) $bundledList .= '<option value="' . esc_attr($product->ID) . '"'. (in_array($product->ID, $arr_bundled_products) ? ' selected="selected"' : '') . '>' . $product->post_title . '</option>'."\n";
-		if ($foxyshop_settings['enable_addon_products']) $addonList .= '<option value="' . esc_attr($product->ID) . '"'. (in_array($product->ID, $arr_addon_products) ? ' selected="selected"' : '') . '>' . $product->post_title . ' (' . $product->ID . ')</option>'."\n";
+		$relatedList .= '<option value="' . $product->ID . '"'. (in_array($product->ID, $arr_related_products) ? ' selected="selected"' : '') . '>' . $product->post_title . ' (' . $product->ID . ')</option>'."\n";
+		if ($foxyshop_settings['enable_bundled_products']) $bundledList .= '<option value="' . $product->ID . '"'. (in_array($product->ID, $arr_bundled_products) ? ' selected="selected"' : '') . '>' . $product->post_title . '</option>'."\n";
+		if ($foxyshop_settings['enable_addon_products']) $addonList .= '<option value="' . $product->ID . '"'. (in_array($product->ID, $arr_addon_products) ? ' selected="selected"' : '') . '>' . $product->post_title . ' (' . $product->ID . ')</option>'."\n";
 	} ?>
-	<select name="_related_products_list[]" id="_related_products_list" data-placeholder="Search for <?php echo FOXYSHOP_PRODUCT_NAME_PLURAL; ?>" style="width: 100%;" class="chzn-select" multiple="multiple">
-		<?php echo foxy_wp_html($relatedList); ?>
+	<select name="_related_products_list[]" id="_related_products_list" data-placeholder="Search for <?php echo esc_attr(FOXYSHOP_PRODUCT_NAME_PLURAL); ?>" style="width: 100%;" class="chzn-select" multiple="multiple">
+		<?php echo foxy_wp_kses_html($relatedList, ['option']); ?>
 	</select>
-	<p style="color: #999999; margin-bottom: 2px;"><?php echo sprintf(__("Click the box above for a drop-down menu showing all %s. Type to search and click or press enter to select.", 'foxyshop'), strtolower(FOXYSHOP_PRODUCT_NAME_PLURAL)); ?></p>
+	<p style="color: #999999; margin-bottom: 2px;"><?php echo esc_html(sprintf(__("Click the box above for a drop-down menu showing all %s. Type to search and click or press enter to select.", 'foxyshop'), strtolower(FOXYSHOP_PRODUCT_NAME_PLURAL))); ?></p>
 	<div class="foxyshop_field_control">
 		<label for="_related_order" style="width: 226px; margin-left: 0;"><?php _e('Set Custom Order For Related Products', 'foxyshop'); ?></label> <input type="text" style="width: 220px; float: left;" name="_related_order" id="_related_order" value="<?php echo esc_attr(get_post_meta($post->ID, "_related_order", 1)) ?>" /> <span>ID's separated by comma</span>
 	</div>
@@ -759,14 +760,14 @@ function foxyshop_bundled_products_setup() {
 		$args = array('post_type' => 'foxyshop_product', "post__not_in" => array($post->ID), 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC');
 		$all_products = get_posts($args);
 		foreach ($all_products as $product) {
-			$bundledList .= '<option value="' . esc_attr($product->ID) . '"'. (in_array($product->ID, $arr_bundled_products) ? ' selected="selected"' : '') . '>' . $product->post_title . '</option>'."\n";
+			$bundledList .= '<option value="' . $product->ID . '"'. (in_array($product->ID, $arr_bundled_products) ? ' selected="selected"' : '') . '>' . $product->post_title . '</option>'."\n";
 		}
 	}
 	?>
-	<select name="_bundled_products_list[]" id="_bundled_products_list" data-placeholder="Search for <?php echo FOXYSHOP_PRODUCT_NAME_PLURAL; ?>" style="width: 100%;" class="chzn-select" multiple="multiple">
-		<?php echo foxy_wp_html($bundledList); ?>
+	<select name="_bundled_products_list[]" id="_bundled_products_list" data-placeholder="Search for <?php echo esc_attr(FOXYSHOP_PRODUCT_NAME_PLURAL); ?>" style="width: 100%;" class="chzn-select" multiple="multiple">
+		<?php echo foxy_wp_kses_html($bundledList, ['option']); ?>
 	</select>
-	<p style="color: #999999;"><?php echo sprintf(__('Click the box above for a drop-down menu showing all %s. Type to search and click or press enter to select.', 'foxyshop'), strtolower(FOXYSHOP_PRODUCT_NAME_PLURAL)); ?></p>
+	<p style="color: #999999;"><?php echo esc_html(sprintf(__('Click the box above for a drop-down menu showing all %s. Type to search and click or press enter to select.', 'foxyshop'), strtolower(FOXYSHOP_PRODUCT_NAME_PLURAL))); ?></p>
 	<?php
 }
 
@@ -781,14 +782,14 @@ function foxyshop_addon_products_setup() {
 		$args = array('post_type' => 'foxyshop_product', "post__not_in" => array($post->ID), 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC');
 		$all_products = get_posts($args);
 		foreach ($all_products as $product) {
-			$addonList .= '<option value="' . esc_attr($product->ID) . '"'. (in_array($product->ID, $arr_addon_products) ? ' selected="selected"' : '') . '>' . $product->post_title . ' (' . $product->ID . ')</option>'."\n";
+			$addonList .= '<option value="' . $product->ID . '"'. (in_array($product->ID, $arr_addon_products) ? ' selected="selected"' : '') . '>' . $product->post_title . ' (' . $product->ID . ')</option>'."\n";
 		}
 	}
 	?>
-	<select name="_addon_products_list[]" id="_addon_products_list" data-placeholder="Search for <?php echo FOXYSHOP_PRODUCT_NAME_PLURAL; ?>" style="width: 100%;" class="chzn-select" multiple="multiple">
-		<?php echo foxy_wp_html($addonList); ?>
+	<select name="_addon_products_list[]" id="_addon_products_list" data-placeholder="Search for <?php echo esc_attr(FOXYSHOP_PRODUCT_NAME_PLURAL); ?>" style="width: 100%;" class="chzn-select" multiple="multiple">
+		<?php echo foxy_wp_kses_html($addonList, ['option']); ?>
 	</select>
-	<p style="color: #999999;"><?php echo sprintf(__('Click the box above for a drop-down menu showing all %s. Type to search and click or press enter to select.', 'foxyshop'), strtolower(FOXYSHOP_PRODUCT_NAME_PLURAL)); ?></p>
+	<p style="color: #999999;"><?php echo esc_html(sprintf(__('Click the box above for a drop-down menu showing all %s. Type to search and click or press enter to select.', 'foxyshop'), strtolower(FOXYSHOP_PRODUCT_NAME_PLURAL))); ?></p>
 	<div class="foxyshop_field_control">
 		<label for="_addon_order" style="width: 220px; margin-left: 0;">Set Custom Order For Add-on Products</label> <input type="text" style="width: 220px; float: left;" name="_addon_order" id="_addon_order" value="<?php echo esc_attr(get_post_meta($post->ID, "_addon_order", 1)); ?>" /> <span>ID's separated by comma</span>
 	</div>
@@ -811,7 +812,7 @@ function foxyshop_google_products_data() {
 		$display_title = ucwords(str_replace("_", " ", $field));
 		if (strlen($display_title) <= 4 && $display_title != "Size") $display_title = strtoupper($display_title);
 		echo '<div class="foxyshop_field_control">'."\n";
-		echo '<label for="_' . esc_attr($field) . '">' . wp_kses($display_title, []) . '</label>'."\n";
+		echo '<label for="_' . esc_attr($field) . '">' . esc_html($display_title) . '</label>'."\n";
 		echo '<input type="text" id="_' . esc_attr($field) . '" name="_' . esc_attr($field) . '" value="' . esc_attr(get_post_meta($post->ID, "_" . $field, 1)) . '" />'."\n";
 		switch ($field) {
 			case "google_product_category": echo '<span>(<a href="http://www.google.com/basepages/producttype/taxonomy.en-US.txt" target="_blank">options</a>)</span>'; break;
@@ -845,7 +846,7 @@ function foxyshop_product_images_setup() {
 
 	echo '<div id="foxyshop_new_product_image_container" class="dropzone"></div>'."\n";
 	echo '<input type="hidden" id="foxyshop_sortable_value" name="foxyshop_sortable_value" />'."\n";
-	echo '<ul id="foxyshop_product_image_list">' . wp_kses_post(foxyshop_redraw_images($post->ID)) . '</ul>'."\n";
+	echo '<ul id="foxyshop_product_image_list">' . foxy_wp_kses_html(foxyshop_redraw_images($post->ID)) . '</ul>'."\n";
 	echo '<div style="clear: both;"></div>';
 
 }
@@ -922,14 +923,14 @@ function foxyshop_product_variations_setup() {
 				<select name="_variation_type_<?php echo esc_attr($i); ?>" id="_variation_type_<?php echo esc_attr($i); ?>" class="variationtype">
 				<?php
 				foreach ($var_type_array as $var_name => $var_val) {
-					echo '<option value="' . esc_attr($var_name) . '"' . ($_variation_type == $var_name ? ' selected="selected"' : '') . '>' . wp_kses($var_val, []) . '  </option>'."\n";
+					echo '<option value="' . esc_attr($var_name) . '"' . ($_variation_type == $var_name ? ' selected="selected"' : '') . '>' . esc_html($var_val) . '  </option>'."\n";
 				}
 				if (is_array($saved_variations) && count($saved_variations) > 0) {
 					echo '<optgroup label="' . __('Saved Variations', 'foxyshop') . '">'."\n";
 					foreach($saved_variations as $saved_var) {
 						$saved_ref = $saved_var['refname'];
 						// Needs both sanitize and esc for backwards compatability
-						echo '<option value="' . esc_attr(sanitize_title($saved_ref)) . '" rel="' . esc_attr($saved_var['name']) . '"' . (sanitize_title($saved_ref) == $_variation_type ? ' selected="selected"' : '') . '>' . wp_kses($saved_ref, []) . '  </option>'."\n";
+						echo '<option value="' . esc_attr(sanitize_title($saved_ref)) . '" rel="' . esc_attr($saved_var['name']) . '"' . (sanitize_title($saved_ref) == $_variation_type ? ' selected="selected"' : '') . '>' . esc_html($saved_ref) . '  </option>'."\n";
 					}
 					echo '</optgroup>'."\n";
 				}
@@ -945,7 +946,7 @@ function foxyshop_product_variations_setup() {
 					<div class="foxyshop_field_control dropdown variationoptions">
 						<label for="_variation_value_<?php echo esc_attr($i); ?>"><?php _e('Items in Dropdown', 'foxyshop'); ?></label>
 						<textarea name="_variation_value_<?php echo esc_attr($i); ?>" id="_variation_value_<?php echo esc_attr($i); ?>"><?php echo esc_textarea($_variationValue); ?></textarea>
-						<div class="variationkey"><?php echo foxy_wp_html($variation_key); ?></div>
+						<div class="variationkey"><?php echo esc_html($variation_key); ?></div>
 					</div>
 
 				<?php elseif($_variation_type == "radio") : ?>
@@ -953,7 +954,7 @@ function foxyshop_product_variations_setup() {
 					<div class="foxyshop_field_control radio variationoptions">
 						<label for="_variation_radio_<?php echo esc_attr($i); ?>"><?php _e('Radio Button Options', 'foxyshop'); ?></label>
 						<textarea name="_variation_radio_<?php echo esc_attr($i); ?>" id="_variation_radio_<?php echo esc_attr($i); ?>"><?php echo esc_textarea($_variationValue); ?></textarea>
-						<div class="variationkey"><?php echo foxy_wp_html($variation_key); ?></div>
+						<div class="variationkey"><?php echo esc_html($variation_key); ?></div>
 					</div>
 
 				<?php elseif($_variation_type == "text") : ?>
@@ -990,7 +991,7 @@ function foxyshop_product_variations_setup() {
 					<div class="foxyshop_field_control checkbox variationoptions" style="background-color: transparent;">
 						<label for="_variation_checkbox_<?php echo esc_attr($i); ?>"><?php _e('Value', 'foxyshop'); ?></label>
 						<input type="text" name="_variation_checkbox_<?php echo esc_attr($i); ?>" id="_variation_checkbox_<?php echo esc_attr($i); ?>" value="<?php echo esc_attr($_variationValue); ?>" class="variation_checkbox_text" />
-						<div class="variationkey"><?php echo foxy_wp_html($variation_key); ?></div>
+						<div class="variationkey"><?php echo esc_html($variation_key); ?></div>
 					</div>
 
 				<?php elseif($_variation_type == "upload") : ?>
@@ -1005,7 +1006,7 @@ function foxyshop_product_variations_setup() {
 					<div class="foxyshop_field_control hiddenfield variationoptions">
 						<div class="foxyshop_field_control">
 							<label for="_variation_hiddenfield_<?php echo esc_attr($i); ?>"><?php _e('Value', 'foxyshop'); ?></label>
-							<input type="text" name="_variation_hiddenfield_<?php echo esc_attr($i); ?>" id="_variation_hiddenfield_<?php echo esc_attr($i); ?>" value="<?php echo foxy_wp_html($_variationValue); ?>" />
+							<input type="text" name="_variation_hiddenfield_<?php echo esc_attr($i); ?>" id="_variation_hiddenfield_<?php echo esc_attr($i); ?>" value="<?php echo wp_kses_post($_variationValue); ?>" />
 						</div>
 					</div>
 					<?php $dkeyhide = ' style="display: none;"'; ?>
@@ -1017,7 +1018,7 @@ function foxyshop_product_variations_setup() {
 			</div>
 
 			<!-- //// DISPLAY KEY //// -->
-			<div class="foxyshop_field_control dkeycontainer"<?php echo foxy_wp_html($dkeyhide); ?>>
+			<div class="foxyshop_field_control dkeycontainer"<?php echo wp_kses($dkeyhide, []); ?>>
 				<label class="dkeylabel" title="Enter a value here if you want your variation to be invisible until called by another variation."><?php _e('Display Key', 'foxyshop'); ?></label>
 				<input type="text" name="_variation_dkey_<?php echo esc_attr($i); ?>" id="_variation_dkey_<?php echo esc_attr($i); ?>" value="<?php echo esc_attr($_variationDisplayKey); ?>" class="dkeynamefield" />
 
@@ -1057,7 +1058,7 @@ if (is_array($saved_variations)) {
 	foreach($saved_variations as $saved_var) {
 		$saved_ref = $saved_var['refname'];
 		// Needs to be both escape and sanitised for backwards compatibility
-		echo "\t\tvariation_select_options += '<option value=\"" . esc_attr(sanitize_title($saved_ref)) . "\" rel=\"" . esc_attr($saved_var['name']) . "\">" . wp_kses($saved_ref, []) . "  </option>';\n";
+		echo "\t\tvariation_select_options += '<option value=\"" . esc_attr(sanitize_title($saved_ref)) . "\" rel=\"" . esc_attr($saved_var['name']) . "\">" . esc_html($saved_ref) . "  </option>';\n";
 	}
 	echo "\t\tvariation_select_options += '</optgroup>';\n";
 }
@@ -1098,8 +1099,8 @@ function foxyshop_product_meta_save($post_id) {
 	foxyshop_save_meta_data('_hide_product',(isset($_POST['_hide_product']) ? sanitize_text_field($_POST['_hide_product']) : ""));
 
 	//Quantity Settings
-	$_quantity_min = (int)sanitize_text_field($_POST['_quantity_min']);
-	$_quantity_max = (int)sanitize_text_field($_POST['_quantity_max']);
+	$_quantity_min = (isset($_POST['_quantity_min'])) ? (int)sanitize_text_field($_POST['_quantity_min']) : 0;
+	$_quantity_max = (isset($_POST['_quantity_max'])) ? (int)sanitize_text_field($_POST['_quantity_max']) : 0;
 	if ($_quantity_min > $_quantity_max && $_quantity_max > 0) $_quantity_min = "";
 	if ($_quantity_min <= 0) $_quantity_min = "";
 	if ($_quantity_max <= 0) $_quantity_max = "";

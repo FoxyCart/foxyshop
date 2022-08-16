@@ -45,7 +45,7 @@ if (!$product['hide_product']) {
 	//Add To Cart Button (options)
 	//foxyshop_product_link("Add To Cart", false);
 	//foxyshop_product_link("Add %name% To Cart", false);
-	//echo '<a href="'.foxyshop_product_link("", true).'" class="foxyshop_button">Add To Cart</a>';
+	//echo '<a href="'.esc_url(foxyshop_product_link("", true)).'" class="foxyshop_button">Add To Cart</a>';
 
 	//Show Price (and sale if applicable)
 	foxyshop_price();

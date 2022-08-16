@@ -32,7 +32,7 @@ function foxyshop_customer_management() {
 			if (isset($_GET[$field])) {
 				$foxy_data[$field] = sanitize_text_field($_GET[$field]);
 				$foxyshop_querystring .= "&amp;$field=" . urlencode(sanitize_text_field($_GET[$field]));
-				$foxyshop_hidden_input .= ('<input type="hidden" name="' . esc_attr($field) . '" value="' . htmlspecialchars(sanitize_text_field($_GET[$field])) . '" />' . "\n");
+				$foxyshop_hidden_input .= ('<input type="hidden" name="' . $field . '" value="' . sanitize_text_field($_GET[$field]) . '" />' . "\n");
 			}
 		}
 		$foxy_data['pagination_start'] = (isset($_GET['pagination_start']) ? sanitize_text_field($_GET['pagination_start']) : 0);
@@ -56,7 +56,7 @@ function foxyshop_customer_management() {
 		<input type="hidden" name="page" value="foxyshop_customer_management" />
 
 		<table class="widefat">
-		<thead><tr><th colspan="2"><img src="<?php echo FOXYSHOP_DIR; ?>/images/search-icon.png" alt="" /><?php _e('Search Options', 'foxyshop'); ?></th></tr></thead>
+		<thead><tr><th colspan="2"><img src="<?php echo esc_url(FOXYSHOP_DIR); ?>/images/search-icon.png" alt="" /><?php _e('Search Options', 'foxyshop'); ?></th></tr></thead>
 		<tbody><tr><td>
 
 			<div class="foxyshop_field_control">
@@ -97,7 +97,7 @@ function foxyshop_customer_management() {
 	//echo "<pre>" . substr($foxy_response,1,2000) . "</pre>";
 
 	if ((string)$xml->result == "ERROR") {
-		echo ('<h3>' . foxy_wp_html((string)$xml->messages->message) . '</h3>');
+		echo ('<h3>' . esc_html((string)$xml->messages->message) . '</h3>');
 		return;
 	} else {
 		?>
@@ -108,7 +108,7 @@ function foxyshop_customer_management() {
 		<input type="hidden" name="page" value="foxyshop_customer_management" />
 
 		<?php
-		echo foxy_wp_html($foxyshop_hidden_input);
+		echo foxy_wp_kses_html($foxyshop_hidden_input, ['input']);
 		foxyshop_api_paging_nav('customers', 'top', $xml, $foxyshop_querystring);
 		?>
 
@@ -157,7 +157,7 @@ function foxyshop_customer_management() {
 			echo ('</tr>'."\n");
 
 
-			$holder .= '<div class="detail_holder" id="holder_' . esc_attr($customer_id). '">'."\n";
+			$holder .= '<div class="detail_holder" id="holder_' . $customer_id. '">'."\n";
 
 			//Customer Details
 			$holder .= '<div class="foxyshop_list_col">';
@@ -236,7 +236,7 @@ function foxyshop_customer_management() {
 		</form>
 	<?php } ?>
 
-	<div id="details_holder"><?php echo foxy_wp_html($holder); ?></div>
+	<div id="details_holder"><?php echo foxy_wp_kses_html($holder); ?></div>
 	<?php
 	echo ('</div>');
 
@@ -269,7 +269,7 @@ function foxyshop_inline_customers_js() {
 		});
 	";
 
-	echo foxy_wp_html(foxyshop_manage_attributes_jquery('customer'));
+	echo esc_js(foxyshop_manage_attributes_jquery('customer'));
 
 	echo "});
 </script>";

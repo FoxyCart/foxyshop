@@ -115,7 +115,7 @@ foreach($xml->transactions->transaction as $transaction) {
 <div style="main_container">
 <div id="main">
 
-	<div class="header_logo"><?php echo foxy_wp_html($receipt_title); ?></div>
+	<div class="header_logo"><?php echo esc_html($receipt_title); ?></div>
 
 	<div class="clr"></div>
 
@@ -130,10 +130,10 @@ foreach($xml->transactions->transaction as $transaction) {
 				<td>&nbsp;</td>
 			</tr>
 			<tr>
-				<td><strong>Date:</strong> <?php echo Date($date_style, strtotime($transaction_date)); ?></td>
+				<td><strong>Date:</strong> <?php echo esc_html(Date($date_style, strtotime($transaction_date))); ?></td>
 			</tr>
 			<tr>
-				<td><strong>Order Number:</strong> <?php echo foxy_wp_html($transaction_id); ?></td>
+				<td><strong>Order Number:</strong> <?php echo esc_html($transaction_id); ?></td>
 			</tr>
 			<?php
 			//Show Email or Phone if enabled in the easy config section
@@ -157,39 +157,39 @@ foreach($xml->transactions->transaction as $transaction) {
 				<td valign="top" style="padding-right: 20px;"><strong>Invoice Address:</strong><br />
 				<?php
 				//Show Invoice Address Section
-				echo foxy_wp_html($customer_first_name . " " . $customer_last_name) . "<br />";
-				if ((string)$transaction->customer_company) echo foxy_wp_html($transaction->customer_company) . "<br />";
-				echo foxy_wp_html((string)$transaction->customer_address1 . "<br />");
-				if ((string)$transaction->customer_address2) echo foxy_wp_html($transaction->customer_address2 . "<br />");
-				echo foxy_wp_html((string)$transaction->customer_city . ', ' . (string)$transaction->customer_state . ' ' . (string)$transaction->customer_postal_code) . '<br />';
-				if ($show_country) echo foxy_wp_html((string)$transaction->customer_country) . '<br />';
+				echo esc_html($customer_first_name . " " . $customer_last_name) . "<br />";
+				if ((string)$transaction->customer_company) echo esc_html($transaction->customer_company) . "<br />";
+				echo esc_html((string)$transaction->customer_address1 . "<br />");
+				if ((string)$transaction->customer_address2) echo esc_html($transaction->customer_address2 . "<br />");
+				echo esc_html((string)$transaction->customer_city . ', ' . (string)$transaction->customer_state . ' ' . (string)$transaction->customer_postal_code) . '<br />';
+				if ($show_country) echo esc_html((string)$transaction->customer_country) . '<br />';
 				echo ("&nbsp;</td>\n\n");
 
 				//Show Shipping Address If Entered
 				if ((string)$transaction->shipping_address1 && !isset($transaction->shipto_addresses->shipto_address)) {
 					echo ('<td valign="top"><strong>Shipping Address:</strong><br />');
-					echo foxy_wp_html($shipping_first_name . " " . $shipping_last_name ). "<br />";
-					if ((string)$transaction->shipping_company) echo foxy_wp_html($transaction->shipping_company) . "<br />";
-					echo foxy_wp_html((string)$transaction->shipping_address1 ). "<br />";
-					if ((string)$transaction->shipping_address2) echo foxy_wp_html($transaction->shipping_address2) . "<br />";
-					echo foxy_wp_html((string)$transaction->shipping_city . ', ' . (string)$transaction->shipping_state . ' ' . (string)$transaction->shipping_postal_code) . '<br />';
-					if ($show_country) echo foxy_wp_html($transaction->shipping_country)."<br />";
-					if ($show_phone && (string)$transaction->shipping_phone) echo foxy_wp_html('Phone: ' . $transaction->shipping_phone ). "<br />";
+					echo esc_html($shipping_first_name . " " . $shipping_last_name ). "<br />";
+					if ((string)$transaction->shipping_company) echo esc_html($transaction->shipping_company) . "<br />";
+					echo esc_html((string)$transaction->shipping_address1 ). "<br />";
+					if ((string)$transaction->shipping_address2) echo esc_html($transaction->shipping_address2) . "<br />";
+					echo esc_html((string)$transaction->shipping_city . ', ' . (string)$transaction->shipping_state . ' ' . (string)$transaction->shipping_postal_code) . '<br />';
+					if ($show_country) echo esc_html($transaction->shipping_country)."<br />";
+					if ($show_phone && (string)$transaction->shipping_phone) echo esc_html('Phone: ' . $transaction->shipping_phone ). "<br />";
 					echo ('&nbsp;</td>');
 				}
 
 				//Show Each Multi-ship Address If Entered
 				foreach($transaction->shipto_addresses->shipto_address as $shipto_address) {
-					echo ('<td valign="top"><strong>Shipping Address (' . $shipto_address->address_name . '):</strong><br />');
-					echo foxy_wp_html((string)$shipto_address->shipto_first_name . " " . (string)$shipto_address->shipto_last_name) . "<br />";
-					if ((string)$shipto_address->shipto_company) echo foxy_wp_html($shipto_address->shipto_company) . "<br />";
-					echo foxy_wp_html((string)$shipto_address->shipto_address1 ). "<br />";
-					if ((string)$shipto_address->shipto_address2) echo foxy_wp_html($shipto_address->shipto_address2) . "<br />";
-					echo foxy_wp_html((string)$shipto_address->shipto_city . ', ' . (string)$shipto_address->shipto_state . ' ' . (string)$shipto_address->shipto_postal_code ). '<br />';
-					if ($show_country) echo foxy_wp_html($shipto_address->shipto_country)."<br />";
-					if ($show_phone && (string)$shipto_address->shipto_phone) echo foxy_wp_html($shipto_address->shipto_phone) . "<br />";
-					echo foxy_wp_html('Method: ' . $shipto_address->shipto_shipping_service_description) . "<br />";
-					echo foxy_wp_html('Shipping: ' . foxyshop_currency((double)$shipto_address->shipto_shipping_total)) . "<br />";
+					echo ('<td valign="top"><strong>Shipping Address (' . esc_html($shipto_address->address_name) . '):</strong><br />');
+					echo esc_html((string)$shipto_address->shipto_first_name . " " . (string)$shipto_address->shipto_last_name) . "<br />";
+					if ((string)$shipto_address->shipto_company) echo esc_html($shipto_address->shipto_company) . "<br />";
+					echo esc_html((string)$shipto_address->shipto_address1 ). "<br />";
+					if ((string)$shipto_address->shipto_address2) echo esc_html($shipto_address->shipto_address2) . "<br />";
+					echo esc_html((string)$shipto_address->shipto_city . ', ' . (string)$shipto_address->shipto_state . ' ' . (string)$shipto_address->shipto_postal_code ). '<br />';
+					if ($show_country) echo esc_html($shipto_address->shipto_country)."<br />";
+					if ($show_phone && (string)$shipto_address->shipto_phone) echo esc_html($shipto_address->shipto_phone) . "<br />";
+					echo wp_kses_post('Method: ' . $shipto_address->shipto_shipping_service_description) . "<br />";
+					echo esc_html('Shipping: ' . foxyshop_currency((double)$shipto_address->shipto_shipping_total)) . "<br />";
 					echo ('&nbsp;</td>');
 				}
 				?>
@@ -266,7 +266,7 @@ foreach($xml->transactions->transaction as $transaction) {
 				?>
 				<tr>
 					<td>&nbsp;</td>
-					<td colspan="2" align="right"><?php echo foxy_wp_html((string)$tax->tax_name); ?>:</td>
+					<td colspan="2" align="right"><?php echo esc_html((string)$tax->tax_name); ?>:</td>
 					<td class="short_cell bold"><?php echo esc_html(foxyshop_currency((double)$tax->tax_amount)); ?></td>
 				</tr>
 				<?php
@@ -277,7 +277,7 @@ foreach($xml->transactions->transaction as $transaction) {
 				?>
 				<tr>
 					<td>&nbsp;</td>
-					<td colspan="2" align="right"><?php echo foxy_wp_html((string)$discount->name); ?>:</td>
+					<td colspan="2" align="right"><?php echo esc_html((string)$discount->name); ?>:</td>
 					<td class="short_cell bold"><?php echo esc_html(foxyshop_currency((double)$discount->amount)); ?></td>
 				</tr>
 				<?php

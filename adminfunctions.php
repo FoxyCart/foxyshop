@@ -2,9 +2,111 @@
 //Exit if not called in proper context
 if (!defined('ABSPATH')) exit();
 
-//validating HTML using WordPress functions
-function foxy_wp_html($string){
-	return htmlspecialchars_decode( esc_html( $string ) );
+/**
+ * Sanitizes content for allowed HTML tags for FoxyShop HTML blocks.
+ *
+ * This uses the native wp_kses() function, and expands on the default $allowedposttags array
+ * but with added tags related to forms and inputs, and the custom attributes that FoxyShop uses
+ *
+ * This function expects unslashed data.
+ *
+ * @param string $data Post content to filter.
+ * @param array $filter_tags An array of HTML tags to limit the sanitization to.
+ * @param boolean $allow_forms Whether or not to allow form tags.
+ * @return string Filtered post content with allowed HTML tags and attributes intact.
+ */
+function foxy_wp_kses_html($data, $filter_tags = [], $allow_forms = false){
+
+	$foxy_additional_tags = [
+		'input' => [
+			'type' => true,
+			'name' => true,
+			'value' => true,
+			'class' => true,
+			'id' => true,
+			'checked' => true,
+			'disabled' => true,
+			'style' => true,
+			'rel' => true,
+			'onblur' => true,
+			'priceset' => true,
+			'pricechange' => true,
+			'displaykey' => true,
+			'dkey' => true,
+			'imagekey' => true,
+			'code' => true,
+			'codeadd' => true,
+			'subfrequency' => true
+		],
+		'select' => [
+			'name' => true,
+			'value' => true,
+			'class' => true,
+			'id' => true,
+			'disabled' => true,
+			'style' => true,
+			'onblur' => true,
+			'priceset' => true,
+			'pricechange' => true,
+			'displaykey' => true,
+			'imagekey' => true,
+			'code' => true,
+			'codeadd' => true,
+			'subfrequency' => true
+		],
+		'option' => [
+			'value' => true,
+			'disabled' => true,
+			'selected' => true,
+			'priceset' => true,
+			'pricechange' => true,
+			'displaykey' => true,
+			'imagekey' => true,
+			'code' => true,
+			'codeadd' => true,
+			'subfrequency' => true
+		],
+		'label' => [
+			'dkey' => true
+		],
+		'table' => [
+			'rel' => true
+		]
+	];
+
+	$foxy_allowedtags = wp_kses_allowed_html( 'post' );
+
+	foreach ($foxy_additional_tags as $el => $attributes) {
+		if (array_key_exists($el, $foxy_allowedtags)) {
+			$foxy_allowedtags[$el] = array_merge($foxy_allowedtags[$el], $attributes);
+		} else {
+			$foxy_allowedtags[$el] = $attributes;
+		}
+	}
+
+	if ($allow_forms) {
+		$foxy_allowedtags['form'] = [
+			'name' => true,
+			'class' => true,
+			'id' => true,
+			'style' => true,
+			'onsubmit' => true
+		];
+		$foxy_allowedtags['input']['onclick'] = true;
+		$foxy_allowedtags['a']['onclick'] = true;
+	}
+
+	if (count($filter_tags) > 0) {
+		$filtered_tags = [];
+		foreach ($filter_tags as $key => $el) {
+			if (array_key_exists($el, $foxy_allowedtags)) {
+				$filtered_tags[$el] = $foxy_allowedtags[$el];
+			}
+		}
+		$foxy_allowedtags = $filtered_tags;
+	}
+	return wp_kses($data, $foxy_allowedtags, ['http', 'https', 'mailto', 'sms', 'tel', 'fax', 'webcal']);
+
 }
 
 //Insert jQuery
@@ -72,7 +174,7 @@ function foxyshop_load_site_scripts() {
 
 
 function foxyshop_date_picker() {
-	wp_enqueue_style('jquery-style', 'http' . (is_ssl() ? "s" : "") . '://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css');
+	wp_enqueue_style('jquery-ui-style', FOXYSHOP_DIR . '/css/jquery-ui.css', array(), FOXYSHOP_VERSION);
 	wp_enqueue_script('jquery-ui-datepicker', array('jquery','jquery-ui-core'));
 }
 
@@ -89,8 +191,15 @@ function foxyshop_check_permalinks() {
 add_action('admin_notices', 'foxyshop_check_deprecations');
 function foxyshop_check_deprecations() {
 	global $foxyshop_settings;
-	if ($foxyshop_settings['ga'] != "" && version_compare($foxyshop_settings['version'], '2.0', "<")) {
-		echo '<div class="error"><p><strong>Warning:</strong> Google Analytics is no longer supported for FoxyShop\'s checkout and receipt templates. Please upgrade to Foxy 2.0 to make use of the new native Google Analytics integration.</p></div>';
+	$current_screen = get_current_screen();
+
+	if ($current_screen->post_type == "foxyshop_product") {
+		if ($foxyshop_settings['ga'] != "" && version_compare($foxyshop_settings['version'], '2.0', "<") && current_user_can('manage_options')) {
+			echo '<div class="error"><p><strong>Warning:</strong> Google Analytics is no longer supported for FoxyShop\'s checkout and receipt templates. Please upgrade to Foxy 2.0 to make use of the new native Google Analytics integration.</p></div>';
+		}
+		if ($foxyshop_settings['use_jquery'] === "on" && current_user_can('manage_options')) {
+			echo '<div class="error"><p><strong>Warning:</strong> Embedding a custom version of jQuery will be removed from an upcoming version of FoxyShop to rely instead on the default version included by Wordpress. You currently have this option enabled within your FoxyShop settings. If you have this enabled to rely on an older version of jQuery, you will need to take steps to handle this natively yourself, otherwise turn off this option in the plugin settings. Please <a href="https://foxy.io/contact" title="Contact Foxy.io">contact us</a> if you are unsure about this change.</p></div>';
+		}
 	}
 }
 
@@ -197,13 +306,13 @@ function foxyshop_insert_google_analytics() {
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', '".foxy_wp_html(htmlspecialchars($foxyshop_settings['ga']) )."', 'auto');
+  ga('create', '".htmlspecialchars($foxyshop_settings['ga']) ."', 'auto');
   ".(($foxyshop_settings['ga_demographics']) ? "ga('require', 'displayfeatures');\n" : "")."
   ga('send', 'pageview');";
 		//Legacy
 		} else {
 		$toadd = "var _gaq = _gaq || [];
-_gaq.push(['_setAccount', '".foxy_wp_html(htmlspecialchars($foxyshop_settings['ga']))."']);
+_gaq.push(['_setAccount', '".htmlspecialchars($foxyshop_settings['ga'])."']);
 _gaq.push(['_trackPageview']);
 (function() {
 	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
@@ -593,7 +702,7 @@ function foxyshop_get_category_list($output_type = "") {
 		if ($output_type == "") {
 			$output .= "$code|$description|$product_delivery_type\n";
 		} elseif ($output_type == "select") {
-			$output .= '<option value="' . esc_attr($code) . '">' . esc_html($description) . '</option>' . "\n";
+			$output .= '<option value="' . $code . '">' . $description . '</option>' . "\n";
 		}
 	}
 
@@ -628,7 +737,7 @@ function foxyshop_get_downloadable_list() {
 //Access the FoxyCart API
 function foxyshop_get_foxycart_data($foxyData, $silent_fail = true) {
 	global $foxyshop_settings;
-	$foxyData = array_merge(array("api_token" => esc_attr($foxyshop_settings['api_key'])), $foxyData);
+	$foxyData = array_merge(array("api_token" => $foxyshop_settings['api_key']), $foxyData);
 	$args = array(
 		"timeout" => !defined('FOXYSHOP_CURL_TIMEOUT') ? 15 : FOXYSHOP_CURL_TIMEOUT,
 		"method" => "POST",
@@ -767,12 +876,12 @@ function foxyshop_manage_attributes($xml, $id, $att_type) {
 		$attribute_value = (string)$attribute->value;
 
 		$holder .= '<tr class="viewing">';
-		$holder .= '<td class="col1">' . esc_html($attribute_name) . '</td>';
-		$holder .= '<td class="col2"><div>' . str_replace("\n", "<br />\n", esc_html($attribute_value)) . '</div><a href="#" class="foxyshop_attribute_delete" attname="' . esc_attr($attribute_name) . '" rel="' . esc_attr($id) . '" title="Delete">' . __('Delete', 'foxyshop') . '</a><a href="#" class="foxyshop_attribute_edit" rel="' . esc_attr($id) . '" title="Edit">' . __('Edit', 'foxyshop') . '</a></td>'."\n";
+		$holder .= '<td class="col1">' . $attribute_name . '</td>';
+		$holder .= '<td class="col2"><div>' . str_replace("\n", "<br />\n", $attribute_value) . '</div><a href="#" class="foxyshop_attribute_delete" attname="' . $attribute_name . '" rel="' . $id . '" title="Delete">' . __('Delete', 'foxyshop') . '</a><a href="#" class="foxyshop_attribute_edit" rel="' . $id . '" title="Edit">' . __('Edit', 'foxyshop') . '</a></td>'."\n";
 		$holder .= '</tr>';
 	}
 	$holder .= "</tbody></table>\n";
-	$holder .= '<input type="button" value="' . __('Add Attribute', 'foxyshop') . '" class="button foxyshop_add_attribute" rel="' . esc_attr($id) . '" />'."\n";
+	$holder .= '<input type="button" value="' . __('Add Attribute', 'foxyshop') . '" class="button foxyshop_add_attribute" rel="' . $id . '" />'."\n";
 	return $holder;
 }
 

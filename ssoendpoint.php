@@ -22,7 +22,7 @@ if (isset($_GET['fcsid']) && isset($_GET['timestamp'])) {
 		//Force a Straight Redirect
 		if ($foxyshop_settings['sso_account_required'] == 1) {
 			$redirect_to = get_bloginfo('url') . '/foxycart-sso-' . $foxyshop_settings['datafeed_url_key'] . '/?timestamp=' . sanitize_text_field($_GET['timestamp']) . '&fcsid=' . sanitize_text_field($_GET['fcsid']);
-			header('Location: ' . esc_url($login_url . '?redirect_to=' . urlencode(esc_url($redirect_to)) . '&foxycart_checkout=1&reauth=1'));
+			header('Location: ' . $login_url . '?redirect_to=' . urlencode($redirect_to) . '&foxycart_checkout=1&reauth=1');
 			die;
 
 		//Check Cart Contents to Decide on Redirect
@@ -37,7 +37,7 @@ if (isset($_GET['fcsid']) && isset($_GET['timestamp'])) {
 				"sslverify" => defined('FOXYSHOP_CURL_SSL_VERIFYPEER') ? FOXYSHOP_CURL_SSL_VERIFYPEER : 1,
 				"body" => $foxyData,
 			);
-			$response = wp_remote_get("https://" . esc_attr($foxyshop_settings['domain']) . "/cart?fcsid=" . sanitize_text_field($_GET['fcsid']) . "&output=json", $args);
+			$response = wp_remote_get("https://" . $foxyshop_settings['domain'] . "/cart?fcsid=" . sanitize_text_field($_GET['fcsid']) . "&output=json", $args);
 
 			//WP Error
 			if (is_wp_error($response)) {
@@ -82,7 +82,7 @@ if (isset($_GET['fcsid']) && isset($_GET['timestamp'])) {
 			//Do the Signup Redirect
 			if ($sso_required) {
 				$redirect_to = get_bloginfo('url') . '/foxycart-sso-' . $foxyshop_settings['datafeed_url_key'] . '/?timestamp=' . sanitize_text_field($_GET['timestamp']) . '&fcsid=' . sanitize_text_field($_GET['fcsid']);
-				header('Location: ' . esc_url($login_url . '?redirect_to=' . urlencode(esc_url($redirect_to)) . '&foxycart_checkout=1&reauth=1'));
+				header('Location: ' . $login_url . '?redirect_to=' . urlencode($redirect_to) . '&foxycart_checkout=1&reauth=1');
 				die;
 
 			//No Redirect Required
