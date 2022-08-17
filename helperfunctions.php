@@ -1297,7 +1297,7 @@ function foxyshop_featured_category($categoryName, $showAddToCart = false, $show
 		if ($product['hide_product']) continue;
 
 		if ($simpleList) {
-			$simplewrite = '<li><a href="' . $product['url'] . '">' . apply_filters('the_title', $product['name']) . '</a></li>'."\n";
+			$simplewrite = '<li><a href="' . $product['url'] . '">' . apply_filters('the_title', $product['name'], $product['id']) . '</a></li>'."\n";
 			echo wp_kses_post(apply_filters("foxyshop_featured_category_simple", $simplewrite, $product));
 		} else {
 			$thumbnailSRC = foxyshop_get_main_image("thumbnail");
@@ -1306,7 +1306,7 @@ function foxyshop_featured_category($categoryName, $showAddToCart = false, $show
 			$write .= '<a href="' . $product['url'] . '"><img src="' . $thumbnailSRC . '" alt="' . $product['name'] . '" class="foxyshop_main_image" /></a>';
 			$write .= "</div>\n";
 			$write .= '<div class="foxyshop_product_info">';
-			$write .= '<h2><a href="' . $product['url'] . '">' . apply_filters('the_title', $product['name']) . '</a></h2>';
+			$write .= '<h2><a href="' . $product['url'] . '">' . apply_filters('the_title', $product['name'], $product['id']) . '</a></h2>';
 			$write .= foxyshop_price(0, 0);
 			if ($showMoreDetails) $write .= '<a href="' . $product['url'] . '" class="foxyshop_button">' . __('More Details') . '</a>';
 			if ($showAddToCart) $write .= '<a href="' . foxyshop_product_link("", true) . '" class="foxyshop_button">' . __('Add To Cart') . '</a>';
@@ -1374,7 +1374,7 @@ function foxyshop_related_products($sectiontitle = "Related Products", $maxprodu
 			$write .= '<a href="' . $product['url'] . '"><img src="' . $thumbnailSRC . '" alt="' . $product['name'] . '" class="foxyshop_main_image" /></a>';
 			$write .= "</div>\n";
 			$write .= '<div class="foxyshop_product_info">';
-			$write .= '<h2><a href="' . $product['url'] . '">' . apply_filters('the_title', $product['name']) . '</a></h2>';
+			$write .= '<h2><a href="' . $product['url'] . '">' . apply_filters('the_title', $product['name'], $product['id']) . '</a></h2>';
 			$write .= foxyshop_price(0,0);
 			$write .= "</div>\n";
 			$write .= '<div class="clr"></div>';

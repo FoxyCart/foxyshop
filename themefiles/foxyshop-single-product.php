@@ -39,7 +39,7 @@ while (have_posts()) : the_post();
 	//Main Product Information Area
 	echo '<div class="foxyshop_product_info">';
 	//edit_post_link('<img src="' . FOXYSHOP_DIR . '/images/editicon.png" alt="Edit Product" width="16" height="16" />','<span class="foxyshop_edit_product">','</span>');
-	echo '<h2>' . apply_filters('the_title', $product['name']) . '</h2>';
+	echo '<h2>' . apply_filters('the_title', $product['name'], $product['id']) . '</h2>';
 
 	//Show a sale tag if the product is on sale
 	//if (foxyshop_is_on_sale()) echo '<p class="sale-product">SALE!</p>';

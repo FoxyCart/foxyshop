@@ -80,6 +80,7 @@ You can exclude this from being output on specific (or all) pages using the "Ski
 * Significant improvements across the plugin to move some of the legacy code to modern Wordpress standards
 * Renaming of some plugin javascript files
 * Renaming `action_process_option_update()` to `foxyshop_action_process_option_update()` and `action_show_user_profile()` to `foxyshop_action_show_user_profile()`
+* Add id argument for usage of "the_title" filter hook to prevent plugin conflicts
 * Fixed issue preventing product option modifiers from outputting if a custom value was set
 * Removing FOXYSHOP_DOCUMENT_ROOT variable
 * Deprecated: Support for Foxy versions 0.7.2 and older (these are also unsupported versions of Foxy, and should not be in use)
@@ -306,6 +307,7 @@ You can exclude this from being output on specific (or all) pages using the "Ski
 * Significant improvements across the plugin to move some of the legacy code to modern Wordpress standards
 * Renaming of some plugin javascript files
 * Renaming `action_process_option_update()` to `foxyshop_action_process_option_update()` and `action_show_user_profile()` to `foxyshop_action_show_user_profile()`
+* Add id argument for usage of "the_title" filter hook to prevent plugin conflicts
 * Fixed issue preventing product option modifiers from outputting if a custom value was set
 * Removing FOXYSHOP_DOCUMENT_ROOT variable
 * Deprecated: Support for Foxy versions 0.7.2 and older (these are also unsupported versions of Foxy, and should not be in use)
