@@ -29,7 +29,7 @@ if (!$product['hide_product']) {
 
 	//Show Main Product Info
 	echo '<div class="foxyshop_product_info">';
-	echo '<h2><a href="' . esc_url($product['url']) . '">' . apply_filters('the_title', $product['name']) . '</a></h2>';
+	echo '<h2><a href="' . esc_url($product['url']) . '">' . apply_filters('the_title', $product['name'], $product['id']) . '</a></h2>';
 
 	//Show a sale tag if the product is on sale
 	//if (foxyshop_is_on_sale()) echo '<p>SALE!</p>';

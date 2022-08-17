@@ -40,7 +40,7 @@ global $foxyshop_prettyphoto_included;
 
 	//Main Product Information Area
 	echo '<div class="foxyshop_product_info">';
-	echo '<h2>' . apply_filters('the_title', $product['name']) . '</h2>';
+	echo '<h2>' . apply_filters('the_title', $product['name'], $product['id']) . '</h2>';
 
 	//Show a sale tag if the product is on sale
 	//if (foxyshop_is_on_sale()) echo '<p>SALE!</p>';
