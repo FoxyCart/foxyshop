@@ -106,7 +106,7 @@ function foxy_wp_kses_html($data, $filter_tags = [], $allow_forms = false){
 		$foxy_allowedtags = $filtered_tags;
 	}
 
-	// Remove HTML comments, because apparently wp_kses doesn't and outputs them to the page instead
+	// Remove HTML comments, because wp_kses doesn't if it contains HTML and outputs the comment tags to the page instead
 	$data = preg_replace('/<!--(.|\s)*?-->/', '', $data);
 
 	return wp_kses($data, $foxy_allowedtags, ['http', 'https', 'mailto', 'sms', 'tel', 'fax', 'webcal']);
