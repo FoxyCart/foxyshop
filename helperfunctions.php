@@ -25,7 +25,8 @@ function foxyshop_load_public_scripts() {
 	} else {
 		foxyshop_insert_foxycart_files();
 	}
-	foxyshop_load_site_scripts();
+	// Needed for backwards compatibility
+	add_action('init', 'foxyshop_load_site_scripts', 1);
 	if ($foxyshop_settings['ga']) foxyshop_insert_google_analytics();
 }
 
