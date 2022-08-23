@@ -187,7 +187,6 @@ function foxyshop_load_admin_scripts($hook) {
 
 //Loading in Public scripts and styles
 function foxyshop_load_site_scripts() {
-	wp_enqueue_script( 'foxyshop_js', FOXYSHOP_DIR . '/js/foxyshop.js', ['jquery'], FOXYSHOP_VERSION, true);
 	wp_enqueue_style( 'foxyshop_css', FOXYSHOP_DIR . '/css/foxyshop.css', array(), FOXYSHOP_VERSION);
 }
 

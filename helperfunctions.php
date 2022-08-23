@@ -25,8 +25,9 @@ function foxyshop_load_public_scripts() {
 	} else {
 		foxyshop_insert_foxycart_files();
 	}
-	// Needed for backwards compatibility
-	add_action('init', 'foxyshop_load_site_scripts', 1);
+
+	wp_enqueue_script( 'foxyshop_js', FOXYSHOP_DIR . '/js/foxyshop.js', ['jquery'], FOXYSHOP_VERSION, true);
+
 	if ($foxyshop_settings['ga']) foxyshop_insert_google_analytics();
 }
 
