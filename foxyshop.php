@@ -89,6 +89,8 @@ if (is_admin()) {
 //Load FoxyShop Scripts and Styles on Public Site
 } else {
 	add_action('wp_enqueue_scripts', 'foxyshop_load_public_scripts');
+	// Needed for backwards compatibility
+	add_action('init', 'foxyshop_load_site_scripts', 1);
 }
 
 //Setup Wizard

@@ -71,6 +71,9 @@ function foxy_wp_kses_html($data, $filter_tags = [], $allow_forms = false){
 		],
 		'table' => [
 			'rel' => true
+		],
+		'div' => [
+			'dkey' => true
 		]
 	];
 
@@ -105,8 +108,24 @@ function foxy_wp_kses_html($data, $filter_tags = [], $allow_forms = false){
 		}
 		$foxy_allowedtags = $filtered_tags;
 	}
-	return wp_kses($data, $foxy_allowedtags, ['http', 'https', 'mailto', 'sms', 'tel', 'fax', 'webcal']);
 
+	// Remove HTML comments, because wp_kses doesn't if it contains HTML and outputs the comment tags to the page instead
+	$data = preg_replace('/<!--(.|\s)*?-->/', '', $data);
+
+	// Allow additional styles for CSS filtering
+	add_filter('safe_style_css', 'foxyshop_alter_safe_style_css', 10, 1 );
+	// Filter the HTML using our customised set of allowed tags
+	$filtered = wp_kses($data, $foxy_allowedtags, ['http', 'https', 'mailto', 'sms', 'tel', 'fax', 'webcal']);
+	// Revert back to default allowed styles
+	remove_filter('safe_style_css', 'foxyshop_alter_safe_style_css', 10);
+
+	return $filtered;
+}
+
+// Allow "display" style to the list of allowed CSS styles
+function foxyshop_alter_safe_style_css( $styles ) {
+    $styles[] = 'display';
+    return $styles;
 }
 
 //Insert jQuery
@@ -168,7 +187,6 @@ function foxyshop_load_admin_scripts($hook) {
 
 //Loading in Public scripts and styles
 function foxyshop_load_site_scripts() {
-	wp_enqueue_script( 'foxyshop_js', FOXYSHOP_DIR . '/js/foxyshop.js', ['jquery'], FOXYSHOP_VERSION, true);
 	wp_enqueue_style( 'foxyshop_css', FOXYSHOP_DIR . '/css/foxyshop.css', array(), FOXYSHOP_VERSION);
 }
 
