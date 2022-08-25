@@ -5,7 +5,7 @@ Tags: foxycart, shopping, cart, inventory, management, ecommerce, selling, subsc
 Requires at least: 3.1
 Tested up to: 6.0
 Requires PHP: 5.3
-Stable tag: 4.9
+Stable tag: 4.9.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 FoxyShop provides a robust shopping cart and inventory management tool for use with FoxyCart's hosted e-commerce solution.
@@ -74,6 +74,11 @@ You can exclude this from being output on specific (or all) pages using the "Ski
 
 
 == Changelog ==
+
+= 4.9.1 =
+
+* Strip HTML comments in the custom wp_kses function to prevent them being shown on the page if they contain HTML
+* Switch the foxyshop.css stylesheet back to being enqueued within the init event hook for backwards compatability
 
 = 4.9 =
 
@@ -301,6 +306,11 @@ You can exclude this from being output on specific (or all) pages using the "Ski
 
 
 == Upgrade Notice ==
+
+= 4.9.1 =
+
+* Strip HTML comments in the custom wp_kses function to prevent them being shown on the page if they contain HTML
+* Switch the foxyshop.css stylesheet back to being enqueued within the init event hook for backwards compatability
 
 = 4.9 =
 
