@@ -159,8 +159,8 @@ foreach($xml->transactions->transaction as $transaction) {
 				//Show Invoice Address Section
 				echo esc_html($customer_first_name . " " . $customer_last_name) . "<br />";
 				if ((string)$transaction->customer_company) echo esc_html($transaction->customer_company) . "<br />";
-				echo esc_html((string)$transaction->customer_address1 . "<br />");
-				if ((string)$transaction->customer_address2) echo esc_html($transaction->customer_address2 . "<br />");
+				echo esc_html((string)$transaction->customer_address1) . "<br />";
+				if ((string)$transaction->customer_address2) echo esc_html($transaction->customer_address2) . "<br />";
 				echo esc_html((string)$transaction->customer_city . ', ' . (string)$transaction->customer_state . ' ' . (string)$transaction->customer_postal_code) . '<br />';
 				if ($show_country) echo esc_html((string)$transaction->customer_country) . '<br />';
 				echo ("&nbsp;</td>\n\n");
