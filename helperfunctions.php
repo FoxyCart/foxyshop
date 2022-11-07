@@ -573,7 +573,13 @@ function foxyshop_run_variations($variationValue, $variationName, $showPriceVari
 			}
 
 			if ($alternate_value != "NO-VALUE") {
-				$val = $alternate_value . "{" . $variation_modifiers . "}";
+				$val = $alternate_value;
+				// Remove the v: modifier and remove any leading | symbols from the variation modifers
+				$filtered_variation_modifiers = ltrim(preg_replace("/\|?v:[^|]*/", "", $variation_modifiers), '|');
+				// Only output the variations if the alternate value isn't blank and there are variations after removing the v: modifier
+ 				if ($alternate_value != "" && $filtered_variation_modifiers != "") {
+ 					$val .= '{' . $filtered_variation_modifiers . '}';
+ 				}
 			}
 			if ($priceset !== "") $option_attributes .= ' priceset="' . $priceset . '"';
 			if ($pricechange !== "") $option_attributes .= ' pricechange="' . $pricechange . '"';
