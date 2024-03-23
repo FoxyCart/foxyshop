@@ -40,7 +40,7 @@ Visit [foxy-shop.com](http://www.foxy-shop.com/) for full documentation and inst
 = Translations Available =
 * Norwegian (Kenneth from [KKTrends](http://kktrend.no/))
 * German (Andrei from PixelDarkroom)
-
+* Brazilian Portuguese
 
 == Installation ==
 
