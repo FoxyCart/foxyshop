@@ -26,7 +26,7 @@ function foxyshop_load_public_scripts() {
 		foxyshop_insert_foxycart_files();
 	}
 
-	wp_enqueue_script( 'foxyshop_js', FOXYSHOP_DIR . '/js/foxyshop.js', ['jquery'], FOXYSHOP_VERSION, true);
+	wp_enqueue_script( 'foxyshop_js', FOXYSHOP_DIR . '/js/foxyshop.min.js', ['jquery'], FOXYSHOP_VERSION, true);
 
 	if ($foxyshop_settings['ga']) foxyshop_insert_google_analytics();
 }
@@ -50,11 +50,11 @@ function foxyshop_insert_foxycart_files() {
 	global $foxyshop_settings;
 	if (empty($foxyshop_settings['domain'])) return;
 	if ($foxyshop_settings['version'] == '1.0') {
-		wp_enqueue_style( 'foxy_colorbox',  FOXYSHOP_DIR . '/css/colorbox.1.3.19.css', [], FOXYSHOP_VERSION );
+		wp_enqueue_style( 'foxy_colorbox',  FOXYSHOP_DIR . '/css/colorbox.1.3.19.min.css', [], FOXYSHOP_VERSION );
 		// Javascript file is unique to the configured Foxy store, so it is loaded directly from the Foxy CDN
 		wp_enqueue_script( 'foxy_colorbox', 'https://cdn.foxycart.com/' . str_replace('.foxycart.com','',$foxyshop_settings['domain']) . '/foxycart.colorbox.js', ['jquery'] );
 	} elseif ($foxyshop_settings['version'] == '1.1') {
-		wp_enqueue_style( 'foxy_colorbox',  FOXYSHOP_DIR . '/css/colorbox.1.3.23.css', [], FOXYSHOP_VERSION );
+		wp_enqueue_style( 'foxy_colorbox',  FOXYSHOP_DIR . '/css/colorbox.1.3.23.min.css', [], FOXYSHOP_VERSION );
 		// Javascript file is unique to the configured Foxy store, so it is loaded directly from the Foxy CDN
 		wp_enqueue_script( 'foxy_colorbox', 'https://cdn.foxycart.com/' . str_replace('.foxycart.com','',$foxyshop_settings['domain']) . '/foxycart.colorbox.js?ver=2', ['jquery'] );
 	}
@@ -482,7 +482,7 @@ function foxyshop_product_variations($showQuantity = 0, $showPriceVariations = t
 	}
 
 	if ($write && !isset($foxyshop_write_variation_include)) {
-		wp_enqueue_script('foxyshop_variation_process', FOXYSHOP_DIR . '/js/variation.process.js', ['jquery'], null, true);
+		wp_enqueue_script('foxyshop_variation_process', FOXYSHOP_DIR . '/js/variation.process.min.js', ['jquery'], null, true);
 		$foxyshop_write_variation_include = 1;
 	}
 	if ($write) {
@@ -844,7 +844,7 @@ function foxyshop_build_image_slideshow($slideshow_type = "prettyPhoto", $use_in
 	if ($slideshow_type == "luminous" || in_array($slideshow_type, $deprecated_slideshow_types)) {
 		if ($use_includes && !isset($foxyshop_slideshow_includes_set)) {
 			wp_enqueue_script( 'foxyshop_slideshow', FOXYSHOP_DIR . '/js/luminous.min.js', [], FOXYSHOP_VERSION, true );
-			wp_enqueue_style( 'foxyshop_slideshow', FOXYSHOP_DIR . '/css/luminous.css', [], FOXYSHOP_VERSION);
+			wp_enqueue_style( 'foxyshop_slideshow', FOXYSHOP_DIR . '/css/luminous.min.css', [], FOXYSHOP_VERSION);
 			wp_add_inline_script( 'foxyshop_slideshow', "
 jQuery(document).ready(function($) {
 	const luminous = new LuminousGallery(document.querySelectorAll(\"a[rel^='foxyshop_gallery']\"), {}, {
@@ -876,8 +876,8 @@ jQuery(document).ready(function($) {
 	} elseif ($slideshow_type == "prettyPhoto") {
 
 		if ($use_includes && !isset($foxyshop_slideshow_includes_set)) {
-			wp_enqueue_script( 'foxyshop_slideshow', FOXYSHOP_DIR . '/js/prettyphoto/prettyPhoto.js', ['jquery'], FOXYSHOP_VERSION, true );
-			wp_enqueue_style( 'foxyshop_slideshow', FOXYSHOP_DIR . '/js/prettyphoto/prettyPhoto.css', [], FOXYSHOP_VERSION);
+			wp_enqueue_script( 'foxyshop_slideshow', FOXYSHOP_DIR . '/js/prettyphoto/prettyPhoto.min.js', ['jquery'], FOXYSHOP_VERSION, true );
+			wp_enqueue_style( 'foxyshop_slideshow', FOXYSHOP_DIR . '/js/prettyphoto/prettyPhoto.min.css', [], FOXYSHOP_VERSION);
 			wp_add_inline_script( 'foxyshop_slideshow', "
 jQuery(document).ready(function($) {
 	$(\"a[rel^='foxyshop_gallery']\").prettyPhoto({
@@ -943,8 +943,8 @@ jQuery(document).ready(function($) {
 	} elseif ($slideshow_type == "cloud-zoom") {
 
 		if ($use_includes && !isset($foxyshop_slideshow_includes_set)) {
-			wp_enqueue_script( 'foxyshop_slideshow', FOXYSHOP_DIR . '/js/cloud-zoom.1.0.2.js', ['jquery'], FOXYSHOP_VERSION, true );
-			wp_enqueue_style( 'foxyshop_slideshow', FOXYSHOP_DIR . '/css/cloud-zoom.css', [], FOXYSHOP_VERSION);
+			wp_enqueue_script( 'foxyshop_slideshow', FOXYSHOP_DIR . '/js/cloud-zoom.1.0.2.min.js', ['jquery'], FOXYSHOP_VERSION, true );
+			wp_enqueue_style( 'foxyshop_slideshow', FOXYSHOP_DIR . '/css/cloud-zoom.min.css', [], FOXYSHOP_VERSION);
 			wp_add_inline_script( 'foxyshop_slideshow', "
 function foxyshop_cloudzoom_image_change(new_ikey) {
 	jQuery('#foxyshop_slideshow_thumb_' + ikey[new_ikey][0]).trigger('click');
