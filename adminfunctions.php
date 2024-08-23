@@ -159,9 +159,9 @@ function foxyshop_load_admin_scripts($hook) {
 	$page = isset($_REQUEST['page']) ? sanitize_text_field($_REQUEST['page']) : '';
 
 	//Style - Always Do This
-	wp_enqueue_style('foxyshop_admin_css', FOXYSHOP_DIR . '/css/foxyshop-admin.css');
+	wp_enqueue_style('foxyshop_admin_css', FOXYSHOP_DIR . '/css/foxyshop-admin.min.css');
 	wp_enqueue_script('foxyshop_tablesorter', FOXYSHOP_DIR . '/js/tablesorter.js', ['jquery'], true);
-	wp_enqueue_script('foxyshop_admin', FOXYSHOP_DIR . '/js/foxyshop-admin.js', ['jquery'], true);
+	wp_enqueue_script('foxyshop_admin', FOXYSHOP_DIR . '/js/foxyshop-admin.min.js', ['jquery'], true);
 
 	//Date Picker
 	if ($page == "foxyshop_order_management" || $page == "foxyshop_subscription_management") foxyshop_date_picker();
@@ -174,20 +174,20 @@ function foxyshop_load_admin_scripts($hook) {
 
 	//Product
 	if ($hook !== 'post.php' && $hook !== 'post-new.php' && $page !== 'cfbe_editor-foxyshop_product' && $page !== 'foxyshop_setup') return;
-	wp_enqueue_script('foxyshop_products_admin', FOXYSHOP_DIR . '/js/products-admin.js', ['jquery'], true);
+	wp_enqueue_script('foxyshop_products_admin', FOXYSHOP_DIR . '/js/products-admin.min.js', ['jquery'], true);
 	wp_enqueue_script('swfobject');
-	wp_enqueue_script('dropzoneScript', FOXYSHOP_DIR . '/js/dropzone.js', array('jquery'));
-	wp_enqueue_style('dropzoneStyle', FOXYSHOP_DIR . '/css/dropzone.css');
+	wp_enqueue_script('dropzoneScript', FOXYSHOP_DIR . '/js/dropzone.min.js', array('jquery'));
+	wp_enqueue_style('dropzoneStyle', FOXYSHOP_DIR . '/css/dropzone.min.css');
 	if ($foxyshop_settings['related_products_custom'] || $foxyshop_settings['related_products_tags'] || $foxyshop_settings['enable_addon_products']) {
 		wp_enqueue_script('chosenScript', FOXYSHOP_DIR . '/js/chosen.min.js', array('jquery'));
-		wp_enqueue_style('chosenStyle', FOXYSHOP_DIR . '/css/chosen.css');
+		wp_enqueue_style('chosenStyle', FOXYSHOP_DIR . '/css/chosen.min.css');
 	}
 	foxyshop_date_picker();
 }
 
 //Loading in Public scripts and styles
 function foxyshop_load_site_scripts() {
-	wp_enqueue_style( 'foxyshop_css', FOXYSHOP_DIR . '/css/foxyshop.css', array(), FOXYSHOP_VERSION);
+	wp_enqueue_style( 'foxyshop_css', FOXYSHOP_DIR . '/css/foxyshop.min.css', array(), FOXYSHOP_VERSION);
 }
 
 
