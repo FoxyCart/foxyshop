@@ -28,7 +28,7 @@ function foxyshop_theme_redirect() {
 		$request_arr = explode("/",$wp->request);
 		$request_start = $request_arr[0];
 		$request_end = end($request_arr);
-		$foxyshop_indicators = array(FOXYSHOP_PRODUCTS_SLUG, FOXYSHOP_PRODUCT_CATEGORY_SLUG, 'product-search', 'foxycart-datafeed-'.$foxyshop_settings['datafeed_url_key'], 'foxycart-sso-'.$foxyshop_settings['datafeed_url_key'], 'upload-'.$foxyshop_settings['datafeed_url_key']);
+		$foxyshop_indicators = array(FOXYSHOP_PRODUCTS_SLUG, FOXYSHOP_PRODUCT_CATEGORY_SLUG, 'product-search', 'foxycart-datafeed-'.$foxyshop_settings['datafeed_url_key'], 'foxycart-prepayment-webhook-'.$foxyshop_settings['datafeed_url_key'], 'foxycart-sso-'.$foxyshop_settings['datafeed_url_key'], 'upload-'.$foxyshop_settings['datafeed_url_key']);
 		if (array_intersect($request_arr, $foxyshop_indicators)) {
 			if (in_array(FOXYSHOP_PRODUCTS_SLUG, $request_arr) && $request_end != FOXYSHOP_PRODUCTS_SLUG) {
 				$currentProduct = $request_end;
@@ -57,6 +57,8 @@ function foxyshop_theme_redirect() {
 				$currentPageName = 'product-search';
 			} elseif ($request_start == 'foxycart-datafeed-'.$foxyshop_settings['datafeed_url_key']) {
 				$currentPageName = 'foxycart-datafeed-'.$foxyshop_settings['datafeed_url_key'];
+			} elseif ($request_start == 'foxycart-prepayment-webhook-'.$foxyshop_settings['datafeed_url_key']) {
+				$currentPageName = 'foxycart-prepayment-webhook-'.$foxyshop_settings['datafeed_url_key'];
 			} elseif ($request_start == 'foxycart-sso-'.$foxyshop_settings['datafeed_url_key']) {
 				$currentPageName = 'foxycart-sso-'.$foxyshop_settings['datafeed_url_key'];
 			} elseif ($request_start == 'upload-'.$foxyshop_settings['datafeed_url_key']) {
@@ -139,6 +141,15 @@ function foxyshop_theme_redirect() {
 		if (!defined("IS_FOXYSHOP")) define("IS_FOXYSHOP", 1);
 		$wp_query->is_404 = false;
 		include foxyshop_get_template_file('foxyshop-datafeed-endpoint.php');
+		die;
+
+	//FoxyCart Prepayment Webhook Endpoint
+	} elseif ($currentPageName == 'foxycart-prepayment-webhook-'.$foxyshop_settings['datafeed_url_key'] || $currentName == 'foxycart-prepayment-webhook-'.$foxyshop_settings['datafeed_url_key']) {
+		add_filter('body_class', 'foxyshop_body_class', 10, 2 );
+		status_header(200);
+		if (!defined("IS_FOXYSHOP")) define("IS_FOXYSHOP", 1);
+		$wp_query->is_404 = false;
+		include foxyshop_get_template_file('foxyshop-prepayment-webhook-endpoint.php');
 		die;
 
 	//FoxyCart SSO Endpoint
