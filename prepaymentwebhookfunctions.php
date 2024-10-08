@@ -21,11 +21,9 @@ function check_inventory($cart_details, $local_test, $wpdb) {
         $product_id = -1;
         $code = $item['code'];
 
-		$inv_code = "%" . $wpdb->esc_like($code) . "%";
-		$sql = $wpdb->prepare( "SELECT * FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value LIKE %s", '_inventory_levels', $inv_code );
-		$meta_list = $wpdb->get_results( $sql );
-
-		var_dump($meta_list);
+        $inv_code = "%" . $wpdb->esc_like($code) . "%";
+        $sql = $wpdb->prepare( "SELECT * FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value LIKE %s", '_inventory_levels', $inv_code );
+        $meta_list = $wpdb->get_results( $sql );
 
         foreach ($meta_list as $meta) {
             $product_id = $meta->post_id;
