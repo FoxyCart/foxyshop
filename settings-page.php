@@ -247,6 +247,12 @@ function foxyshop_settings_page() {
 					<input type="text" id="foxyshop_datafeed_url" name="foxyshop_datafeed_url" value="<?php echo esc_url(get_bloginfo('url') . '/foxycart-datafeed-' . $foxyshop_settings['datafeed_url_key']); ?>/" readonly="readonly" onclick="this.select();" />
 					<a href="#" class="foxyshophelp">FoxyCart can be configured to send order information to a url on your website. If you want to use FoxyShop's datafeed and take advantage of inventory, user management and more, copy this url and enable the datafeed in your FoxyCart admin panel.</a>
 
+					<div style="clear: both;"></div>
+
+					<label for="foxyshop_prepayment_webhook_url"><?php _e('Prepayment Webhook URL', 'foxyshop'); ?>:</label>
+					<input type="text" id="foxyshop_prepayment_webhook_url" name="foxyshop_prepayment_webhook_url" value="<?php echo esc_url(get_bloginfo('url') . '/foxycart-prepayment-webhook-' . $foxyshop_settings['datafeed_url_key']); ?>/" readonly="readonly" onclick="this.select();" />
+					<a href="#" class="foxyshophelp">FoxyCart can be configured to send order information to a url on your website for a final check before completing the order. If you want to use FoxyShop's prepayment webhook and do a final check of inventory or for a custom prepayment check, copy this url and enable the prepayment webhook in your FoxyCart admin panel.</a>
+
 					<div style="clear: both;margin-bottom: 5px;"></div>
 
 					<label for="foxyshop_sso_url"><?php _e('SSO Endpoint', 'foxyshop'); ?>:</label>
