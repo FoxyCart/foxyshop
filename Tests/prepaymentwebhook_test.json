@@ -1,0 +1,242 @@
+{
+    "_links": {
+    },
+    "_embedded": {
+        "fx:items": [
+            {
+                "_links": {
+                },
+                "_embedded": {
+                    "fx:item_options": [
+                        {
+                            "_links": {
+                            },
+                            "name": "size",
+                            "value": "medium",
+                            "price_mod": 0,
+                            "weight_mod": 0,
+                            "date_created": null,
+                            "date_modified": null
+                        },
+                        {
+                            "_links": {
+                            },
+                            "name": "color",
+                            "value": "red",
+                            "price_mod": 0,
+                            "weight_mod": 0,
+                            "date_created": null,
+                            "date_modified": null
+                        }
+                    ],
+                    "fx:item_category": {
+                        "_links": {
+                        },
+                        "admin_email_template_uri": "",
+                        "customer_email_template_uri": "",
+                        "code": "DEFAULT",
+                        "name": "Default for all products",
+                        "item_delivery_type": "flat_rate",
+                        "max_downloads_per_customer": 3,
+                        "max_downloads_time_period": 24,
+                        "default_weight": 0,
+                        "default_weight_unit": "LBS",
+                        "default_length_unit": "IN",
+                        "shipping_flat_rate_type": "per_item",
+                        "shipping_flat_rate": 5,
+                        "handling_fee_type": "none",
+                        "handling_fee": 0,
+                        "handling_fee_minimum": 0,
+                        "handling_fee_percentage": 0,
+                        "customs_value": 0,
+                        "discount_type": "",
+                        "discount_name": "",
+                        "discount_details": "",
+                        "send_customer_email": false,
+                        "send_admin_email": false,
+                        "admin_email": "",
+                        "date_created": null,
+                        "date_modified": null
+                    }
+                },
+                "item_category_uri": "https://api.foxycart.com/item_categories/100",
+                "name": "Example Product",
+                "price": 15.99,
+                "quantity": 1,
+                "quantity_min": 0,
+                "quantity_max": 0,
+                "weight": 0,
+                "code": "1234",
+                "parent_code": "",
+                "discount_name": "",
+                "discount_type": "",
+                "discount_details": "",
+                "subscription_frequency": "",
+                "subscription_start_date": null,
+                "subscription_next_transaction_date": null,
+                "subscription_end_date": null,
+                "is_future_line_item": false,
+                "shipto": "Me",
+                "url": "",
+                "image": "",
+                "length": 0,
+                "width": 0,
+                "height": 0,
+                "expires": 0,
+                "date_created": null,
+                "date_modified": "2017-07-20T04:13:08-0700"
+            },
+            {
+                "_links": {
+                },
+                "_embedded": {
+                    "fx:item_category": {
+                        "_links": {
+                        },
+                        "admin_email_template_uri": "",
+                        "customer_email_template_uri": "",
+                        "code": "live",
+                        "name": "Live Rates",
+                        "item_delivery_type": "shipped",
+                        "max_downloads_per_customer": 3,
+                        "max_downloads_time_period": 24,
+                        "default_weight": 5,
+                        "default_weight_unit": "LBS",
+                        "default_length_unit": "IN",
+                        "shipping_flat_rate_type": "per_order",
+                        "shipping_flat_rate": 1,
+                        "handling_fee_type": "none",
+                        "handling_fee": 0,
+                        "handling_fee_minimum": 0,
+                        "handling_fee_percentage": 0,
+                        "customs_value": 0,
+                        "discount_type": "",
+                        "discount_name": "",
+                        "discount_details": "",
+                        "send_customer_email": false,
+                        "send_admin_email": false,
+                        "admin_email": "",
+                        "date_created": null,
+                        "date_modified": null
+                    }
+                },
+                "item_category_uri": "https://api.foxycart.com/item_categories/101",
+                "name": "Another Product",
+                "price": 20,
+                "quantity": 1,
+                "quantity_min": 0,
+                "quantity_max": 0,
+                "weight": 5,
+                "code": "foo321",
+                "parent_code": "",
+                "discount_name": "",
+                "discount_type": "",
+                "discount_details": "",
+                "subscription_frequency": "",
+                "subscription_start_date": null,
+                "subscription_next_transaction_date": null,
+                "subscription_end_date": null,
+                "is_future_line_item": false,
+                "shipto": "Me",
+                "url": "",
+                "image": "",
+                "length": 0,
+                "width": 0,
+                "height": 0,
+                "expires": 0,
+                "date_created": null,
+                "date_modified": "2017-07-20T04:14:03-0700"
+            }
+        ],
+        "fx:discounts": [
+            {
+                "code": "coupon",
+                "amount": -3.6,
+                "name": "Default Discount",
+                "display": "-$3.60",
+                "is_taxable": false,
+                "is_future_discount": false
+            }
+        ],
+        "fx:custom_fields": [
+            {
+                "name": "custom_note",
+                "value": "Happy Birthday!",
+                "is_hidden": 0
+            }],
+        "fx:shipment": {
+            "address_name": "",
+            "first_name": "John",
+            "last_name": "Smith",
+            "company": "",
+            "address1": "Main Street",
+            "address2": "",
+            "city": "Saint Paul",
+            "region": "MN",
+            "postal_code": "55116",
+            "country": "US",
+            "origin_region": "TX",
+            "origin_postal_code": "77018",
+            "origin_country": "US",
+            "shipping_service_id": 0,
+            "shipping_service_description": "",
+            "is_residential": false,
+            "item_count": 2,
+            "total_weight": 5,
+            "total_customs_value": 0,
+            "total_handling_fee": 0,
+            "total_flat_rate_shipping": 5,
+            "total_item_price": 35.99,
+            "total_tax": 3.24,
+            "total_shipping": 0,
+            "total_price": 39.23
+        },
+        "fx:customer": {
+            "id": "1512345",
+            "first_name": "John",
+            "last_name": "Smith",
+            "email": "john@example.com",
+            "tax_id": "",
+            "is_anonymous": "0",
+            "_embedded": {
+                "fx:payments": [
+                    {
+                        "cc_type": "plastic",
+                        "cc_number_masked": "xxxx xxxx xxxx 4242",
+                        "cc_exp_month": "10",
+                        "cc_exp_year": "2020",
+                        "purchase_order": null
+                    }
+                ],
+                "fx:default_billing_address": {
+                    "country": "US",
+                    "region": "MN",
+                    "city": "Saint Paul",
+                    "postal_code": "55116",
+                    "address1": "Main Street",
+                    "address2": "",
+                    "company": "",
+                    "full_name": "John Smith",
+                    "first_name": "John",
+                    "last_name": "Smith",
+                    "phone": ""
+                }
+            }
+        }
+    },
+    "customer_uri": "",
+    "template_set_uri": "",
+    "language": "",
+    "locale_code": "en_US",
+    "customer_ip": "192.168.0.1",
+    "ip_country": "United States",
+    "session_name": "fcsid",
+    "session_id": "hvcv28l8md0qc8qt5rrjh4qo85",
+    "total_item_price": 35.99,
+    "total_tax": 3.24,
+    "total_shipping": 14.23,
+    "total_future_shipping": 0,
+    "total_order": 49.86,
+    "date_created": null,
+    "date_modified": "2017-07-20T04:12:25-0700"
+}

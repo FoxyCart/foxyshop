@@ -34,7 +34,7 @@ $local_test = false;
 
 /* 
 To test locally:
-  1. Navigate to ..themes/Tests folder
+  1. Navigate to ../Tests folder within the plugin
   2. Copy the prepaymentwebhook_test.json file to your theme folder
   3. Modify the file to fit your test case
   4. Uncomment the following which will load the cart details from sample file
