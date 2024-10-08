@@ -62,13 +62,13 @@ function check_inventory($cart_details, $local_test, $wpdb) {
         $response['details'] = $response_text; 
     }
 
-	$log_line .= (string) $response['ok'] . "\n";
-	$fp = fopen($log_file, 'a');
-	fwrite($fp, $log_line);
+    $log_line .= (string) $response['ok'] . "\n";
+    $fp = fopen($log_file, 'a');
+    fwrite($fp, $log_line);
 
-	if ($local_test === false) {
-	header('Content-Type: application/json');
-	}
+    if ($local_test === false) {
+        header('Content-Type: application/json');
+    }
 	return $response;
 }
 ?>

@@ -54,6 +54,6 @@ if ($cart_details) {
     print json_encode(check_inventory($cart_details, $local_test, $wpdb));
     // add custom checks here
 } else {
-   echo("No payload found");
+    echo("No payload found");
 }
 ?>
