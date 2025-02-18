@@ -102,25 +102,24 @@ function foxyshop_inventory_management_page() {
 
 			global $wpdb;
 			$sql = "
-					SELECT p.* 
-					FROM {$wpdb->posts} p
-					LEFT JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id AND pm.meta_key = '_code'
-					WHERE p.post_type = 'foxyshop_product'
-					AND p.post_status = 'publish'
-					AND (
-							p.post_title LIKE %s
-							OR pm.meta_value LIKE %s
-					)
-					AND EXISTS (
-							SELECT 1 FROM {$wpdb->postmeta} WHERE post_id = p.ID AND meta_key = '_inventory_levels' AND meta_value != ''
-					)
-					ORDER BY p.ID ASC
+				SELECT p.* 
+				FROM {$wpdb->posts} p
+				LEFT JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id AND pm.meta_key = '_code'
+				WHERE p.post_type = 'foxyshop_product'
+				AND p.post_status = 'publish'
+				AND (
+					p.post_title LIKE %s
+					OR pm.meta_value LIKE %s
+				)
+				AND EXISTS (
+					SELECT 1 FROM {$wpdb->postmeta} WHERE post_id = p.ID AND meta_key = '_inventory_levels' AND meta_value != ''
+				)
+				ORDER BY p.ID ASC
 			";
 
 			$prepared_sql = $wpdb->prepare($sql, '%' . $wpdb->esc_like($search_query) . '%', '%' . $wpdb->esc_like($search_query) . '%');
 			$product_list = $wpdb->get_results($prepared_sql);
 
-			// $product_list = get_posts($args);
 			$exported = "ID\tName\tCode\tVariation\tInventory";
 			$i = 0;
 			$alternate = "";
@@ -178,7 +177,7 @@ function foxyshop_inventory_management_page() {
 					echo '</tr>'."\n";
 				}
 			}
-			
+
 			wp_reset_postdata();
 			?>
 			</tbody>
