@@ -66,7 +66,7 @@ function foxyshop_inventory_management_page() {
 			) . '</p></div>';
 		?>
 
-		<form method="GET" action="">
+		<form method="GET" action="" style="margin-top: 10px;">
 				<input type="hidden" name="post_type" value="foxyshop_product" />
 				<input type="hidden" name="page" value="foxyshop_inventory_management_page" />
 				<input type="text" name="search" placeholder="Search by name or code" value="<?php echo isset($_GET['search']) ? esc_attr($_GET['search']) : ''; ?>" style="min-width: 300px;" />
@@ -125,6 +125,7 @@ function foxyshop_inventory_management_page() {
 			$alternate = "";
 			foreach ($product_list as $single_product) {
 				setup_postdata($single_product);
+				
 				$product = foxyshop_setup_product($single_product, true);
 				$inventory_levels = get_post_meta($single_product->ID,'_inventory_levels',TRUE);
 				if (!is_array($inventory_levels)) $inventory_levels = array();
