@@ -66,6 +66,13 @@ function foxyshop_inventory_management_page() {
 			) . '</p></div>';
 		?>
 
+		<form method="GET" action="" style="margin-top: 10px;">
+			<input type="hidden" name="post_type" value="foxyshop_product" />
+			<input type="hidden" name="page" value="foxyshop_inventory_management_page" />
+			<input type="text" name="search" placeholder="Search by name or code" value="<?php echo isset($_GET['search']) ? esc_attr($_GET['search']) : ''; ?>" style="min-width: 300px;" />
+			<input type="submit" value="Search" class="button" />
+		</form>
+
 		<table cellpadding="0" cellspacing="0" border="0" class="wp-list-table widefat foxyshop-list-table" id="inventory_level" style="margin-top: 14px;">
 			<thead>
 				<tr>
@@ -91,12 +98,34 @@ function foxyshop_inventory_management_page() {
 			</tfoot>
 			<tbody>
 			<?php
-			$args = array('post_type' => 'foxyshop_product', 'post_status' => 'publish', 'numberposts' => "-1", "orderby" => "id", "order" => "ASC", "meta_key" => "_inventory_levels", "meta_compare" => "!=", "meta_value" => "");
-			$product_list = get_posts($args);
+			$search_query = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
+
+			global $wpdb;
+			$sql = "
+				SELECT p.* 
+				FROM {$wpdb->posts} p
+				LEFT JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id AND pm.meta_key = '_code'
+				WHERE p.post_type = 'foxyshop_product'
+				AND p.post_status = 'publish'
+				AND (
+					p.post_title LIKE %s
+					OR pm.meta_value LIKE %s
+				)
+				AND EXISTS (
+					SELECT 1 FROM {$wpdb->postmeta} WHERE post_id = p.ID AND meta_key = '_inventory_levels' AND meta_value != ''
+				)
+				ORDER BY p.ID ASC
+			";
+
+			$prepared_sql = $wpdb->prepare($sql, '%' . $wpdb->esc_like($search_query) . '%', '%' . $wpdb->esc_like($search_query) . '%');
+			$product_list = $wpdb->get_results($prepared_sql);
+
 			$exported = "ID\tName\tCode\tVariation\tInventory";
 			$i = 0;
 			$alternate = "";
 			foreach ($product_list as $single_product) {
+				setup_postdata($single_product);
+				
 				$product = foxyshop_setup_product($single_product, true);
 				$inventory_levels = get_post_meta($single_product->ID,'_inventory_levels',TRUE);
 				if (!is_array($inventory_levels)) $inventory_levels = array();
@@ -149,6 +178,8 @@ function foxyshop_inventory_management_page() {
 					echo '</tr>'."\n";
 				}
 			}
+
+			wp_reset_postdata();
 			?>
 			</tbody>
 		</table>
