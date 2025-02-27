@@ -3,7 +3,7 @@ Contributors: foxycart
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2AHG2QMABF8SG
 Tags: foxycart, shopping, cart, inventory, management, ecommerce, selling, subscription, foxy
 Requires at least: 3.1
-Tested up to: 6.6.1
+Tested up to: 6.7.2
 Requires PHP: 5.3
 Stable tag: 4.9.6
 License: GPLv2 or later
@@ -328,6 +328,10 @@ You can exclude this from being output on specific (or all) pages using the "Ski
 
 
 == Upgrade Notice ==
+
+= 4.9.6 =
+
+* Add search feature to inventory plugin page
 
 = 4.9.5 =
 
