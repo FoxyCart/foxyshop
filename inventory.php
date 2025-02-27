@@ -67,10 +67,10 @@ function foxyshop_inventory_management_page() {
 		?>
 
 		<form method="GET" action="" style="margin-top: 10px;">
-				<input type="hidden" name="post_type" value="foxyshop_product" />
-				<input type="hidden" name="page" value="foxyshop_inventory_management_page" />
-				<input type="text" name="search" placeholder="Search by name or code" value="<?php echo isset($_GET['search']) ? esc_attr($_GET['search']) : ''; ?>" style="min-width: 300px;" />
-				<input type="submit" value="Search" class="button-primary" />
+			<input type="hidden" name="post_type" value="foxyshop_product" />
+			<input type="hidden" name="page" value="foxyshop_inventory_management_page" />
+			<input type="text" name="search" placeholder="Search by name or code" value="<?php echo isset($_GET['search']) ? esc_attr($_GET['search']) : ''; ?>" style="min-width: 300px;" />
+			<input type="submit" value="Search" class="button" />
 		</form>
 
 		<table cellpadding="0" cellspacing="0" border="0" class="wp-list-table widefat foxyshop-list-table" id="inventory_level" style="margin-top: 14px;">
