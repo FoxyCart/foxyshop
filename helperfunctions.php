@@ -1132,7 +1132,7 @@ function foxyshop_get_verification($name, $value = "") {
 	$open_text = $value === "--OPEN--" ? "||open" : "";
 	$product_code = array_key_exists('parent_code', $product) ? $product['code'] . $product['parent_code'] : $product['code'];
 	if ($value === "") $value = strip_tags($product[$name]);
-	$encodingval = htmlspecialchars($product_code . $name . $value);
+	$encodingval = htmlspecialchars($product_code . $name . $value, ENT_COMPAT);
 	return '||' . hash_hmac('sha256', $encodingval, $foxyshop_settings['api_key']) . $open_text;
 }
 
