@@ -78,7 +78,6 @@ You can exclude this from being output on specific (or all) pages using the "Ski
 = 4.9.7 =
 
 * Fix apostrophe encoding
-* Add ability to encode custom add-to-carts
 
 = 4.9.6 =
 
@@ -337,7 +336,6 @@ You can exclude this from being output on specific (or all) pages using the "Ski
 = 4.9.7 =
 
 * Fix apostrophe encoding
-* Add ability to encode custom add-to-carts
 
 = 4.9.6 =
 
