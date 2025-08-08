@@ -8,10 +8,11 @@ function foxyshop_multi_api_edit() {
 	if ($_GET['action-top'] == -1) $act = sanitize_text_field($_GET['action-bottom']);
 	if ($_GET['action-bottom'] == -1) $act = sanitize_text_field($_GET['action-top']);
 	if ($act == -1) return;
-	$posts = $_GET['post'];
-	if (!is_array($posts)) $posts = $_POST['post'];
+	$posts = (array) $_GET['post'];
+	if (!is_array($posts)) $posts = (array) $_POST['post'];
+	if (!is_array($posts)) return;
 	foreach ( $posts as $key => &$value ) {
-	    $value = sanitize_text_field( $value );
+		$value = sanitize_text_field( $value );
 	}
 
 	if ($act == "archive" || $act == "unarchive") {
@@ -706,4 +707,5 @@ jQuery(document).ready(function($){
 add_action( 'admin_print_footer_scripts', 'foxyshop_inline_orders_js' );
 
 }
+
 
