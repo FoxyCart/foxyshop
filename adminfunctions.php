@@ -36,7 +36,8 @@ function foxy_wp_kses_html($data, $filter_tags = [], $allow_forms = false){
 			'imagekey' => true,
 			'code' => true,
 			'codeadd' => true,
-			'subfrequency' => true
+			'subfrequency' => true,
+			'maxlength' => true
 		],
 		'select' => [
 			'name' => true,
@@ -49,6 +50,7 @@ function foxy_wp_kses_html($data, $filter_tags = [], $allow_forms = false){
 			'priceset' => true,
 			'pricechange' => true,
 			'displaykey' => true,
+			'dkey' => true,
 			'imagekey' => true,
 			'code' => true,
 			'codeadd' => true,
@@ -61,6 +63,7 @@ function foxy_wp_kses_html($data, $filter_tags = [], $allow_forms = false){
 			'priceset' => true,
 			'pricechange' => true,
 			'displaykey' => true,
+			'dkey' => true,
 			'imagekey' => true,
 			'code' => true,
 			'codeadd' => true,
@@ -1008,3 +1011,4 @@ function foxyshop_manage_attributes_jquery($att_type) {
 <?php
 
 }
+
