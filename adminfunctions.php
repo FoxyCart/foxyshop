@@ -63,11 +63,18 @@ function foxy_wp_kses_html($data, $filter_tags = [], $allow_forms = false){
 			'priceset' => true,
 			'pricechange' => true,
 			'displaykey' => true,
-			'dkey' => true,
 			'imagekey' => true,
 			'code' => true,
 			'codeadd' => true,
 			'subfrequency' => true
+		],
+		'textarea' => [
+			'name' => true,
+			'class' => true,
+			'id' => true,
+			'disabled' => true,
+			'style' => true,
+			'dkey' => true
 		],
 		'label' => [
 			'dkey' => true
@@ -1011,4 +1018,5 @@ function foxyshop_manage_attributes_jquery($att_type) {
 <?php
 
 }
+
 
