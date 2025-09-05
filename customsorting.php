@@ -98,7 +98,7 @@ function foxyshop_custom_sort() {
 
 	<?php
 	$product_categories = get_terms('foxyshop_categories', 'hide_empty=0&hierarchical=0&orderby=name&order=ASC');
-	$categoryID = 0;
+	$categoryID = -1;
 	if (isset($_REQUEST['categoryID'])) {
 		$categoryID = sanitize_text_field($_REQUEST['categoryID']);
 	}
@@ -106,6 +106,7 @@ function foxyshop_custom_sort() {
 		echo ('<p>' . sprintf(__("Select a category from the drop down to order the %s in that category.", 'foxyshop'), strtolower(FOXYSHOP_PRODUCT_NAME_PLURAL)) . "</p>\n");
 		echo ('<form name="form_product_category_order" method="post" action="edit.php?post_type=foxyshop_product&page=foxyshop_custom_sort">');
 		echo ('<select name="categoryID" id="categoryID">'."\n");
+		echo ('<option value="-1"' . ($categoryID == -1 ? ' selected="selected"' : '') . '>' . __('Select a Category', 'foxyshop') . '</option>'."\n");
 		echo ('<option value="0"' . ($categoryID == 0 ? ' selected="selected"' : '') . '>' . __('All', 'foxyshop') . ' ' . FOXYSHOP_PRODUCT_NAME_PLURAL . '</option>'."\n");
 		foreach($product_categories as $cat) {
 			echo ('<option value="' . esc_attr($cat->term_id) . '"' . ($categoryID == $cat->term_id ? ' selected="selected"' : '') . '>' . esc_html($cat->name . ' (' . $cat->count . ')') . '</option>'."\n");
