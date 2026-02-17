@@ -236,10 +236,10 @@ function foxyshop_settings_page() {
 		<tbody>
 			<tr>
 				<td style="border-bottom: 0 none;">
-					<label for="foxyshop_key"><?php _e('API Key', 'foxyshop'); ?>:</label>
+					<label for="foxyshop_key"><?php _e('Store Secret', 'foxyshop'); ?>:</label>
 					<input type="text" id="foxyshop_key" name="api_key" value="<?php echo esc_attr($foxyshop_settings['api_key']); ?>" readonly="readonly" />
-					<a href="#" class="foxyshophelp">The API key is saved here and stored on your FoxyCart account so that your cart information can be encrypted to avoid link tampering. The API key is also used to communicate with FoxyCart and retrieve your order information.<br /><br />This API key is generated automatically and cannot be edited. Go to the tools page if you need to reset this key.</a>
-					<div style="clear: both; padding: 5px 0; font-style: italic;"><strong style="color: #BB1E1E;">Required Setup:</strong> Enter this API key in the <b>store secret</b> field on the advanced menu of your <a href="https://affiliate.foxycart.com/idevaffiliate.php?id=211&url=https://admin.foxycart.com/" target="_blank">FoxyCart admin</a> and check the box to enable cart validation.</div>
+					<a href="#" class="foxyshophelp">The Store Secret is saved here and stored on your FoxyCart account so that your cart information can be encrypted to avoid link tampering. The Store Secret is also used to communicate with FoxyCart and retrieve your order information.<br /><br />This Store Secret is generated automatically. Go to the tools page if you need to reset this key.</a>
+					<div style="clear: both; padding: 5px 0; font-style: italic;"><strong style="color: #BB1E1E;">Required Setup:</strong> Enter this value in the <b>store secret</b> field on the Settings > General page of your <a href="https://admin.foxy.io/" target="_blank">FoxyCart admin</a> and then enable the "Prevent product link and form tampering" option on the Settings > Cart page.</div>
 
 					<div style="clear: both;"></div>
 
@@ -270,7 +270,7 @@ function foxyshop_settings_page() {
 			</tr>
 		</tbody>
 	</table>
-	<p><a href="#" class="button-link customise-api-key">Set a custom API key</a><input type="submit" class="button-primary customise-api-key-save" value="<?php _e('Save All Settings', 'foxyshop'); ?>" style="display:none;" /></p>
+	<p><a href="#" class="button-link customise-api-key">Set a custom Store Secret</a><input type="submit" class="button-primary customise-api-key-save" value="<?php _e('Save All Settings', 'foxyshop'); ?>" style="display:none;" /></p>
 
 	<br /><br />
 
