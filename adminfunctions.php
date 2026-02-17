@@ -160,8 +160,8 @@ function foxyshop_load_admin_scripts($hook) {
 
 	//Style - Always Do This
 	wp_enqueue_style('foxyshop_admin_css', FOXYSHOP_DIR . '/css/foxyshop-admin.min.css');
-	wp_enqueue_script('foxyshop_tablesorter', FOXYSHOP_DIR . '/js/tablesorter.js', ['jquery'], true);
-	wp_enqueue_script('foxyshop_admin', FOXYSHOP_DIR . '/js/foxyshop-admin.min.js', ['jquery'], true);
+	wp_enqueue_script('foxyshop_tablesorter', FOXYSHOP_DIR . '/js/tablesorter.js', ['jquery'], FOXYSHOP_VERSION);
+	wp_enqueue_script('foxyshop_admin', FOXYSHOP_DIR . '/js/foxyshop-admin.min.js', ['jquery'], FOXYSHOP_VERSION);
 
 	//Date Picker
 	if ($page == "foxyshop_order_management" || $page == "foxyshop_subscription_management") foxyshop_date_picker();
