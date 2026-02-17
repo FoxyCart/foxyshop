@@ -213,9 +213,9 @@ function foxyshop_settings_page() {
 
 					<p>
 					<a href="https://www.foxy-shop.com/documentation/?utm_source=plugin&amp;utm_medium=app&amp;utm_campaign=pluginlink_<?php echo esc_attr(FOXYSHOP_VERSION) ?>" target="_blank" class="button"><?php _e('FoxyShop Documentation', 'foxyshop'); ?></a>
-					<a href="https://affiliate.foxycart.com/idevaffiliate.php?id=211&amp;url=https://www.foxycart.com/" target="_blank" class="button"><?php _e('FoxyCart Information', 'foxyshop'); ?></a>
-					<a href="https://affiliate.foxycart.com/idevaffiliate.php?id=211&amp;url=https://wiki.foxycart.com/" target="_blank" class="button"><?php _e('FoxyCart Wiki', 'foxyshop'); ?></a>
-					<a href="https://affiliate.foxycart.com/idevaffiliate.php?id=211&amp;url=https://admin.foxycart.com/" target="_blank" class="button"><?php _e('FoxyCart Admin Panel', 'foxyshop'); ?></a>
+					<a href="https://www.foxy.io" target="_blank" class="button"><?php _e('FoxyCart Information', 'foxyshop'); ?></a>
+					<a href="https://wiki.foxycart.com/" target="_blank" class="button"><?php _e('FoxyCart Wiki', 'foxyshop'); ?></a>
+					<a href="https://admin.foxy.io/" target="_blank" class="button"><?php _e('FoxyCart Admin Panel', 'foxyshop'); ?></a>
 
 					</p>
 				</td>
