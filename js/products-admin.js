@@ -427,6 +427,22 @@ jQuery(document).ready(function($){
 
 	//IMAGES
 	//--------------------------------
+	$(document).on("click", "#foxyshop_product_image_list .foxyshop_image_id_badge", function(e) {
+		e.stopPropagation();
+		e.preventDefault();
+		var badge = $(this);
+		var imageId = badge.data("image-id");
+		var textToCopy = imageId;
+		navigator.clipboard.writeText(textToCopy).then(function() {
+			var originalText = badge.text();
+			badge.text("Copied!").addClass("copied");
+			setTimeout(function() {
+				badge.text(originalText).removeClass("copied");
+			}, 1500);
+		});
+		return false;
+	});
+
 	$(document).on("click", "#foxyshop_product_image_list .foxyshop_image_rename", function() {
 		var thisID = $(this).attr("rel");
 		$(".renamediv").removeClass('rename_active');

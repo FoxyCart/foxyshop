@@ -66,12 +66,12 @@ if (isset($_POST["FoxyData"])) {
 	if ($foxyshop_settings['manage_inventory_levels']) foxyshop_datafeed_inventory_update($xml);
 
 
-	//Set Subscription Features If Using SSO
-	if ($foxyshop_settings['enable_subscriptions'] && $foxyshop_settings['enable_sso']) foxyshop_datafeed_sso_update($xml);
-
-
 	//Add/Update WordPress User
 	if ($foxyshop_settings['checkout_customer_create']) foxyshop_datafeed_user_update($xml);
+
+
+	//Set Subscription Features If Using SSO
+	if ($foxyshop_settings['enable_subscriptions'] && $foxyshop_settings['enable_sso']) foxyshop_datafeed_sso_update($xml);
 
 
 
@@ -299,7 +299,10 @@ if (isset($_POST["FoxyData"])) {
 		if ($canceled) {
 
 			//Get WordPress User ID
-			$user_id = $wpdb->get_var("SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'foxycart_customer_id' AND meta_value = '$customer_id'");
+			$user_id = $wpdb->get_var($wpdb->prepare(
+				"SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'foxycart_customer_id' AND meta_value = %s",
+				$customer_id
+			));
 			if ($user_id) {
 
 				//Get User's Subscription Array

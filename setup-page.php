@@ -16,7 +16,7 @@ add_action('admin_menu', 'foxyshop_setup_menu');
 add_action('admin_init', 'save_foxyshop_setup');
 
 function foxyshop_setup_menu() {
-	add_submenu_page(NULL, __('FoxyShop Setup Wizard', 'foxyshop'), NULL, 'manage_options', 'foxyshop_setup', 'foxyshop_setup_legacy');
+	add_submenu_page('admin.php', __('FoxyShop Setup Wizard', 'foxyshop'), '', 'manage_options', 'foxyshop_setup', 'foxyshop_setup_legacy');
 }
 
 function save_foxyshop_setup() {
@@ -60,11 +60,11 @@ function foxyshop_setup_legacy() {
 <tr>
 <td align="center" width="50%" style="border-right: 1px solid lightgray;">
 <h3 style="margin-top: .5em;">I haven't created an account yet</h3>
-<p><a href="http://affiliate.foxycart.com/idevaffiliate.php?id=211_2_3_3" target="_blank" class="button"><?php _e('Create New FoxyCart Account'); ?></a></p>
+<p><a href="https://admin.foxy.io" target="_blank" class="button"><?php _e('Create New FoxyCart Account'); ?></a></p>
 </td>
 <td align="center" width="50%">
 <h3 style="margin-top: .5em;">I already have an account</h3>
-<p><a href="http://affiliate.foxycart.com/idevaffiliate.php?id=211&url=http://admin.foxycart.com/" target="_blank" class="button"><?php _e('Login To FoxyCart Account'); ?></a></p>
+<p><a href="http://admin.foxy.io/" target="_blank" class="button"><?php _e('Login To FoxyCart Account'); ?></a></p>
 </td>
 </tr>
 </table>

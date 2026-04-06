@@ -240,7 +240,7 @@ foreach($xml->transactions->transaction as $transaction) {
 					echo esc_html(str_replace("_", " ", (string)$transaction_detail_option->product_option_name)) . ': ';
 					echo wp_kses_post((string)$transaction_detail_option->product_option_value);
 					if ((string)$transaction_detail_option->price_mod != '0.000') {
-						echo ' (' . (strpos("-",$transaction_detail_option->price_mod) !== false ? '-' : '+') . esc_html(foxyshop_currency((double)$transaction_detail_option->price_mod)) . ')';
+						echo ' (' . (strpos($transaction_detail_option->price_mod, "-") !== false ? '-' : '+') . esc_html(foxyshop_currency((double)$transaction_detail_option->price_mod)) . ')';
 					}
 					echo '</div>';
 				}
