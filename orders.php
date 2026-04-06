@@ -402,7 +402,7 @@ function foxyshop_order_management() {
 					} else {
 						$holder .= $transaction_detail_option->product_option_value;
 					}
-					if ((string)$transaction_detail_option->price_mod != '0.000') $holder .= ' (' . (strpos("-",$transaction_detail_option->price_mod) !== false ? '-' : '+') . foxyshop_currency((double)$transaction_detail_option->price_mod) . ')';
+					if ((string)$transaction_detail_option->price_mod != '0.000') $holder .= ' (' . (strpos($transaction_detail_option->price_mod, "-") !== false ? '' : '+') . foxyshop_currency((double)$transaction_detail_option->price_mod) . ')';
 					$holder .= '</li>';
 				}
 
@@ -595,7 +595,7 @@ function foxyshop_order_management() {
 					} else {
 						$holder .= $transaction_detail_option->product_option_value;
 					}
-					if ((string)$transaction_detail_option->price_mod != '0.000') $holder .= ' (' . (strpos("-",$transaction_detail_option->price_mod) !== false ? '-' : '+') . foxyshop_currency((double)$transaction_detail_option->price_mod) . ')';
+					if ((string)$transaction_detail_option->price_mod != '0.000') $holder .= ' (' . (strpos($transaction_detail_option->price_mod, "-") !== false ? '' : '+') . foxyshop_currency((double)$transaction_detail_option->price_mod) . ')';
 					$holder .= '</li>';
 				}
 

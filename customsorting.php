@@ -41,7 +41,11 @@ function foxyshop_update_order() {
 			$post_id = (int)str_replace(array("'", "id_"), "", $IDs[$i]);
 			$categoryID = (int)sanitize_text_field($_POST['categoryID']);
 			if ($categoryID == 0) {
-				$wpdb->query("UPDATE $wpdb->posts SET menu_order = '" . esc_sql($i) . "' WHERE id = '" . esc_sql($post_id) . "'");
+				$wpdb->query($wpdb->prepare(
+					"UPDATE $wpdb->posts SET menu_order = %d WHERE id = %d",
+					$i,
+					$post_id
+				));
 			} else {
 				update_post_meta($post_id, "_foxyshop_menu_order_" . $categoryID, $i);
 			}
@@ -63,7 +67,11 @@ function foxyshop_revert_order() {
 		$post_id = (int)str_replace(array("'", "id_"), "", $IDs[$i]);
 		$categoryID = (int)sanitize_text_field($_POST['categoryID']);
 		if ($categoryID == 0) {
-			$wpdb->query("UPDATE $wpdb->posts SET menu_order = '0' WHERE id = '" . esc_sql($post_id) . "'");
+			$wpdb->query($wpdb->prepare(
+				"UPDATE $wpdb->posts SET menu_order = %d WHERE id = %d",
+				0,
+				$post_id
+			));
 		} else {
 			update_post_meta($post_id, "_foxyshop_menu_order_" . $categoryID, 0);
 		}

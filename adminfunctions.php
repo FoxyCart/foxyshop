@@ -418,6 +418,9 @@ function foxyshop_dblquotes($str) {
 function foxyshop_activation() {
 	global $wpdb, $google_product_field_names;
 
+	// Using a static english fallback if the constant isn't defined yet due to WP requiring loading translations only in init
+	$product_singular = defined('FOXYSHOP_PRODUCT_NAME_SINGULAR') ? FOXYSHOP_PRODUCT_NAME_SINGULAR : 'Product';
+
 	//Get Locale
 	$current_locale = get_locale();
 	if (!$current_locale) $current_locale = "en_US";
@@ -437,11 +440,11 @@ function foxyshop_activation() {
 		"enable_dashboard_stats" => "",
 		"related_products_custom" => "on",
 		"related_products_tags" => "",
-		"browser_title_1" => FOXYSHOP_PRODUCT_NAME_SINGULAR . " | " . get_bloginfo("name"),
-		"browser_title_2" => FOXYSHOP_PRODUCT_NAME_SINGULAR . " Categories | " . get_bloginfo("name"),
+		"browser_title_1" => $product_singular . " | " . get_bloginfo("name"),
+		"browser_title_2" => $product_singular . " Categories | " . get_bloginfo("name"),
 		"browser_title_3" => "%c | " . get_bloginfo("name"),
 		"browser_title_4" => "%p | " . get_bloginfo("name"),
-		"browser_title_5" => FOXYSHOP_PRODUCT_NAME_SINGULAR . " Search | " . get_bloginfo("name"),
+		"browser_title_5" => $product_singular . " Search | " . get_bloginfo("name"),
 		"browser_title_6" => get_bloginfo("name") . " Checkout",
 		"browser_title_7" => get_bloginfo("name") . " Receipt",
 		"weight_type" => "english",
@@ -644,9 +647,11 @@ function foxyshop_check_rewrite_rules() {
 function foxyshop_inventory_count_update($code, $new_count, $product_id = 0, $force = true) {
 	global $wpdb;
 
-	$search_code = esc_sql($code);
+	//Setup Search Query with LIKE patterns
+	$like_pattern1 = '%"' . $wpdb->esc_like($code) . '";%';
+	$like_pattern2 = '%:' . $wpdb->esc_like($code) . ';%';
+	$like_pattern3 = '%c:' . $wpdb->esc_like($code) . '%';
 
-	//Setup Search Query
 	$sql = "SELECT $wpdb->postmeta.`post_id`, $wpdb->postmeta.`meta_value`,  $wpdb->postmeta.`meta_key` ";
 	$sql .= "FROM  $wpdb->posts INNER JOIN $wpdb->postmeta ON $wpdb->posts.`ID` =  $wpdb->postmeta.`post_id` ";
 	$sql .= "WHERE $wpdb->posts.`post_status` = 'publish' AND (";
@@ -654,24 +659,28 @@ function foxyshop_inventory_count_update($code, $new_count, $product_id = 0, $fo
 	//Search Inventory Values
 	$sql .= "($wpdb->postmeta.`meta_key` = '_inventory_levels' AND ";
 	$sql .= "(";
-	$sql .= "$wpdb->postmeta.`meta_value` LIKE '%\"" . $search_code . "\";%' OR ";
-	$sql .= "$wpdb->postmeta.`meta_value` LIKE '%:" . $search_code . ";%'";
+	$sql .= "$wpdb->postmeta.`meta_value` LIKE %s OR ";
+	$sql .= "$wpdb->postmeta.`meta_value` LIKE %s";
 	$sql .= ")";
 	$sql .= ") ";
+
+	$prepare_args = array($like_pattern1, $like_pattern2);
 
 	//Only Search These Extra Fields If $force = 1
 	if ($force) {
 
 		//Search Variation Values
-		$sql .= "OR ($wpdb->postmeta.`meta_key` = '_variations' AND $wpdb->postmeta.`meta_value` LIKE '%c:" . $search_code . "%')";
+		$sql .= "OR ($wpdb->postmeta.`meta_key` = '_variations' AND $wpdb->postmeta.`meta_value` LIKE %s)";
+		$prepare_args[] = $like_pattern3;
 
 		//Search Code Values
-		$sql .= "OR ($wpdb->postmeta.`meta_key` = '_code' AND $wpdb->postmeta.`meta_value` = '" . $search_code . "')";
+		$sql .= "OR ($wpdb->postmeta.`meta_key` = '_code' AND $wpdb->postmeta.`meta_value` = %s)";
+		$prepare_args[] = $code;
 	}
 	$sql .= ")";
 
 	//Search
-	$result = $wpdb->get_results($sql);
+	$result = $wpdb->get_results($wpdb->prepare($sql, $prepare_args));
 
 	foreach ($result as $row) {
 		$product_id = $row->post_id;

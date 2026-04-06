@@ -299,7 +299,10 @@ if (isset($_POST["FoxyData"])) {
 		if ($canceled) {
 
 			//Get WordPress User ID
-			$user_id = $wpdb->get_var("SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'foxycart_customer_id' AND meta_value = '$customer_id'");
+			$user_id = $wpdb->get_var($wpdb->prepare(
+				"SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'foxycart_customer_id' AND meta_value = %s",
+				$customer_id
+			));
 			if ($user_id) {
 
 				//Get User's Subscription Array

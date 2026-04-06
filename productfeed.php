@@ -749,7 +749,7 @@ function foxyshop_manage_google_feed() {
 		//$xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $xml);
 		$xml = simplexml_load_string($xml, NULL, LIBXML_NOCDATA);
 
-		if (strpos('Error', $xml->entry->title) !== false) {
+		if (strpos($xml->entry->title, 'Error') !== false) {
 			foreach($xml->entry as $entry) {
 				foreach($entry->content->gderrors->gderror as $gderror) {
 					$error .= (string)$gderror->gdinternalReason;

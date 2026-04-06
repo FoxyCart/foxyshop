@@ -38,21 +38,26 @@ the most out of FoxyShop.
 if (!defined('ABSPATH')) exit();
 
 //Setup Plugin Variables
-define('FOXYSHOP_VERSION', "4.9.7");
+define('FOXYSHOP_VERSION', "4.9.8");
 define('FOXYSHOP_DIR', substr(plugin_dir_url(__FILE__),0, strlen(plugin_dir_url(__FILE__))-1) );
 define('FOXYSHOP_PATH', substr(plugin_dir_path(__FILE__),0, strlen(plugin_dir_path(__FILE__))-1) );
 define('FOXYSHOP_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('FOXYSHOP_PLUGIN_URL', plugin_dir_url(__FILE__));
 if (!defined('FOXYSHOP_PRODUCTS_SLUG')) define('FOXYSHOP_PRODUCTS_SLUG', 'products');
 if (!defined('FOXYSHOP_PRODUCT_CATEGORY_SLUG')) define('FOXYSHOP_PRODUCT_CATEGORY_SLUG', 'product-cat');
-if (!defined('FOXYSHOP_PRODUCT_NAME_SINGULAR')) define('FOXYSHOP_PRODUCT_NAME_SINGULAR', __('Product', 'foxyshop'));
-if (!defined('FOXYSHOP_PRODUCT_NAME_PLURAL')) define('FOXYSHOP_PRODUCT_NAME_PLURAL', __('Products', 'foxyshop'));
 if (!defined('FOXYSHOP_URL_BASE')) define('FOXYSHOP_URL_BASE', '');
 if (!defined('FOXYSHOP_PRODUCT_SITEMAP_SLUG')) define('FOXYSHOP_PRODUCT_SITEMAP_SLUG', 'product-sitemap');
 if (!defined('FOXYSHOP_API_ENTRIES_PER_PAGE')) define('FOXYSHOP_API_ENTRIES_PER_PAGE', 50);
 if (!defined('FOXYSHOP_JQUERY_VERSION')) define('FOXYSHOP_JQUERY_VERSION', '1.11.2');
 if (!defined('FOXYSHOP_DECIMAL_PLACES')) define('FOXYSHOP_DECIMAL_PLACES', 2);
-load_plugin_textdomain('foxyshop', 0, dirname(plugin_basename(__FILE__)).'/languages/');
+
+add_action('init', 'foxyshop_load_textdomain', 0);
+function foxyshop_load_textdomain() {
+	load_plugin_textdomain('foxyshop', false, dirname(plugin_basename(__FILE__)).'/languages/');
+	//Define translated product name constants after textdomain loads
+	if (!defined('FOXYSHOP_PRODUCT_NAME_SINGULAR')) define('FOXYSHOP_PRODUCT_NAME_SINGULAR', __('Product', 'foxyshop'));
+	if (!defined('FOXYSHOP_PRODUCT_NAME_PLURAL')) define('FOXYSHOP_PRODUCT_NAME_PLURAL', __('Products', 'foxyshop'));
+}
 $foxycart_version_array = array('2.0' => '2.0', '1.1' => '1.1', '1.0' => '1.0', '0.7.2' => '0.7.2', '0.7.1' => '0.7.1', '0.7.0' => '0.7.0');
 $google_product_field_names = array('google_product_category', 'mpn', 'gtin', 'identifier_exists', 'brand', 'condition', 'age_group', 'gender', 'color', 'size', 'material', 'pattern');
 

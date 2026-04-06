@@ -16,7 +16,7 @@ add_action('admin_menu', 'foxyshop_setup_menu');
 add_action('admin_init', 'save_foxyshop_setup');
 
 function foxyshop_setup_menu() {
-	add_submenu_page(NULL, __('FoxyShop Setup Wizard', 'foxyshop'), NULL, 'manage_options', 'foxyshop_setup', 'foxyshop_setup_legacy');
+	add_submenu_page('admin.php', __('FoxyShop Setup Wizard', 'foxyshop'), '', 'manage_options', 'foxyshop_setup', 'foxyshop_setup_legacy');
 }
 
 function save_foxyshop_setup() {

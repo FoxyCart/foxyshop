@@ -138,7 +138,10 @@ function foxyshop_datafeed_inventory_update($xml) {
 			if (!$product_code) continue;
 
 			//Get List of Target ID's for Inventory Update
-			$meta_list = $wpdb->get_results("SELECT post_id, meta_id, meta_value FROM $wpdb->postmeta WHERE meta_key = '_inventory_levels' AND meta_value LIKE '%" . esc_sql($product_code) . "%'");
+			$meta_list = $wpdb->get_results($wpdb->prepare(
+				"SELECT post_id, meta_id, meta_value FROM $wpdb->postmeta WHERE meta_key = '_inventory_levels' AND meta_value LIKE %s",
+				'%' . $wpdb->esc_like($product_code) . '%'
+			));
 			foreach ($meta_list as $meta) {
 				$productID = $meta->post_id;
 				$val = unserialize($meta->meta_value);
@@ -194,8 +197,10 @@ function foxyshop_datafeed_sso_update($xml) {
 			if ($sub_token_url != "") {
 
 				//Get WordPress User ID
-				$select_user = "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'foxycart_customer_id' AND meta_value = '" . esc_sql($customer_id) . "'";
-				$user_id = $wpdb->get_var($select_user);
+				$user_id = $wpdb->get_var($wpdb->prepare(
+					"SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'foxycart_customer_id' AND meta_value = %s",
+					$customer_id
+				));
 				if ($user_id) {
 
 					//Get User's Subscription Array
@@ -258,7 +263,11 @@ function foxyshop_datafeed_user_update($xml) {
 				add_user_meta($new_user_id, 'foxycart_customer_id', $customer_id, true);
 
 				//Set Password In WordPress Database
-				$wpdb->query("UPDATE $wpdb->users SET user_pass = '" . esc_sql($customer_password) . "' WHERE ID = '" . esc_sql($new_user_id) . "'");
+				$wpdb->query($wpdb->prepare(
+					"UPDATE $wpdb->users SET user_pass = %s WHERE ID = %d",
+					$customer_password,
+					$new_user_id
+				));
 
 				//Set Original Password at FoxyCart
 				//foxyshop_get_foxycart_data(array("api_action" => "customer_save", "customer_id" => $customer_id, "customer_password_hash" => $customer_password));
@@ -270,7 +279,11 @@ function foxyshop_datafeed_user_update($xml) {
 			} else {
 
 				//Set Password
-				$wpdb->query("UPDATE $wpdb->users SET user_pass = '" . esc_sql($customer_password) . "' WHERE ID = '" . esc_sql($current_user->ID) . "'");
+				$wpdb->query($wpdb->prepare(
+					"UPDATE $wpdb->users SET user_pass = %s WHERE ID = %d",
+					$customer_password,
+					$current_user->ID
+				));
 
 				//Update First Name and Last Name
 				$updated_user_id = wp_update_user(array(
@@ -280,7 +293,11 @@ function foxyshop_datafeed_user_update($xml) {
 				));
 
 				//Reset Password Again
-				$wpdb->query("UPDATE $wpdb->users SET user_pass = '" . esc_sql($customer_password) . "' WHERE ID = '" . esc_sql($current_user->ID) . "'");
+				$wpdb->query($wpdb->prepare(
+					"UPDATE $wpdb->users SET user_pass = %s WHERE ID = %d",
+					$customer_password,
+					$current_user->ID
+				));
 
 				//Add FoxyCart User ID if not added before
 				add_user_meta($current_user->ID, 'foxycart_customer_id', $customer_id, true);
