@@ -17,8 +17,11 @@ function foxyshop_decrypt($src) {
 	// All of WordPress's sanitization functions break the payload - so check that it
 	// passes as XML before returning back the decrypted data
 	$decrypted = rc4crypt::decrypt($foxyshop_settings['api_key'],urldecode($src));
-	// Parse the decrypted payload using simplexml to make sure it's valid XML
+	// Parse the decrypted payload using simplexml to make sure it's valid XML (without echoing parser errors)
+	$previous_libxml_errors = libxml_use_internal_errors(true);
 	$xml = simplexml_load_string($decrypted, NULL, LIBXML_NOCDATA);
+	libxml_clear_errors();
+	libxml_use_internal_errors($previous_libxml_errors);
 	if ($xml !== false) {
 		// We still have to return the decrypted data and not the parsed XML to maintain
 		// backwards-compatibility for any customised foxyshop-datafeed-endpoint.php
@@ -138,10 +141,10 @@ function foxyshop_datafeed_inventory_update($xml) {
 			if (!$product_code) continue;
 
 			//Get List of Target ID's for Inventory Update
-			$meta_list = $wpdb->get_results("SELECT post_id, meta_id, meta_value FROM $wpdb->postmeta WHERE meta_key = '_inventory_levels' AND meta_value LIKE '%" . esc_sql($product_code) . "%'");
+			$meta_list = $wpdb->get_results($wpdb->prepare("SELECT post_id, meta_id, meta_value FROM $wpdb->postmeta WHERE meta_key = '_inventory_levels' AND meta_value LIKE %s", '%' . $wpdb->esc_like($product_code) . '%'));
 			foreach ($meta_list as $meta) {
 				$productID = $meta->post_id;
-				$val = unserialize($meta->meta_value);
+				$val = is_serialized($meta->meta_value) ? unserialize($meta->meta_value, array('allowed_classes' => false)) : array();
 				if (!is_array($val)) $val = array();
 				foreach ($val as $ivcode => $iv) {
 					if ($ivcode == $product_code) {
@@ -176,7 +179,10 @@ function foxyshop_datafeed_inventory_update($xml) {
 
 //Update the WordPress Customer's Subscription List
 function foxyshop_datafeed_sso_update($xml) {
-	global $wpdb;
+	global $wpdb, $foxyshop_settings;
+
+	//Feeds Could Be Forged While the API Key Is a Legacy Key
+	if (foxyshop_api_key_is_legacy($foxyshop_settings['api_key'])) return;
 
 	//For Each Transaction
 	foreach($xml->transactions->transaction as $transaction) {
@@ -194,8 +200,7 @@ function foxyshop_datafeed_sso_update($xml) {
 			if ($sub_token_url != "") {
 
 				//Get WordPress User ID
-				$select_user = "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'foxycart_customer_id' AND meta_value = '" . esc_sql($customer_id) . "'";
-				$user_id = $wpdb->get_var($select_user);
+				$user_id = $wpdb->get_var($wpdb->prepare("SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'foxycart_customer_id' AND meta_value = %s", $customer_id));
 				if ($user_id) {
 
 					//Get User's Subscription Array
@@ -220,7 +225,10 @@ function foxyshop_datafeed_sso_update($xml) {
 
 //Update or Create a WordPress User After Checkout
 function foxyshop_datafeed_user_update($xml) {
-	global $wpdb, $foxyshop_new_password_hash;
+	global $wpdb, $foxyshop_new_password_hash, $foxyshop_settings;
+
+	//Feeds Could Be Forged While the API Key Is a Legacy Key
+	if (foxyshop_api_key_is_legacy($foxyshop_settings['api_key'])) return;
 
 	//For Each Transaction
 	foreach($xml->transactions->transaction as $transaction) {
@@ -255,10 +263,12 @@ function foxyshop_datafeed_user_update($xml) {
 					'nickname' => $customer_first_name . ' ' . $customer_last_name,
 					'role' => apply_filters('foxyshop_default_user_role', 'subscriber'),
 				));
-				add_user_meta($new_user_id, 'foxycart_customer_id', $customer_id, true);
+				if (is_wp_error($new_user_id)) continue;
+				if (!foxyshop_customer_id_is_linked($customer_id, $new_user_id)) add_user_meta($new_user_id, 'foxycart_customer_id', $customer_id, true);
 
 				//Set Password In WordPress Database
-				$wpdb->query("UPDATE $wpdb->users SET user_pass = '" . esc_sql($customer_password) . "' WHERE ID = '" . esc_sql($new_user_id) . "'");
+				$wpdb->update($wpdb->users, array('user_pass' => $customer_password), array('ID' => $new_user_id));
+				clean_user_cache($new_user_id);
 
 				//Set Original Password at FoxyCart
 				//foxyshop_get_foxycart_data(array("api_action" => "customer_save", "customer_id" => $customer_id, "customer_password_hash" => $customer_password));
@@ -269,8 +279,21 @@ function foxyshop_datafeed_user_update($xml) {
 			//Update User
 			} else {
 
+				//Only update users already linked to this FoxyCart customer, and never staff accounts
+				//Existing users are only updated while the API key is current
+				global $foxyshop_settings;
+				if (foxyshop_is_protected_user($current_user->ID) || foxyshop_api_key_is_legacy($foxyshop_settings['api_key'])) continue;
+				$linked_customer_id = (string)get_user_meta($current_user->ID, 'foxycart_customer_id', true);
+				if ($linked_customer_id === '') {
+					if (!apply_filters('foxyshop_datafeed_link_existing_user', false, $current_user, $xml)) continue;
+					add_user_meta($current_user->ID, 'foxycart_customer_id', $customer_id, true);
+				} elseif ($linked_customer_id !== $customer_id) {
+					continue;
+				}
+
 				//Set Password
-				$wpdb->query("UPDATE $wpdb->users SET user_pass = '" . esc_sql($customer_password) . "' WHERE ID = '" . esc_sql($current_user->ID) . "'");
+				$wpdb->update($wpdb->users, array('user_pass' => $customer_password), array('ID' => $current_user->ID));
+				clean_user_cache($current_user->ID);
 
 				//Update First Name and Last Name
 				$updated_user_id = wp_update_user(array(
@@ -280,10 +303,8 @@ function foxyshop_datafeed_user_update($xml) {
 				));
 
 				//Reset Password Again
-				$wpdb->query("UPDATE $wpdb->users SET user_pass = '" . esc_sql($customer_password) . "' WHERE ID = '" . esc_sql($current_user->ID) . "'");
-
-				//Add FoxyCart User ID if not added before
-				add_user_meta($current_user->ID, 'foxycart_customer_id', $customer_id, true);
+				$wpdb->update($wpdb->users, array('user_pass' => $customer_password), array('ID' => $current_user->ID));
+				clean_user_cache($current_user->ID);
 
 				//Run Your Custom Actions Here with add_action()
 				do_action("foxyshop_datafeed_update_wp_user", $xml, $current_user->ID);

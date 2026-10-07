@@ -16,12 +16,13 @@ add_action('admin_menu', 'foxyshop_setup_menu');
 add_action('admin_init', 'save_foxyshop_setup');
 
 function foxyshop_setup_menu() {
-	add_submenu_page(NULL, __('FoxyShop Setup Wizard', 'foxyshop'), NULL, 'manage_options', 'foxyshop_setup', 'foxyshop_setup_legacy');
+	add_submenu_page(NULL, __('FoxyShop Setup Wizard', 'foxyshop'), NULL, apply_filters('foxyshop_setup_perm', 'manage_options'), 'foxyshop_setup', 'foxyshop_setup_legacy');
 }
 
 function save_foxyshop_setup() {
 	$foxyshop_settings_update_key = (isset($_POST['action']) ? sanitize_text_field($_POST['action']) : "");
 	if ($foxyshop_settings_update_key != "foxyshop_setup_save") return;
+	foxyshop_require_capability('foxyshop_setup_perm');
 	if (!check_admin_referer('save-foxyshop-setup')) return;
 
 	global $foxyshop_settings;
