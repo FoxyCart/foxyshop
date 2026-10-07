@@ -513,6 +513,15 @@ function foxyshop_is_plain_data($value) {
 	return is_scalar($value) || is_null($value);
 }
 
+//A collapsed search panel would hide active filters, so it also opens whenever a filter differs from its default
+function foxyshop_search_panel_open($page, $foxy_data, $foxy_data_defaults) {
+	if (!empty($_COOKIE['foxyshop_search_open_' . $page])) return true;
+	foreach ($foxy_data_defaults as $field => $default) {
+		if (isset($foxy_data[$field]) && (string)$foxy_data[$field] !== (string)$default) return true;
+	}
+	return false;
+}
+
 //Plugin Activation Function
 function foxyshop_activation() {
 	// Using a static english fallback if the constant isn't defined yet due to WP requiring loading translations only in init

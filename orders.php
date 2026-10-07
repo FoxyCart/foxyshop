@@ -134,7 +134,8 @@ function foxyshop_order_management() {
 	if (version_compare($foxyshop_settings['version'], '2.0', ">=")) {
 		$foxy_data_defaults["status_filter"] = "all";
 	}
-	$foxy_data = wp_parse_args(array("api_action" => "transaction_list"), apply_filters('foxyshop_transaction_filter_defaults',$foxy_data_defaults));
+	$foxy_data_defaults = apply_filters('foxyshop_transaction_filter_defaults', $foxy_data_defaults);
+	$foxy_data = wp_parse_args(array("api_action" => "transaction_list"), $foxy_data_defaults);
 	$foxyshop_querystring = "?post_type=foxyshop_product&amp;page=foxyshop_order_management&amp;foxyshop_search=1";
 	$foxyshop_hidden_input = "";
 
@@ -178,8 +179,8 @@ function foxyshop_order_management() {
 		<input type="hidden" name="page" value="foxyshop_order_management" />
 
 		<table class="widefat">
-		<?php $search_open = !empty($_COOKIE['foxyshop_search_open_orders']); ?>
-		<thead><tr><th colspan="2" style="cursor: pointer;" class="foxyshop_search_toggle" data-search-page="orders"><img src="<?php echo esc_url(FOXYSHOP_DIR); ?>/images/search-icon.png" alt="" /><?php _e('Search Options', 'foxyshop'); ?><span class="dashicons <?php echo $search_open ? 'dashicons-arrow-down' : 'dashicons-arrow-right'; ?>"></span></th></tr></thead>
+		<?php $search_open = foxyshop_search_panel_open('orders', $foxy_data, $foxy_data_defaults); ?>
+		<thead><tr><th colspan="2" style="cursor: pointer;" class="foxyshop_search_toggle" data-search-page="orders" tabindex="0" role="button" aria-expanded="<?php echo $search_open ? 'true' : 'false'; ?>"><img src="<?php echo esc_url(FOXYSHOP_DIR); ?>/images/search-icon.png" alt="" /><?php _e('Search Options', 'foxyshop'); ?><span class="dashicons <?php echo $search_open ? 'dashicons-arrow-down' : 'dashicons-arrow-right'; ?>"></span></th></tr></thead>
 		<tbody<?php echo $search_open ? '' : ' style="display: none;"'; ?>><tr><td>
 
 			<div class="foxyshop_field_control foxyshop_radio_label_container">

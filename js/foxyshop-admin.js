@@ -9,11 +9,14 @@ jQuery(document).ready(function ($) {
         $(".foxyshop_date_field").datepicker({ dateFormat: 'yy-mm-dd' });
     }
 
-    $(".foxyshop_search_toggle").on("click", function () {
+    $(".foxyshop_search_toggle").on("click keydown", function (e) {
+        if (e.type === "keydown" && e.key !== "Enter" && e.key !== " ") return;
+        e.preventDefault();
         var $toggle = $(this);
         var $tbody = $toggle.closest("table").find("tbody");
         var page = $toggle.data("search-page");
         $toggle.find(".dashicons").toggleClass("dashicons-arrow-right dashicons-arrow-down");
+        $toggle.attr("aria-expanded", $toggle.attr("aria-expanded") === "true" ? "false" : "true");
         $tbody.slideToggle(200, function () {
             var isOpen = $(this).is(":visible") ? "1" : "0";
             document.cookie = "foxyshop_search_open_" + page + "=" + isOpen + ";path=/;max-age=31536000";
