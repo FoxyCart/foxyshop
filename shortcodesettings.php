@@ -43,6 +43,53 @@ function foxyshop_productcategory_shortcode($atts, $content = null) {
 }
 
 
+//Shortcode-Supplied Values Are Only Signed When They Match the Product's Own Options, Unless a Site Opts In to Signing Them As-Is
+function foxyshop_shortcode_can_sign() {
+	global $post;
+	return (bool)apply_filters('foxyshop_shortcode_allow_unrestricted_signing', false, $post);
+}
+
+//Option Values the Product Itself Defines for Each Dropdown/Radio/Checkbox Field, Keyed by Form Field Name
+function foxyshop_product_variation_options($product) {
+	$options = array();
+	if (empty($product['variations']) || !is_array($product['variations'])) return $options;
+	$saved_variations = get_option('foxyshop_saved_variations');
+	if (!is_array($saved_variations)) $saved_variations = array();
+	foreach ($product['variations'] as $product_variation) {
+		$variation_name = $product_variation['name'];
+		$variation_type = $product_variation['type'];
+		$variation_value = isset($product_variation['value']) ? $product_variation['value'] : '';
+		foreach ($saved_variations as $saved_var) {
+			if (sanitize_title($saved_var['refname']) == $variation_type) {
+				$variation_type = $saved_var['type'];
+				$variation_value = isset($saved_var['value']) ? $saved_var['value'] : '';
+			}
+		}
+		if (!in_array($variation_type, array('dropdown', 'radio', 'checkbox'))) continue;
+		if (strpos($variation_name, "{") !== false) $variation_name = substr($variation_name, strpos($variation_name, "{") + 1, strpos($variation_name, "}") - (strpos($variation_name, "{") + 1));
+		foreach (preg_split("[\r\n|\r|\n]", $variation_value) as $val) {
+			$val = str_replace("*", "", apply_filters("foxyshop_variation_adjustment", trim($val)));
+			if ($val !== '') $options[foxyshop_add_spaces($variation_name)][] = $val;
+		}
+	}
+	return $options;
+}
+
+//Only Keep Variations That Are One of the Product's Own Dropdown/Radio/Checkbox Fields Set to Exactly One of Its Options
+function foxyshop_shortcode_safe_variations($variations, $product) {
+	if ($variations == "") return "";
+	$options = foxyshop_product_variation_options($product);
+	$safe = array();
+	foreach (wp_parse_args(html_entity_decode($variations)) as $key => $val) {
+		if (!is_string($key) || !is_string($val)) continue;
+		$field = foxyshop_add_spaces($key);
+		if (preg_match('/[|{}:]/', $field) || !isset($options[$field]) || !in_array($val, $options[$field], true)) continue;
+		$safe[$field] = $val;
+	}
+	return http_build_query($safe, '', '&');
+}
+
+
 //Show Full Product
 add_shortcode('showproduct', 'foxyshop_showproduct_shortcode');
 function foxyshop_showproduct_shortcode($atts, $content = null) {
@@ -60,7 +107,9 @@ function foxyshop_showproduct_shortcode($atts, $content = null) {
 		$prod = foxyshop_get_product_by_name($name);
 	}
 
-	if (!$prod) return "";
+	if (!$prod || $prod->post_type != 'foxyshop_product') return "";
+	if ($prod->post_status != 'publish' && !current_user_can('read_post', $prod->ID)) return "";
+	if (post_password_required($prod)) return get_the_password_form($prod);
 
 	ob_start();
 	foxyshop_include('single-product-shortcode');
@@ -83,15 +132,18 @@ function foxyshop_product_shortcode($atts, $content = null) {
 	), $atts));
 
 
+	$can_sign = foxyshop_shortcode_can_sign();
 	$prod = foxyshop_get_product_by_name($name);
 	if (!$prod || !$name) return;
+	if ($prod->post_status != 'publish' && !current_user_can('read_post', $prod->ID)) return;
 	if ($content == "") $content = "Add To Cart";
 	$product = foxyshop_setup_product($prod);
+	if (!$can_sign) $variations = foxyshop_shortcode_safe_variations($variations, $product);
 	$url_extra = "";
-	if ($sub_frequency) {
-		$url_extra .= "&amp;sub_frequency=" . $sub_frequency . foxyshop_get_verification("sub_frequency", $sub_frequency);
+	if ($sub_frequency && preg_match('/^(\.5m|[1-9][0-9]{0,2}[dwmy])$/', $sub_frequency) && ($can_sign || $sub_frequency === str_replace("-", "", $product['sub_frequency']))) {
+		$url_extra .= "&amp;sub_frequency=" . urlencode($sub_frequency) . foxyshop_get_verification("sub_frequency", $sub_frequency);
 	}
-	$write = '<a href="' . foxyshop_product_link("", true, $variations) . $url_extra . '" class="foxyshop_sc_product_link">' . $content . '</a>';
+	$write = '<a href="' . esc_attr(foxyshop_product_link("", true, $variations) . $url_extra) . '" class="foxyshop_sc_product_link">' . $content . '</a>';
 	$product = $original_product;
 	return $write;
 }
@@ -108,10 +160,14 @@ function foxyshop_productlink_shortcode($atts, $content = null) {
 		"quantity" => '1',
 	), $atts));
 
+	$can_sign = foxyshop_shortcode_can_sign();
 	$prod = foxyshop_get_product_by_name($name);
 	if (!$prod || !$name) return "";
+	if ($prod->post_status != 'publish' && !current_user_can('read_post', $prod->ID)) return "";
+	$quantity = max(1, (int)$quantity);
 	$product = foxyshop_setup_product($prod);
-	$write = foxyshop_product_link("", true, $variations, $quantity);
+	if (!$can_sign) $variations = foxyshop_shortcode_safe_variations($variations, $product);
+	$write = esc_attr(foxyshop_product_link("", true, $variations, $quantity));
 	$product = $original_product;
 	return $write;
 }

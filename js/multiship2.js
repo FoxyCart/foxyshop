@@ -32,6 +32,11 @@ function shipto_array() {
 	}
 }
 
+// Escape recipient names before building option HTML
+function shipto_escape(str) {
+	return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 function shipto_select() {
 	// Clear the shipto select boxes first
 	jQuery('div.shipto_select select').html('');
@@ -43,7 +48,7 @@ function shipto_select() {
 		jQuery.each(shipto, function(i, val){
 			// alert('starting the .each loop with: ' + i + ' = ' + val);
 			if (val != 'undefined' && val != 'null' && val != '' && val != 'Me') {
-				shipto_options += '<option value="' + val + '">' + val + '<\/option>';
+				shipto_options += '<option value="' + shipto_escape(val) + '">' + shipto_escape(val) + '<\/option>';
 				// alert('and it worked: ' + val);
 			}
 		});

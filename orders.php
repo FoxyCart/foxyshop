@@ -5,11 +5,13 @@ if (!defined('ABSPATH')) exit();
 if (isset($_GET['action-top']) && isset($_GET['action-bottom'])) add_action('admin_init', 'foxyshop_multi_api_edit');
 function foxyshop_multi_api_edit() {
 	if (!isset($_GET['post'])) return;
+	$act = -1;
 	if ($_GET['action-top'] == -1) $act = sanitize_text_field($_GET['action-bottom']);
 	if ($_GET['action-bottom'] == -1) $act = sanitize_text_field($_GET['action-top']);
 	if ($act == -1) return;
-	$posts = sanitize_text_field($_GET['post']);
-	if (!is_array($posts)) $posts = array(sanitize_text_field($_POST['post']));
+	foxyshop_require_capability('foxyshop_order_perm');
+	check_admin_referer('foxyshop-bulk-transactions', '_foxyshop_bulk_nonce');
+	$posts = array_filter(array_map('absint', (array)$_GET['post']));
 
 	if ($act == "archive" || $act == "unarchive") {
 		$hide_transaction = $act == "archive" ? 1 : 0;
@@ -35,6 +37,7 @@ if (isset($_GET['transaction_search_type'])) {
 
 function foxyshop_print_invoice() {
 	global $foxyshop_settings;
+	foxyshop_require_capability('foxyshop_order_perm');
 
 	//Setup Fields and Defaults
 	$foxy_data_defaults = array(
@@ -330,6 +333,7 @@ function foxyshop_order_management() {
 		<input type="hidden" name="page" value="foxyshop_order_management" />
 
 		<?php
+		wp_nonce_field('foxyshop-bulk-transactions', '_foxyshop_bulk_nonce', false);
 		echo foxy_wp_kses_html($foxyshop_hidden_input, ['input']);
 		foxyshop_api_paging_nav('transactions', 'top', $xml, $foxyshop_querystring);
 		?>

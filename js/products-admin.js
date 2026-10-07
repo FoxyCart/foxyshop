@@ -533,7 +533,12 @@ jQuery(document).ready(function($){
 
 	if (jQuery().dropzone) {
 		$("#foxyshop_new_product_image_container").dropzone({
-			url: bloginfo_url + FOXYSHOP_URL_BASE + '/upload-' + datafeed_url_key + '/?foxyshop_product_id=' + post_id,
+			url: ajaxurl,
+			params: {
+				action: 'foxyshop_product_image_upload',
+				security: nonce_images,
+				foxyshop_product_id: post_id
+			},
 			createImageThumbnails: false,
 			acceptedFiles: "image/*,*.pdf,*.doc,*.docx,*.odt,*.xmls,*.xlsx,*.txt,*.tif,*.psd,*.mp3",
 			dictDefaultMessage: 'Drop Images Here To Upload',

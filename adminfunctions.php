@@ -2,6 +2,70 @@
 //Exit if not called in proper context
 if (!defined('ABSPATH')) exit();
 
+//Staff Accounts Aren't Linked or Synced to FoxyCart
+//Anyone With Any of These Capabilities, on Any Site They Belong To, Counts as Staff
+function foxyshop_is_protected_user($user_id) {
+	$user = get_userdata($user_id);
+	if (!$user) return true;
+	$staff_capabilities = apply_filters('foxyshop_staff_capabilities', array('edit_posts', 'manage_options', 'list_users', 'edit_users', 'create_users', 'promote_users', 'delete_users', 'manage_network', 'manage_sites', 'install_plugins', 'activate_plugins', 'edit_plugins', 'edit_theme_options', 'unfiltered_html'));
+	$has_staff_capability = function($check_user) use ($staff_capabilities) {
+		foreach ($staff_capabilities as $capability) {
+			if (user_can($check_user, $capability)) return true;
+		}
+		return false;
+	};
+	$protected = $has_staff_capability($user);
+	if (!$protected && is_multisite()) {
+		if (is_super_admin($user->ID) || !is_user_member_of_blog($user->ID)) {
+			$protected = true;
+		} else {
+			foreach (array_keys(get_blogs_of_user($user->ID)) as $blog_id) {
+				if ($blog_id == get_current_blog_id()) continue;
+				switch_to_blog($blog_id);
+				$protected = $has_staff_capability(new WP_User($user->ID));
+				restore_current_blog();
+				if ($protected) break;
+			}
+		}
+	}
+	return (bool)apply_filters('foxyshop_is_protected_user', $protected, $user);
+}
+
+//Whether a FoxyCart Customer ID Is Already Linked to Another WordPress User
+function foxyshop_customer_id_is_linked($foxycart_customer_id, $except_user_id = 0) {
+	$user_ids = get_users(array('meta_key' => 'foxycart_customer_id', 'meta_value' => (string)$foxycart_customer_id, 'fields' => 'ID', 'number' => 2));
+	foreach ($user_ids as $linked_user_id) {
+		if ((int)$linked_user_id != (int)$except_user_id) return true;
+	}
+	return false;
+}
+
+//Parse an XML Response Without Echoing Parser Warnings
+function foxyshop_load_xml($xml_string) {
+	$previous_libxml_errors = libxml_use_internal_errors(true);
+	$xml = simplexml_load_string((string)$xml_string, NULL, LIBXML_NOCDATA);
+	libxml_clear_errors();
+	libxml_use_internal_errors($previous_libxml_errors);
+	return $xml;
+}
+
+//Look Up a FoxyCart Customer ID by Email: Returns the ID, '' When There's Definitely No Such Customer, or false on Any Other Error
+function foxyshop_find_customer_id_by_email($email) {
+	$foxy_response = foxyshop_get_foxycart_data(array("api_action" => "customer_get", "customer_email" => $email));
+	$xml = foxyshop_load_xml($foxy_response);
+	if (!$xml) return false;
+	if ((string)$xml->result == "SUCCESS") return (string)$xml->customer_id;
+	if (stripos((string)$xml->messages->message, 'Customer Not Found') !== false) return '';
+	return false;
+}
+
+//Stop Unless the Current User Has the (Filterable) Capability
+function foxyshop_require_capability($perm_filter, $default_capability = 'manage_options') {
+	if (!current_user_can(apply_filters($perm_filter, $default_capability))) {
+		wp_die(esc_html__('You do not have permission to access this page.', 'foxyshop'), '', array('response' => 403));
+	}
+}
+
 /**
  * Sanitizes content for allowed HTML tags for FoxyShop HTML blocks.
  *
@@ -28,7 +92,6 @@ function foxy_wp_kses_html($data, $filter_tags = [], $allow_forms = false){
 			'disabled' => true,
 			'style' => true,
 			'rel' => true,
-			'onblur' => true,
 			'priceset' => true,
 			'pricechange' => true,
 			'displaykey' => true,
@@ -45,7 +108,6 @@ function foxy_wp_kses_html($data, $filter_tags = [], $allow_forms = false){
 			'id' => true,
 			'disabled' => true,
 			'style' => true,
-			'onblur' => true,
 			'priceset' => true,
 			'pricechange' => true,
 			'displaykey' => true,
@@ -92,11 +154,8 @@ function foxy_wp_kses_html($data, $filter_tags = [], $allow_forms = false){
 			'name' => true,
 			'class' => true,
 			'id' => true,
-			'style' => true,
-			'onsubmit' => true
+			'style' => true
 		];
-		$foxy_allowedtags['input']['onclick'] = true;
-		$foxy_allowedtags['a']['onclick'] = true;
 	}
 
 	if (count($filter_tags) > 0) {
@@ -174,7 +233,7 @@ function foxyshop_load_admin_scripts($hook) {
 
 	//Product
 	if ($hook !== 'post.php' && $hook !== 'post-new.php' && $page !== 'cfbe_editor-foxyshop_product' && $page !== 'foxyshop_setup') return;
-	wp_enqueue_script('foxyshop_products_admin', FOXYSHOP_DIR . '/js/products-admin.min.js', ['jquery'], true);
+	wp_enqueue_script('foxyshop_products_admin', FOXYSHOP_DIR . '/js/products-admin.min.js', ['jquery'], FOXYSHOP_VERSION);
 	wp_enqueue_script('swfobject');
 	wp_enqueue_script('dropzoneScript', FOXYSHOP_DIR . '/js/dropzone.min.js', array('jquery'));
 	wp_enqueue_style('dropzoneStyle', FOXYSHOP_DIR . '/css/dropzone.min.css');
@@ -203,6 +262,14 @@ function foxyshop_check_permalinks() {
 	if ($permalink_structure == '' && current_user_can('manage_options')) {
 		echo '<div class="error"><p><strong>Warning:</strong> Your <a href="options-permalink.php">permalink structure</a> is set to default. Your product links will not work correctly until you have turned on Permalink support. It is recommend that you set to "Month and Name".</p></div>';
 	}
+}
+
+//Warn When the API Key Was Generated by an Older Version of FoxyShop
+add_action('admin_notices', 'foxyshop_check_legacy_api_key');
+function foxyshop_check_legacy_api_key() {
+	global $foxyshop_settings;
+	if (!current_user_can('manage_options') || !foxyshop_api_key_is_legacy($foxyshop_settings['api_key'])) return;
+	echo '<div class="error"><p><strong>' . esc_html__('Action Required:', 'foxyshop') . '</strong> ' . esc_html__('Your FoxyShop API key (FoxyCart store secret) was generated by an older version of FoxyShop and must be replaced. Until it is replaced, single sign-on logins and datafeed updates to existing users are turned off. Use "Reset API Key" on the FoxyShop tools page, then paste the new key into the store secret field in your FoxyCart admin. Both must match.', 'foxyshop') . ' <a href="' . esc_url(admin_url('edit.php?post_type=foxyshop_product&page=foxyshop_settings_page')) . '">' . esc_html__('FoxyShop Settings', 'foxyshop') . '</a></p></div>';
 }
 
 // Warn for deprecated functionality
@@ -241,7 +308,7 @@ function foxyshop_insert_google_analytics() {
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', '".htmlspecialchars($foxyshop_settings['ga'])."', 'auto');";
+  ga('create', '".esc_js($foxyshop_settings['ga'])."', 'auto');";
 
    if ($foxyshop_settings['ga_demographics']) {
 		$toadd .= "ga('require', 'displayfeatures');\n";
@@ -278,8 +345,8 @@ function foxyshop_insert_google_analytics() {
 
 		$toadd = "
 	var _gaq = _gaq || [];
-	_gaq.push(['_setAccount', '".htmlspecialchars($foxyshop_settings['ga'])."']);
-	_gaq.push(['_setDomainName', '".($_SERVER['SERVER_NAME'])."']);
+	_gaq.push(['_setAccount', '".esc_js($foxyshop_settings['ga'])."']);
+	_gaq.push(['_setDomainName', '".esc_js($_SERVER['SERVER_NAME'])."']);
 	_gaq.push(['_setAllowHash', 'false']);";
 
 	if (strpos($foxyshop_settings['domain'], '.foxycart.com') !== false) {
@@ -324,13 +391,13 @@ function foxyshop_insert_google_analytics() {
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', '".htmlspecialchars($foxyshop_settings['ga']) ."', 'auto');
+  ga('create', '".esc_js($foxyshop_settings['ga']) ."', 'auto');
   ".(($foxyshop_settings['ga_demographics']) ? "ga('require', 'displayfeatures');\n" : "")."
   ga('send', 'pageview');";
 		//Legacy
 		} else {
 		$toadd = "var _gaq = _gaq || [];
-_gaq.push(['_setAccount', '".htmlspecialchars($foxyshop_settings['ga'])."']);
+_gaq.push(['_setAccount', '".esc_js($foxyshop_settings['ga'])."']);
 _gaq.push(['_trackPageview']);
 (function() {
 	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
@@ -413,6 +480,27 @@ function foxyshop_dblquotes($str) {
 	return str_replace('"','""',$str);
 }
 
+//Escape a Quoted Spreadsheet Cell
+function foxyshop_csv_safe($str) {
+	$str = (string)$str;
+	if ($str !== '' && strpos("=+-@\t\r", $str[0]) !== false && !preg_match('/^[+-]?[0-9][0-9 .,()\-]*$/', $str)) $str = "'" . $str;
+	return foxyshop_dblquotes($str);
+}
+
+
+//Generate a Random Store Secret (API Key) and Endpoint URL Key
+//Generated Keys Keep the spfx Prefix
+function foxyshop_generate_api_key() {
+	return 'spfx' . bin2hex(random_bytes(40));
+}
+function foxyshop_generate_url_key() {
+	return bin2hex(random_bytes(16));
+}
+
+//Detect API Keys Generated by FoxyShop 4.9.7 and Earlier
+function foxyshop_api_key_is_legacy($api_key) {
+	return (bool)preg_match('/^(spfx|sp92fx)[0-9a-f]{64}$/', (string)$api_key);
+}
 
 //Plugin Activation Function
 function foxyshop_activation() {
@@ -465,7 +553,7 @@ function foxyshop_activation() {
 		"inventory_alert_level" => 3,
 		"inventory_alert_email" => "",
 		"checkout_customer_create" => "",
-		"datafeed_url_key" => substr(MD5(rand(1000, 99999)."{urlkey}" . date("H:i:s")),1,12),
+		"datafeed_url_key" => foxyshop_generate_url_key(),
 		"default_image" => "",
 		"foxycart_include_cache" => "",
 		"template_url_cart" => "",
@@ -478,7 +566,7 @@ function foxyshop_activation() {
 		"google_product_auth" => "",
 		"include_exception_list" => "",
 		"show_add_to_cart_link" => "",
-		"api_key" => "spfx" . hash_hmac('sha256', rand(2165,64898), "dkw81" . time()),
+		"api_key" => foxyshop_generate_api_key(),
 	);
 
 	//Set For the First Time
@@ -618,7 +706,7 @@ function foxyshop_activation() {
 		//Load in New Defaults and Version Number
 		$foxyshop_settings = wp_parse_args($foxyshop_settings,$default_foxyshop_settings);
 		$foxyshop_settings['foxyshop_version'] = FOXYSHOP_VERSION;
-		if (!$foxyshop_settings['datafeed_url_key']) $foxyshop_settings['datafeed_url_key'] = substr(MD5(rand(1000, 99999)."{urlkey}" . date("H:i:s")),1,12);
+		if (!$foxyshop_settings['datafeed_url_key']) $foxyshop_settings['datafeed_url_key'] = foxyshop_generate_url_key();
 
 		//Save Settings
 		update_option("foxyshop_settings", $foxyshop_settings);
@@ -636,7 +724,7 @@ function foxyshop_deactivation() {
 
 //Flushes Rewrite Rules if Structure Has Changed
 function foxyshop_check_rewrite_rules() {
-	if (get_option('foxyshop_rewrite_rules') != FOXYSHOP_PRODUCTS_SLUG."|".FOXYSHOP_PRODUCT_CATEGORY_SLUG || isset($_GET["foxyshop_flush_rewrite_rules"])) {
+	if (get_option('foxyshop_rewrite_rules') != FOXYSHOP_PRODUCTS_SLUG."|".FOXYSHOP_PRODUCT_CATEGORY_SLUG || (isset($_GET["foxyshop_flush_rewrite_rules"]) && current_user_can('manage_options'))) {
 		flush_rewrite_rules(false);
 		update_option('foxyshop_rewrite_rules', FOXYSHOP_PRODUCTS_SLUG."|".FOXYSHOP_PRODUCT_CATEGORY_SLUG);
 	}
@@ -903,8 +991,8 @@ function foxyshop_manage_attributes($xml, $id, $att_type) {
 		$attribute_value = (string)$attribute->value;
 
 		$holder .= '<tr class="viewing">';
-		$holder .= '<td class="col1">' . $attribute_name . '</td>';
-		$holder .= '<td class="col2"><div>' . str_replace("\n", "<br />\n", $attribute_value) . '</div><a href="#" class="foxyshop_attribute_delete" attname="' . $attribute_name . '" rel="' . $id . '" title="Delete">' . __('Delete', 'foxyshop') . '</a><a href="#" class="foxyshop_attribute_edit" rel="' . $id . '" title="Edit">' . __('Edit', 'foxyshop') . '</a></td>'."\n";
+		$holder .= '<td class="col1">' . esc_html($attribute_name) . '</td>';
+		$holder .= '<td class="col2"><div>' . str_replace("\n", "<br />\n", esc_html($attribute_value)) . '</div><a href="#" class="foxyshop_attribute_delete" attname="' . esc_attr($attribute_name) . '" rel="' . esc_attr($id) . '" title="Delete">' . __('Delete', 'foxyshop') . '</a><a href="#" class="foxyshop_attribute_edit" rel="' . $id . '" title="Edit">' . __('Edit', 'foxyshop') . '</a></td>'."\n";
 		$holder .= '</tr>';
 	}
 	$holder .= "</tbody></table>\n";
@@ -937,13 +1025,22 @@ function foxyshop_manage_attributes_jquery($att_type) {
 		return false;
 	});
 
+	//Show Multi-Line Text Without Parsing It as HTML
+	function foxyshop_set_multiline_text(el, text) {
+		el.empty();
+		$.each(String(text).split("\n"), function(i, line) {
+			if (i > 0) el.append("<br />\n");
+			el.append(document.createTextNode(line));
+		});
+	}
+
 	//Cancel Edit Form
 	$(".foxyshop_attribute_list").on("click", ".foxyshop_cancel_save_attribute", function(e) {
 		var id = $(this).attr("rel");
-		var original_text = $(this).attr("original_text").replace("\n", "<br />\n");
+		var original_text = $(this).attr("original_text");
 		var parent_tr = $(this).parents(".foxyshop_attribute_list tr");
 		parent_tr.addClass("viewing");
-		parent_tr.find(".col2 div").html(original_text);
+		foxyshop_set_multiline_text(parent_tr.find(".col2 div"), original_text);
 		e.preventDefault();
 		return false;
 	});
@@ -953,13 +1050,17 @@ function foxyshop_manage_attributes_jquery($att_type) {
 		var id = $(this).attr("rel");
 		var att_name = $(".new_attribute_name[rel='" + id + "']").val();
 		var att_value = $(".new_attribute_value[rel='" + id + "']").val();
-		var manage_buttons = '<a href="#" class="foxyshop_attribute_delete" attname="' + att_name + '" title="Delete" rel="' + id + '">Delete</a><a href="#" class="foxyshop_attribute_edit" rel="' + id + '" title="Edit">Edit</a>';
+		var manage_buttons = [$('<a href="#" class="foxyshop_attribute_delete" title="Delete">Delete</a>').attr("attname", att_name).attr("rel", id), $('<a href="#" class="foxyshop_attribute_edit" title="Edit">Edit</a>').attr("rel", id)];
 
 		if (att_name && att_value) {
 			$.post(ajaxurl, {action: "foxyshop_attribute_manage", foxyshop_action: "save_attribute", security: "<?php echo wp_create_nonce("foxyshop-save-attribute"); ?>", att_type: "<?php echo esc_attr($att_type); ?>", id: id, att_name: att_name, att_value: att_value }, function(response) {
 				$(".foxyshop_add_attribute[rel='" + id + "']").show();
 				$("#new_attribute_container_" + id).remove();
-				$(".foxyshop_attribute_list[rel='" + id + "']").append('<tr class="viewing"><td class="col1">' + att_name + '</td><td class="col2"><div>' + att_value.replace("\n", "<br />\n") + '</div> ' + manage_buttons + '</td></tr>');
+				var new_row = $('<tr class="viewing"><td class="col1"></td><td class="col2"><div></div> </td></tr>');
+				new_row.find(".col1").text(att_name);
+				foxyshop_set_multiline_text(new_row.find(".col2 div"), att_value);
+				new_row.find(".col2").append(manage_buttons);
+				$(".foxyshop_attribute_list[rel='" + id + "']").append(new_row);
 			});
 		} else {
 			alert('Please enter a name and value before submitting.');
@@ -978,7 +1079,7 @@ function foxyshop_manage_attributes_jquery($att_type) {
 		if (att_value) {
 			$.post(ajaxurl, {action: "foxyshop_attribute_manage", foxyshop_action: "save_attribute", security: "<?php echo wp_create_nonce("foxyshop-save-attribute"); ?>", att_type: "<?php echo esc_attr($att_type); ?>", id: id, att_name: att_name, att_value: att_value }, function(response) {
 				parent_tr.addClass("viewing");
-				parent_tr.find(".col2 div").html(att_value.replace(/\n/g, "<br />\n"));
+				foxyshop_set_multiline_text(parent_tr.find(".col2 div"), att_value);
 			});
 		} else {
 			alert('Please enter a value before submitting.');
@@ -994,7 +1095,10 @@ function foxyshop_manage_attributes_jquery($att_type) {
 		var att_value = parent_tr.find(".col2 div").text();
 
 		parent_tr.removeClass("viewing");
-		parent_tr.find(".col2 div").html('<textarea placeholder="Value" class="edit_attribute_value" name="new_attribute_value" rel="' + id + '">' + att_value + '</textarea> <input type="button" value="Save Changes" class="button-primary foxyshop_save_attribute" rel="' + id + '" /> <br /> <input type="button" value="Cancel" class="button foxyshop_cancel_save_attribute" rel="' + id + '" original_text="' + att_value + '" />');
+		var edit_box = $('<textarea placeholder="Value" class="edit_attribute_value" name="new_attribute_value"></textarea>').attr("rel", id).val(att_value);
+		var save_button = $('<input type="button" value="Save Changes" class="button-primary foxyshop_save_attribute" />').attr("rel", id);
+		var cancel_button = $('<input type="button" value="Cancel" class="button foxyshop_cancel_save_attribute" />').attr("rel", id).attr("original_text", att_value);
+		parent_tr.find(".col2 div").empty().append(edit_box, " ", save_button, " <br /> ", cancel_button);
 
 		e.preventDefault();
 		return false;

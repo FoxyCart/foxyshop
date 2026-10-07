@@ -2,10 +2,10 @@
 Contributors: foxycart
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2AHG2QMABF8SG
 Tags: foxycart, shopping, cart, inventory, management, ecommerce, selling, subscription, foxy
-Requires at least: 3.1
-Tested up to: 6.7.2
-Requires PHP: 5.3
-Stable tag: 4.9.7
+Requires at least: 5.5
+Tested up to: 7.1
+Requires PHP: 7.0
+Stable tag: 4.9.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 FoxyShop provides a robust shopping cart and inventory management tool for use with FoxyCart's hosted e-commerce solution.
@@ -74,6 +74,26 @@ You can exclude this from being output on specific (or all) pages using the "Ski
 
 
 == Changelog ==
+
+= 4.9.8 =
+
+* Security release. Update immediately. See the security advisory for details.
+* After updating, if FoxyShop shows an "Action Required" notice, reset your API key on the FoxyShop Tools page and paste the new key into the store secret field in your FoxyCart admin. Purge any page cache afterwards.
+* Now requires PHP 7.0 and WordPress 5.5.
+* Admin screens, exports and AJAX actions now require the matching FoxyShop permission (the foxyshop_*_perm filters).
+* Staff accounts (users with editing, user-management, plugin, theme or unfiltered HTML capabilities on any site in the network) are no longer linked to FoxyCart customers, synced to FoxyCart, updated by the datafeed or logged in through single sign-on; they check out as guests. Customize with the foxyshop_staff_capabilities filter.
+* Single sign-on no longer links an existing FoxyCart customer to a WordPress user by email address; those users check out as guests (filter: foxyshop_sso_claim_existing_customer). Single sign-on return links expire within an hour and work once.
+* The datafeed only updates WordPress users already linked to the same FoxyCart customer (filter: foxyshop_datafeed_link_existing_user).
+* New users are no longer logged in automatically after registering (filter: foxyshop_new_user_auto_login).
+* While an older API key is in use, single sign-on logins and datafeed user and subscription updates are turned off until the key is reset.
+* Shortcode variations are only added to cart links when they match one of the product's own options (filter: foxyshop_shortcode_allow_unrestricted_signing). Unpublished products are no longer shown by shortcodes, and password-protected products show the password form.
+* The customer file upload endpoint now requires define('FOXYSHOP_ENABLE_USER_UPLOAD', true) in wp-config.php.
+* The API key can be set to a custom value starting with spfx. Settings exports no longer include the API key, and importing never replaces this site's keys or datafeed URL.
+* Spreadsheet exports prefix cells that could be read as formulas with an apostrophe.
+* The prettyPhoto lightbox no longer shows image titles.
+* Twig syntax in WordPress content is no longer evaluated on the FoxyCart checkout and receipt templates.
+* Bulk Hide/Unhide on the Orders screen works again.
+* If you copied foxyshop-datafeed-endpoint.php or the checkout/receipt templates into your theme, copy the updated versions.
 
 = 4.9.7 =
 
@@ -332,6 +352,10 @@ You can exclude this from being output on specific (or all) pages using the "Ski
 
 
 == Upgrade Notice ==
+
+= 4.9.8 =
+
+* Security release. Update immediately, then follow the "Action Required" notice in your WordPress admin if one is shown.
 
 = 4.9.7 =
 

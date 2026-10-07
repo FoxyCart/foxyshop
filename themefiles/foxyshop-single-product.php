@@ -12,6 +12,12 @@ This will allow you to upgrade FoxyShop without breaking your customizations. Mo
 <?php
 while (have_posts()) : the_post();
 
+	//Password-Protected Products Show the Password Form Instead of the Product
+	if (post_password_required()) {
+		echo get_the_password_form();
+		continue;
+	}
+
 	//Initialize Product
 	global $product;
 	$product = foxyshop_setup_product();

@@ -309,7 +309,6 @@ function foxyshop_product_meta_init() {
 	var FOXYSHOP_DIR = '" . esc_attr(FOXYSHOP_DIR) . "';
 	var FOXYSHOP_URL_BASE = '" . esc_url(FOXYSHOP_URL_BASE) . "';
 	var bloginfo_url = '" . esc_url(is_ssl() ? str_replace("http://", "https://", get_bloginfo("url")) : get_bloginfo("url")) . "';
-	var datafeed_url_key = '" . esc_attr($foxyshop_settings['datafeed_url_key']) . "';
 
 </script>";
 	}

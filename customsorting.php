@@ -39,6 +39,7 @@ function foxyshop_update_order() {
 		$result = count($IDs);
 		for($i = 0; $i < $result; $i++) {
 			$post_id = (int)str_replace(array("'", "id_"), "", $IDs[$i]);
+			if (get_post_type($post_id) != 'foxyshop_product') continue;
 			$categoryID = (int)sanitize_text_field($_POST['categoryID']);
 			if ($categoryID == 0) {
 				$wpdb->query($wpdb->prepare(
@@ -65,6 +66,7 @@ function foxyshop_revert_order() {
 	$result = count($IDs);
 	for($i = 0; $i < $result; $i++) {
 		$post_id = (int)str_replace(array("'", "id_"), "", $IDs[$i]);
+		if (get_post_type($post_id) != 'foxyshop_product') continue;
 		$categoryID = (int)sanitize_text_field($_POST['categoryID']);
 		if ($categoryID == 0) {
 			$wpdb->query($wpdb->prepare(
@@ -88,7 +90,7 @@ function foxyshop_custom_sort() {
 
 
 	//Reset Order
-	if (isset($_GET['upgrade_menu_order'])) {
+	if (isset($_GET['upgrade_menu_order']) && check_admin_referer('foxyshop-upgrade-menu-order')) {
 		foxyshop_upgrade_menu_order();
 	}
 
@@ -188,7 +190,7 @@ function foxyshop_custom_sort() {
 
 		} else {
 			echo ('<p><em>' . esc_html(sprintf(__('No %s Found For This Category.', 'foxyshop'), FOXYSHOP_PRODUCT_NAME_PLURAL)) . '</em></p>');
-			echo ('<p><a href="edit.php?post_type=foxyshop_product&amp;page=foxyshop_custom_sort&amp;upgrade_menu_order=1&amp;categoryID=' . esc_attr($categoryID) . '">Missing products? Click here.</a></p>');
+			echo ('<p><a href="edit.php?post_type=foxyshop_product&amp;page=foxyshop_custom_sort&amp;upgrade_menu_order=1&amp;categoryID=' . esc_attr($categoryID) . '&amp;_wpnonce=' . wp_create_nonce('foxyshop-upgrade-menu-order') . '">Missing products? Click here.</a></p>');
 		}
 
 	}

@@ -3,19 +3,21 @@
 if (!defined('ABSPATH')) exit();
 
 //When Saving Profile, These Actions Sync Data to FoxyCart
-add_action('profile_update', 'foxyshop_profile_update', 5);
+add_action('profile_update', 'foxyshop_profile_update', 5, 2);
 add_action('user_register', 'foxyshop_profile_add', 5);
 add_action('password_reset', 'foxyshop_password_reset_at_foxycart', 5, 2);
 
 //Reset the Password at FoxyCart on a WordPress Password Reset
 function foxyshop_password_reset_at_foxycart($wp_user, $new_password) {
 
-	//Get User Info
+	//Only Sync Customer Accounts Already Linked to a FoxyCart Customer
+	if (foxyshop_is_protected_user($wp_user->ID)) return;
 	$foxycart_customer_id = get_user_meta($wp_user->ID, 'foxycart_customer_id', true);
+	if (!$foxycart_customer_id) return;
 
 	//Send Updated Info to FoxyCart
 	$foxy_data = array("api_action" => "customer_save");
-	if ($foxycart_customer_id) $foxy_data["customer_id"] = $foxycart_customer_id;
+	$foxy_data["customer_id"] = $foxycart_customer_id;
 	$foxy_data["customer_email"] = $wp_user->user_email;
 	$foxy_data["customer_password"] = $new_password;
 	if ($wp_user->user_firstname) $foxy_data["customer_first_name"] = $wp_user->user_firstname;
@@ -24,24 +26,26 @@ function foxyshop_password_reset_at_foxycart($wp_user, $new_password) {
 }
 
 //Runs When WP Profile is Updated
-function foxyshop_profile_update($user_id) {
+function foxyshop_profile_update($user_id, $old_user_data = null) {
 	global $foxyshop_new_password_hash;
 
-	//Get User Info
+	//Only Sync Customer Accounts Already Linked to a FoxyCart Customer
+	if (foxyshop_is_protected_user($user_id)) return;
 	$foxycart_customer_id = get_user_meta($user_id, 'foxycart_customer_id', true);
+	if (!$foxycart_customer_id) return;
 
 	//Get User Data
 	$wp_user = get_userdata($user_id);
 
-	//Set The New Password
-	$new_password = $wp_user->user_pass;
-	if (isset($foxyshop_new_password_hash)) $new_password = $foxyshop_new_password_hash;
-
-	//Send Updated Info to FoxyCart
+	//Send Updated Info to FoxyCart, Including the Password Hash Only When It Changed
 	$foxy_data = array("api_action" => "customer_save");
-	if ($foxycart_customer_id) $foxy_data["customer_id"] = $foxycart_customer_id;
+	$foxy_data["customer_id"] = $foxycart_customer_id;
 	$foxy_data["customer_email"] = $wp_user->user_email;
-	$foxy_data["customer_password_hash"] = $new_password;
+	if (isset($foxyshop_new_password_hash)) {
+		$foxy_data["customer_password_hash"] = $foxyshop_new_password_hash;
+	} elseif (!is_object($old_user_data) || $old_user_data->user_pass !== $wp_user->user_pass) {
+		$foxy_data["customer_password_hash"] = $wp_user->user_pass;
+	}
 	if ($wp_user->user_firstname) $foxy_data["customer_first_name"] = $wp_user->user_firstname;
 	if ($wp_user->user_lastname) $foxy_data["customer_last_name"] = $wp_user->user_lastname;
 
@@ -49,45 +53,46 @@ function foxyshop_profile_update($user_id) {
 	if (has_filter('foxyshop_save_sso_to_foxycart')) $foxy_data = apply_filters('foxyshop_save_sso_to_foxycart', $foxy_data, $user_id, "update");
 
 	$foxy_response = foxyshop_get_foxycart_data($foxy_data);
-	$xml = simplexml_load_string($foxy_response, NULL, LIBXML_NOCDATA);
-	$foxycart_customer_id = (string)$xml->result != "ERROR" ? (string)$xml->customer_id : "";
-
-	//If FoxyCart Customer ID Returned, Add FoxyCart Customer ID To User Meta
-	if ($foxycart_customer_id) {
-		add_user_meta($user_id, 'foxycart_customer_id', $foxycart_customer_id, true);
-	}
 }
 
 
 //Runs When WP User is Added
 function foxyshop_profile_add($user_id) {
 
-	//Get User Data
-	$wp_user = get_userdata($user_id);
+	//Staff Accounts Are Never Linked to FoxyCart Customers
+	if (!foxyshop_is_protected_user($user_id)) {
 
-	//Set Foxy Data
-	$foxy_data = array("api_action" => "customer_save");
-	$foxy_data["customer_email"] = $wp_user->user_email;
-	$foxy_data["customer_password_hash"] = $wp_user->user_pass;
-	if ($wp_user->user_firstname) $foxy_data["customer_first_name"] = $wp_user->user_firstname;
-	if ($wp_user->user_lastname) $foxy_data["customer_last_name"] = $wp_user->user_lastname;
+		//Get User Data
+		$wp_user = get_userdata($user_id);
 
-	//Hook To Add Your Own Function to Update the $foxy_data array with your own data
-	if (has_filter('foxyshop_save_sso_to_foxycart')) $foxy_data = apply_filters('foxyshop_save_sso_to_foxycart', $foxy_data, $user_id, "add");
+		//Only Create a FoxyCart Customer When None Exists for This Email; Existing Customers Are Linked at Checkout
+		if (foxyshop_find_customer_id_by_email($wp_user->user_email) === '') {
 
-	//Send To FoxyCart
-	$foxy_response = foxyshop_get_foxycart_data($foxy_data);
-	$xml = simplexml_load_string($foxy_response, NULL, LIBXML_NOCDATA);
-	$foxycart_customer_id = (string)$xml->result != "ERROR" ? (string)$xml->customer_id : "";
+			//Set Foxy Data
+			$foxy_data = array("api_action" => "customer_save");
+			$foxy_data["customer_email"] = $wp_user->user_email;
+			$foxy_data["customer_password_hash"] = $wp_user->user_pass;
+			if ($wp_user->user_firstname) $foxy_data["customer_first_name"] = $wp_user->user_firstname;
+			if ($wp_user->user_lastname) $foxy_data["customer_last_name"] = $wp_user->user_lastname;
 
-	//If FoxyCart Customer ID Returned, Add FoxyCart Customer ID To User Meta
-	if ($foxycart_customer_id) {
-		add_user_meta($user_id, 'foxycart_customer_id', $foxycart_customer_id, true);
+			//Hook To Add Your Own Function to Update the $foxy_data array with your own data
+			if (has_filter('foxyshop_save_sso_to_foxycart')) $foxy_data = apply_filters('foxyshop_save_sso_to_foxycart', $foxy_data, $user_id, "add");
+
+			//Send To FoxyCart
+			$foxy_response = foxyshop_get_foxycart_data($foxy_data);
+			$xml = foxyshop_load_xml($foxy_response);
+			$foxycart_customer_id = $xml && (string)$xml->result != "ERROR" ? (string)$xml->customer_id : "";
+
+			//If FoxyCart Customer ID Returned, Add FoxyCart Customer ID To User Meta
+			if ($foxycart_customer_id && !foxyshop_customer_id_is_linked($foxycart_customer_id, $user_id)) {
+				add_user_meta($user_id, 'foxycart_customer_id', $foxycart_customer_id, true);
+			}
+		}
 	}
 
-	//Auto-login if user wasn't logged in before
+	//Auto-login if user wasn't logged in before (off by default)
 	//Note that if you don't have the querystring "redirect_to" set on the registration page the page will not redirect anywhere and won't appear logged in at first
-	$auto_login = apply_filters("foxyshop_new_user_auto_login", true);
+	$auto_login = apply_filters("foxyshop_new_user_auto_login", false);
 	if (!is_user_logged_in() && $auto_login) wp_set_auth_cookie($user_id, false, is_ssl());
 }
 
@@ -202,29 +207,42 @@ function foxyshop_reverse_sso_login() {
 	$redirect_url = apply_filters("foxyshop_reverse_sso_login_failed_destination", get_home_url());
 	$result = "failed";
 
-	if (!isset($_REQUEST['foxycart_customer_id']) || !isset($_GET['timestamp']) || !isset($_GET['fc_auth_token'])) {
+	if (!isset($_GET['foxycart_customer_id']) || !isset($_GET['timestamp']) || !isset($_GET['fc_auth_token'])) {
 		wp_redirect($redirect_url);
 		die;
 	}
 
 	//Build Token
 	global $foxyshop_settings;
+	$customer_id = sanitize_text_field($_GET['foxycart_customer_id']);
 	$timestamp = sanitize_text_field($_GET['timestamp']);
-	$current_timestamp = date("U");
-	$calculated_auth_token = sha1(sanitize_text_field($_GET['foxycart_customer_id']) . '|' . sanitize_text_field($_GET['timestamp']) . '|' . sanitize_text_field($foxyshop_settings['api_key']));
+	$auth_token = strtolower(sanitize_text_field($_GET['fc_auth_token']));
+	$current_timestamp = time();
+	$calculated_auth_token = sha1($customer_id . '|' . $timestamp . '|' . $foxyshop_settings['api_key']);
+
+	//Tokens must expire within the hour and can only be used once; logins also require a current API key
+	$max_lifetime = (int)apply_filters('foxyshop_reverse_sso_max_lifetime', 3900);
+	$token_ok = !foxyshop_api_key_is_legacy($foxyshop_settings['api_key']) && ctype_digit($customer_id) && $customer_id !== '0'
+		&& ctype_digit($timestamp) && $timestamp >= $current_timestamp && $timestamp <= $current_timestamp + $max_lifetime
+		&& hash_equals($calculated_auth_token, $auth_token);
+	$used_token_key = 'foxyshop_sso_used_' . substr(sha1($auth_token), 0, 32);
+	if ($token_ok && get_transient($used_token_key)) $token_ok = false;
 
 	//Token Matches, Do Login
-	if ($calculated_auth_token === $_GET['fc_auth_token'] && $timestamp >= $current_timestamp) {
+	if ($token_ok) {
 
-		//Lookup ID By FoxyCart Customer ID
-		$wp_user_id = 0;
-		$user_data = get_users(array('meta_key' => 'foxycart_customer_id', 'meta_value' => sanitize_text_field($_GET['foxycart_customer_id'])));
-		foreach ($user_data as $user) {
-			$wp_user_id = $user->ID;
+		//Lookup ID By FoxyCart Customer ID (must match exactly one user)
+		$user_ids = get_users(array('meta_key' => 'foxycart_customer_id', 'meta_value' => $customer_id, 'fields' => 'ID', 'number' => 2));
+		$wp_user_id = count($user_ids) == 1 ? (int)$user_ids[0] : 0;
+
+		//Customer Accounts Only
+		if ($wp_user_id && foxyshop_is_protected_user($wp_user_id)) {
+			$wp_user_id = 0;
 		}
 
 		//Login
 		if ($wp_user_id) {
+			set_transient($used_token_key, 1, $max_lifetime + 300);
 			$redirect_url = apply_filters("foxyshop_reverse_sso_login_destination", get_home_url());
 			wp_set_auth_cookie($wp_user_id);
 			$result = "ok";
@@ -233,7 +251,10 @@ function foxyshop_reverse_sso_login() {
 
 	//Is This a JSONP Request?
 	if (isset($_GET['callback'])) {
-		echo htmlspecialchars(esc_attr($_GET['callback'])) . '({ "result": "' . esc_attr($result) . '"})';
+		$callback = is_string($_GET['callback']) && preg_match('/^[A-Za-z_$][A-Za-z0-9_$.]{0,63}$/', $_GET['callback']) ? $_GET['callback'] : 'callback';
+		header('Content-Type: application/javascript; charset=utf-8');
+		header('X-Content-Type-Options: nosniff');
+		echo $callback . '({ "result": "' . esc_js($result) . '"})';
 		die;
 	}
 

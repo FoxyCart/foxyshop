@@ -22,15 +22,15 @@ remove_action('init', 'foxyshop_insert_jquery');
 remove_action('wp_footer', 'foxyshop_insert_google_analytics', 100);
 remove_action('wp_footer', 'foxyshop_insert_foxycart_loader');
 
-//Wrap RAW tags
-add_action('wp_head', 'foxycart_template_start_raw', 2);
-add_action('wp_head', 'foxycart_template_end_raw', 999);
-function foxycart_template_start_raw() { echo "{% raw %}"; }
-function foxycart_template_end_raw() { echo "{% endraw %}<style></style>"; }
+//WordPress Output Is Wrapped in {% raw %}; FoxyCart's Own Includes (Marked Below) Are Left for Twig
+global $foxyshop_twig_marker;
+$foxyshop_twig_marker = foxyshop_twig_marker();
 
 //Put Special CSS in Head
 add_action('wp_head', 'foxycart_template_header_includes', 1);
 function foxycart_template_header_includes() {
+	global $foxyshop_twig_marker;
+	echo '<!--' . $foxyshop_twig_marker . '-->';
 	?>
 <!--<link rel="shortcut icon" href="<?php bloginfo("url");?>/favicon.ico" />-->
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -51,16 +51,19 @@ function foxycart_template_header_includes() {
 
 </style>
 	<?php
+	echo '<!--/' . $foxyshop_twig_marker . '-->';
 }
 
-get_header(); ?>
+ob_start();
+get_header();
+echo foxyshop_twig_raw_except(ob_get_clean(), $foxyshop_twig_marker) . '<style></style>'; ?>
 
 </head>
 <body>
 <!-- has to be here because of chrome bug -->
 {% include 'svg.inc.twig' %}
 
-<?php foxyshop_include('header'); ?>
+<?php ob_start(); foxyshop_include('header'); echo foxyshop_twig_raw(ob_get_clean()); ?>
 <div class="foxyshop_container">
 
 
@@ -69,13 +72,14 @@ get_header(); ?>
 {{ block('receipt') }}
 
 </div>
-<?php foxyshop_include('footer'); ?>
+<?php ob_start(); foxyshop_include('footer'); ?>
 
 <script type="text/javascript">
 jQuery(document).ready(function($){
 	$("html").attr("id", "fc");
 });
 </script>
+<?php echo foxyshop_twig_raw(ob_get_clean()); ?>
 
 <!-- FC footer script insertion -->{% include template_from_string(fc_footer_content) %}<!-- /FC footer scripts -->
 
@@ -83,4 +87,4 @@ jQuery(document).ready(function($){
 	<script src="//{{ config.store_domain }}/static/scripts/respond/respond.1.4.2.js" charset="utf-8"></script>
 <![endif]-->
 
-<?php get_footer(); ?>
+<?php ob_start(); get_footer(); echo foxyshop_twig_raw(ob_get_clean()); ?>
