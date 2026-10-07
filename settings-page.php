@@ -172,7 +172,7 @@ function foxyshop_settings_page() {
 
 	//Confirmation Saved
 	if (isset($_GET['saved'])) echo '<div class="updated"><p>' . __('Your Settings Have Been Saved.', 'foxyshop') . '</p></div>';
-	if (isset($_GET['apikeyerror'])) echo '<div class="error"><p>' . esc_html__('The API key was not changed: it must start with spfx followed by 32 to 96 letters, numbers or symbols (no spaces).', 'foxyshop') . '</p></div>';
+	if (isset($_GET['apikeyerror'])) echo '<div class="error"><p>' . esc_html__('The Store Secret was not changed: it must start with spfx followed by 32 to 96 letters, numbers or symbols (no spaces).', 'foxyshop') . '</p></div>';
 
 	//Setup Prompt Hidden
 	if (isset($_GET['hide_setup_prompt'])) {
@@ -184,7 +184,7 @@ function foxyshop_settings_page() {
 	if (isset($_GET['setup'])) echo '<div class="updated"><p>' . __('<strong>Congratulations!</strong> You are all set up and ready to go. You may now review all the settings on this page and start entering products.', 'foxyshop') . '</p></div>';
 
 	//Warning PHP Version
-	if (version_compare(PHP_VERSION, '5.1.2', "<")) echo '<div class="error"><p>' . sprintf(__('<strong>Warning:</strong> You are using PHP version %s. FoxyShop requires PHP version 5.1.2 or higher to utilize the required hmac_has() functions. Without upgrading you will experience problems adding items to the cart and completing other tasks. After upgrading, make sure that you reset your API key (on the FoxyShop Tools page) to ensure that you have a fully secure key.', 'foxyshop'), PHP_VERSION) . '</p></div>';
+	if (version_compare(PHP_VERSION, '5.1.2', "<")) echo '<div class="error"><p>' . sprintf(__('<strong>Warning:</strong> You are using PHP version %s. FoxyShop requires PHP version 5.1.2 or higher to utilize the required hmac_has() functions. Without upgrading you will experience problems adding items to the cart and completing other tasks. After upgrading, make sure that you reset your Store Secret (on the FoxyShop Tools page) to ensure that you have a fully secure key.', 'foxyshop'), PHP_VERSION) . '</p></div>';
 
 	//Warning Header/Footer Missing
 	if ((!file_exists(TEMPLATEPATH.'/header.php') || !file_exists(TEMPLATEPATH.'/footer.php')) && !isset($skip_header_warning)) echo '<div class="error"><p>' . __('<strong>Warning:</strong> Your theme does not appear to be using header.php or footer.php. Without these files FoxyShop pages will show up unstyled. This error can often show up if you are using a WordPress framework that is bypassing the get_header() and get_footer() functions.', 'foxyshop') . '</p></div>';

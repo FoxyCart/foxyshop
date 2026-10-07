@@ -213,7 +213,7 @@ function foxyshop_tools() {
 	}
 
 	//Confirmation Key Reset
-	if (isset($_GET['key'])) echo '<div class="updated"><p>' . esc_html(sprintf(__('Your API Key Has Been Reset: "%s". Please Update FoxyCart With Your New Key.', 'foxyshop'), $foxyshop_settings['api_key'])) . '</p></div>';
+	if (isset($_GET['key'])) echo '<div class="updated"><p>' . esc_html(sprintf(__('Your Store Secret Has Been Reset: "%s". Please Update FoxyCart With Your New Store Secret.', 'foxyshop'), $foxyshop_settings['api_key'])) . '</p></div>';
 
 	//Flush Rewrite Rules
 	if (isset($_GET['foxyshop_flush_rewrite_rules'])) echo '<div class="updated"><p>' . __('WordPress rewrite rules have been flushed.', 'foxyshop') . '</p></div>';
@@ -376,7 +376,7 @@ function foxyshop_tools() {
 			</tr>
 			<tr>
 				<td>
-					<span>Need a new API key?</span> <a href="edit.php?foxyshop_api_key_reset=1&amp;foxyshop_save_tools=1&amp;_wpnonce=<?php echo wp_create_nonce('reset-foxyshop-api-key'); ?>" onclick="return apiresetcheck();" class="button"><?php _e('Reset API Key', 'foxyshop'); ?></a>
+					<span>Need a new Store Secret?</span> <a href="edit.php?foxyshop_api_key_reset=1&amp;foxyshop_save_tools=1&amp;_wpnonce=<?php echo wp_create_nonce('reset-foxyshop-api-key'); ?>" onclick="return apiresetcheck();" class="button"><?php _e('Reset Store Secret', 'foxyshop'); ?></a>
 				</td>
 			</tr>
 		</tbody>
@@ -590,7 +590,7 @@ echo "</div>";
 			<tr>
 				<td>
 					<label for="foxyshop_export_settings"><?php echo __('Copy String To Your Clipboard to Export FoxyShop Settings', 'foxyshop'); ?>:</label>
-					<p class="description"><?php _e('The API key, datafeed URL key and Google authorization are not included, and importing never replaces this site\'s own keys.', 'foxyshop'); ?></p>
+					<p class="description"><?php _e('The Store Secret, datafeed URL key and Google authorization are not included, and importing never replaces this site\'s own keys.', 'foxyshop'); ?></p>
 					<div style="clear: both;"></div>
 					<textarea id="foxyshop_export_settings" name="foxyshop_export_settings" wrap="auto" readonly="readonly" onclick="this.select();" style="font-size: 13px; float: left; width:500px; line-height: 110%; resize: none; height: 80px; font-family: courier;"><?php echo esc_textarea($foxyshop_export_settings); ?></textarea>
 				</td>
@@ -645,7 +645,7 @@ function foxyshop_inline_tools_page_js($var_type_array, $variation_key) {
 
    echo "<script type='text/javascript'>
 function apiresetcheck() {
-	if (confirm (\"Are you sure you want to reset your API Key?\\nYou will not be able to recover your old key.\")) {
+	if (confirm (\"Are you sure you want to reset your Store Secret?\\nYou will not be able to recover your old Store Secret.\")) {
 		return true;
 	} else {
 		return false;

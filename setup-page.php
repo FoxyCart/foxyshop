@@ -65,7 +65,7 @@ function foxyshop_setup_legacy() {
 </td>
 <td align="center" width="50%">
 <h3 style="margin-top: .5em;">I already have an account</h3>
-<p><a href="http://admin.foxy.io/" target="_blank" class="button"><?php _e('Login To FoxyCart Account'); ?></a></p>
+<p><a href="https://admin.foxy.io/" target="_blank" class="button"><?php _e('Login To FoxyCart Account'); ?></a></p>
 </td>
 </tr>
 </table>
@@ -130,7 +130,7 @@ function foxyshop_setup_legacy() {
 		<tr>
 			<td><h3>2A</h3></td>
 			<td>
-				<div>Check the Box to Enable Cart Validation (REQUIRED). Then replace the existing API key with this one:</div>
+				<div>Check the Box to Enable Cart Validation (REQUIRED). Then replace the existing Store Secret with this one:</div>
 				<input type="text" id="foxyshop_key" name="key" value="<?php echo esc_attr($foxyshop_settings['api_key']); ?>" readonly="readonly" onclick="this.select();" />
 			</td>
 		</tr>
