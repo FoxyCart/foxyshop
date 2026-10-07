@@ -432,14 +432,15 @@ jQuery(document).ready(function($){
 		e.preventDefault();
 		var badge = $(this);
 		var imageId = badge.data("image-id");
-		var textToCopy = imageId;
-		navigator.clipboard.writeText(textToCopy).then(function() {
-			var originalText = badge.text();
+		//The Clipboard API only exists on HTTPS admin pages
+		if (!navigator.clipboard) return false;
+		navigator.clipboard.writeText(String(imageId)).then(function() {
+			clearTimeout(badge.data("resetTimer"));
 			badge.text("Copied!").addClass("copied");
-			setTimeout(function() {
-				badge.text(originalText).removeClass("copied");
-			}, 1500);
-		});
+			badge.data("resetTimer", setTimeout(function() {
+				badge.text("#" + imageId).removeClass("copied");
+			}, 1500));
+		}).catch(function() {});
 		return false;
 	});
 
