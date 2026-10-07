@@ -591,7 +591,8 @@ function foxyshop_activation() {
 
 		$foxyshop_settings = get_option("foxyshop_settings");
 		if (is_string($foxyshop_settings) && is_serialized($foxyshop_settings)) $foxyshop_settings = unserialize($foxyshop_settings, array('allowed_classes' => false));
-		if (!is_array($foxyshop_settings) || !foxyshop_is_plain_data($foxyshop_settings)) $foxyshop_settings = array();
+		if (!is_array($foxyshop_settings)) $foxyshop_settings = array();
+		$foxyshop_settings = array_filter($foxyshop_settings, 'foxyshop_is_plain_data');
 
 		//Run Some Upgrades
 		if (!array_key_exists('version',$foxyshop_settings)) $foxyshop_settings['version'] = "0";
