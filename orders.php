@@ -134,7 +134,8 @@ function foxyshop_order_management() {
 	if (version_compare($foxyshop_settings['version'], '2.0', ">=")) {
 		$foxy_data_defaults["status_filter"] = "all";
 	}
-	$foxy_data = wp_parse_args(array("api_action" => "transaction_list"), apply_filters('foxyshop_transaction_filter_defaults',$foxy_data_defaults));
+	$foxy_data_defaults = apply_filters('foxyshop_transaction_filter_defaults', $foxy_data_defaults);
+	$foxy_data = wp_parse_args(array("api_action" => "transaction_list"), $foxy_data_defaults);
 	$foxyshop_querystring = "?post_type=foxyshop_product&amp;page=foxyshop_order_management&amp;foxyshop_search=1";
 	$foxyshop_hidden_input = "";
 
@@ -178,8 +179,9 @@ function foxyshop_order_management() {
 		<input type="hidden" name="page" value="foxyshop_order_management" />
 
 		<table class="widefat">
-		<thead><tr><th colspan="2"><img src="<?php echo esc_url(FOXYSHOP_DIR); ?>/images/search-icon.png" alt="" /><?php _e('Search Options', 'foxyshop'); ?></th></tr></thead>
-		<tbody><tr><td>
+		<?php $search_open = foxyshop_search_panel_open('orders', $foxy_data, $foxy_data_defaults); ?>
+		<thead><tr><th colspan="2" style="cursor: pointer;" class="foxyshop_search_toggle" data-search-page="orders" tabindex="0" role="button" aria-expanded="<?php echo $search_open ? 'true' : 'false'; ?>"><img src="<?php echo esc_url(FOXYSHOP_DIR); ?>/images/search-icon.png" alt="" /><?php _e('Search Options', 'foxyshop'); ?><span class="dashicons <?php echo $search_open ? 'dashicons-arrow-down' : 'dashicons-arrow-right'; ?>"></span></th></tr></thead>
+		<tbody<?php echo $search_open ? '' : ' style="display: none;"'; ?>><tr><td>
 
 			<div class="foxyshop_field_control foxyshop_radio_label_container">
 				<label><?php _e('Transaction Status', 'foxyshop'); ?></label>
@@ -284,8 +286,8 @@ function foxyshop_order_management() {
 			<div class="foxyshop_field_control">
 				<label for="customer_ip_filter"><?php _e('Customer IP', 'foxyshop'); ?></label><input type="text" name="customer_ip_filter" id="customer_ip_filter" value="<?php echo esc_attr($foxy_data['customer_ip_filter']); ?>" />
 			</div>
-
-			<div style="clear: both;"></div>
+		</td></tr></tbody>
+		<tfoot><tr><td colspan="2">
 			<select name="transaction_search_type" id="transaction_search_type">
 				<option value="show_orders"<?php echo ($transaction_search_type == "show_orders" ? ' selected="selected"' : ''); ?>><?php _e('Show Orders', 'foxyshop'); ?></option>
 				<option value="print_recipts" target="_blank"><?php _e('Print Receipts', 'foxyshop'); ?></option>
@@ -307,7 +309,8 @@ function foxyshop_order_management() {
 				echo '</div>';
 			}
 			?>
-		</td></tr></tbody></table>
+		</td></tr></tfoot>
+		</table>
 
 		</form>
 
@@ -404,7 +407,7 @@ function foxyshop_order_management() {
 					} else {
 						$holder .= $transaction_detail_option->product_option_value;
 					}
-					if ((string)$transaction_detail_option->price_mod != '0.000') $holder .= ' (' . (strpos("-",$transaction_detail_option->price_mod) !== false ? '-' : '+') . foxyshop_currency((double)$transaction_detail_option->price_mod) . ')';
+					if ((string)$transaction_detail_option->price_mod != '0.000') $holder .= ' (' . (strpos($transaction_detail_option->price_mod, "-") !== false ? '' : '+') . foxyshop_currency((double)$transaction_detail_option->price_mod) . ')';
 					$holder .= '</li>';
 				}
 
@@ -597,7 +600,7 @@ function foxyshop_order_management() {
 					} else {
 						$holder .= $transaction_detail_option->product_option_value;
 					}
-					if ((string)$transaction_detail_option->price_mod != '0.000') $holder .= ' (' . (strpos("-",$transaction_detail_option->price_mod) !== false ? '-' : '+') . foxyshop_currency((double)$transaction_detail_option->price_mod) . ')';
+					if ((string)$transaction_detail_option->price_mod != '0.000') $holder .= ' (' . (strpos($transaction_detail_option->price_mod, "-") !== false ? '' : '+') . foxyshop_currency((double)$transaction_detail_option->price_mod) . ')';
 					$holder .= '</li>';
 				}
 

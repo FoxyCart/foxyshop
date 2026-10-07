@@ -12,7 +12,7 @@ FoxyShop provides a robust shopping cart and inventory management tool for use w
 
 == Description ==
 
-FoxyShop is a complete shopping cart solution for WordPress. This plugin connects to [FoxyCart's]((https://affiliate.foxycart.com/idevaffiliate.php?id=211)) hosted shopping cart service and will allow you to manage your inventory from a WordPress backend. FoxyShop was built to make the integration of FoxyCart and WordPress a breeze. Products are easy to manage and the flexible templates make it easy for developers to quickly build their storefront. The FoxyShop plugin is exhaustively documented, actively maintained, and completely free. And it's foxy, too.
+FoxyShop is a complete shopping cart solution for WordPress. This plugin connects to [FoxyCart's]((https://foxy.io)) hosted shopping cart service and will allow you to manage your inventory from a WordPress backend. FoxyShop was built to make the integration of FoxyCart and WordPress a breeze. Products are easy to manage and the flexible templates make it easy for developers to quickly build their storefront. The FoxyShop plugin is exhaustively documented, actively maintained, and completely free. And it's foxy, too.
 
 Visit [foxy-shop.com](http://www.foxy-shop.com/) for full documentation and instructions.
 

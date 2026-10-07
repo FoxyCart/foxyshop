@@ -38,7 +38,8 @@ function foxyshop_subscription_management() {
 		$foxy_data_defaults["custom_field_value_filter"] = "";
 	}
 
-	$foxy_data = wp_parse_args(array("api_action" => "subscription_list"), apply_filters('foxyshop_subscription_filter_defaults',$foxy_data_defaults));
+	$foxy_data_defaults = apply_filters('foxyshop_subscription_filter_defaults', $foxy_data_defaults);
+	$foxy_data = wp_parse_args(array("api_action" => "subscription_list"), $foxy_data_defaults);
 	$foxyshop_querystring = "?post_type=foxyshop_product&amp;page=foxyshop_subscription_management&amp;foxyshop_search=1";
 	$foxyshop_hidden_input = "";
 
@@ -83,8 +84,9 @@ function foxyshop_subscription_management() {
 		<input type="hidden" name="page" value="foxyshop_subscription_management" />
 
 		<table class="widefat">
-		<thead><tr><th colspan="2"><img src="<?php echo esc_url(FOXYSHOP_DIR); ?>/images/search-icon.png" alt="" /><?php _e('Search Options', 'foxyshop'); ?></th></tr></thead>
-		<tbody><tr><td>
+		<?php $search_open = foxyshop_search_panel_open('subscriptions', $foxy_data, $foxy_data_defaults); ?>
+		<thead><tr><th colspan="2" style="cursor: pointer;" class="foxyshop_search_toggle" data-search-page="subscriptions" tabindex="0" role="button" aria-expanded="<?php echo $search_open ? 'true' : 'false'; ?>"><img src="<?php echo esc_url(FOXYSHOP_DIR); ?>/images/search-icon.png" alt="" /><?php _e('Search Options', 'foxyshop'); ?><span class="dashicons <?php echo $search_open ? 'dashicons-arrow-down' : 'dashicons-arrow-right'; ?>"></span></th></tr></thead>
+		<tbody<?php echo $search_open ? '' : ' style="display: none;"'; ?>><tr><td>
 			<div class="foxyshop_field_control">
 				<label for="is_active_filter"><?php _e('Subscription Type', 'foxyshop'); ?></label>
 				<select name="is_active_filter" id="is_active_filter">
@@ -167,11 +169,12 @@ function foxyshop_subscription_management() {
 				<label for="customer_last_name_filter"><?php _e('Customer Last Name', 'foxyshop'); ?></label><input type="text" name="customer_last_name_filter" id="customer_last_name_filter" value="<?php echo esc_attr($foxy_data['customer_last_name_filter']); ?>" />
 			</div>
 
-			<div style="clear: both;"></div>
+		</td></tr></tbody>
+		<tfoot><tr><td colspan="2">
 			<button type="submit" id="foxyshop_search_submit" name="foxyshop_search_submit" class="button-primary" style="clear: both; margin-top: 10px;"><?php _e('Search Records Now', 'foxyshop'); ?></button>
 			<button type="button" class="button" style="margin-left: 15px; margin-top: 10px;" onclick="document.location.href = 'edit.php?post_type=foxyshop_product&page=foxyshop_subscription_management';"><?php _e('Reset Form', 'foxyshop'); ?></button>
-
-		</td></tr></tbody></table>
+		</td></tr></tfoot>
+		</table>
 
 
 		</form>
