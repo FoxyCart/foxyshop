@@ -1018,5 +1018,3 @@ function foxyshop_manage_attributes_jquery($att_type) {
 <?php
 
 }
-
-
