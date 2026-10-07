@@ -6,6 +6,7 @@ if (!defined('ABSPATH')) exit();
 add_action('admin_init', 'foxyshop_save_settings');
 function foxyshop_save_settings() {
 	if (!isset($_POST['foxyshop_settings_update'])) return;
+	foxyshop_require_capability('foxyshop_settings_perm');
 	if (!check_admin_referer('update-foxyshop-options')) return;
 	global $foxyshop_settings;
 
@@ -87,9 +88,15 @@ function foxyshop_save_settings() {
 		$foxyshop_settings["orderdesk_url"] = "";
 	}
 
-	//Customise API Key
-	if (isset($_POST['api_key']) && !empty($_POST['api_key'])) {
-		$foxyshop_settings["api_key"] = sanitize_text_field($_POST['api_key']);
+	//Customise API Key (spfx prefix, 36 to 100 characters)
+	$api_key_error = false;
+	if (isset($_POST['api_key']) && is_string($_POST['api_key']) && $_POST['api_key'] !== "") {
+		$new_api_key = trim(wp_unslash($_POST['api_key']));
+		if (preg_match('/^spfx[\x21-\x7E]{32,96}$/', $new_api_key)) {
+			$foxyshop_settings["api_key"] = $new_api_key;
+		} elseif ($new_api_key !== $foxyshop_settings["api_key"]) {
+			$api_key_error = true;
+		}
 	}
 
 
@@ -128,7 +135,7 @@ function foxyshop_save_settings() {
 
 	//Save
 	update_option("foxyshop_settings", $foxyshop_settings);
-	wp_redirect("edit.php?post_type=foxyshop_product&page=foxyshop_settings_page&saved=1");
+	wp_redirect("edit.php?post_type=foxyshop_product&page=foxyshop_settings_page&saved=1" . ($api_key_error ? "&apikeyerror=1" : ""));
 	exit;
 }
 
@@ -165,6 +172,7 @@ function foxyshop_settings_page() {
 
 	//Confirmation Saved
 	if (isset($_GET['saved'])) echo '<div class="updated"><p>' . __('Your Settings Have Been Saved.', 'foxyshop') . '</p></div>';
+	if (isset($_GET['apikeyerror'])) echo '<div class="error"><p>' . esc_html__('The API key was not changed: it must start with spfx followed by 32 to 96 letters, numbers or symbols (no spaces).', 'foxyshop') . '</p></div>';
 
 	//Setup Prompt Hidden
 	if (isset($_GET['hide_setup_prompt'])) {
@@ -237,8 +245,8 @@ function foxyshop_settings_page() {
 			<tr>
 				<td style="border-bottom: 0 none;">
 					<label for="foxyshop_key"><?php _e('API Key', 'foxyshop'); ?>:</label>
-					<input type="text" id="foxyshop_key" name="api_key" value="<?php echo esc_attr($foxyshop_settings['api_key']); ?>" readonly="readonly" />
-					<a href="#" class="foxyshophelp">The API key is saved here and stored on your FoxyCart account so that your cart information can be encrypted to avoid link tampering. The API key is also used to communicate with FoxyCart and retrieve your order information.<br /><br />This API key is generated automatically and cannot be edited. Go to the tools page if you need to reset this key.</a>
+					<input type="text" id="foxyshop_key" name="api_key" value="<?php echo esc_attr($foxyshop_settings['api_key']); ?>" readonly="readonly" autocomplete="off" />
+					<a href="#" class="foxyshophelp">The API key is saved here and stored on your FoxyCart account so that your cart information can be encrypted to avoid link tampering. The API key is also used to communicate with FoxyCart and retrieve your order information.<br /><br />This API key is generated automatically. You can instead enter your own store secret: it must start with spfx followed by at least 32 random characters. Go to the tools page if you need to reset this key.</a>
 					<div style="clear: both; padding: 5px 0; font-style: italic;"><strong style="color: #BB1E1E;">Required Setup:</strong> Enter this API key in the <b>store secret</b> field on the advanced menu of your <a href="https://affiliate.foxycart.com/idevaffiliate.php?id=211&url=https://admin.foxycart.com/" target="_blank">FoxyCart admin</a> and check the box to enable cart validation.</div>
 
 					<div style="clear: both;"></div>

@@ -46,8 +46,7 @@ function foxyshop_category_sort() {
 	$success = "";
 
 	if (isset($_POST['submit_new_category_order'])) {
-		//if (check_admin_referer('update-foxyshop-sorting-options')) $success = foxyshop_category_update_order();
-		$success = foxyshop_category_update_order();
+		if (check_admin_referer('update-foxyshop-sorting-options')) $success = foxyshop_category_update_order();
 	} elseif (isset($_POST['revert_category_order'])) {
 		if (check_admin_referer('update-foxyshop-sorting-options')) $success = foxyshop_category_revert_order();
 	}
