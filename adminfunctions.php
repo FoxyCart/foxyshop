@@ -502,9 +502,20 @@ function foxyshop_api_key_is_legacy($api_key) {
 	return (bool)preg_match('/^(spfx|sp92fx)[0-9a-f]{64}$/', (string)$api_key);
 }
 
+//An object unserialized without its class is saved back under its original class name, so only allow arrays and scalars
+function foxyshop_is_plain_data($value) {
+	if (is_array($value)) {
+		foreach ($value as $item) {
+			if (!foxyshop_is_plain_data($item)) return false;
+		}
+		return true;
+	}
+	return is_scalar($value) || is_null($value);
+}
+
 //Plugin Activation Function
 function foxyshop_activation() {
-	global $wpdb, $google_product_field_names;
+	global $google_product_field_names;
 
 	// Using a static english fallback if the constant isn't defined yet due to WP requiring loading translations only in init
 	$product_singular = defined('FOXYSHOP_PRODUCT_NAME_SINGULAR') ? FOXYSHOP_PRODUCT_NAME_SINGULAR : 'Product';
@@ -578,17 +589,9 @@ function foxyshop_activation() {
 	//Upgrade Tasks
 	} else {
 
-		$foxyshop_settings = maybe_unserialize(get_option("foxyshop_settings")); //Double Serialization Repair 3.6
-
-		//Double Serialization Repair 3.6
-		$foxyshop_category_sort = get_option("foxyshop_category_sort");
-		if (is_serialized($foxyshop_category_sort)) {
-			update_option('foxyshop_category_sort', unserialize($foxyshop_category_sort));
-		}
-		$foxyshop_saved_variations = get_option("foxyshop_saved_variations");
-		if (is_serialized($foxyshop_saved_variations)) {
-			update_option('foxyshop_saved_variations', unserialize($foxyshop_saved_variations));
-		}
+		$foxyshop_settings = get_option("foxyshop_settings");
+		if (is_string($foxyshop_settings) && is_serialized($foxyshop_settings)) $foxyshop_settings = unserialize($foxyshop_settings, array('allowed_classes' => false));
+		if (!is_array($foxyshop_settings) || !foxyshop_is_plain_data($foxyshop_settings)) $foxyshop_settings = array();
 
 		//Run Some Upgrades
 		if (!array_key_exists('version',$foxyshop_settings)) $foxyshop_settings['version'] = "0";
@@ -661,27 +664,6 @@ function foxyshop_activation() {
 				}
 			}
 			if (array_key_exists('max_variations', $foxyshop_settings)) unset($foxyshop_settings['max_variations']);
-		}
-
-		//Remove Double Serialization in 3.6
-		if (version_compare($foxyshop_settings['foxyshop_version'], '3.6', "<")) {
-
-			//Product Variations and Inventory Levels
-			$products = get_posts(array('post_type' => 'foxyshop_product', 'numberposts' => -1, 'post_status' => null));
-			foreach ($products as $product) {
-				$variations = get_post_meta($product->ID,'_variations',1);
-				$inventory_levels = get_post_meta($product->ID,'_inventory_levels',1);
-				if (is_serialized($variations)) update_post_meta($product->ID, '_variations', unserialize($variations));
-				if (is_serialized($inventory_levels)) update_post_meta($product->ID, '_inventory_levels', unserialize($inventory_levels));
-			}
-
-			//User Subscriptions
-			$user_list = $wpdb->get_results("SELECT user_id, meta_value from $wpdb->usermeta WHERE meta_key = 'foxyshop_subscription' AND meta_value != ''");
-			foreach ((array)$user_list as $user) {
-				$meta_value = $user->meta_value;
-				$meta_value = maybe_unserialize($meta_value);
-				if (is_serialized($meta_value)) update_user_meta($user->user_id, 'foxyshop_subscription', unserialize($meta_value));
-			}
 		}
 
 		//Upgrade Google Product Fields in 3.7

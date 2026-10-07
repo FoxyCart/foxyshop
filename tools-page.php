@@ -27,18 +27,20 @@ function foxyshop_save_tools() {
 			exit;
 		} else {
 			$imported_settings = unserialize($decrypted[0], array('allowed_classes' => false));
-			if (!is_array($imported_settings)) {
+			$imported_category_sort = unserialize($decrypted[1], array('allowed_classes' => false));
+			$imported_saved_variations = unserialize($decrypted[2], array('allowed_classes' => false));
+			if (!is_array($imported_settings) || !foxyshop_is_plain_data(array($imported_settings, $imported_category_sort, $imported_saved_variations))) {
 				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&importerror=1');
 				exit;
 			}
 
-			//Always Keep This Site's Own Keys
-			foreach (array('api_key', 'datafeed_url_key', 'google_product_auth') as $secret_setting) {
-				$imported_settings[$secret_setting] = isset($foxyshop_settings[$secret_setting]) ? $foxyshop_settings[$secret_setting] : '';
+			//Always Keep This Site's Own Keys and Plugin Version
+			foreach (array('api_key', 'datafeed_url_key', 'google_product_auth', 'foxyshop_version') as $local_setting) {
+				$imported_settings[$local_setting] = isset($foxyshop_settings[$local_setting]) ? $foxyshop_settings[$local_setting] : '';
 			}
 			update_option("foxyshop_settings", $imported_settings);
-			update_option("foxyshop_category_sort", unserialize($decrypted[1], array('allowed_classes' => false)));
-			update_option("foxyshop_saved_variations", unserialize($decrypted[2], array('allowed_classes' => false)));
+			update_option("foxyshop_category_sort", $imported_category_sort);
+			update_option("foxyshop_saved_variations", $imported_saved_variations);
 			delete_option("foxyshop_setup_required");
 			wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&import=1');
 			exit;
