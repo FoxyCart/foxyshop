@@ -515,8 +515,6 @@ function foxyshop_is_plain_data($value) {
 
 //Plugin Activation Function
 function foxyshop_activation() {
-	global $google_product_field_names;
-
 	// Using a static english fallback if the constant isn't defined yet due to WP requiring loading translations only in init
 	$product_singular = defined('FOXYSHOP_PRODUCT_NAME_SINGULAR') ? FOXYSHOP_PRODUCT_NAME_SINGULAR : 'Product';
 
@@ -628,63 +626,6 @@ function foxyshop_activation() {
 		if (!array_key_exists('browser_title_7', $foxyshop_settings)) $foxyshop_settings['browser_title_7'] = get_bloginfo("name") . " Receipt"; //4.4
 		if (!array_key_exists('ga_type',$foxyshop_settings)) $foxyshop_settings['ga_type'] = 'legacy'; //4.5
 
-
-
-		//Upgrade Variations in 3.0
-		if (version_compare($foxyshop_settings['foxyshop_version'], '3.0', "<")) {
-			$temp_max_variations = (array_key_exists('max_variations',$foxyshop_settings) ? $foxyshop_settings['max_variations'] : 10);
-			$products = get_posts(array('post_type' => 'foxyshop_product', 'numberposts' => -1, 'post_status' => null));
-			foreach ($products as $product) {
-				$variations = array();
-				for ($i=1; $i<=$temp_max_variations; $i++) {
-					$_variationName = get_post_meta($product->ID, '_variation_name_'.$i, 1);
-					$_variationType = get_post_meta($product->ID, '_variation_type_'.$i, 1);
-					$_variationValue = get_post_meta($product->ID, '_variation_value_'.$i, 1);
-					$_variationDisplayKey = get_post_meta($product->ID, '_variation_dkey_'.$i, 1);
-					$_variationRequired = get_post_meta($product->ID, '_variation_required_'.$i, 1);
-					if ($_variationName) {
-						$variations[$i] = array(
-							"name" => str_replace(array('"', '&', '.'), array('', 'and', ''), $_variationName),
-							"type" => $_variationType,
-							"value" => $_variationValue,
-							"displayKey" => $_variationDisplayKey,
-							"required" => $_variationRequired
-						);
-					}
-				}
-				if (count($variations) > 0) {
-					if (update_post_meta($product->ID, '_variations', $variations)) {
-						for ($i=1; $i<=$temp_max_variations; $i++) {
-							delete_post_meta($product->ID,'_variation_name_'.$i);
-							delete_post_meta($product->ID,'_variation_type_'.$i);
-							delete_post_meta($product->ID,'_variation_value_'.$i);
-							delete_post_meta($product->ID,'_variation_dkey_'.$i);
-							delete_post_meta($product->ID,'_variation_required_'.$i);
-						}
-					}
-				}
-			}
-			if (array_key_exists('max_variations', $foxyshop_settings)) unset($foxyshop_settings['max_variations']);
-		}
-
-		//Upgrade Google Product Fields in 3.7
-		if (version_compare($foxyshop_settings['foxyshop_version'], '3.7', "<")) {
-			$products = get_posts(array('post_type' => 'foxyshop_product', 'numberposts' => -1, 'post_status' => null));
-			foreach ($products as $product) {
-				foreach($google_product_field_names as $field) {
-					$google_product_field_value = get_post_meta($product->ID, $field, 1);
-					if ($google_product_field_value) {
-						add_post_meta($product->ID, "_" . $field, $google_product_field_value);
-						delete_post_meta($product->ID, $field);
-					}
-				}
-			}
-		}
-
-		//Upgrade New Custom Sorting in 4.5
-		if (version_compare($foxyshop_settings['foxyshop_version'], '4.5', "<")) {
-			add_action('init', 'foxyshop_upgrade_menu_order');
-		}
 
 		//Load in New Defaults and Version Number
 		$foxyshop_settings = wp_parse_args($foxyshop_settings,$default_foxyshop_settings);

@@ -46,14 +46,6 @@ function foxyshop_save_tools() {
 			exit;
 		}
 
-	//Scan For Old Variations
-	} elseif (isset($_GET['foxyshop_old_variations_scan'])) {
-		if (!check_admin_referer('foxyshop_old_variations_scan')) return;
-		$foxyshop_settings['foxyshop_version'] = "2.9";
-		update_option("foxyshop_settings", $foxyshop_settings);
-		wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&oldvars=1');
-		exit;
-
 	//Update FoxyCart Template
 	} elseif (isset($_POST['foxycart_cart_update_save']) || isset($_POST['foxycart_checkout_update_save']) || isset($_POST['foxycart_receipt_update_save'])) {
 		if (!check_admin_referer('update-foxycart-template')) return;
@@ -223,9 +215,6 @@ function foxyshop_tools() {
 	//Confirmation Key Reset
 	if (isset($_GET['key'])) echo '<div class="updated"><p>' . esc_html(sprintf(__('Your API Key Has Been Reset: "%s". Please Update FoxyCart With Your New Key.', 'foxyshop'), $foxyshop_settings['api_key'])) . '</p></div>';
 
-	//Confirmation Old Vars
-	if (isset($_GET['oldvars'])) echo '<div class="updated"><p>' . __('Scan for old variations has been successfully completed.', 'foxyshop') . '</p></div>';
-
 	//Flush Rewrite Rules
 	if (isset($_GET['foxyshop_flush_rewrite_rules'])) echo '<div class="updated"><p>' . __('WordPress rewrite rules have been flushed.', 'foxyshop') . '</p></div>';
 
@@ -383,11 +372,6 @@ function foxyshop_tools() {
 			<tr>
 				<td>
 					<span>Product pages not showing up?</span> <a href="edit.php?post_type=foxyshop_product&amp;page=foxyshop_tools&amp;foxyshop_flush_rewrite_rules=1" class="button"><?php _e('Flush Rewrite Rules', 'foxyshop'); ?></a>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<span>Recently imported products with old variation method?</span> <a href="edit.php?foxyshop_old_variations_scan=1&amp;foxyshop_save_tools=1&amp;_wpnonce=<?php echo wp_create_nonce('foxyshop_old_variations_scan'); ?>" class="button"><?php _e('Scan For Old Variations', 'foxyshop'); ?></a>
 				</td>
 			</tr>
 			<tr>
