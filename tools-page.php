@@ -493,7 +493,7 @@ for ($i=1;$i<=$max_variations;$i++) {
 					</div>
 					<div class="foxyshop_field_control">
 						<label for="_variation_textsize2_<?php echo esc_attr($i); ?>"><?php _e('Maximum Chars', 'foxyshop'); ?></label>
-						<input type="text" name="_variation_textsize2_<?php echo esc_attr($i); ?>" id="_variation_textsize2_<?php echo esc_attr($i); ?>" value="<?php if (isset($arrVariationTextSize)) echo esc_attr($arrVariationTextSize[1]); ?>" /> <span><?php _e('characters', 'foxyshop'); ?></span>
+						<input type="text" name="_variation_textsize2_<?php echo esc_attr($i); ?>" id="_variation_textsize2_<?php echo esc_attr($i); ?>" value="<?php if (isset($arrVariationTextSize)) echo esc_attr(foxyshop_variation_max_length($arrVariationTextSize[1])); ?>" /> <span><?php _e('characters', 'foxyshop'); ?></span>
 					</div>
 					<div style="clear: both;"></div>
 				</div>

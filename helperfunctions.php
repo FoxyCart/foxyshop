@@ -415,7 +415,8 @@ function foxyshop_product_variations($showQuantity = 0, $showPriceVariations = t
 			$write .= '<input type="text" name="' . foxyshop_add_spaces($variationName) . foxyshop_get_verification(foxyshop_add_spaces($variationName),'--OPEN--') . '" id="' . $product['code'] . '_' . $i . '" value="" class="' . $className . $dkeyclass . '"';
 			if ((int)$arrVariationText[0] > 0) $write .= ' style="width: ' . (int)$arrVariationText[0] * 6.5 . 'px;"';
 			if ($variationDisplayKey) $write .= ' dkey="' . $variationDisplayKey . '"';
-			if ($arrVariationText[1]) $write .= ' maxlength="' . $arrVariationText[1] . '"';
+			$variationMaxLength = foxyshop_variation_max_length($arrVariationText[1]);
+			if ($variationMaxLength) $write .= ' maxlength="' . $variationMaxLength . '"';
 			$write .= ' />'."\n";
 			$write .= $writeAfterVariation;
 
@@ -615,6 +616,12 @@ function foxyshop_run_variations($variationValue, $variationName, $showPriceVari
 
 function foxyshop_add_spaces($str) {
 	return str_replace(" ", "_", $str);
+}
+
+//Older versions of the Tools page escaped this value with esc_url(), saving 50 as http://50
+function foxyshop_variation_max_length($value) {
+	$length = absint(preg_replace('#^http://#', '', $value));
+	return $length ? $length : '';
 }
 
 
