@@ -888,4 +888,3 @@ add_action( 'admin_print_footer_scripts', function() use ($var_type_array, $vari
 
 }
 ?>
-
