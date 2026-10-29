@@ -427,6 +427,23 @@ jQuery(document).ready(function($){
 
 	//IMAGES
 	//--------------------------------
+	$(document).on("click", "#foxyshop_product_image_list .foxyshop_image_id_badge", function(e) {
+		e.stopPropagation();
+		e.preventDefault();
+		var badge = $(this);
+		var imageId = badge.data("image-id");
+		//The Clipboard API only exists on HTTPS admin pages
+		if (!navigator.clipboard) return false;
+		navigator.clipboard.writeText(String(imageId)).then(function() {
+			clearTimeout(badge.data("resetTimer"));
+			badge.text("Copied!").addClass("copied");
+			badge.data("resetTimer", setTimeout(function() {
+				badge.text("#" + imageId).removeClass("copied");
+			}, 1500));
+		}).catch(function() {});
+		return false;
+	});
+
 	$(document).on("click", "#foxyshop_product_image_list .foxyshop_image_rename", function() {
 		var thisID = $(this).attr("rel");
 		$(".renamediv").removeClass('rename_active');

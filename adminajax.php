@@ -323,7 +323,7 @@ function foxyshop_redraw_images($id) {
 				$hide_from_slideshow_class = $hide_from_slideshow ? 'foxyshop_hide_from_slideshow ' : '';
 
 				$write .= '<li id="att_' . $attachment->ID . '" class="'. $featured_class . $hide_from_slideshow_class . '">';
-				$write .= '<div class="foxyshop_image_holder"><img src="' . esc_url($thumbnailSRC[0]) . '" alt="' . esc_attr($attachment->post_title) . ' (' . $attachment->ID . ')" title="' . esc_attr($attachment->post_title) . ' (' . $attachment->ID . ')" /></div>';
+				$write .= '<div class="foxyshop_image_holder"><img src="' . esc_url($thumbnailSRC[0]) . '" alt="' . esc_attr($attachment->post_title) . ' (' . $attachment->ID . ')" title="' . esc_attr($attachment->post_title) . ' (' . $attachment->ID . ')" /><span class="foxyshop_image_id_badge" data-image-id="' . $attachment->ID . '" title="Click to copy ikey">#' . $attachment->ID . '</span></div>';
 				$write .= '<div style="clear: both;"></div>';
 				$write .= '<a href="#" class="foxyshop_image_delete" rel="' . $attachment->ID . '" alt="Delete" title="Delete">Delete</a>';
 				$write .= '<a href="#" class="foxyshop_image_rename" rel="' . $attachment->ID . '" alt="Rename" title="Rename">Rename</a>';

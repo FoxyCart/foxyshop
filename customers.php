@@ -22,7 +22,8 @@ function foxyshop_customer_management() {
 		$foxy_data_defaults["custom_field_name_filter"] = "";
 		$foxy_data_defaults["custom_field_value_filter"] = "";
 	}
-	$foxy_data = wp_parse_args(array("api_action" => "customer_list"), apply_filters('foxyshop_customer_filter_defaults',$foxy_data_defaults));
+	$foxy_data_defaults = apply_filters('foxyshop_customer_filter_defaults', $foxy_data_defaults);
+	$foxy_data = wp_parse_args(array("api_action" => "customer_list"), $foxy_data_defaults);
 	$foxyshop_querystring = "?post_type=foxyshop_product&amp;page=foxyshop_customer_management&amp;foxyshop_search=1";
 	$foxyshop_hidden_input = "";
 
@@ -56,8 +57,9 @@ function foxyshop_customer_management() {
 		<input type="hidden" name="page" value="foxyshop_customer_management" />
 
 		<table class="widefat">
-		<thead><tr><th colspan="2"><img src="<?php echo esc_url(FOXYSHOP_DIR); ?>/images/search-icon.png" alt="" /><?php _e('Search Options', 'foxyshop'); ?></th></tr></thead>
-		<tbody><tr><td>
+		<?php $search_open = foxyshop_search_panel_open('customers', $foxy_data, $foxy_data_defaults); ?>
+		<thead><tr><th colspan="2" style="cursor: pointer;" class="foxyshop_search_toggle" data-search-page="customers" tabindex="0" role="button" aria-expanded="<?php echo $search_open ? 'true' : 'false'; ?>"><img src="<?php echo esc_url(FOXYSHOP_DIR); ?>/images/search-icon.png" alt="" /><?php _e('Search Options', 'foxyshop'); ?><span class="dashicons <?php echo $search_open ? 'dashicons-arrow-down' : 'dashicons-arrow-right'; ?>"></span></th></tr></thead>
+		<tbody<?php echo $search_open ? '' : ' style="display: none;"'; ?>><tr><td>
 
 			<div class="foxyshop_field_control">
 				<label for="customer_id_filter"><?php _e('Customer ID', 'foxyshop'); ?></label><input type="text" name="customer_id_filter" id="customer_id_filter" value="<?php echo esc_attr($foxy_data['customer_id_filter']); ?>" />
@@ -82,11 +84,12 @@ function foxyshop_customer_management() {
 				<label for="customer_state_filter"><?php _e('Customer State', 'foxyshop'); ?></label><input type="text" name="customer_state_filter" id="customer_state_filter" value="<?php echo esc_attr($foxy_data['customer_state_filter']); ?>" />
 			</div>
 
-			<div style="clear: both;"></div>
+		</td></tr></tbody>
+		<tfoot><tr><td colspan="2">
 			<button type="submit" id="foxyshop_search_submit" name="foxyshop_search_submit" class="button-primary" style="clear: left; margin: 10px 0 6px 0;"><?php _e('Search Records Now', 'foxyshop'); ?></button>
 			<button type="button" class="button" style="margin-left: 15px; margin-top: 10px;" onclick="document.location.href = 'edit.php?post_type=foxyshop_product&page=foxyshop_customer_management';"><?php _e('Reset Form', 'foxyshop'); ?></button>
-
-		</td></tr></tbody></table>
+		</td></tr></tfoot>
+		</table>
 		</form>
 
 	<?php

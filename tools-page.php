@@ -27,30 +27,24 @@ function foxyshop_save_tools() {
 			exit;
 		} else {
 			$imported_settings = unserialize($decrypted[0], array('allowed_classes' => false));
-			if (!is_array($imported_settings)) {
+			$imported_category_sort = unserialize($decrypted[1], array('allowed_classes' => false));
+			$imported_saved_variations = unserialize($decrypted[2], array('allowed_classes' => false));
+			if (!is_array($imported_settings) || !foxyshop_is_plain_data(array($imported_settings, $imported_category_sort, $imported_saved_variations))) {
 				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&importerror=1');
 				exit;
 			}
 
-			//Always Keep This Site's Own Keys
-			foreach (array('api_key', 'datafeed_url_key', 'google_product_auth') as $secret_setting) {
-				$imported_settings[$secret_setting] = isset($foxyshop_settings[$secret_setting]) ? $foxyshop_settings[$secret_setting] : '';
+			//Always Keep This Site's Own Keys and Plugin Version
+			foreach (array('api_key', 'datafeed_url_key', 'google_product_auth', 'foxyshop_version') as $local_setting) {
+				$imported_settings[$local_setting] = isset($foxyshop_settings[$local_setting]) ? $foxyshop_settings[$local_setting] : '';
 			}
 			update_option("foxyshop_settings", $imported_settings);
-			update_option("foxyshop_category_sort", unserialize($decrypted[1], array('allowed_classes' => false)));
-			update_option("foxyshop_saved_variations", unserialize($decrypted[2], array('allowed_classes' => false)));
+			update_option("foxyshop_category_sort", $imported_category_sort);
+			update_option("foxyshop_saved_variations", $imported_saved_variations);
 			delete_option("foxyshop_setup_required");
 			wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&import=1');
 			exit;
 		}
-
-	//Scan For Old Variations
-	} elseif (isset($_GET['foxyshop_old_variations_scan'])) {
-		if (!check_admin_referer('foxyshop_old_variations_scan')) return;
-		$foxyshop_settings['foxyshop_version'] = "2.9";
-		update_option("foxyshop_settings", $foxyshop_settings);
-		wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&oldvars=1');
-		exit;
 
 	//Update FoxyCart Template
 	} elseif (isset($_POST['foxycart_cart_update_save']) || isset($_POST['foxycart_checkout_update_save']) || isset($_POST['foxycart_receipt_update_save'])) {
@@ -219,10 +213,7 @@ function foxyshop_tools() {
 	}
 
 	//Confirmation Key Reset
-	if (isset($_GET['key'])) echo '<div class="updated"><p>' . esc_html(sprintf(__('Your API Key Has Been Reset: "%s". Please Update FoxyCart With Your New Key.', 'foxyshop'), $foxyshop_settings['api_key'])) . '</p></div>';
-
-	//Confirmation Old Vars
-	if (isset($_GET['oldvars'])) echo '<div class="updated"><p>' . __('Scan for old variations has been successfully completed.', 'foxyshop') . '</p></div>';
+	if (isset($_GET['key'])) echo '<div class="updated"><p>' . esc_html(sprintf(__('Your Store Secret Has Been Reset: "%s". Please Update FoxyCart With Your New Store Secret.', 'foxyshop'), $foxyshop_settings['api_key'])) . '</p></div>';
 
 	//Flush Rewrite Rules
 	if (isset($_GET['foxyshop_flush_rewrite_rules'])) echo '<div class="updated"><p>' . __('WordPress rewrite rules have been flushed.', 'foxyshop') . '</p></div>';
@@ -385,12 +376,7 @@ function foxyshop_tools() {
 			</tr>
 			<tr>
 				<td>
-					<span>Recently imported products with old variation method?</span> <a href="edit.php?foxyshop_old_variations_scan=1&amp;foxyshop_save_tools=1&amp;_wpnonce=<?php echo wp_create_nonce('foxyshop_old_variations_scan'); ?>" class="button"><?php _e('Scan For Old Variations', 'foxyshop'); ?></a>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<span>Need a new API key?</span> <a href="edit.php?foxyshop_api_key_reset=1&amp;foxyshop_save_tools=1&amp;_wpnonce=<?php echo wp_create_nonce('reset-foxyshop-api-key'); ?>" onclick="return apiresetcheck();" class="button"><?php _e('Reset API Key', 'foxyshop'); ?></a>
+					<span>Need a new Store Secret?</span> <a href="edit.php?foxyshop_api_key_reset=1&amp;foxyshop_save_tools=1&amp;_wpnonce=<?php echo wp_create_nonce('reset-foxyshop-api-key'); ?>" onclick="return apiresetcheck();" class="button"><?php _e('Reset Store Secret', 'foxyshop'); ?></a>
 				</td>
 			</tr>
 		</tbody>
@@ -604,7 +590,7 @@ echo "</div>";
 			<tr>
 				<td>
 					<label for="foxyshop_export_settings"><?php echo __('Copy String To Your Clipboard to Export FoxyShop Settings', 'foxyshop'); ?>:</label>
-					<p class="description"><?php _e('The API key, datafeed URL key and Google authorization are not included, and importing never replaces this site\'s own keys.', 'foxyshop'); ?></p>
+					<p class="description"><?php _e('The Store Secret, datafeed URL key and Google authorization are not included, and importing never replaces this site\'s own keys.', 'foxyshop'); ?></p>
 					<div style="clear: both;"></div>
 					<textarea id="foxyshop_export_settings" name="foxyshop_export_settings" wrap="auto" readonly="readonly" onclick="this.select();" style="font-size: 13px; float: left; width:500px; line-height: 110%; resize: none; height: 80px; font-family: courier;"><?php echo esc_textarea($foxyshop_export_settings); ?></textarea>
 				</td>
@@ -659,7 +645,7 @@ function foxyshop_inline_tools_page_js($var_type_array, $variation_key) {
 
    echo "<script type='text/javascript'>
 function apiresetcheck() {
-	if (confirm (\"Are you sure you want to reset your API Key?\\nYou will not be able to recover your old key.\")) {
+	if (confirm (\"Are you sure you want to reset your Store Secret?\\nYou will not be able to recover your old Store Secret.\")) {
 		return true;
 	} else {
 		return false;

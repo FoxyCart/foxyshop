@@ -172,7 +172,7 @@ function foxyshop_settings_page() {
 
 	//Confirmation Saved
 	if (isset($_GET['saved'])) echo '<div class="updated"><p>' . __('Your Settings Have Been Saved.', 'foxyshop') . '</p></div>';
-	if (isset($_GET['apikeyerror'])) echo '<div class="error"><p>' . esc_html__('The API key was not changed: it must start with spfx followed by 32 to 96 letters, numbers or symbols (no spaces).', 'foxyshop') . '</p></div>';
+	if (isset($_GET['apikeyerror'])) echo '<div class="error"><p>' . esc_html__('The Store Secret was not changed: it must start with spfx followed by 32 to 96 letters, numbers or symbols (no spaces).', 'foxyshop') . '</p></div>';
 
 	//Setup Prompt Hidden
 	if (isset($_GET['hide_setup_prompt'])) {
@@ -184,7 +184,7 @@ function foxyshop_settings_page() {
 	if (isset($_GET['setup'])) echo '<div class="updated"><p>' . __('<strong>Congratulations!</strong> You are all set up and ready to go. You may now review all the settings on this page and start entering products.', 'foxyshop') . '</p></div>';
 
 	//Warning PHP Version
-	if (version_compare(PHP_VERSION, '5.1.2', "<")) echo '<div class="error"><p>' . sprintf(__('<strong>Warning:</strong> You are using PHP version %s. FoxyShop requires PHP version 5.1.2 or higher to utilize the required hmac_has() functions. Without upgrading you will experience problems adding items to the cart and completing other tasks. After upgrading, make sure that you reset your API key (on the FoxyShop Tools page) to ensure that you have a fully secure key.', 'foxyshop'), PHP_VERSION) . '</p></div>';
+	if (version_compare(PHP_VERSION, '5.1.2', "<")) echo '<div class="error"><p>' . sprintf(__('<strong>Warning:</strong> You are using PHP version %s. FoxyShop requires PHP version 5.1.2 or higher to utilize the required hmac_has() functions. Without upgrading you will experience problems adding items to the cart and completing other tasks. After upgrading, make sure that you reset your Store Secret (on the FoxyShop Tools page) to ensure that you have a fully secure key.', 'foxyshop'), PHP_VERSION) . '</p></div>';
 
 	//Warning Header/Footer Missing
 	if ((!file_exists(TEMPLATEPATH.'/header.php') || !file_exists(TEMPLATEPATH.'/footer.php')) && !isset($skip_header_warning)) echo '<div class="error"><p>' . __('<strong>Warning:</strong> Your theme does not appear to be using header.php or footer.php. Without these files FoxyShop pages will show up unstyled. This error can often show up if you are using a WordPress framework that is bypassing the get_header() and get_footer() functions.', 'foxyshop') . '</p></div>';
@@ -221,9 +221,9 @@ function foxyshop_settings_page() {
 
 					<p>
 					<a href="https://www.foxy-shop.com/documentation/?utm_source=plugin&amp;utm_medium=app&amp;utm_campaign=pluginlink_<?php echo esc_attr(FOXYSHOP_VERSION) ?>" target="_blank" class="button"><?php _e('FoxyShop Documentation', 'foxyshop'); ?></a>
-					<a href="https://affiliate.foxycart.com/idevaffiliate.php?id=211&amp;url=https://www.foxycart.com/" target="_blank" class="button"><?php _e('FoxyCart Information', 'foxyshop'); ?></a>
-					<a href="https://affiliate.foxycart.com/idevaffiliate.php?id=211&amp;url=https://wiki.foxycart.com/" target="_blank" class="button"><?php _e('FoxyCart Wiki', 'foxyshop'); ?></a>
-					<a href="https://affiliate.foxycart.com/idevaffiliate.php?id=211&amp;url=https://admin.foxycart.com/" target="_blank" class="button"><?php _e('FoxyCart Admin Panel', 'foxyshop'); ?></a>
+					<a href="https://www.foxy.io" target="_blank" class="button"><?php _e('FoxyCart Information', 'foxyshop'); ?></a>
+					<a href="https://wiki.foxycart.com/" target="_blank" class="button"><?php _e('FoxyCart Wiki', 'foxyshop'); ?></a>
+					<a href="https://admin.foxy.io/" target="_blank" class="button"><?php _e('FoxyCart Admin Panel', 'foxyshop'); ?></a>
 
 					</p>
 				</td>
@@ -244,10 +244,10 @@ function foxyshop_settings_page() {
 		<tbody>
 			<tr>
 				<td style="border-bottom: 0 none;">
-					<label for="foxyshop_key"><?php _e('API Key', 'foxyshop'); ?>:</label>
+					<label for="foxyshop_key"><?php _e('Store Secret', 'foxyshop'); ?>:</label>
 					<input type="text" id="foxyshop_key" name="api_key" value="<?php echo esc_attr($foxyshop_settings['api_key']); ?>" readonly="readonly" autocomplete="off" />
-					<a href="#" class="foxyshophelp">The API key is saved here and stored on your FoxyCart account so that your cart information can be encrypted to avoid link tampering. The API key is also used to communicate with FoxyCart and retrieve your order information.<br /><br />This API key is generated automatically. You can instead enter your own store secret: it must start with spfx followed by at least 32 random characters. Go to the tools page if you need to reset this key.</a>
-					<div style="clear: both; padding: 5px 0; font-style: italic;"><strong style="color: #BB1E1E;">Required Setup:</strong> Enter this API key in the <b>store secret</b> field on the advanced menu of your <a href="https://affiliate.foxycart.com/idevaffiliate.php?id=211&url=https://admin.foxycart.com/" target="_blank">FoxyCart admin</a> and check the box to enable cart validation.</div>
+					<a href="#" class="foxyshophelp">The Store Secret is saved here and stored on your FoxyCart account so that your cart information can be encrypted to avoid link tampering. The Store Secret is also used to communicate with FoxyCart and retrieve your order information.<br /><br />This Store Secret is generated automatically. You can instead enter your own: it must start with spfx followed by at least 32 random characters. Go to the tools page if you need to reset this key.</a>
+					<div style="clear: both; padding: 5px 0; font-style: italic;"><strong style="color: #BB1E1E;">Required Setup:</strong> Enter this value in the <b>store secret</b> field on the Settings > General page of your <a href="https://admin.foxy.io/" target="_blank">FoxyCart admin</a> and then enable the "Prevent product link and form tampering" option on the Settings > Cart page.</div>
 
 					<div style="clear: both;"></div>
 
@@ -278,7 +278,7 @@ function foxyshop_settings_page() {
 			</tr>
 		</tbody>
 	</table>
-	<p><a href="#" class="button-link customise-api-key">Set a custom API key</a><input type="submit" class="button-primary customise-api-key-save" value="<?php _e('Save All Settings', 'foxyshop'); ?>" style="display:none;" /></p>
+	<p><a href="#" class="button-link customise-api-key">Set a custom Store Secret</a><input type="submit" class="button-primary customise-api-key-save" value="<?php _e('Save All Settings', 'foxyshop'); ?>" style="display:none;" /></p>
 
 	<br /><br />
 
