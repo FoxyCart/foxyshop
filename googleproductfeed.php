@@ -9,6 +9,7 @@ This file is setup to provide you with the ability to create a product feed that
 
 if (isset($_GET['create_google_product_feed'])) add_action('admin_init', 'foxyshop_save_feed_file');
 function foxyshop_save_feed_file() {
+	foxyshop_require_capability('foxyshop_google_product_perm');
 	// Define the path to file
 	$filename = 'Google-Product-Feed.txt';
 
@@ -299,6 +300,7 @@ if ($foxyshop_settings['google_product_merchant_id']) {
 
 function foxyshop_google_products_act() {
 	if (!isset($_REQUEST['foxyshop_google_products_update'])) return;
+	foxyshop_require_capability('foxyshop_google_product_perm');
 	if (!check_admin_referer('gp1')) return;
 	global $foxyshop_settings;
 
@@ -443,7 +445,8 @@ add_action( 'admin_print_footer_scripts', 'foxyshop_inline_googleproductfeed_js'
 		];
 
 		$url = "https://content.googleapis.com/content/v1/" . $foxyshop_settings['google_product_merchant_id'] . "/items/products/schema?performance.start=" . date("Y-m-d", strtotime("-30 days")) . "&max-results=250&performance.end=" . date("Y-m-d", strtotime("now"));
-		if (isset($_GET['nextlink'])) $url = sanitize_text_field($_GET['nextlink']);
+		//Only Follow Paging Links to Google's Content API
+		if (isset($_GET['nextlink']) && strpos(sanitize_text_field($_GET['nextlink']), "https://content.googleapis.com/") === 0) $url = sanitize_text_field($_GET['nextlink']);
 
 
 		$response = wp_remote_get($url,
@@ -732,6 +735,7 @@ add_action( 'admin_print_footer_scripts', 'foxyshop_inline_googleproductfeed_js'
 
 if (isset($_GET['foxyshop_manage_google_feed'])) add_action('admin_init', 'foxyshop_manage_google_feed');
 function foxyshop_manage_google_feed() {
+	foxyshop_require_capability('foxyshop_google_product_perm');
 	if (!check_admin_referer('manage-the-google-feed-settings')) return;
 	global $foxyshop_settings;
 	$url = 'https://content.googleapis.com/content/v1/' . $foxyshop_settings['google_product_merchant_id'] . '/items/products/schema/batch?dry-run';

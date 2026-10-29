@@ -6,6 +6,7 @@ if (!defined('ABSPATH')) exit();
 //Save Inventory Values - AJAX
 add_action('wp_ajax_save_inventory_values', 'foxyshop_save_inventory_values_ajax');
 function foxyshop_save_inventory_values_ajax() {
+	foxyshop_require_capability('foxyshop_inventory_perm');
 	if (!check_admin_referer('update-foxyshop-inventory')) return;
 	foxyshop_inventory_count_update(sanitize_text_field($_POST['code']), sanitize_text_field($_POST['new_count']), sanitize_text_field($_POST['product_id']), true);
 	die;
@@ -18,6 +19,7 @@ function foxyshop_inventory_update() {
 
 	//Saving Values From Uploaded Data
 	if (isset($_POST['foxyshop_inventory_updates'])) {
+		foxyshop_require_capability('foxyshop_inventory_perm');
 
 		if (!check_admin_referer('import-foxyshop-inventory-updates')) return;
 

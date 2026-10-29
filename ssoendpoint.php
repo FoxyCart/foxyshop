@@ -3,6 +3,11 @@
 if (!defined('ABSPATH')) exit();
 
 //SSO ENDPOINT TEMPLATE
+global $foxyshop_settings;
+if (empty($foxyshop_settings['enable_sso'])) {
+	wp_redirect(get_home_url());
+	die;
+}
 if (isset($_GET['fcsid']) && isset($_GET['timestamp'])) {
 	global $foxyshop_settings;
 	global $current_user;
@@ -98,41 +103,57 @@ if (isset($_GET['fcsid']) && isset($_GET['timestamp'])) {
 	//Already Logged In, Get Account Info.
 	} else {
 		wp_get_current_user();
-		$customer_id = get_user_meta($current_user->ID, "foxycart_customer_id", TRUE);
-		$customer_email = $current_user->user_email;
 
-		//Get FoxyCart Customer ID
-		if (!$customer_id) $customer_id = foxyshop_check_for_customer_id($customer_email);
+		//Staff Accounts Check Out as Guests; They're Never Linked to FoxyCart Customers
+		if (foxyshop_is_protected_user($current_user->ID)) {
+			$customer_id = 0;
+		} else {
+			$customer_id = get_user_meta($current_user->ID, "foxycart_customer_id", TRUE);
+			$customer_email = $current_user->user_email;
 
-		//Customer ID Doesn't Exist, Create New FoxyCart Customer
-		if (!$customer_id) $customer_id = foxyshop_add_new_customer_id($customer_email, $current_user->user_pass, $current_user->user_firstname, $current_user->user_lastname);
+			//Get FoxyCart Customer ID
+			if (!$customer_id) {
+				$found_customer_id = foxyshop_find_customer_id_by_email($customer_email);
+				if ($found_customer_id) {
+
+					//WordPress Email Addresses Aren't Verified, So an Existing FoxyCart Customer Isn't Linked Automatically (Check Out as a Guest)
+					if (apply_filters('foxyshop_sso_claim_existing_customer', false, $current_user, $found_customer_id)) {
+						$customer_id = foxyshop_check_for_customer_id($customer_email, $found_customer_id);
+					}
+
+				//Customer ID Doesn't Exist, Create New FoxyCart Customer
+				} elseif ($found_customer_id === '') {
+					$customer_id = foxyshop_add_new_customer_id($customer_email, $current_user->user_pass, $current_user->user_firstname, $current_user->user_lastname);
+				}
+			}
+			if (!$customer_id) $customer_id = 0;
+		}
 	}
 
 
 	//Redirect to FoxyCart
 	$fcsid = sanitize_text_field($_GET['fcsid']);
 	$timestamp = sanitize_text_field($_GET['timestamp']);
-	$newtimestamp = strtotime("+60 minutes", $timestamp);
+	$newtimestamp = time() + 3600;
 	$auth_token = sha1($customer_id . '|' . $newtimestamp . '|' . $foxyshop_settings['api_key']);
 	$redirect_complete = 'https://' . $foxyshop_settings['domain'] . '/checkout?fc_auth_token=' . $auth_token . '&fc_customer_id=' . $customer_id . '&timestamp=' . $newtimestamp . '&fcsid=' . $fcsid;
 
-	wp_redirect($redirect_complete, 301);
+	wp_redirect($redirect_complete, 302);
 	die;
 }
 
-function foxyshop_check_for_customer_id($email) {
+//Link the Current User to the FoxyCart Customer With Their Email and Sync Their Password
+function foxyshop_check_for_customer_id($email, $foxycart_customer_id = null) {
 	global $current_user;
 	wp_get_current_user();
-	$foxy_data = array("api_action" => "customer_get", "customer_email" => $email);
-	$foxy_response = foxyshop_get_foxycart_data($foxy_data);
-	$xml = simplexml_load_string($foxy_response, NULL, LIBXML_NOCDATA);
-	if ($xml->result == "SUCCESS") {
-		$foxycart_customer_id = (string)$xml->customer_id;
-		if ($foxycart_customer_id) add_user_meta($current_user->ID, 'foxycart_customer_id', $foxycart_customer_id, true);
-		return $foxycart_customer_id;
-	} else {
-		return false;
-	}
+	if (foxyshop_is_protected_user($current_user->ID)) return false;
+	if ($foxycart_customer_id === null) $foxycart_customer_id = foxyshop_find_customer_id_by_email($email);
+	if (!$foxycart_customer_id || foxyshop_customer_id_is_linked($foxycart_customer_id, $current_user->ID)) return false;
+	$foxy_response = foxyshop_get_foxycart_data(array("api_action" => "customer_save", "customer_id" => $foxycart_customer_id, "customer_password_hash" => $current_user->user_pass));
+	$xml = foxyshop_load_xml($foxy_response);
+	if (!$xml || (string)$xml->result != "SUCCESS") return false;
+	add_user_meta($current_user->ID, 'foxycart_customer_id', $foxycart_customer_id, true);
+	return $foxycart_customer_id;
 }
 
 function foxyshop_add_new_customer_id($email, $pass, $first_name, $last_name) {
@@ -142,8 +163,9 @@ function foxyshop_add_new_customer_id($email, $pass, $first_name, $last_name) {
 	if ($first_name != '') $foxy_data['customer_first_name'] = $first_name;
 	if ($last_name != '') $foxy_data['customer_last_name'] = $last_name;
 	$foxy_response = foxyshop_get_foxycart_data($foxy_data);
-	$xml = simplexml_load_string($foxy_response, NULL, LIBXML_NOCDATA);
-	$foxycart_customer_id = (string)$xml->customer_id;
-	if ($foxycart_customer_id) add_user_meta($current_user->ID, 'foxycart_customer_id', $foxycart_customer_id, true);
+	$xml = foxyshop_load_xml($foxy_response);
+	$foxycart_customer_id = $xml && (string)$xml->result == "SUCCESS" ? (string)$xml->customer_id : "";
+	if (!$foxycart_customer_id || foxyshop_customer_id_is_linked($foxycart_customer_id, $current_user->ID)) return "";
+	add_user_meta($current_user->ID, 'foxycart_customer_id', $foxycart_customer_id, true);
 	return $foxycart_customer_id;
 }

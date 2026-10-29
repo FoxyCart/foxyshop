@@ -286,7 +286,7 @@ function foxyshop_subscription_management() {
 			echo "</tr>\n";
 
 			$holder .= '<div class="detail_holder" id="holder_' . $sub_token . '">'."\n";
-			$holder .= '<form class="subscription_update_form" name="subscription_update_form_' . $sub_token . '" id="subscription_update_form_' . $sub_token . '" onsubmit="return false;">'."\n";
+			$holder .= '<form class="subscription_update_form" name="subscription_update_form_' . $sub_token . '" id="subscription_update_form_' . $sub_token . '">'."\n";
 			$holder .= '<div class="foxyshop_field_control">'."\n";
 			$holder .= '<label>' . __('Subscription Status', 'foxyshop') . '</label>'."\n";
 			$holder .= '<input type="radio" name="is_active" id="is_active_1_' . $sub_token . '" value="1"' . ($is_active == "1" ? ' checked="checked"' : '') . ' style="float: left; margin-top: 7px;" />'."\n";
@@ -304,7 +304,7 @@ function foxyshop_subscription_management() {
 			$holder .= '</div>'."\n";
 			$holder .= '<div class="foxyshop_field_control">'."\n";
 			$holder .= '<label for="end_date_' . $sub_token . '">' . __('End Date', 'foxyshop') . '</label>'."\n";
-			$holder .= '<input type="text" name="end_date" id="end_date_' . $sub_token . '" value="' . $end_date . '" class="foxyshop_date_field" /><span>(YYYY-MM-DD)</span> <a href="#" onclick="jQuery(\'#end_date_' . $sub_token . '\').val(\'0000-00-00\'); this.blur(); return false;" class="button" style="margin: 5px 0 0 5px; float: left;">Never</a> <a href="#" onclick="jQuery(\'#end_date_' . $sub_token . '\').val(\'' . date("Y-m-d", strtotime("+1 day")) . '\'); this.blur(); return false;" class="button" style="margin: 5px 0 0 5px; float: left;">Tomorrow</a>'."\n";
+			$holder .= '<input type="text" name="end_date" id="end_date_' . $sub_token . '" value="' . $end_date . '" class="foxyshop_date_field" /><span>(YYYY-MM-DD)</span> <a href="#" class="button foxyshop_set_end_date" rel="end_date_' . $sub_token . '|0000-00-00" style="margin: 5px 0 0 5px; float: left;">Never</a> <a href="#" class="button foxyshop_set_end_date" rel="end_date_' . $sub_token . '|' . date("Y-m-d", strtotime("+1 day")) . '" style="margin: 5px 0 0 5px; float: left;">Tomorrow</a>'."\n";
 			$holder .= '</div>'."\n";
 			$holder .= '<div class="foxyshop_field_control">'."\n";
 			$holder .= '<label for="frequency_' . $sub_token . '">' . __('Frequency', 'foxyshop') . '</label>'."\n";
@@ -312,15 +312,15 @@ function foxyshop_subscription_management() {
 			$holder .= '</div>'."\n";
 			$holder .= '<div class="foxyshop_field_control">'."\n";
 			$holder .= '<label for="past_due_amount_' . $sub_token . '">' . __('Past Due Amount', 'foxyshop') . '</label>'."\n";
-			$holder .= '<input type="text" name="past_due_amount" id="past_due_amount_' . $sub_token . '" value="' . $past_due_amount . '" onblur="foxyshop_check_number(this);" /><span>(0.00)</span>'."\n";
+			$holder .= '<input type="text" name="past_due_amount" id="past_due_amount_' . $sub_token . '" value="' . $past_due_amount . '" class="foxyshop_check_number" /><span>(0.00)</span>'."\n";
 			$holder .= '</div>'."\n";
 			$holder .= '<div class="foxyshop_field_control">'."\n";
 			$holder .= '<label for="update_url_' . $sub_token . '">' . __('Update URL', 'foxyshop') . '</label>'."\n";
-			$holder .= '<input type="text" name="update_url" id="update_url_' . $sub_token . '" value="https://' . $foxyshop_settings['domain']. '/cart?sub_token=' . $sub_token . '&amp;empty=true&amp;cart=checkout" style="width: 390px;" onclick="this.select();" />'."\n";
+			$holder .= '<input type="text" name="update_url" id="update_url_' . $sub_token . '" value="https://' . $foxyshop_settings['domain']. '/cart?sub_token=' . $sub_token . '&amp;empty=true&amp;cart=checkout" style="width: 390px;" class="foxyshop_select_on_click" />'."\n";
 			$holder .= '</div>'."\n";
 			$holder .= '<div class="foxyshop_field_control">'."\n";
 			$holder .= '<label for="cancel_url_' . $sub_token . '">' . __('Cancellation URL', 'foxyshop') . '</label>'."\n";
-			$holder .= '<input type="text" name="cancel_url" id="cancel_url_' . $sub_token . '" value="https://' . $foxyshop_settings['domain']. '/cart?sub_token=' . $sub_token . '&amp;empty=true&amp;cart=checkout&amp;sub_cancel=true" style="width: 390px;" onclick="this.select();" />'."\n";
+			$holder .= '<input type="text" name="cancel_url" id="cancel_url_' . $sub_token . '" value="https://' . $foxyshop_settings['domain']. '/cart?sub_token=' . $sub_token . '&amp;empty=true&amp;cart=checkout&amp;sub_cancel=true" style="width: 390px;" class="foxyshop_select_on_click" />'."\n";
 			$holder .= '</div>'."\n";
 			$holder .= '<div class="foxyshop_field_control">'."\n";
 			$holder .= '<label for="transaction_template_id_' . $sub_token . '">' . __('Transaction Template') . '</label>'."\n";
@@ -363,6 +363,16 @@ function foxyshop_subscription_management() {
 function foxyshop_inline_subscriptions_js() {
    echo "<script type='text/javascript'>
 jQuery(document).ready(function($){
+	//Behaviour for the Subscription Edit Forms
+	$(document).on(\"submit\", \".subscription_update_form\", function() { return false; });
+	$(document).on(\"blur\", \".foxyshop_check_number\", function() { foxyshop_check_number(this); });
+	$(document).on(\"click\", \".foxyshop_select_on_click\", function() { this.select(); });
+	$(document).on(\"click\", \".foxyshop_set_end_date\", function(e) {
+		var parts = $(this).attr(\"rel\").split(\"|\");
+		$(\"#\" + parts[0]).val(parts[1]);
+		this.blur();
+		e.preventDefault();
+	});
 	$(\".foxyshop-list-table thead th\").click(function() {
 		$(\"#foxyshop-list-inline .detail_holder\").appendTo(\"#details_holder\");
 		$(\"#foxyshop-list-inline\").remove();

@@ -152,7 +152,8 @@ function foxyshop_theme_redirect() {
 	//FoxyCart Checkout Complete (SSO Reverse Login)
 	} elseif ($currentPageName == 'foxycart-checkout-complete' || $currentName == 'foxycart-checkout-complete') {
 		status_header(200);
-		foxyshop_reverse_sso_login();
+		if (function_exists('foxyshop_reverse_sso_login')) foxyshop_reverse_sso_login();
+		wp_redirect(get_home_url());
 		die;
 
 	//FoxyCart Checkout Template

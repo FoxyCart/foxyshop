@@ -353,6 +353,7 @@ add_action( 'admin_print_footer_scripts', 'foxyshop_inline_dashboard_stats_js' )
 function foxyshop_order_history_dashboard_ajax() {
 	global $foxyshop_settings;
 	check_ajax_referer('foxyshop-order-info-dashboard', 'security');
+	foxyshop_require_capability('foxyshop_dashboard_stats_perm');
 
 
 	$pagination_start = 1;

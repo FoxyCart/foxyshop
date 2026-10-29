@@ -5,6 +5,7 @@ if (!defined('ABSPATH')) exit();
 if (isset($_REQUEST['foxyshop_save_tools'])) add_action('admin_init', 'foxyshop_save_tools');
 function foxyshop_save_tools() {
 	global $foxyshop_settings;
+	foxyshop_require_capability('foxyshop_tools_perm');
 
 	//Import Settings
 	if (isset($_POST['foxyshop_import_settings'])) {
@@ -25,9 +26,19 @@ function foxyshop_save_tools() {
 			wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&importerror=1');
 			exit;
 		} else {
-			update_option("foxyshop_settings", unserialize($decrypted[0]));
-			update_option("foxyshop_category_sort", unserialize($decrypted[1]));
-			update_option("foxyshop_saved_variations", unserialize($decrypted[2]));
+			$imported_settings = unserialize($decrypted[0], array('allowed_classes' => false));
+			if (!is_array($imported_settings)) {
+				wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&importerror=1');
+				exit;
+			}
+
+			//Always Keep This Site's Own Keys
+			foreach (array('api_key', 'datafeed_url_key', 'google_product_auth') as $secret_setting) {
+				$imported_settings[$secret_setting] = isset($foxyshop_settings[$secret_setting]) ? $foxyshop_settings[$secret_setting] : '';
+			}
+			update_option("foxyshop_settings", $imported_settings);
+			update_option("foxyshop_category_sort", unserialize($decrypted[1], array('allowed_classes' => false)));
+			update_option("foxyshop_saved_variations", unserialize($decrypted[2], array('allowed_classes' => false)));
 			delete_option("foxyshop_setup_required");
 			wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&import=1');
 			exit;
@@ -160,7 +171,7 @@ function foxyshop_save_tools() {
 	//Reset API Key
 	} elseif (isset($_GET['foxyshop_api_key_reset'])) {
 		if (!check_admin_referer('reset-foxyshop-api-key')) return;
-		$foxyshop_settings['api_key'] = "sp92fx".hash_hmac('sha256',rand(21654,6489798),"dkjw82j1".time());
+		$foxyshop_settings['api_key'] = foxyshop_generate_api_key();
 		update_option("foxyshop_settings", $foxyshop_settings);
 		wp_redirect('edit.php?post_type=foxyshop_product&page=foxyshop_tools&key=1');
 		exit;
@@ -235,7 +246,9 @@ function foxyshop_tools() {
 	//Get Export Settings
 	if (function_exists('openssl_encrypt')) {
 		$encrypt_key = "foxyshop_encryption_key_16";
-		$foxyshop_export_settings = serialize(get_option('foxyshop_settings')) . "|-|";
+		$foxyshop_export_settings_values = get_option('foxyshop_settings');
+		unset($foxyshop_export_settings_values['api_key'], $foxyshop_export_settings_values['datafeed_url_key'], $foxyshop_export_settings_values['google_product_auth']);
+		$foxyshop_export_settings = serialize($foxyshop_export_settings_values) . "|-|";
 		$foxyshop_export_settings .= serialize(get_option('foxyshop_category_sort')) . "|-|";
 		$foxyshop_export_settings .= serialize(get_option('foxyshop_saved_variations'));
 		$foxyshop_export_settings = base64_encode(openssl_encrypt($foxyshop_export_settings, 'AES-256-CBC', md5($encrypt_key), OPENSSL_RAW_DATA, substr(md5(md5($encrypt_key)), 0, 16)));
@@ -591,6 +604,7 @@ echo "</div>";
 			<tr>
 				<td>
 					<label for="foxyshop_export_settings"><?php echo __('Copy String To Your Clipboard to Export FoxyShop Settings', 'foxyshop'); ?>:</label>
+					<p class="description"><?php _e('The API key, datafeed URL key and Google authorization are not included, and importing never replaces this site\'s own keys.', 'foxyshop'); ?></p>
 					<div style="clear: both;"></div>
 					<textarea id="foxyshop_export_settings" name="foxyshop_export_settings" wrap="auto" readonly="readonly" onclick="this.select();" style="font-size: 13px; float: left; width:500px; line-height: 110%; resize: none; height: 80px; font-family: courier;"><?php echo esc_textarea($foxyshop_export_settings); ?></textarea>
 				</td>
